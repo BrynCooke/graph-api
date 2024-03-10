@@ -1,0 +1,270 @@
+---
+source: graph-api-derive/src/model.rs
+expression: model
+---
+Model {
+    visibility: Visibility::Inherited,
+    ident: Ident(
+        Test,
+    ),
+    label_ident: Ident(
+        TestLabel,
+    ),
+    index_ident: Ident(
+        TestIndex,
+    ),
+    variants: [
+        Variant {
+            visibility: Visibility::Inherited,
+            element_ident: Ident(
+                Test,
+            ),
+            ident: Ident(
+                Unit,
+            ),
+            mut_ident: Ident(
+                UnitMut,
+            ),
+            label_ident: Ident(
+                TestLabel,
+            ),
+            index_ident: Ident(
+                TestIndex,
+            ),
+            variant_type: Unit,
+            fields: [],
+        },
+        Variant {
+            visibility: Visibility::Inherited,
+            element_ident: Ident(
+                Test,
+            ),
+            ident: Ident(
+                Unnammed,
+            ),
+            mut_ident: Ident(
+                UnnammedMut,
+            ),
+            label_ident: Ident(
+                TestLabel,
+            ),
+            index_ident: Ident(
+                TestIndex,
+            ),
+            variant_type: Unnamed,
+            fields: [],
+        },
+        Variant {
+            visibility: Visibility::Inherited,
+            element_ident: Ident(
+                Test,
+            ),
+            ident: Ident(
+                Named,
+            ),
+            mut_ident: Ident(
+                NamedMut,
+            ),
+            label_ident: Ident(
+                TestLabel,
+            ),
+            index_ident: Ident(
+                TestIndex,
+            ),
+            variant_type: Named,
+            fields: [
+                Field {
+                    visibility: Visibility::Inherited,
+                    ident: Ident(
+                        param1,
+                    ),
+                    ty: Type::Path {
+                        qself: None,
+                        path: Path {
+                            leading_colon: None,
+                            segments: [
+                                PathSegment {
+                                    ident: Ident(
+                                        NamedParam1,
+                                    ),
+                                    arguments: PathArguments::None,
+                                },
+                            ],
+                        },
+                    },
+                    ref_ty: Type::Reference {
+                        and_token: And,
+                        lifetime: Some(
+                            Lifetime {
+                                apostrophe: Span,
+                                ident: Ident(
+                                    reference,
+                                ),
+                            },
+                        ),
+                        mutability: None,
+                        elem: Type::Path {
+                            qself: None,
+                            path: Path {
+                                leading_colon: None,
+                                segments: [
+                                    PathSegment {
+                                        ident: Ident(
+                                            NamedParam1,
+                                        ),
+                                        arguments: PathArguments::None,
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                    index_ident: Ident(
+                        TestIndex,
+                    ),
+                    index_variant: Ident(
+                        NamedParam1,
+                    ),
+                    indexed: false,
+                    unique: false,
+                    ordered: false,
+                    full_text: false,
+                },
+                Field {
+                    visibility: Visibility::Inherited,
+                    ident: Ident(
+                        param2,
+                    ),
+                    ty: Type::Path {
+                        qself: None,
+                        path: Path {
+                            leading_colon: None,
+                            segments: [
+                                PathSegment {
+                                    ident: Ident(
+                                        NamedParam2,
+                                    ),
+                                    arguments: PathArguments::None,
+                                },
+                            ],
+                        },
+                    },
+                    ref_ty: Type::Reference {
+                        and_token: And,
+                        lifetime: Some(
+                            Lifetime {
+                                apostrophe: Span,
+                                ident: Ident(
+                                    reference,
+                                ),
+                            },
+                        ),
+                        mutability: None,
+                        elem: Type::Path {
+                            qself: None,
+                            path: Path {
+                                leading_colon: None,
+                                segments: [
+                                    PathSegment {
+                                        ident: Ident(
+                                            NamedParam2,
+                                        ),
+                                        arguments: PathArguments::None,
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                    index_ident: Ident(
+                        TestIndex,
+                    ),
+                    index_variant: Ident(
+                        NamedParam2,
+                    ),
+                    indexed: false,
+                    unique: false,
+                    ordered: false,
+                    full_text: false,
+                },
+            ],
+        },
+    ],
+    extension_trait: ExtensionTrait {
+        ident: Ident(
+            TestExt,
+        ),
+        enum_variants: [
+            Unit {
+                all_ident: Ident(
+                    all_unit,
+                ),
+                target_ty: Ident(
+                    Test,
+                ),
+                target_variant: Ident(
+                    Unit,
+                ),
+            },
+            UnnamedFields {
+                filter_ident: Ident(
+                    filter_by_unnammed,
+                ),
+                all_ident: Ident(
+                    all_unnammed,
+                ),
+                target_ty: Ident(
+                    Test,
+                ),
+                target_variant: Ident(
+                    Unnammed,
+                ),
+                filter_params_types: [
+                    Type::Path {
+                        qself: None,
+                        path: Path {
+                            leading_colon: None,
+                            segments: [
+                                PathSegment {
+                                    ident: Ident(
+                                        UnnamedParam1,
+                                    ),
+                                    arguments: PathArguments::None,
+                                },
+                            ],
+                        },
+                    },
+                    Type::Path {
+                        qself: None,
+                        path: Path {
+                            leading_colon: None,
+                            segments: [
+                                PathSegment {
+                                    ident: Ident(
+                                        UnnamedParam2,
+                                    ),
+                                    arguments: PathArguments::None,
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+            NamedFields {
+                filter_ident: Ident(
+                    filter_by_named,
+                ),
+                all_ident: Ident(
+                    all_named,
+                ),
+                target_ty: Ident(
+                    Test,
+                ),
+                target_variant: Ident(
+                    Named,
+                ),
+                filter_param: Ident(
+                    Named,
+                ),
+            },
+        ],
+    },
+}

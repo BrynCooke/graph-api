@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "graph-api-lib",
+    "graph-api-derive",
+    "graph-api-test",
+    "graph-api-petgraph",
+    "graph-api-simplegraph",
+]
+
+resolver = "2"

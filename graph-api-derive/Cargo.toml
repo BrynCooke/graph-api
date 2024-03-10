@@ -1,0 +1,22 @@
+[package]
+name = "graph-api-derive"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "2.0", features = ["extra-traits"] }
+quote = "1.0"
+proc-macro2 = "1.0.82"
+serde = { version = "1.0.202", features = ["derive"] }
+case = "1.0.0"
+
+[dev-dependencies]
+insta = { version = "1.39.0", features = ["yaml"] }
+trybuild = "1.0"
+proc-macro2 = { version = "1.0.82", features = [] }
+prettyplease = "0.2.29"
+graph-api-lib = { path = "../graph-api-lib" }

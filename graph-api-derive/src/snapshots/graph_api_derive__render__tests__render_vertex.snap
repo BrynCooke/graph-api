@@ -1,0 +1,558 @@
+---
+source: graph-api-derive/src/render.rs
+expression: formatted
+---
+#[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]
+pub enum VertexLabel {
+    Person,
+    Project,
+    Rust,
+}
+impl graph_api_lib::Label for VertexLabel {
+    const COUNT: usize = 3usize;
+    fn ordinal(&self) -> usize {
+        *self as usize
+    }
+}
+#[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]
+pub enum VertexIndex {
+    PersonName,
+    PersonAge,
+    PersonUniqueId,
+    PersonUsername,
+    PersonBiography,
+}
+impl VertexIndex {
+    pub fn person<'reference, Graph>() -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexLabelSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new().labelled(VertexLabel::Person)
+    }
+    pub fn project<'reference, Graph>() -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexLabelSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new().labelled(VertexLabel::Project)
+    }
+    pub fn rust<'reference, Graph>() -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexLabelSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new().labelled(VertexLabel::Rust)
+    }
+    pub fn person_by_name<'reference, Graph>(
+        value: &'reference str,
+    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexIndexSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new()
+            .labelled(VertexLabel::Person)
+            .indexed(VertexIndex::PersonName, value)
+    }
+    pub fn person_by_age<'reference, Graph>(
+        value: u64,
+    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexIndexSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new()
+            .labelled(VertexLabel::Person)
+            .indexed(VertexIndex::PersonAge, value)
+    }
+    pub fn person_by_unique_id<'reference, Graph>(
+        value: Uuid,
+    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexIndexSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new()
+            .labelled(VertexLabel::Person)
+            .indexed(VertexIndex::PersonUniqueId, value)
+    }
+    pub fn person_by_username<'reference, Graph>(
+        value: &'reference str,
+    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexIndexSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new()
+            .labelled(VertexLabel::Person)
+            .indexed(VertexIndex::PersonUsername, value)
+    }
+    pub fn person_by_biography<'reference, Graph>(
+        value: &'reference str,
+    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexIndexFullTextSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new()
+            .labelled(VertexLabel::Person)
+            .indexed(VertexIndex::PersonBiography, value)
+    }
+    pub fn person_by_age_range<'reference, Graph>(
+        range: std::ops::Range<u64>,
+    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexIndexRangeSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new()
+            .labelled(VertexLabel::Person)
+            .indexed(VertexIndex::PersonAge, range)
+    }
+    pub fn person_by_username_range<'reference, Graph>(
+        range: std::ops::Range<&'reference str>,
+    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    where
+        Graph: graph_api_lib::Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexIndexRangeSearch = graph_api_lib::Supported,
+        >,
+        Vertex: graph_api_lib::Element<Index = Self>,
+    {
+        graph_api_lib::VertexSearch::new()
+            .labelled(VertexLabel::Person)
+            .indexed(VertexIndex::PersonUsername, range)
+    }
+}
+impl graph_api_lib::Index for VertexIndex {
+    fn variants() -> &'static [VertexIndex] {
+        static VARIANTS: [VertexIndex; 5usize] = [
+            VertexIndex::PersonName,
+            VertexIndex::PersonAge,
+            VertexIndex::PersonUniqueId,
+            VertexIndex::PersonUsername,
+            VertexIndex::PersonBiography,
+        ];
+        &VARIANTS
+    }
+    fn ty(&self) -> core::any::TypeId {
+        match self {
+            VertexIndex::PersonName => core::any::TypeId::of::<String>(),
+            VertexIndex::PersonAge => core::any::TypeId::of::<u64>(),
+            VertexIndex::PersonUniqueId => core::any::TypeId::of::<Uuid>(),
+            VertexIndex::PersonUsername => core::any::TypeId::of::<String>(),
+            VertexIndex::PersonBiography => core::any::TypeId::of::<String>(),
+        }
+    }
+    fn ordinal(&self) -> usize {
+        match self {
+            VertexIndex::PersonName => 0usize,
+            VertexIndex::PersonAge => 1usize,
+            VertexIndex::PersonUniqueId => 2usize,
+            VertexIndex::PersonUsername => 3usize,
+            VertexIndex::PersonBiography => 4usize,
+        }
+    }
+    fn full_text(&self) -> bool {
+        match self {
+            VertexIndex::PersonName => false,
+            VertexIndex::PersonAge => false,
+            VertexIndex::PersonUniqueId => false,
+            VertexIndex::PersonUsername => false,
+            VertexIndex::PersonBiography => true,
+        }
+    }
+    fn ordered(&self) -> bool {
+        match self {
+            VertexIndex::PersonName => false,
+            VertexIndex::PersonAge => true,
+            VertexIndex::PersonUniqueId => false,
+            VertexIndex::PersonUsername => true,
+            VertexIndex::PersonBiography => false,
+        }
+    }
+}
+impl graph_api_lib::Element for Vertex {
+    type Label = VertexLabel;
+    type Index = VertexIndex;
+    fn label(&self) -> Self::Label {
+        match self {
+            Vertex::Person { .. } => VertexLabel::Person,
+            Vertex::Project(_) => VertexLabel::Project,
+            Vertex::Rust => VertexLabel::Rust,
+        }
+    }
+    fn value(&self, index: &Self::Index) -> Option<graph_api_lib::Value> {
+        match (self, index) {
+            (Vertex::Person { name, .. }, VertexIndex::PersonName) => Some((name).into()),
+            (Vertex::Person { age, .. }, VertexIndex::PersonAge) => Some((age).into()),
+            (Vertex::Person { unique_id, .. }, VertexIndex::PersonUniqueId) => {
+                Some((unique_id).into())
+            }
+            (Vertex::Person { username, .. }, VertexIndex::PersonUsername) => {
+                Some((username).into())
+            }
+            (Vertex::Person { biography, .. }, VertexIndex::PersonBiography) => {
+                Some((biography).into())
+            }
+            (_, _) => None,
+        }
+    }
+    fn indexes() -> &'static [Self::Index] {
+        static INDEXES: [VertexIndex; 5usize] = [
+            VertexIndex::PersonName,
+            VertexIndex::PersonAge,
+            VertexIndex::PersonUniqueId,
+            VertexIndex::PersonUsername,
+            VertexIndex::PersonBiography,
+        ];
+        &INDEXES
+    }
+}
+pub struct Person<'reference, Element> {
+    _phantom: std::marker::PhantomData<Element>,
+    name: &'reference String,
+    age: &'reference u64,
+    unique_id: &'reference Uuid,
+    username: &'reference String,
+    biography: &'reference String,
+}
+impl<'reference, Element> Person<'reference, Element> {
+    pub fn name(&'reference self) -> &'reference str {
+        self.name
+    }
+    pub fn age(&'reference self) -> u64 {
+        *self.age
+    }
+    pub fn unique_id(&'reference self) -> Uuid {
+        *self.unique_id
+    }
+    pub fn username(&'reference self) -> &'reference str {
+        self.username
+    }
+    pub fn biography(&'reference self) -> &'reference str {
+        self.biography
+    }
+}
+pub struct PersonMut<'reference, Element, MutationListener>
+where
+    Element: graph_api_lib::Element,
+    MutationListener: graph_api_lib::MutationListener<'reference, Element>,
+{
+    _phantom: std::marker::PhantomData<Element>,
+    __listener: MutationListener,
+    name: &'reference mut String,
+    age: &'reference mut u64,
+    unique_id: &'reference mut Uuid,
+    username: &'reference mut String,
+    biography: &'reference mut String,
+}
+impl<
+    'reference,
+    Element,
+    MutationListener,
+> PersonMut<'reference, Element, MutationListener>
+where
+    Element: graph_api_lib::Element<Index = VertexIndex>,
+    MutationListener: graph_api_lib::MutationListener<'reference, Element>,
+{
+    pub fn name(&'reference self) -> &'reference str {
+        self.name
+    }
+    pub fn age(&'reference self) -> u64 {
+        *self.age
+    }
+    pub fn unique_id(&'reference self) -> Uuid {
+        *self.unique_id
+    }
+    pub fn username(&'reference self) -> &'reference str {
+        self.username
+    }
+    pub fn biography(&'reference self) -> &'reference str {
+        self.biography
+    }
+    pub fn set_name(&mut self, value: String) {
+        self.__listener
+            .update(VertexIndex::PersonName, (&*self.name).into(), (&value).into());
+        *self.name = value;
+    }
+    pub fn set_age(&mut self, value: u64) {
+        self.__listener
+            .update(VertexIndex::PersonAge, (&*self.age).into(), (&value).into());
+        *self.age = value;
+    }
+    pub fn set_unique_id(&mut self, value: Uuid) {
+        self.__listener
+            .update(
+                VertexIndex::PersonUniqueId,
+                (&*self.unique_id).into(),
+                (&value).into(),
+            );
+        *self.unique_id = value;
+    }
+    pub fn set_username(&mut self, value: String) {
+        self.__listener
+            .update(
+                VertexIndex::PersonUsername,
+                (&*self.username).into(),
+                (&value).into(),
+            );
+        *self.username = value;
+    }
+    pub fn set_biography(&mut self, value: String) {
+        self.__listener
+            .update(
+                VertexIndex::PersonBiography,
+                (&*self.biography).into(),
+                (&value).into(),
+            );
+        *self.biography = value;
+    }
+}
+impl<'reference> graph_api_lib::Project<'reference, Vertex>
+for Person<'reference, Vertex> {
+    fn project(weight: &'reference Vertex) -> Option<Self> {
+        if let Vertex::Person { name, age, unique_id, username, biography } = weight {
+            Some(Person {
+                _phantom: std::default::Default::default(),
+                name,
+                age,
+                unique_id,
+                username,
+                biography,
+            })
+        } else {
+            None
+        }
+    }
+}
+impl<
+    'reference,
+    MutationListener,
+> graph_api_lib::ProjectMut<'reference, Vertex, MutationListener>
+for PersonMut<'reference, Vertex, MutationListener>
+where
+    MutationListener: graph_api_lib::MutationListener<'reference, Vertex>,
+{
+    fn project_mut(
+        weight: &'reference mut Vertex,
+        mutation_listener: MutationListener,
+    ) -> Option<Self> {
+        if let Vertex::Person { name, age, unique_id, username, biography } = weight {
+            Some(PersonMut {
+                _phantom: std::default::Default::default(),
+                __listener: mutation_listener,
+                name,
+                age,
+                unique_id,
+                username,
+                biography,
+            })
+        } else {
+            None
+        }
+    }
+}
+pub trait VertexExt<'graph, Mutability, Graph, Walker>
+where
+    Walker: graph_api_lib::VertexWalker<'graph, Graph = Graph>,
+    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+{
+    fn all_person(
+        self,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    >;
+    fn filter_by_person<F: Fn(Person<Graph::Vertex>) -> bool>(
+        self,
+        filter: F,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    >;
+    fn all_project(
+        self,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    >;
+    fn filter_by_project<F: Fn(&Project) -> bool>(
+        self,
+        filter: F,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    >;
+    fn all_rust(
+        self,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    >;
+}
+impl<'graph, Mutability, Graph, Walker> VertexExt<'graph, Mutability, Graph, Walker>
+for graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
+where
+    Walker: graph_api_lib::VertexWalker<'graph, Graph = Graph>,
+    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+{
+    fn all_person(
+        self,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    > {
+        self.filter(|f| match graph_api_lib::VertexReference::weight(f) {
+            Vertex::Person { .. } => true,
+            _ => false,
+        })
+    }
+    fn filter_by_person<F: Fn(Person<Graph::Vertex>) -> bool>(
+        self,
+        filter: F,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    > {
+        self.filter(move |f| {
+            if let Some(projection) = graph_api_lib::VertexReference::project(f) {
+                (filter)(projection)
+            } else {
+                false
+            }
+        })
+    }
+    fn all_project(
+        self,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    > {
+        self.filter(|f| match graph_api_lib::VertexReference::weight(f) {
+            Vertex::Project { .. } => true,
+            _ => false,
+        })
+    }
+    fn filter_by_project<F: Fn(&Project) -> bool>(
+        self,
+        filter: F,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    > {
+        self.filter(move |f| match graph_api_lib::VertexReference::weight(f) {
+            Vertex::Project(param0) => (filter)(param0),
+            _ => false,
+        })
+    }
+    fn all_rust(
+        self,
+    ) -> graph_api_lib::VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        impl graph_api_lib::VertexWalker<
+            'graph,
+            Graph = Graph,
+            Context = Walker::Context,
+        >,
+    > {
+        self.filter(|f| match graph_api_lib::VertexReference::weight(f) {
+            Vertex::Rust { .. } => true,
+            _ => false,
+        })
+    }
+}

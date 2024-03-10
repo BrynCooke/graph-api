@@ -1,0 +1,18 @@
+[package]
+name = "graph-api-simplegraph"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+graph-api-lib = { path = "../graph-api-lib" }
+paste = "1.0.15"
+fastbloom = "0.8.0"
+rphonetic = "3.0.1"
+smallbox = "0.8.6"
+uuid = { version = "1.11.0", features = ["v4"] }
+
+[dev-dependencies]
+graph-api-test = { path = "../graph-api-test", features = ["vertex-index", "vertex-label-index", "vertex-full-text-index", "vertex-ordered-index", "edge-label-index"] }
+graph-api-derive = { path = "../graph-api-derive" }

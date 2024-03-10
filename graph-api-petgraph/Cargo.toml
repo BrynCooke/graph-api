@@ -1,0 +1,13 @@
+[package]
+name = "graph-api-petgraph"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+graph-api-lib = { path = "../graph-api-lib", features = ["petgraph"] }
+
+petgraph = "0.6.4"
+[dev-dependencies]
+graph-api-test = { path = "../graph-api-test" }
