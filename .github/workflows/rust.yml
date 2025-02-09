@@ -19,7 +19,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build
         run: cargo build
-      - name: Run tests
-        run: cargo nextest run
+      - name: Run tests graph-api-derive
+        run: cargo nextest run -p graph-api-derive
+      - name: Run tests graph-api-simplegraph
+        run: cargo nextest run -p graph-api-simplegraph
+      - name: Run tests graph-api-petgraph
+        run: cargo nextest run -p graph-api-petgraph
       - name: Clippy
         run: cargo clippy -- -D warnings
