@@ -33,6 +33,12 @@ Model {
             ),
             variant_type: Unit,
             fields: [],
+            element_type: Ident(
+                Vertex,
+            ),
+            search_ident: Ident(
+                VertexSearch,
+            ),
         },
         Variant {
             visibility: Visibility::Inherited,
@@ -53,6 +59,12 @@ Model {
             ),
             variant_type: Unnamed,
             fields: [],
+            element_type: Ident(
+                Vertex,
+            ),
+            search_ident: Ident(
+                VertexSearch,
+            ),
         },
         Variant {
             visibility: Visibility::Inherited,
@@ -125,7 +137,6 @@ Model {
                         NamedParam1,
                     ),
                     indexed: false,
-                    unique: false,
                     ordered: false,
                     full_text: false,
                 },
@@ -181,11 +192,16 @@ Model {
                         NamedParam2,
                     ),
                     indexed: false,
-                    unique: false,
                     ordered: false,
                     full_text: false,
                 },
             ],
+            element_type: Ident(
+                Vertex,
+            ),
+            search_ident: Ident(
+                VertexSearch,
+            ),
         },
     ],
     extension_trait: ExtensionTrait {
