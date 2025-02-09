@@ -28,7 +28,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexLabelSearch = graph_api_lib::Supported,
+            SupportsVertexLabelIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {
@@ -39,7 +39,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexLabelSearch = graph_api_lib::Supported,
+            SupportsVertexLabelIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {
@@ -50,7 +50,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexLabelSearch = graph_api_lib::Supported,
+            SupportsVertexLabelIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {
@@ -63,7 +63,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexIndexSearch = graph_api_lib::Supported,
+            SupportsVertexIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {
@@ -78,7 +78,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexIndexSearch = graph_api_lib::Supported,
+            SupportsVertexIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {
@@ -93,7 +93,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexIndexSearch = graph_api_lib::Supported,
+            SupportsVertexIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {
@@ -108,7 +108,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexIndexSearch = graph_api_lib::Supported,
+            SupportsVertexIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {
@@ -123,7 +123,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexIndexFullTextSearch = graph_api_lib::Supported,
+            SupportsVertexFullTextIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {
@@ -138,7 +138,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexIndexRangeSearch = graph_api_lib::Supported,
+            SupportsVertexOrderedIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {
@@ -153,7 +153,7 @@ impl VertexIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexIndexRangeSearch = graph_api_lib::Supported,
+            SupportsVertexOrderedIndex = graph_api_lib::Supported,
         >,
         Vertex: graph_api_lib::Element<Index = Self>,
     {

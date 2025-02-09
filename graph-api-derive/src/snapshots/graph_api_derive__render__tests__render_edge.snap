@@ -22,7 +22,7 @@ impl EdgeIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsEdgeLabelSearch = graph_api_lib::Supported,
+            SupportsEdgeLabelIndex = graph_api_lib::Supported,
         >,
         Edge: graph_api_lib::Element<Index = Self>,
     {
@@ -33,7 +33,7 @@ impl EdgeIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsEdgeLabelSearch = graph_api_lib::Supported,
+            SupportsEdgeLabelIndex = graph_api_lib::Supported,
         >,
         Edge: graph_api_lib::Element<Index = Self>,
     {
@@ -44,7 +44,7 @@ impl EdgeIndex {
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsEdgeLabelSearch = graph_api_lib::Supported,
+            SupportsEdgeLabelIndex = graph_api_lib::Supported,
         >,
         Edge: graph_api_lib::Element<Index = Self>,
     {
