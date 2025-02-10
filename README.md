@@ -59,12 +59,38 @@ fn main() {
     let graph = SimpleGraph::new();
 
     // Populate the graph
-    let person = graph.add_vertex(Vertex::Person { name: "Bryn".to_string(), age: 30 });
+    let person = graph.add_vertex(Vertex::Person {
+        name: "Bryn".to_string(),
+        age: 45,
+        unique_id: Uuid::from_u128(1),
+        username: "bryn".to_string(),
+        biography: "Did some graph stuff".to_string(),
+    });
     let project = graph.add_vertex(Vertex::Project { name: "Graph API".to_string() });
     graph.add_edge(person, project, Edge::Created);
 
     // Traverse the graph
-    graph.walk().vertices()
+    let all_vertices = graph.walk().vertices().collect::<Vec<_>>();
+
+    // A more complicated traversal
+    // For up to two people that Bryn knows find all the people that they know and add their ages to 
+    // Bryn's age and collect them into a list.
+    let complex = graph
+        .walk()
+        .vertices(VertexIndex::person_by_name("Bryn")) // Start at people named Bryn
+        .filter_by_person(|v| v.username().ends_with("e")) // Filter by username ending with e
+        .push_context(|v, ctx| v.project::<Person<_>>().unwrap().age()) // Stash the age in the context
+        .out_edges(EdgeIndex::knows()) // Traverse to knows
+        .limit(2) // Limit the traversal to two elements
+        .head() // Traverse to the head of the edge (the known person) 
+        .detour(|v| { // Find the people that this person knows and collect their ages
+            v.out_edges(EdgeIndex::knows())
+                .head()
+                .push_context(|v, ctx| v.project::<Person<_>>().unwrap().age())
+        })
+        .into_iter()
+        .map(|(v, ctx)| ctx.parent().deref() + ctx.deref()) // Add the ages of 
+        .collect();
 }
 ```
 
