@@ -11,7 +11,7 @@ Issue resolution can happen in one of two ways:
 
 1. You provide a contribution using the guidelines below.
 2. I [Bryn Cooke](https://github.com/bryncooke) fix the issue in my own time at a moment that is convenient to me. I
-   generally don't work for free so if the issue is a bug will probably get fixed, but feature requests will almost
+   generally don't work for free so if the issue is a bug it may get fixed, but feature requests will almost
    certainly not happen without contribution or compensation.
 
 ## Requirements for Code Contributions
@@ -30,14 +30,14 @@ All contributions **must** include:
 - Write clear, documented code
 - Updated docs where needed
 - Ensure your code compiles without warnings
-- Run `cargo fmt` and `cargo clippy` before submitting
+- Linting must pass in the CI pipeline
 
 ### 3. Pull Request Process
 
 1. Fork the repository
 2. Create a new branch for your feature/fix
 3. Write your code and tests
-4. Ensure all tests pass locally (`cargo test`)
+4. Ensure all tests pass locally (`just test`)
 5. Submit a Pull Request with:
     - Clear description of changes
     - Reference to any related issues
@@ -53,8 +53,10 @@ All contributions **must** include:
 ## Getting Started
 
 1. Clone the repository
-2. Install development dependencies
-3. Run `cargo test` to ensure everything works
+2. Install development dependencies:
+    1. `cargo install just`
+    2. `cargo install cargo-nextest`
+3. Run `just test` to ensure everything works
 4. Create your branch and start coding
 
 ## Questions?
