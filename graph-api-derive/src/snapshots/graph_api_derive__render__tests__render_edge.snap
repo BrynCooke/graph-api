@@ -88,64 +88,70 @@ impl graph_api_lib::Element for Edge {
         }
     }
 }
-pub struct Knows<'reference, Element> {
-    _phantom: std::marker::PhantomData<Element>,
-    since: &'reference i32,
-}
-impl<'reference, Element> Knows<'reference, Element> {
-    pub fn since(&'reference self) -> i32 {
-        *self.since
+pub use __edge_projection::Knows;
+pub use __edge_projection::KnowsMut;
+mod __edge_projection {
+    use super::*;
+    pub struct Knows<'reference, Element> {
+        _phantom: std::marker::PhantomData<Element>,
+        since: &'reference i32,
     }
-}
-pub struct KnowsMut<'reference, Element, MutationListener> {
-    _phantom: std::marker::PhantomData<Element>,
-    __listener: MutationListener,
-    since: &'reference mut i32,
-}
-impl<
-    'reference,
-    Element,
-    MutationListener,
-> KnowsMut<'reference, Element, MutationListener> {
-    pub fn since(&'reference self) -> i32 {
-        *self.since
-    }
-    pub fn set_since(&mut self, value: i32) {
-        *self.since = value;
-    }
-}
-impl<'reference> graph_api_lib::Project<'reference, Edge> for Knows<'reference, Edge> {
-    fn project(weight: &'reference Edge) -> Option<Self> {
-        if let Edge::Knows { since } = weight {
-            Some(Knows {
-                _phantom: std::default::Default::default(),
-                since,
-            })
-        } else {
-            None
+    impl<'reference, Element> Knows<'reference, Element> {
+        pub fn since(&'reference self) -> i32 {
+            *self.since
         }
     }
-}
-impl<
-    'reference,
-    MutationListener,
-> graph_api_lib::ProjectMut<'reference, Edge, MutationListener>
-for KnowsMut<'reference, Edge, MutationListener>
-where
-    MutationListener: graph_api_lib::MutationListener<'reference, Edge>,
-{
-    fn project_mut(
-        weight: &'reference mut Edge,
-        mutation_listener: MutationListener,
-    ) -> Option<Self> {
-        if let Edge::Knows { since } = weight {
-            Some(KnowsMut {
-                _phantom: std::default::Default::default(),
-                __listener: mutation_listener,
-                since,
-            })
-        } else {
-            None
+    pub struct KnowsMut<'reference, Element, MutationListener> {
+        _phantom: std::marker::PhantomData<Element>,
+        __listener: MutationListener,
+        since: &'reference mut i32,
+    }
+    impl<
+        'reference,
+        Element,
+        MutationListener,
+    > KnowsMut<'reference, Element, MutationListener> {
+        pub fn since(&'reference self) -> i32 {
+            *self.since
+        }
+        pub fn set_since(&mut self, value: i32) {
+            *self.since = value;
+        }
+    }
+    impl<'reference> graph_api_lib::Project<'reference, Edge>
+    for Knows<'reference, Edge> {
+        fn project(weight: &'reference Edge) -> Option<Self> {
+            if let Edge::Knows { since } = weight {
+                Some(Knows {
+                    _phantom: std::default::Default::default(),
+                    since,
+                })
+            } else {
+                None
+            }
+        }
+    }
+    impl<
+        'reference,
+        MutationListener,
+    > graph_api_lib::ProjectMut<'reference, Edge, MutationListener>
+    for KnowsMut<'reference, Edge, MutationListener>
+    where
+        MutationListener: graph_api_lib::MutationListener<'reference, Edge>,
+    {
+        fn project_mut(
+            weight: &'reference mut Edge,
+            mutation_listener: MutationListener,
+        ) -> Option<Self> {
+            if let Edge::Knows { since } = weight {
+                Some(KnowsMut {
+                    _phantom: std::default::Default::default(),
+                    __listener: mutation_listener,
+                    since,
+                })
+            } else {
+                None
+            }
         }
     }
 }

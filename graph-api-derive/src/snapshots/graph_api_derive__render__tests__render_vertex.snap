@@ -251,147 +251,152 @@ impl graph_api_lib::Element for Vertex {
         }
     }
 }
-pub struct Person<'reference, Element> {
-    _phantom: std::marker::PhantomData<Element>,
-    name: &'reference String,
-    age: &'reference u64,
-    unique_id: &'reference Uuid,
-    username: &'reference String,
-    biography: &'reference String,
-}
-impl<'reference, Element> Person<'reference, Element> {
-    pub fn name(&'reference self) -> &'reference str {
-        self.name
+pub use __vertex_projection::Person;
+pub use __vertex_projection::PersonMut;
+mod __vertex_projection {
+    use super::*;
+    pub struct Person<'reference, Element> {
+        _phantom: std::marker::PhantomData<Element>,
+        name: &'reference String,
+        age: &'reference u64,
+        unique_id: &'reference Uuid,
+        username: &'reference String,
+        biography: &'reference String,
     }
-    pub fn age(&'reference self) -> u64 {
-        *self.age
-    }
-    pub fn unique_id(&'reference self) -> Uuid {
-        *self.unique_id
-    }
-    pub fn username(&'reference self) -> &'reference str {
-        self.username
-    }
-    pub fn biography(&'reference self) -> &'reference str {
-        self.biography
-    }
-}
-pub struct PersonMut<'reference, Element, MutationListener>
-where
-    Element: graph_api_lib::Element,
-    MutationListener: graph_api_lib::MutationListener<'reference, Element>,
-{
-    _phantom: std::marker::PhantomData<Element>,
-    __listener: MutationListener,
-    name: &'reference mut String,
-    age: &'reference mut u64,
-    unique_id: &'reference mut Uuid,
-    username: &'reference mut String,
-    biography: &'reference mut String,
-}
-impl<
-    'reference,
-    Element,
-    MutationListener,
-> PersonMut<'reference, Element, MutationListener>
-where
-    Element: graph_api_lib::Element<Index = VertexIndex>,
-    MutationListener: graph_api_lib::MutationListener<'reference, Element>,
-{
-    pub fn name(&'reference self) -> &'reference str {
-        self.name
-    }
-    pub fn age(&'reference self) -> u64 {
-        *self.age
-    }
-    pub fn unique_id(&'reference self) -> Uuid {
-        *self.unique_id
-    }
-    pub fn username(&'reference self) -> &'reference str {
-        self.username
-    }
-    pub fn biography(&'reference self) -> &'reference str {
-        self.biography
-    }
-    pub fn set_name(&mut self, value: String) {
-        self.__listener
-            .update(VertexIndex::PersonName, (&*self.name).into(), (&value).into());
-        *self.name = value;
-    }
-    pub fn set_age(&mut self, value: u64) {
-        self.__listener
-            .update(VertexIndex::PersonAge, (&*self.age).into(), (&value).into());
-        *self.age = value;
-    }
-    pub fn set_unique_id(&mut self, value: Uuid) {
-        self.__listener
-            .update(
-                VertexIndex::PersonUniqueId,
-                (&*self.unique_id).into(),
-                (&value).into(),
-            );
-        *self.unique_id = value;
-    }
-    pub fn set_username(&mut self, value: String) {
-        self.__listener
-            .update(
-                VertexIndex::PersonUsername,
-                (&*self.username).into(),
-                (&value).into(),
-            );
-        *self.username = value;
-    }
-    pub fn set_biography(&mut self, value: String) {
-        self.__listener
-            .update(
-                VertexIndex::PersonBiography,
-                (&*self.biography).into(),
-                (&value).into(),
-            );
-        *self.biography = value;
-    }
-}
-impl<'reference> graph_api_lib::Project<'reference, Vertex>
-for Person<'reference, Vertex> {
-    fn project(weight: &'reference Vertex) -> Option<Self> {
-        if let Vertex::Person { name, age, unique_id, username, biography } = weight {
-            Some(Person {
-                _phantom: std::default::Default::default(),
-                name,
-                age,
-                unique_id,
-                username,
-                biography,
-            })
-        } else {
-            None
+    impl<'reference, Element> Person<'reference, Element> {
+        pub fn name(&'reference self) -> &'reference str {
+            self.name
+        }
+        pub fn age(&'reference self) -> u64 {
+            *self.age
+        }
+        pub fn unique_id(&'reference self) -> Uuid {
+            *self.unique_id
+        }
+        pub fn username(&'reference self) -> &'reference str {
+            self.username
+        }
+        pub fn biography(&'reference self) -> &'reference str {
+            self.biography
         }
     }
-}
-impl<
-    'reference,
-    MutationListener,
-> graph_api_lib::ProjectMut<'reference, Vertex, MutationListener>
-for PersonMut<'reference, Vertex, MutationListener>
-where
-    MutationListener: graph_api_lib::MutationListener<'reference, Vertex>,
-{
-    fn project_mut(
-        weight: &'reference mut Vertex,
-        mutation_listener: MutationListener,
-    ) -> Option<Self> {
-        if let Vertex::Person { name, age, unique_id, username, biography } = weight {
-            Some(PersonMut {
-                _phantom: std::default::Default::default(),
-                __listener: mutation_listener,
-                name,
-                age,
-                unique_id,
-                username,
-                biography,
-            })
-        } else {
-            None
+    pub struct PersonMut<'reference, Element, MutationListener>
+    where
+        Element: graph_api_lib::Element,
+        MutationListener: graph_api_lib::MutationListener<'reference, Element>,
+    {
+        _phantom: std::marker::PhantomData<Element>,
+        __listener: MutationListener,
+        name: &'reference mut String,
+        age: &'reference mut u64,
+        unique_id: &'reference mut Uuid,
+        username: &'reference mut String,
+        biography: &'reference mut String,
+    }
+    impl<
+        'reference,
+        Element,
+        MutationListener,
+    > PersonMut<'reference, Element, MutationListener>
+    where
+        Element: graph_api_lib::Element<Index = VertexIndex>,
+        MutationListener: graph_api_lib::MutationListener<'reference, Element>,
+    {
+        pub fn name(&'reference self) -> &'reference str {
+            self.name
+        }
+        pub fn age(&'reference self) -> u64 {
+            *self.age
+        }
+        pub fn unique_id(&'reference self) -> Uuid {
+            *self.unique_id
+        }
+        pub fn username(&'reference self) -> &'reference str {
+            self.username
+        }
+        pub fn biography(&'reference self) -> &'reference str {
+            self.biography
+        }
+        pub fn set_name(&mut self, value: String) {
+            self.__listener
+                .update(VertexIndex::PersonName, (&*self.name).into(), (&value).into());
+            *self.name = value;
+        }
+        pub fn set_age(&mut self, value: u64) {
+            self.__listener
+                .update(VertexIndex::PersonAge, (&*self.age).into(), (&value).into());
+            *self.age = value;
+        }
+        pub fn set_unique_id(&mut self, value: Uuid) {
+            self.__listener
+                .update(
+                    VertexIndex::PersonUniqueId,
+                    (&*self.unique_id).into(),
+                    (&value).into(),
+                );
+            *self.unique_id = value;
+        }
+        pub fn set_username(&mut self, value: String) {
+            self.__listener
+                .update(
+                    VertexIndex::PersonUsername,
+                    (&*self.username).into(),
+                    (&value).into(),
+                );
+            *self.username = value;
+        }
+        pub fn set_biography(&mut self, value: String) {
+            self.__listener
+                .update(
+                    VertexIndex::PersonBiography,
+                    (&*self.biography).into(),
+                    (&value).into(),
+                );
+            *self.biography = value;
+        }
+    }
+    impl<'reference> graph_api_lib::Project<'reference, Vertex>
+    for Person<'reference, Vertex> {
+        fn project(weight: &'reference Vertex) -> Option<Self> {
+            if let Vertex::Person { name, age, unique_id, username, biography } = weight {
+                Some(Person {
+                    _phantom: std::default::Default::default(),
+                    name,
+                    age,
+                    unique_id,
+                    username,
+                    biography,
+                })
+            } else {
+                None
+            }
+        }
+    }
+    impl<
+        'reference,
+        MutationListener,
+    > graph_api_lib::ProjectMut<'reference, Vertex, MutationListener>
+    for PersonMut<'reference, Vertex, MutationListener>
+    where
+        MutationListener: graph_api_lib::MutationListener<'reference, Vertex>,
+    {
+        fn project_mut(
+            weight: &'reference mut Vertex,
+            mutation_listener: MutationListener,
+        ) -> Option<Self> {
+            if let Vertex::Person { name, age, unique_id, username, biography } = weight {
+                Some(PersonMut {
+                    _phantom: std::default::Default::default(),
+                    __listener: mutation_listener,
+                    name,
+                    age,
+                    unique_id,
+                    username,
+                    biography,
+                })
+            } else {
+                None
+            }
         }
     }
 }

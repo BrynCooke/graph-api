@@ -842,58 +842,64 @@ impl Variant {
         let struct_mut_fields = self.fields.iter().map(Field::mut_field);
         let fields_getters = self.fields.iter().map(Field::getter).collect::<Vec<_>>();
         let fields_setters = self.fields.iter().map(Field::setter);
+
         quote! {
-            #vis struct #ident<'reference, Element> {
-                _phantom: std::marker::PhantomData<Element>,
-                #(#struct_fields),*
-            }
+            #vis use __vertex_projection::#ident;
+            #vis use __vertex_projection::#mut_ident;
+            mod __vertex_projection {
+                use super::*;
+                #vis struct #ident<'reference, Element> {
+                    _phantom: std::marker::PhantomData<Element>,
+                    #(#struct_fields),*
+                }
 
-            impl <'reference, Element> #ident<'reference, Element> {
-                #(#fields_getters)*
-            }
+                impl <'reference, Element> #ident<'reference, Element> {
+                    #(#fields_getters)*
+                }
 
-            #vis struct #mut_ident<'reference, Element, MutationListener> where
-                Element: graph_api_lib::Element,
-                MutationListener: graph_api_lib::MutationListener<'reference, Element>
-            {
-                _phantom: std::marker::PhantomData<Element>,
-                __listener: MutationListener,
-                #(#struct_mut_fields),*
-            }
+                #vis struct #mut_ident<'reference, Element, MutationListener> where
+                    Element: graph_api_lib::Element,
+                    MutationListener: graph_api_lib::MutationListener<'reference, Element>
+                {
+                    _phantom: std::marker::PhantomData<Element>,
+                    __listener: MutationListener,
+                    #(#struct_mut_fields),*
+                }
 
-            impl <'reference, Element, MutationListener> #mut_ident<'reference, Element, MutationListener>
-            where
-                Element: graph_api_lib::Element<Index = VertexIndex>,
-                MutationListener: graph_api_lib::MutationListener<'reference, Element>,
-            {
-                #(#fields_getters)*
-                #(#fields_setters)*
-            }
+                impl <'reference, Element, MutationListener> #mut_ident<'reference, Element, MutationListener>
+                where
+                    Element: graph_api_lib::Element<Index = VertexIndex>,
+                    MutationListener: graph_api_lib::MutationListener<'reference, Element>,
+                {
+                    #(#fields_getters)*
+                    #(#fields_setters)*
+                }
 
-            impl<'reference> graph_api_lib::Project<'reference, #element_ident>
-                for #ident<'reference, #element_ident>
-            {
-                fn project(weight: &'reference #element_ident) -> Option<Self> {
-                    if let #element_ident::#variant_ident { #(#fields),* } = weight {
-                        Some(#ident { _phantom: std::default::Default::default(), #(#fields),* })
-                    }
-                    else {
-                        None
+                impl<'reference> graph_api_lib::Project<'reference, #element_ident>
+                    for #ident<'reference, #element_ident>
+                {
+                    fn project(weight: &'reference #element_ident) -> Option<Self> {
+                        if let #element_ident::#variant_ident { #(#fields),* } = weight {
+                            Some(#ident { _phantom: std::default::Default::default(), #(#fields),* })
+                        }
+                        else {
+                            None
+                        }
                     }
                 }
-            }
 
-            impl<'reference, MutationListener> graph_api_lib::ProjectMut<'reference, #element_ident, MutationListener>
-                for #mut_ident<'reference, #element_ident, MutationListener>
-            where
-                MutationListener: graph_api_lib::MutationListener<'reference, #element_ident>,
-            {
-                fn project_mut(weight: &'reference mut #element_ident, mutation_listener: MutationListener) -> Option<Self> {
-                    if let #element_ident::#variant_ident { #(#fields),* } = weight {
-                        Some(#mut_ident { _phantom: std::default::Default::default(), __listener: mutation_listener,  #(#fields),* })
-                    }
-                    else {
-                        None
+                impl<'reference, MutationListener> graph_api_lib::ProjectMut<'reference, #element_ident, MutationListener>
+                    for #mut_ident<'reference, #element_ident, MutationListener>
+                where
+                    MutationListener: graph_api_lib::MutationListener<'reference, #element_ident>,
+                {
+                    fn project_mut(weight: &'reference mut #element_ident, mutation_listener: MutationListener) -> Option<Self> {
+                        if let #element_ident::#variant_ident { #(#fields),* } = weight {
+                            Some(#mut_ident { _phantom: std::default::Default::default(), __listener: mutation_listener,  #(#fields),* })
+                        }
+                        else {
+                            None
+                        }
                     }
                 }
             }
@@ -912,52 +918,56 @@ impl Variant {
         let fields_getters = self.fields.iter().map(Field::getter).collect::<Vec<_>>();
         let fields_setters = self.fields.iter().map(Field::setter);
         quote! {
+            #vis use __edge_projection::#ident;
+            #vis use __edge_projection::#mut_ident;
+            mod __edge_projection {
+                use super::*;
+                #vis struct #ident<'reference, Element> {
+                    _phantom: std::marker::PhantomData<Element>,
+                    #(#struct_fields),*
+                }
 
-            #vis struct #ident<'reference, Element> {
-                _phantom: std::marker::PhantomData<Element>,
-                #(#struct_fields),*
-            }
+                impl <'reference, Element> #ident<'reference, Element> {
+                    #(#fields_getters)*
+                }
 
-            impl <'reference, Element> #ident<'reference, Element> {
-                #(#fields_getters)*
-            }
+                #vis struct #mut_ident<'reference, Element, MutationListener> {
+                    _phantom: std::marker::PhantomData<Element>,
+                    __listener: MutationListener,
+                    #(#struct_mut_fields),*
+                }
 
-            #vis struct #mut_ident<'reference, Element, MutationListener> {
-                _phantom: std::marker::PhantomData<Element>,
-                __listener: MutationListener,
-                #(#struct_mut_fields),*
-            }
+                impl <'reference, Element, MutationListener> #mut_ident<'reference, Element, MutationListener>
+                {
+                    #(#fields_getters)*
+                    #(#fields_setters)*
+                }
 
-            impl <'reference, Element, MutationListener> #mut_ident<'reference, Element, MutationListener>
-            {
-                #(#fields_getters)*
-                #(#fields_setters)*
-            }
-
-            impl<'reference> graph_api_lib::Project<'reference, #element_ident>
-                for #ident<'reference, #element_ident>
-            {
-                fn project(weight: &'reference #element_ident) -> Option<Self> {
-                    if let #element_ident::#variant_ident { #(#fields),* } = weight {
-                        Some(#ident { _phantom: std::default::Default::default(), #(#fields),* })
-                    }
-                    else {
-                        None
+                impl<'reference> graph_api_lib::Project<'reference, #element_ident>
+                    for #ident<'reference, #element_ident>
+                {
+                    fn project(weight: &'reference #element_ident) -> Option<Self> {
+                        if let #element_ident::#variant_ident { #(#fields),* } = weight {
+                            Some(#ident { _phantom: std::default::Default::default(), #(#fields),* })
+                        }
+                        else {
+                            None
+                        }
                     }
                 }
-            }
 
-            impl<'reference, MutationListener> graph_api_lib::ProjectMut<'reference, #element_ident, MutationListener>
-                for #mut_ident<'reference, #element_ident, MutationListener>
-            where
-                MutationListener: graph_api_lib::MutationListener<'reference, #element_ident>,
-            {
-                fn project_mut(weight: &'reference mut #element_ident, mutation_listener: MutationListener) -> Option<Self> {
-                    if let #element_ident::#variant_ident { #(#fields),* } = weight {
-                        Some(#mut_ident { _phantom: std::default::Default::default(), __listener: mutation_listener, #(#fields),* })
-                    }
-                    else {
-                        None
+                impl<'reference, MutationListener> graph_api_lib::ProjectMut<'reference, #element_ident, MutationListener>
+                    for #mut_ident<'reference, #element_ident, MutationListener>
+                where
+                    MutationListener: graph_api_lib::MutationListener<'reference, #element_ident>,
+                {
+                    fn project_mut(weight: &'reference mut #element_ident, mutation_listener: MutationListener) -> Option<Self> {
+                        if let #element_ident::#variant_ident { #(#fields),* } = weight {
+                            Some(#mut_ident { _phantom: std::default::Default::default(), __listener: mutation_listener, #(#fields),* })
+                        }
+                        else {
+                            None
+                        }
                     }
                 }
             }
