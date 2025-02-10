@@ -236,16 +236,6 @@ impl graph_api_lib::Element for Vertex {
             (_, _) => None,
         }
     }
-    fn indexes() -> &'static [Self::Index] {
-        static INDEXES: [VertexIndex; 5usize] = [
-            VertexIndex::PersonName,
-            VertexIndex::PersonAge,
-            VertexIndex::PersonUniqueId,
-            VertexIndex::PersonUsername,
-            VertexIndex::PersonBiography,
-        ];
-        &INDEXES
-    }
 }
 pub struct Person<'reference, Element> {
     _phantom: std::marker::PhantomData<Element>,

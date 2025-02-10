@@ -131,7 +131,7 @@ where
             .get(vertex_id as usize)
             .expect("we just inserted the vertex, qed");
         let weight = &storage.weight;
-        for index in Vertex::indexes() {
+        for index in Vertex::Index::variants() {
             if let Some(value) = weight.value(index) {
                 let index_storage = &mut indexes[index.ordinal()];
                 index_storage.insert(value, vertex_id, index);
@@ -154,7 +154,7 @@ where
         // Get the vertex before removing it so we can clean up indexes
         if let Some(vertex) = self.vertices.get(vertex_id as usize) {
             // Remove from all indexes first
-            for index in Vertex::indexes() {
+            for index in Vertex::Index::variants() {
                 if let Some(value) = vertex.weight.value(index) {
                     let index_storage = &mut indexes[index.ordinal()];
                     index_storage.remove(&value, vertex_id, index);

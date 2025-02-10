@@ -4,16 +4,18 @@ use std::hash::Hash;
 
 /// An element in a graph. This is either an edge or a vertex.
 pub trait Element: Debug {
+    /// Information about the Label for this element
     type Label: Eq + Copy + Hash + Debug + Label + 'static;
+
+    /// Information about indexes for this element
     type Index: Eq + Copy + Hash + Debug + Index + 'static;
 
     /// Returns the label of the element.
     fn label(&self) -> Self::Label;
+
+    /// Given an index returns the value that is associated with this index.
     fn value(&self, _index: &Self::Index) -> Option<Value> {
         None
-    }
-    fn indexes() -> &'static [Self::Index] {
-        &[]
     }
 }
 

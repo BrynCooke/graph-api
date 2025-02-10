@@ -370,7 +370,7 @@ where
             vertices: (0..Vertex::Label::COUNT)
                 .map(|_i| LabelledVertices::new())
                 .collect(),
-            indexes: Vertex::indexes().iter().map(|i| i.into()).collect(),
+            indexes: Vertex::Index::variants().iter().map(|i| i.into()).collect(),
             edges: (0..Edge::Label::COUNT)
                 .map(|_i| LabelledEdges::new())
                 .collect(),

@@ -73,10 +73,6 @@ impl graph_api_lib::Element for Edge {
             Edge::Language(_) => EdgeLabel::Language,
         }
     }
-    fn indexes() -> &'static [Self::Index] {
-        static INDEXES: [EdgeIndex; 0usize] = [];
-        &INDEXES
-    }
 }
 pub struct Knows<'reference, Element> {
     _phantom: std::marker::PhantomData<Element>,

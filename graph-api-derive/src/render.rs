@@ -125,7 +125,7 @@ impl Model {
         let index_count = self.variants.iter().fold(0, |acc, v| {
             acc + v.fields.iter().filter(|f| f.indexed).count()
         });
-        let indexes: Vec<TokenStream> = self
+        let all_indexes: Vec<TokenStream> = self
             .variants
             .iter()
             .flat_map(Variant::indexes)
@@ -158,7 +158,7 @@ impl Model {
             quote! {
                 impl graph_api_lib::Index for #index_ident {
                     fn variants()-> &'static[#index_ident] {
-                        static VARIANTS: [#index_ident; #index_count] = [#(#index_ident::#indexes),*];
+                        static VARIANTS: [#index_ident; #index_count] = [#(#index_ident::#all_indexes),*];
                         &VARIANTS
                     }
 
@@ -175,31 +175,31 @@ impl Model {
             quote! {
                  impl graph_api_lib::Index for #index_ident {
                     fn variants()-> &'static[#index_ident] {
-                        static VARIANTS: [#index_ident; #index_count] = [#(#index_ident::#indexes),*];
+                        static VARIANTS: [#index_ident; #index_count] = [#(#index_ident::#all_indexes),*];
                         &VARIANTS
                     }
 
                     fn ty(&self) -> core::any::TypeId {
                         match self {
-                            #(#index_ident::#indexes => core::any::TypeId::of::<#index_types>()),*
+                            #(#index_ident::#all_indexes => core::any::TypeId::of::<#index_types>()),*
                         }
                     }
 
                     fn ordinal(&self) -> usize {
                         match self {
-                            #(#index_ident::#indexes => #index_ordinals),*
+                            #(#index_ident::#all_indexes => #index_ordinals),*
                         }
                     }
 
                     fn full_text(&self) -> bool {
                         match self {
-                            #(#index_ident::#indexes => #full_text),*
+                            #(#index_ident::#all_indexes => #full_text),*
                         }
                     }
 
                     fn ordered(&self) -> bool {
                         match self {
-                            #(#index_ident::#indexes => #index_ordered),*
+                            #(#index_ident::#all_indexes => #index_ordered),*
                         }
                     }
                 }
@@ -211,9 +211,6 @@ impl Model {
         let ident = &self.ident;
         let label_ident = &self.label_ident;
         let index_ident = &self.index_ident;
-        let index_count = self.variants.iter().fold(0, |acc, v| {
-            acc + v.fields.iter().filter(|f| f.indexed).count()
-        });
         let variants: Vec<TokenStream> = self
             .variants
             .iter()
@@ -224,12 +221,6 @@ impl Model {
             .variants
             .iter()
             .flat_map(Variant::index_accessors)
-            .collect::<Vec<_>>();
-
-        let indexes: Vec<TokenStream> = self
-            .variants
-            .iter()
-            .flat_map(Variant::indexes)
             .collect::<Vec<_>>();
 
         let fn_value = if index_accessor.is_empty() {
@@ -257,12 +248,6 @@ impl Model {
 
                 #fn_value
 
-                fn indexes() -> &'static[Self::Index] {
-                   static INDEXES : [#index_ident; #index_count]= [
-                       #(#index_ident::#indexes),*
-                   ];
-                   &INDEXES
-                }
             }
         }
     }
