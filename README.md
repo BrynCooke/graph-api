@@ -34,24 +34,19 @@ pub enum Vertex {
         #[index(full_text)]
         biography: String,
     },
-    Project(Project),
+    Project {
+        name: String
+    },
     Rust,
-}
-
-#[derive(Debug, Clone)]
-pub struct Project {
-    name: String,
 }
 
 #[derive(Debug, Clone, EdgeExt)]
 pub enum Edge {
     Knows { since: i32 },
     Created,
-    Language(Language),
-}
-#[derive(Debug, Clone)]
-pub struct Language {
-    name: String,
+    Language {
+        name: String
+    },
 }
 
 fn main() {
