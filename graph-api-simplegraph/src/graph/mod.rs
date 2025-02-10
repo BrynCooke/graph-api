@@ -367,11 +367,11 @@ where
 {
     pub fn new() -> Self {
         Self {
-            vertices: (0..Vertex::Label::COUNT)
+            vertices: (0..Vertex::Label::variants().len())
                 .map(|_i| LabelledVertices::new())
                 .collect(),
             indexes: Vertex::Index::variants().iter().map(|i| i.into()).collect(),
-            edges: (0..Edge::Label::COUNT)
+            edges: (0..Edge::Label::variants().len())
                 .map(|_i| LabelledEdges::new())
                 .collect(),
         }

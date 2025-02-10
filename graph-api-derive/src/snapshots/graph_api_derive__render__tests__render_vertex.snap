@@ -9,9 +9,23 @@ pub enum VertexLabel {
     Rust,
 }
 impl graph_api_lib::Label for VertexLabel {
-    const COUNT: usize = 3usize;
+    fn variants() -> &'static [VertexLabel] {
+        static VARIANTS: [VertexLabel; 3usize] = [
+            VertexLabel::Person,
+            VertexLabel::Project,
+            VertexLabel::Rust,
+        ];
+        &VARIANTS
+    }
     fn ordinal(&self) -> usize {
         *self as usize
+    }
+    fn name(&self) -> &'static str {
+        match self {
+            VertexLabel::Person => "#labels",
+            VertexLabel::Project => "#labels",
+            VertexLabel::Rust => "#labels",
+        }
     }
 }
 #[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]

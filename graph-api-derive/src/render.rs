@@ -255,12 +255,12 @@ impl Model {
     fn as_enum_label(&self) -> TokenStream {
         let vis = &self.visibility;
         let label_ident = &self.label_ident;
+        let label_count = self.variants.len();
         let labels: Vec<TokenStream> = self
             .variants
             .iter()
             .map(Variant::labels)
             .collect::<Vec<_>>();
-        let labels_count = labels.len();
         quote! {
             #[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]
             #vis enum #label_ident {
@@ -269,10 +269,19 @@ impl Model {
 
             impl graph_api_lib::Label for #label_ident {
 
-                const COUNT : usize = #labels_count;
+                fn variants()-> &'static[#label_ident] {
+                    static VARIANTS: [#label_ident; #label_count] = [#(#label_ident::#labels),*];
+                    &VARIANTS
+                }
 
                 fn ordinal(&self) -> usize {
                     *self as usize
+                }
+
+                fn name(&self) -> &'static str {
+                    match self {
+                        #(#label_ident::#labels => "#labels"),*
+                    }
                 }
             }
         }

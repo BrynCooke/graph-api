@@ -9,9 +9,23 @@ pub enum EdgeLabel {
     Language,
 }
 impl graph_api_lib::Label for EdgeLabel {
-    const COUNT: usize = 3usize;
+    fn variants() -> &'static [EdgeLabel] {
+        static VARIANTS: [EdgeLabel; 3usize] = [
+            EdgeLabel::Knows,
+            EdgeLabel::Created,
+            EdgeLabel::Language,
+        ];
+        &VARIANTS
+    }
     fn ordinal(&self) -> usize {
         *self as usize
+    }
+    fn name(&self) -> &'static str {
+        match self {
+            EdgeLabel::Knows => "#labels",
+            EdgeLabel::Created => "#labels",
+            EdgeLabel::Language => "#labels",
+        }
     }
 }
 #[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]

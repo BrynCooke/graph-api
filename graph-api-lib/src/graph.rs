@@ -290,10 +290,13 @@ where
     ) -> Option<Self>;
 }
 
+/// Trait to allow graphs to react to mutation of elements.
+/// When an indexed element is updated the mutation listener is called with the index and the before and after values.
 pub trait MutationListener<'reference, Element>
 where
     Element: crate::Element,
 {
+    /// Called when a setter is called on a projection of an indexed `Element`.
     fn update(&mut self, index: Element::Index, before: Value, after: Value);
 }
 

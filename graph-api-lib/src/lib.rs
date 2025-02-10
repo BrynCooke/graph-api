@@ -5,7 +5,7 @@ pub(crate) mod graph;
 pub(crate) mod walker;
 
 pub use element::Element;
-pub use element::Label;
+pub use label::Label;
 
 pub use graph::Direction;
 pub use graph::EdgeReference;
@@ -36,6 +36,7 @@ pub use walker::Walker;
 mod element;
 mod error;
 mod index;
+mod label;
 #[cfg(feature = "petgraph")]
 pub mod petgraph;
 mod search;

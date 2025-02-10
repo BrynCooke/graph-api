@@ -18,6 +18,8 @@ Implementing a graph with index support is more complicated as your implementati
 must return only elements that match the relevant search criteria.
 You must also provide a `MutationListener` that updates indexes when an element is mutated.
 
+See [index-support](./index-support.md) for more details.
+
 ## Graph Features
 
 The `Graph` trait includes several associated types for index support:

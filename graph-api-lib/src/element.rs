@@ -1,4 +1,4 @@
-use crate::{Index, Value};
+use crate::{Index, Label, Value};
 use std::fmt::Debug;
 use std::hash::Hash;
 
@@ -17,11 +17,6 @@ pub trait Element: Debug {
     fn value(&self, _index: &Self::Index) -> Option<Value> {
         None
     }
-}
-
-pub trait Label {
-    const COUNT: usize;
-    fn ordinal(&self) -> usize;
 }
 
 impl Element for () {
@@ -57,12 +52,4 @@ impl Element for f64 {
     type Index = ();
 
     fn label(&self) -> Self::Label {}
-}
-
-impl Label for () {
-    const COUNT: usize = 1;
-
-    fn ordinal(&self) -> usize {
-        0
-    }
 }
