@@ -68,8 +68,8 @@ fn main() {
     let all_vertices = graph.walk().vertices().collect::<Vec<_>>();
 
     // A more complicated traversal
-    // For up to two people that Bryn knows find all the people that they know and add their ages to 
-    // Bryn's age and collect them into a list.
+    // For up to two people that Bryn knows find all the people that they know and add
+    // their ages to Bryn's age and collect them into a list.
     let complex = graph
         .walk()
         .vertices(VertexIndex::person_by_name("Bryn")) // Start at people named Bryn
