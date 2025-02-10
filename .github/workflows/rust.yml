@@ -17,13 +17,10 @@ jobs:
     steps:
       - uses: taiki-e/install-action@cargo-nextest
       - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
       - name: Build
-        run: cargo build
-      - name: Run tests graph-api-derive
-        run: cargo nextest run -p graph-api-derive
-      - name: Run tests graph-api-simplegraph
-        run: cargo nextest run -p graph-api-simplegraph
-      - name: Run tests graph-api-petgraph
-        run: cargo nextest run -p graph-api-petgraph
+        run: just build
+      - name: Test
+        run: just test
       - name: Clippy
-        run: cargo clippy -- -D warnings
+        run: just lint
