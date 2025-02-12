@@ -8,12 +8,18 @@ where
     Graph: crate::Graph,
 {
     _phantom: std::marker::PhantomData<&'a Graph>,
+
+    /// the label of the edges
     pub label: Option<<Graph::Edge as Element>::Label>,
 
+    /// The required adjacent label
     pub adjacent_label: Option<<Graph::Vertex as Element>::Label>,
 
     /// The direction of the edge to match.
     pub direction: Option<Direction>,
+
+    /// The maximum number of edges to return for the current vertex
+    pub limit: Option<usize>,
 }
 
 impl<Graph> Clone for EdgeSearch<'_, Graph>
@@ -26,6 +32,7 @@ where
             label: self.label,
             adjacent_label: self.adjacent_label,
             direction: self.direction,
+            limit: self.limit,
         }
     }
 }
@@ -40,6 +47,7 @@ where
             label: None,
             adjacent_label: None,
             direction: None,
+            limit: None,
         }
     }
 }
@@ -52,17 +60,25 @@ where
         Self::default()
     }
 
-    pub fn labelled(mut self, label: <Graph::Edge as crate::Element>::Label) -> Self {
+    /// Edges must match the label
+    pub fn labelled(mut self, label: <Graph::Edge as Element>::Label) -> Self {
         self.label = Some(label);
         self
     }
 
+    /// The direction of the edges relative to the starting vertex
     pub fn direction(mut self, direction: Direction) -> Self {
         self.direction = Some(direction);
         self
     }
 
-    pub fn evaluate<'a, T: EdgeReference<'a, Graph>>(
+    /// The maximum number of edges to return relative to the starting vertex.
+    pub fn limit(mut self, limit: usize) -> Self {
+        self.limit = Some(limit);
+        self
+    }
+
+    pub fn evaluate<'graph, T: EdgeReference<'graph, Graph>>(
         &self,
         current: Graph::VertexId,
         edge_reference: &T,

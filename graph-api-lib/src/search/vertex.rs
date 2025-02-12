@@ -6,8 +6,14 @@ pub struct VertexSearch<'a, Graph>
 where
     Graph: crate::Graph,
 {
+    /// The vertex label to search
     pub label: Option<<Graph::Vertex as Element>::Label>,
+
+    /// The index to search.
     pub index: Option<(<Graph::Vertex as Element>::Index, ValueOrRange<'a>)>,
+
+    /// The maximum number of vertices to return for the current vertex
+    pub limit: Option<usize>,
 }
 
 impl<Graph> Default for VertexSearch<'_, Graph>
@@ -18,6 +24,7 @@ where
         Self {
             label: None,
             index: None,
+            limit: None,
         }
     }
 }
@@ -30,6 +37,7 @@ where
         Self::default()
     }
 
+    /// the label that
     pub fn labelled(mut self, label: <Graph::Vertex as Element>::Label) -> Self {
         self.label = Some(label);
         self
@@ -48,6 +56,12 @@ where
         V: 'a + Into<ValueOrRange<'a>>,
     {
         self.index = Some((index, value.into()));
+        self
+    }
+
+    /// The maximum number of vertices to return from this search
+    pub fn limit(mut self, limit: usize) -> Self {
+        self.limit = Some(limit);
         self
     }
 }
