@@ -10,7 +10,9 @@ vertex-label-index = []
 vertex-full-text-index = []
 vertex-ordered-index = []
 edge-label-index = []
-
+edge-index = []
+edge-ordered-index = []
+grpah-clear = []
 
 [dependencies]
 graph-api-lib = { path = "../graph-api-lib" }
