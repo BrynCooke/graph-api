@@ -12,7 +12,8 @@ Issue resolution can happen in one of two ways:
 1. You provide a contribution using the guidelines below.
 2. I [Bryn Cooke](https://github.com/bryncooke) fix the issue in my own time at a moment that is convenient to me. I
    generally don't work for free so if the issue is a bug it may get fixed, but feature requests will almost
-   certainly not happen without contribution or compensation.
+   certainly not happen without contribution or compensation. I have a full time job not working on this library and a
+   family to spend time with.
 
 ## Requirements for Code Contributions
 
