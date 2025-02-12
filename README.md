@@ -101,7 +101,6 @@ fn main() {
 ### For Graph Implementors
 
 - [Implementation Guide](docs/implementors/guide.md)
-- [Index support](docs/implementors/index-support.md)
 
 ## License
 
