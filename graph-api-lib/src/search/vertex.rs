@@ -6,8 +6,8 @@ pub struct VertexSearch<'a, Graph>
 where
     Graph: crate::Graph,
 {
-    label: Option<<Graph::Vertex as Element>::Label>,
-    indexed: Option<(<Graph::Vertex as Element>::Index, ValueOrRange<'a>)>,
+    pub label: Option<<Graph::Vertex as Element>::Label>,
+    pub index: Option<(<Graph::Vertex as Element>::Index, ValueOrRange<'a>)>,
 }
 
 impl<Graph> Default for VertexSearch<'_, Graph>
@@ -17,7 +17,7 @@ where
     fn default() -> Self {
         Self {
             label: None,
-            indexed: None,
+            index: None,
         }
     }
 }
@@ -47,15 +47,7 @@ where
     where
         V: 'a + Into<ValueOrRange<'a>>,
     {
-        self.indexed = Some((index, value.into()));
+        self.index = Some((index, value.into()));
         self
-    }
-
-    pub fn label(&self) -> Option<<Graph::Vertex as Element>::Label> {
-        self.label
-    }
-
-    pub fn index(&self) -> Option<&(<Graph::Vertex as Element>::Index, ValueOrRange<'a>)> {
-        self.indexed.as_ref()
     }
 }
