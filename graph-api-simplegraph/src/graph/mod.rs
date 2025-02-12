@@ -8,8 +8,8 @@ use crate::id::VertexId;
 use crate::index::VertexIndexStorage;
 use crate::EdgeId;
 use graph_api_lib::{
-    Direction, EdgeSearch, Element, Error, Graph, Index, Label, Project, ProjectMut, Supported,
-    Value, ValueOrRange,
+    Direction, EdgeSearch, Element, Graph, Index, Label, Project, ProjectMut, Supported, Value,
+    ValueOrRange,
 };
 use smallbox::space::S8;
 use smallbox::{smallbox, SmallBox};
@@ -251,7 +251,7 @@ where
     }
 }
 
-pub struct VertexIterator<'graph, Graph>
+pub struct VertexIter<'graph, Graph>
 where
     Graph: graph_api_lib::Graph + 'graph,
 {
@@ -259,7 +259,7 @@ where
     iter: SmallBox<dyn Iterator<Item = VertexId> + 'graph, S8>, // Indexed iterator over vertices in the current group
 }
 
-impl<'a, Graph> Iterator for VertexIterator<'a, Graph>
+impl<'a, Graph> Iterator for VertexIter<'a, Graph>
 where
     Graph: graph_api_lib::Graph<VertexId = VertexId> + 'a,
 {
@@ -281,18 +281,18 @@ type RangeIter = dyn Iterator<Item = (Option<Direction>, Option<u16>, Option<u16
 type BoxedRangeIter = SmallBox<RangeIter, S8>;
 
 // The edge iterator lazily creates ranges when iterating over the adjacency list
-pub struct EdgeIterator<'a, Graph>
+pub struct EdgeIter<'graph, Graph>
 where
     Graph: graph_api_lib::Graph,
 {
     vertex: VertexId,
-    vertex_storage: &'a VertexStorage<Graph::Vertex>,
-    edges: &'a [LabelledEdges<Graph::Edge>],
+    vertex_storage: &'graph VertexStorage<Graph::Vertex>,
+    edges: &'graph [LabelledEdges<Graph::Edge>],
     range_iter: BoxedRangeIter,
-    current_iter: Option<std::collections::btree_set::Range<'a, Adjacency>>,
+    current_iter: Option<std::collections::btree_set::Range<'graph, Adjacency>>,
 }
 
-impl<'a, Graph> Iterator for EdgeIterator<'a, Graph>
+impl<'a, Graph> Iterator for EdgeIter<'a, Graph>
 where
     Graph: graph_api_lib::Graph<VertexId = crate::id::VertexId> + 'a,
 {
@@ -380,7 +380,7 @@ where
 
 impl<Vertex, Edge> Graph for SimpleGraph<Vertex, Edge>
 where
-    Vertex: Element + Clone,
+    Vertex: Element,
     Edge: Element,
 {
     type SupportsVertexLabelIndex = Supported;
@@ -390,6 +390,7 @@ where
     type SupportsVertexOrderedIndex = Supported;
     type SupportsEdgeOrderedIndex = Supported;
     type SupportsVertexFullTextIndex = Supported;
+    type SupportsClear = Supported;
     type Vertex = Vertex;
     type Edge = Edge;
     type VertexId = VertexId;
@@ -411,11 +412,11 @@ where
     where
         Self: 'graph;
     type EdgeIter<'graph>
-        = EdgeIterator<'graph, Self>
+        = EdgeIter<'graph, Self>
     where
         Self: 'graph;
     type VertexIter<'graph>
-        = VertexIterator<'graph, Self>
+        = VertexIter<'graph, Self>
     where
         Self: 'graph;
 
@@ -529,9 +530,9 @@ where
         vertex_search: &graph_api_lib::VertexSearch<Self>,
     ) -> Self::VertexIter<'a> {
         let iter: SmallBox<dyn Iterator<Item = VertexId> + 'a, S8> =
-            if let Some((index, value_or_range)) = &vertex_search.index() {
+            if let Some((index, value_or_range)) = &vertex_search.index {
                 let label = vertex_search
-                    .label()
+                    .label
                     .expect("SimpleGraph only supports indexes on labels");
                 let index_storage = &self.indexes[index.ordinal()];
                 match &value_or_range {
@@ -542,7 +543,7 @@ where
                         index_storage.range(range, index, label.ordinal() as u16)
                     }
                 }
-            } else if let Some(label) = vertex_search.label() {
+            } else if let Some(label) = vertex_search.label {
                 // Only iterate over vertices for the specified label
                 smallbox!(self.vertices[label.ordinal()]
                     .iter()
@@ -558,7 +559,7 @@ where
                         .map(move |idx| VertexId::new(ordinal as u16, idx))))
             };
 
-        VertexIterator {
+        VertexIter {
             vertices: &self.vertices,
             iter,
         }
@@ -641,7 +642,7 @@ where
         });
         let range_iter: BoxedRangeIter = smallbox::smallbox!(range_iter);
         assert!(!range_iter.is_heap());
-        EdgeIterator {
+        EdgeIter {
             vertex,
             vertex_storage,
             edges: &self.edges,
@@ -650,7 +651,7 @@ where
         }
     }
 
-    fn clear(&mut self) -> Result<(), Error> {
+    fn clear(&mut self) {
         // Clear all vertex storages
         for labelled_vertices in &mut self.vertices {
             labelled_vertices.clear();
@@ -660,7 +661,5 @@ where
         for edge_label in &mut self.edges {
             edge_label.clear();
         }
-
-        Ok(())
     }
 }

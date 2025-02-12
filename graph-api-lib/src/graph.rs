@@ -1,6 +1,6 @@
 use crate::walker::builder::{ImmutableMarker, MutableMarker, StartWalkerBuilder};
 use crate::VertexSearch;
-use crate::{walker, EdgeSearch, Element, Error, Value};
+use crate::{walker, EdgeSearch, Element, Value};
 use std::fmt::Debug;
 use std::hash::Hash;
 
@@ -72,6 +72,8 @@ pub trait Graph: Sized + Debug {
     type SupportsEdgeOrderedIndex: Support;
     /// Supports indexing of vertices by field using an inverted full text index.
     type SupportsVertexFullTextIndex: Support;
+    /// Supports clearing of all vertices and edges
+    type SupportsClear: Support;
 
     /// The type of the vertices in the graph. This is usually an enum.
     type Vertex: Debug + Element;
@@ -167,7 +169,9 @@ pub trait Graph: Sized + Debug {
     fn edges(&self, id: Self::VertexId, search: &EdgeSearch<Self>) -> Self::EdgeIter<'_>;
 
     /// Clears the graph. This may not be supported by all graph implementations.
-    fn clear(&mut self) -> Result<(), Error>;
+    fn clear(&mut self)
+    where
+        Self: Graph<SupportsClear = Supported>;
 
     /// Returns a string representation of an element in the graph.
     fn dbg<T: Into<Id<Self::VertexId, Self::EdgeId>>>(&self, id: T) -> String {

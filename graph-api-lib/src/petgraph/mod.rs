@@ -1,8 +1,8 @@
 use crate::graph::{EdgeReferenceMut, Unsupported, VertexReference, VertexReferenceMut};
 use crate::search::vertex::VertexSearch;
-use crate::EdgeSearch;
+use crate::Element;
 use crate::{Direction, EdgeReference, Graph, Id, Project, ProjectMut};
-use crate::{Element, Error};
+use crate::{EdgeSearch, Supported};
 use petgraph::stable_graph::{EdgeIndex, Edges, IndexType};
 use petgraph::stable_graph::{NodeIndex, NodeIndices};
 use petgraph::visit::EdgeRef;
@@ -27,6 +27,7 @@ where
     type SupportsVertexOrderedIndex = Unsupported;
     type SupportsEdgeOrderedIndex = Unsupported;
     type SupportsVertexFullTextIndex = Unsupported;
+    type SupportsClear = Supported;
 
     type Vertex = Vertex;
     type Edge = Edge;
@@ -52,6 +53,7 @@ where
         = EdgeReferenceWrapperMut<'a, Self, Ix>
     where
         Self: 'a;
+
     type EdgeIter<'a>
         = EdgesIter<Self, Edges<'a, Self::Edge, Ty, Ix>>
     where
@@ -143,9 +145,8 @@ where
         }
     }
 
-    fn clear(&mut self) -> Result<(), Error> {
+    fn clear(&mut self) {
         petgraph::stable_graph::StableGraph::clear(self);
-        Ok(())
     }
 }
 
@@ -167,12 +168,12 @@ where
     }
 }
 
-pub struct VertexIter<'a, Graph, Ty, Ix, Vertices>
+pub struct VertexIter<'graph, Graph, Ty, Ix, Vertices>
 where
     Graph: crate::Graph,
 {
     nodes: Vertices,
-    graph: &'a petgraph::stable_graph::StableGraph<Graph::Vertex, Graph::Edge, Ty, Ix>,
+    graph: &'graph petgraph::stable_graph::StableGraph<Graph::Vertex, Graph::Edge, Ty, Ix>,
 }
 
 impl<'a, Graph, Ty, Ix, Vertices> Iterator for VertexIter<'a, Graph, Ty, Ix, Vertices>
