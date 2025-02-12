@@ -1,62 +1,51 @@
 # Graph Implementors Guide
 
-Adding Graph API support is as simple as implementing the following traits:
+Graph API provides a set of traits that can be implemented for your graph that provide users with a consistent
+API between graph implementations.
 
-* `Graph`: The main interface to your graph
-* `VertexReference`: A reference to a vertex
-* `VertexReferenceMut`: A mutable reference to a vertex
-    * `MutationListener`: A listener that reacts to vertex mutations
-* `EdgeReference`: A reference to an edge
-* `EdgeReferenceMut`: A mutable reference to an edge
-    * `MutationListener`: A listener that reacts to edge mutations
-* `VertexIter`: An iterator over vertices
-* `EdgeIter`: An iterator over edges
-
-Implementing a graph without index support is very straight forward.
-
-Implementing a graph with index support is more complicated as your implementation of `VertexIter` and `EdgeIter`
-must return only elements that match the relevant search criteria.
-You must also provide a `MutationListener` that updates indexes when an element is mutated.
-
-See [index-support](./index-support.md) for more details.
-
-## Graph Features
-
-The `Graph` trait includes several associated types for index support:
-
-* `SupportsVertexLabelIndex`: Vertices by label
-* `SupportsEdgeLabelIndex`: Edges by label
-* `SupportsVertexIndex`: Vertices by value lookup
-* `SupportsEdgeIndex`: Edges by value lookup
-* `SupportsVertexOrderedIndex`: Vertices by range lookups
-* `SupportsEdgeOrderedIndex`:  Edges by range lookups
-* `SupportsVertexFullTextIndex`: Vertices by full text index
-
-When implementing a graph you must specify these as `Supported` or `Unsupported`.
-
-## Testing
-
-Graph API gives you a test suite to make sure that your graph implementation is correct.
-Include the `graph-api-test` crate in your dev dependencies and add the following code:
+A graph implementation allows adding removing and mutating vertices and edges, and also provides search and iteration
+capability.
 
 ```rust
-#[cfg(test)]
-mod test {
-    use graph_api_test::test_suite;
-    test_suite!(YourGraph::new());
+fn example() {
+    let graph = SimpleGraph::new();
+
+    // Populate the graph
+    let person = graph.add_vertex(Vertex::Person {
+        name: "Bryn".to_string(),
+        age: 45,
+        unique_id: Uuid::from_u128(1),
+        username: "bryn".to_string(),
+        biography: "Did some graph stuff".to_string(),
+    });
+    let project = graph.add_vertex(Vertex::Project { name: "Graph API".to_string() });
+    graph.add_edge(person, project, Edge::Created);
 }
 ```
 
-Depending on your graph supported features you will need to specify the relevant features then including the
-`graph-api-test` crate.
+By using Graph API your users get a powerful walker API to traverse their
+graph without writing endless loops. Think iterator for graphs:
 
-The feature mappings are:
+```rust
+fn example() {
+    let graph = SimpleGraph::new();
+    graph.walk()
+        .vertices(VertexIndex::person_by_name("Bryn"))
+        .out_edges(None)
+        .collect::<Vec<_>>();
+}
+```
 
-* `SupportsVertexLabelIndex`: `vertex-label-index`
-* `SupportsEdgeLabelIndex`: `edge-label-index`
-* `SupportsVertexIndex`: `vertex-index`
-* `SupportsEdgeIndex`: `edge-index`;
-* `SupportsVertexOrderedIndex`: `vertex-ordered-index`;
-* `SupportsEdgeOrderedIndex`: `edge-ordered-index`;
-* `SupportsVertexFullTextIndex`: `vertex-full-text-index`;
+Finally Graph API comes with derive macro that further enhances the user experience when walking the graph
+and also allows static definition of how elements are indexed.
 
+## Implementing a graph
+
+Implementing a graph is easy, and can be done in a few hours/days assuming good Rust knowledge:
+
+1. [Create your Graph implementation](./graphs.md)
+2. [Use the Graph API test suite](./testing.md)
+3. [Enable features for your Graph](./features.md)
+4. [Implement indexes](./indexes.md)
+
+If in doubt take a look at the `SimpleGraph` reference implementation.

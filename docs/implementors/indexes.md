@@ -1,6 +1,10 @@
 # Index support
 
-Index support is possible with graph API as the derived code will generate index metadata.
+Graph API supports statically defined indexes.
+When a user uses `#[derive(VertexExt)]` or `#[derive(EdgeExt)]` on an enum then the `Element` trait is derived.
+
+The `Element` trait statically defines labels and indexes that a Graph may use to provide
+fast access to said elements.
 
 ## Key traits
 
@@ -121,7 +125,7 @@ where
 }
 ```
 
-`MutationListener`s are created at the point where `project_mut` is called. For example here is the SimpleGraph
+`MutationListener`s are created at the point where `project_mut` is called. For example here is the `SimpleGraph`
 implementation:
 
 ```rust
