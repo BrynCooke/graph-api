@@ -1,4 +1,4 @@
-use crate::{Direction, EdgeReference, Element};
+use crate::{Direction, Element};
 
 /// A search to apply to edges when querying a graph.
 /// This allows graph implementations to support vertex centric indexes.
@@ -76,37 +76,5 @@ where
     pub fn limit(mut self, limit: usize) -> Self {
         self.limit = Some(limit);
         self
-    }
-
-    pub fn evaluate<'graph, T: EdgeReference<'graph, Graph>>(
-        &self,
-        current: Graph::VertexId,
-        edge_reference: &T,
-    ) -> bool
-    where
-        Graph: crate::Graph,
-    {
-        match self.direction {
-            Some(Direction::All)
-                if edge_reference.head() != current && edge_reference.tail() != current =>
-            {
-                return false
-            }
-            Some(Direction::Incoming) if edge_reference.head() != current => return false,
-            Some(Direction::Outgoing) => {
-                if edge_reference.tail() != current {
-                    return false;
-                }
-            }
-            _ => {}
-        }
-        if let Some(label) = &self.label {
-            let element_label = edge_reference.weight().label();
-            if element_label != *label {
-                return false;
-            }
-        }
-
-        true
     }
 }
