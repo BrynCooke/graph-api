@@ -1,8 +1,7 @@
 use crate::{Element, ValueOrRange};
 
 /// A search to apply to vertices when querying a graph.
-#[derive(Clone)]
-pub struct VertexSearch<'a, Graph>
+pub struct VertexSearch<'search, Graph>
 where
     Graph: crate::Graph,
 {
@@ -10,10 +9,23 @@ where
     pub label: Option<<Graph::Vertex as Element>::Label>,
 
     /// The index to search.
-    pub index: Option<(<Graph::Vertex as Element>::Index, ValueOrRange<'a>)>,
+    pub index: Option<(<Graph::Vertex as Element>::Index, ValueOrRange<'search>)>,
 
     /// The maximum number of vertices to return for the current vertex
     pub limit: Option<usize>,
+}
+
+impl<Graph> Clone for VertexSearch<'_, Graph>
+where
+    Graph: crate::Graph,
+{
+    fn clone(&self) -> Self {
+        Self {
+            label: self.label,
+            index: self.index.clone(),
+            limit: self.limit,
+        }
+    }
 }
 
 impl<Graph> Default for VertexSearch<'_, Graph>

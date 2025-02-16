@@ -14,3 +14,17 @@ where
 
     assert_elements_eq!(graph, collected, vec![refs.bryn_knows_julia])
 }
+
+pub fn test_index_limit<T>(graph: &mut T)
+where
+    T: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+{
+    let refs = populate_graph(graph);
+    let collected = graph
+        .walk()
+        .vertices_by_id([refs.bryn])
+        .out_edges(EdgeIndex::knows().limit(1))
+        .collect::<Vec<_>>();
+
+    assert_elements_eq!(graph, collected, vec![refs.bryn_knows_julia])
+}

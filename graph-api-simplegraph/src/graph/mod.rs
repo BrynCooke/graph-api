@@ -251,29 +251,35 @@ where
     }
 }
 
-pub struct VertexIter<'graph, Graph>
+pub struct VertexIter<'search, 'graph, Graph>
 where
     Graph: graph_api_lib::Graph + 'graph,
 {
+    _phantom: PhantomData<&'search ()>,
     vertices: &'graph [LabelledVertices<Graph::Vertex, Graph::Edge>], // All vertex groups
     iter: SmallBox<dyn Iterator<Item = VertexId> + 'graph, S8>, // Indexed iterator over vertices in the current group
+    count: usize,
+    limit: usize,
 }
 
-impl<'a, Graph> Iterator for VertexIter<'a, Graph>
+impl<'graph, Graph> Iterator for VertexIter<'_, 'graph, Graph>
 where
-    Graph: graph_api_lib::Graph<VertexId = VertexId> + 'a,
+    Graph: graph_api_lib::Graph<VertexId = VertexId> + 'graph,
 {
-    type Item = VertexReference<'a, Graph>;
+    type Item = VertexReference<'graph, Graph>;
 
     fn next(&mut self) -> Option<Self::Item> {
+        if self.count >= self.limit {
+            return None;
+        }
         if let Some(id) = self.iter.next() {
-            Some(VertexReference {
+            self.count += 1;
+            return Some(VertexReference {
                 weight: &self.vertices[id.label() as usize][id.vertex()].weight,
                 id,
-            })
-        } else {
-            None
+            });
         }
+        None
     }
 }
 
@@ -281,24 +287,30 @@ type RangeIter = dyn Iterator<Item = (Option<Direction>, Option<u16>, Option<u16
 type BoxedRangeIter = SmallBox<RangeIter, S8>;
 
 // The edge iterator lazily creates ranges when iterating over the adjacency list
-pub struct EdgeIter<'graph, Graph>
+pub struct EdgeIter<'search, 'graph, Graph>
 where
     Graph: graph_api_lib::Graph,
 {
+    _phantom: PhantomData<&'search ()>,
     vertex: VertexId,
     vertex_storage: &'graph VertexStorage<Graph::Vertex>,
     edges: &'graph [LabelledEdges<Graph::Edge>],
     range_iter: BoxedRangeIter,
     current_iter: Option<std::collections::btree_set::Range<'graph, Adjacency>>,
+    count: usize,
+    limit: usize,
 }
 
-impl<'a, Graph> Iterator for EdgeIter<'a, Graph>
+impl<'graph, Graph> Iterator for EdgeIter<'_, 'graph, Graph>
 where
-    Graph: graph_api_lib::Graph<VertexId = crate::id::VertexId> + 'a,
+    Graph: graph_api_lib::Graph<VertexId = crate::id::VertexId> + 'graph,
 {
-    type Item = EdgeReference<'a, Graph>;
+    type Item = EdgeReference<'graph, Graph>;
 
     fn next(&mut self) -> Option<Self::Item> {
+        if self.count >= self.limit {
+            return None;
+        }
         loop {
             if self.current_iter.is_none() {
                 if let Some((direction, label, adjacent_label)) = self.range_iter.next() {
@@ -308,10 +320,13 @@ where
                             label,
                             adjacent_label,
                         )));
+                } else {
+                    return None;
                 }
             }
             if let Some(iter) = &mut self.current_iter {
                 if let Some(adjacency) = iter.next() {
+                    self.count += 1;
                     match adjacency.direction {
                         Direction::Outgoing => {
                             return Some(EdgeReference {
@@ -342,8 +357,6 @@ where
                         }
                     };
                 }
-            } else {
-                return None;
             }
             self.current_iter = None;
         }
@@ -390,6 +403,7 @@ where
     type SupportsVertexOrderedIndex = Supported;
     type SupportsEdgeOrderedIndex = Supported;
     type SupportsVertexFullTextIndex = Supported;
+    type SupportsEdgeAdjacentLabelIndex = Supported;
     type SupportsClear = Supported;
     type Vertex = Vertex;
     type Edge = Edge;
@@ -411,12 +425,12 @@ where
         = EdgeReferenceMut<'graph, Self>
     where
         Self: 'graph;
-    type EdgeIter<'graph>
-        = EdgeIter<'graph, Self>
+    type EdgeIter<'search, 'graph>
+        = EdgeIter<'search, 'graph, Self>
     where
         Self: 'graph;
-    type VertexIter<'graph>
-        = VertexIter<'graph, Self>
+    type VertexIter<'search, 'graph>
+        = VertexIter<'search, 'graph, Self>
     where
         Self: 'graph;
 
@@ -525,13 +539,13 @@ where
         })
     }
 
-    fn vertices<'a>(
-        &'a self,
-        vertex_search: &graph_api_lib::VertexSearch<Self>,
-    ) -> Self::VertexIter<'a> {
-        let iter: SmallBox<dyn Iterator<Item = VertexId> + 'a, S8> =
-            if let Some((index, value_or_range)) = &vertex_search.index {
-                let label = vertex_search
+    fn vertices<'search>(
+        &self,
+        search: &graph_api_lib::VertexSearch<'search, Self>,
+    ) -> Self::VertexIter<'search, '_> {
+        let iter: SmallBox<dyn Iterator<Item = VertexId> + '_, S8> =
+            if let Some((index, value_or_range)) = &search.index {
+                let label = search
                     .label
                     .expect("SimpleGraph only supports indexes on labels");
                 let index_storage = &self.indexes[index.ordinal()];
@@ -543,7 +557,7 @@ where
                         index_storage.range(range, index, label.ordinal() as u16)
                     }
                 }
-            } else if let Some(label) = vertex_search.label {
+            } else if let Some(label) = search.label {
                 // Only iterate over vertices for the specified label
                 smallbox!(self.vertices[label.ordinal()]
                     .iter()
@@ -560,8 +574,11 @@ where
             };
 
         VertexIter {
+            _phantom: Default::default(),
             vertices: &self.vertices,
             iter,
+            count: 0,
+            limit: search.limit.unwrap_or(usize::MAX),
         }
     }
 
@@ -596,7 +613,11 @@ where
             })
     }
 
-    fn edges(&self, vertex: Self::VertexId, search: &EdgeSearch<Self>) -> Self::EdgeIter<'_> {
+    fn edges<'search>(
+        &self,
+        vertex: Self::VertexId,
+        search: &EdgeSearch<'search, Self>,
+    ) -> Self::EdgeIter<'search, '_> {
         // The edges are stored in a BTreeSet so they are already sorted. If we have a label in the search we can use this to create a range iterator using VertexStorage.
 
         let labelled_vertices = &self.vertices[vertex.label() as usize];
@@ -643,11 +664,14 @@ where
         let range_iter: BoxedRangeIter = smallbox::smallbox!(range_iter);
         assert!(!range_iter.is_heap());
         EdgeIter {
+            _phantom: Default::default(),
             vertex,
             vertex_storage,
             edges: &self.edges,
             range_iter,
             current_iter: None,
+            count: 0,
+            limit: search.limit.unwrap_or(usize::MAX),
         }
     }
 

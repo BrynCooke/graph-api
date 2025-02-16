@@ -700,10 +700,11 @@ impl<'graph, Graph, Mutability> StartWalkerBuilder<'graph, Mutability, Graph>
 where
     Graph: crate::graph::Graph,
 {
-    pub fn vertices<'a, T: Into<VertexSearch<'a, Graph>>>(
+    pub fn vertices<'search, T: Into<VertexSearch<'search, Graph>>>(
         self,
         vertex_search: T,
-    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, Vertices<'a, 'graph, Empty<Graph>>> {
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, Vertices<'search, 'graph, Empty<Graph>>>
+    {
         VertexWalkerBuilder {
             _phantom: Default::default(),
             walker: Empty::default().vertices(vertex_search.into()),

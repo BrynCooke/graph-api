@@ -4,23 +4,23 @@ use crate::walker::{Element, VertexWalker, Walker};
 use crate::VertexReference;
 use std::marker::PhantomData;
 
-pub struct Vertices<'a, 'graph, Parent>
+pub struct Vertices<'search, 'graph, Parent>
 where
     Parent: VertexWalker<'graph>,
     <Parent as Walker<'graph>>::Graph: 'graph,
 {
     _phantom_data: PhantomData<&'graph ()>,
     parent: Parent,
-    current_iter: Option<<Parent::Graph as Graph>::VertexIter<'graph>>,
-    vertex_search: VertexSearch<'a, Parent::Graph>,
+    current_iter: Option<<Parent::Graph as Graph>::VertexIter<'search, 'graph>>,
+    vertex_search: VertexSearch<'search, Parent::Graph>,
 }
 
-impl<'a, 'graph, Parent> Vertices<'a, 'graph, Parent>
+impl<'search, 'graph, Parent> Vertices<'search, 'graph, Parent>
 where
     Parent: VertexWalker<'graph>,
     <Parent as Walker<'graph>>::Graph: 'graph,
 {
-    pub fn new(parent: Parent, vertex_search: VertexSearch<'a, Parent::Graph>) -> Self {
+    pub fn new(parent: Parent, vertex_search: VertexSearch<'search, Parent::Graph>) -> Self {
         Self {
             _phantom_data: Default::default(),
             parent,

@@ -4,7 +4,7 @@ use crate::{EdgeId, VertexId};
 use graph_api_lib::{Direction, Element, Index};
 use std::collections::BTreeSet;
 use std::marker::PhantomData;
-use std::ops::Range;
+use std::ops::RangeInclusive;
 
 #[derive(Default)]
 pub(crate) struct LabelledVertices<Vertex, Edge> {
@@ -19,7 +19,13 @@ pub(crate) struct VertexStorage<Vertex> {
     pub(crate) weight: Vertex,
 }
 
-#[derive(Ord, PartialOrd, Eq, PartialEq, Clone)]
+/// An adjacency represents a unidirectional edge.
+/// The fields are ordered to minimize the number of distinct ranges that
+/// need to be covered for the most common traversal.
+/// To do this direction is first as it has the lowest cardinality.
+/// Then edge label, as users will likely only have a single edge type that they want to traverse.
+/// Lastly the adjacent vertex label.
+#[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Debug)]
 pub(crate) struct Adjacency {
     pub(crate) direction: Direction,
     pub(crate) edge_label: u16,
@@ -65,30 +71,19 @@ impl Adjacency {
         direction: Option<Direction>,
         edge_label: Option<u16>,
         vertex_label: Option<u16>,
-    ) -> Range<Adjacency> {
-        Range {
-            start: Adjacency {
-                direction: direction.unwrap_or(Direction::Outgoing),
-                edge_label: edge_label.unwrap_or(0),
-                vertex_label: vertex_label.unwrap_or(0),
-                edge_id: 0,
-                vertex_id: 0,
-            },
-            end: Adjacency {
-                direction: direction
-                    .map(|d| match d {
-                        Direction::Outgoing => Direction::Incoming,
-                        Direction::Incoming => Direction::All,
-                        Direction::All => {
-                            unreachable!("direction all")
-                        }
-                    })
-                    .unwrap_or(Direction::All),
-                edge_label: edge_label.map(|l| l + 1).unwrap_or(u16::MAX),
-                vertex_label: vertex_label.map(|l| l + 1).unwrap_or(u16::MAX),
-                edge_id: u32::MAX,
-                vertex_id: u32::MAX,
-            },
+    ) -> RangeInclusive<Adjacency> {
+        Adjacency {
+            direction: direction.unwrap_or(Direction::Outgoing),
+            edge_label: edge_label.unwrap_or(0),
+            vertex_label: vertex_label.unwrap_or(0),
+            edge_id: 0,
+            vertex_id: 0,
+        }..=Adjacency {
+            direction: direction.unwrap_or(Direction::Incoming),
+            edge_label: edge_label.unwrap_or(u16::MAX),
+            vertex_label: vertex_label.unwrap_or(u16::MAX),
+            edge_id: u32::MAX,
+            vertex_id: u32::MAX,
         }
     }
 }
@@ -230,5 +225,109 @@ where
 
     pub(crate) fn get_mut(&mut self, edge_id: u32) -> Option<&mut Edge> {
         self.edges.get_mut(edge_id as usize)
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::collections::BTreeSet;
+
+    #[test]
+    fn test_insert_and_retrieve_adjacencies() {
+        let mut adjacencies = BTreeSet::new();
+
+        let adj1 = Adjacency {
+            direction: Direction::Outgoing,
+            edge_label: 1,
+            vertex_label: 1,
+            edge_id: 1,
+            vertex_id: 1,
+        };
+
+        let adj2 = Adjacency {
+            direction: Direction::Outgoing,
+            edge_label: 2,
+            vertex_label: 2,
+            edge_id: 2,
+            vertex_id: 2,
+        };
+
+        let adj3 = Adjacency {
+            direction: Direction::Incoming,
+            edge_label: 3,
+            vertex_label: 3,
+            edge_id: 3,
+            vertex_id: 3,
+        };
+
+        adjacencies.insert(adj1.clone());
+        adjacencies.insert(adj2.clone());
+        adjacencies.insert(adj3.clone());
+
+        let range = Adjacency::range(Some(Direction::Outgoing), None, None);
+        let retrieved: Vec<_> = adjacencies.range(range).cloned().collect();
+
+        assert_eq!(retrieved, vec![adj1, adj2]);
+    }
+
+    #[test]
+    fn test_empty_range() {
+        let adjacencies: BTreeSet<Adjacency> = BTreeSet::new();
+        let range = Adjacency::range(Some(Direction::Outgoing), None, None);
+        let retrieved: Vec<_> = adjacencies.range(range).cloned().collect();
+
+        assert!(retrieved.is_empty());
+    }
+
+    #[test]
+    fn test_retrieve_specific_edge_label() {
+        let mut adjacencies = BTreeSet::new();
+
+        let adj1 = Adjacency {
+            direction: Direction::Outgoing,
+            edge_label: 1,
+            vertex_label: 1,
+            edge_id: 1,
+            vertex_id: 1,
+        };
+
+        let adj2 = Adjacency {
+            direction: Direction::Outgoing,
+            edge_label: 2,
+            vertex_label: 2,
+            edge_id: 2,
+            vertex_id: 2,
+        };
+
+        let adj3 = Adjacency {
+            direction: Direction::Incoming,
+            edge_label: 3,
+            vertex_label: 3,
+            edge_id: 3,
+            vertex_id: 3,
+        };
+
+        adjacencies.insert(adj1.clone());
+        adjacencies.insert(adj2.clone());
+        adjacencies.insert(adj3.clone());
+
+        let range = Adjacency::range(Some(Direction::Outgoing), None, None);
+        let retrieved: Vec<_> = adjacencies.range(range).cloned().collect();
+        assert_eq!(retrieved, vec![adj1.clone(), adj2.clone()]);
+
+        // Test range with specific edge label
+        let range = Adjacency::range(Some(Direction::Outgoing), Some(2), None);
+        let retrieved: Vec<_> = adjacencies.range(range).cloned().collect();
+        assert_eq!(retrieved, vec![adj2.clone()]);
+
+        // Test range with specific edge and vertex label
+        let range = Adjacency::range(Some(Direction::Outgoing), Some(2), Some(2));
+        let retrieved: Vec<_> = adjacencies.range(range).cloned().collect();
+        assert_eq!(retrieved, vec![adj2.clone()]);
+
+        // Test full range
+        let range = Adjacency::range(None, None, None);
+        let retrieved: Vec<_> = adjacencies.range(range).cloned().collect();
+        assert_eq!(retrieved, vec![adj1.clone(), adj2.clone(), adj3.clone()]);
     }
 }

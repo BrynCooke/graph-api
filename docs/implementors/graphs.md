@@ -130,8 +130,14 @@ Go ahead and do the same for:
 * VertexReferenceMut
 * EdgeReference
 * EdgeReferenceMut
-* VertexIter
-* EdgeIter
+
+You'll also want to make your own concrete implementation of iterators for elements:
+
+* Iterator<Item=Vertex>
+* Iterator<<Item=Edge>
+
+These iterators must return elements based on VertexSearch and EdgeSearch respectively.
+It is essential that these elements are
 
 You've now created a non-functional graph!
 

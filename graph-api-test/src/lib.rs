@@ -126,6 +126,10 @@ pub enum TestError {
         extra: Vec<String>,
         expected: Vec<String>,
     },
+    MoreThanOneElement {
+        expected: Vec<String>,
+        actual: Vec<String>,
+    },
 }
 
 #[macro_export]
@@ -263,17 +267,26 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, graph_test_add_edge, $crate::graph::test_add_edge}
         $crate::general_test!{$setup, graph_test_remove_edge, $crate::graph::test_remove_edge}
         $crate::general_test!{$setup, graph_test_remove_vertex_with_edges, $crate::graph::test_remove_vertex_with_edges}
-        $crate::general_test!{$setup, test_vertices_filter, $crate::filter::test_vertices_filter}
-        $crate::general_test!{$setup, test_edges_filter, $crate::filter::test_edges_filter}
-        $crate::general_test!{$setup, test_vertices_collect, $crate::collect::test_vertices_collect}
-        $crate::general_test!{$setup, test_edges_collect, $crate::collect::test_edges_collect}
-        $crate::general_test!{$setup, test_out_edges, $crate::edges::test_out_edges}
-        $crate::general_test!{$setup, test_in_edges, $crate::edges::test_in_edges}
-        $crate::general_test!{$setup, test_all_edges, $crate::edges::test_all_edges}
-        $crate::general_test!{$setup, test_out_edges_filtered, $crate::edges::test_out_edges_filtered}
-        $crate::general_test!{$setup, test_in_edges_filtered, $crate::edges::test_in_edges_filtered}
-        $crate::general_test!{$setup, test_all_edges_filtered, $crate::edges::test_all_edges_filtered}
+        $crate::general_test!{$setup, filter_test_vertices_filter, $crate::filter::test_vertices_filter}
+        $crate::general_test!{$setup, filter_test_edges_filter, $crate::filter::test_edges_filter}
+        $crate::general_test!{$setup, vertices_test_vertices_collect, $crate::collect::test_vertices_collect}
+        $crate::general_test!{$setup, vertices_test_edges_collect, $crate::collect::test_edges_collect}
+        $crate::general_test!{$setup, edges_test_out_edges, $crate::edges::test_out_edges}
+        $crate::general_test!{$setup, edges_test_out_edges_limit, $crate::edges::test_out_edges_limit}
+        $crate::general_test!{$setup, edges_test_in_edges, $crate::edges::test_in_edges}
+        $crate::general_test!{$setup, edges_test_in_edges_limit, $crate::edges::test_in_edges_limit}
+        $crate::general_test!{$setup, edges_test_all_edges, $crate::edges::test_all_edges}
+        $crate::general_test!{$setup, edges_test_all_edges_limit, $crate::edges::test_all_edges_limit}
+        $crate::general_test!{$setup, edges_test_out_edges_filtered, $crate::edges::test_out_edges_filtered}
+        $crate::general_test!{$setup, edges_test_out_edges_filtered_limit, $crate::edges::test_out_edges_filtered_limit}
+        $crate::general_test!{$setup, edges_test_in_edges_filtered, $crate::edges::test_in_edges_filtered}
+        $crate::general_test!{$setup, edges_test_in_edges_filtered_limit, $crate::edges::test_in_edges_filtered_limit}
+        $crate::general_test!{$setup, edges_test_all_edges_filtered, $crate::edges::test_all_edges_filtered}
+        $crate::general_test!{$setup, edges_test_all_edges_filtered_limit, $crate::edges::test_all_edges_filtered_limit}
         $crate::general_test!{$setup, context_test_vertices_context, $crate::context::test_vertices_context}
+        $crate::general_test!{$setup, vertices_test_filtered, $crate::vertices::test_filtered}
+        $crate::general_test!{$setup, vertices_test_filtered_limit, $crate::vertices::test_filtered_limit}
+        $crate::general_test!{$setup, vertices_test_limit, $crate::vertices::test_limit}
         $crate::general_test!{$setup, vertices_test_head, $crate::vertices::test_head}
         $crate::general_test!{$setup, vertices_test_tail, $crate::vertices::test_tail}
         $crate::general_test!{$setup, mutation_test_mutation, $crate::mutation::test_mutation}
@@ -291,7 +304,9 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, drain_test_vertices_drain, $crate::drain::test_vertices_drain}
         $crate::general_test!{$setup, drain_test_edges_drain, $crate::drain::test_edges_drain}
         $crate::edge_index_label_test!{$setup, index_edge_label_test_index, $crate::index::edge_label::test_index}
+        $crate::edge_index_label_test!{$setup, index_edge_label_test_index_limit, $crate::index::edge_label::test_index_limit}
         $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index, $crate::index::vertex_label::test_index}
+        $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index_limit, $crate::index::vertex_label::test_index_limit}
         $crate::vertex_index_default_test!{$setup, index_vertex_default_test_index, $crate::index::vertex_default::test_index}
         $crate::vertex_index_default_test!{$setup, index_vertex_default_test_index_remove, $crate::index::vertex_default::test_index_remove}
         $crate::vertex_index_default_test!{$setup, index_vertex_default_test_index_update, $crate::index::vertex_default::test_index_update}
@@ -327,13 +342,39 @@ impl Display for TestError {
                 }
                 write!(f, "Expected elements:\n{}", expected.join("\n"))?;
             }
+            TestError::MoreThanOneElement { actual, expected } => {
+                write!(
+                    f,
+                    "Expected one of:\n{}\nBut got:\n{}",
+                    expected.join("\n"),
+                    actual.join("\n")
+                )?;
+            }
         }
 
         Ok(())
     }
 }
 
-pub fn assert_element_eq<Graph>(
+pub fn assert_elements_one_of<Graph>(
+    graph: &Graph,
+    actual: impl IntoIterator<Item = impl Into<Id<Graph::VertexId, Graph::EdgeId>>>,
+    expected: impl IntoIterator<Item = impl Into<Id<Graph::VertexId, Graph::EdgeId>>>,
+) -> Result<(), TestError>
+where
+    Graph: graph_api_lib::Graph,
+{
+    let actual: Vec<String> = actual.into_iter().map(|e| graph.dbg(e.into())).collect();
+    let expected: Vec<String> = expected.into_iter().map(|e| graph.dbg(e.into())).collect();
+
+    if actual.len() != 1 {
+        return Err(TestError::MoreThanOneElement { expected, actual });
+    }
+
+    Ok(())
+}
+
+pub fn assert_elements_eq<Graph>(
     graph: &Graph,
     actual: impl IntoIterator<Item = impl Into<Id<Graph::VertexId, Graph::EdgeId>>>,
     expected: impl IntoIterator<Item = impl Into<Id<Graph::VertexId, Graph::EdgeId>>>,
@@ -367,7 +408,16 @@ where
 #[macro_export]
 macro_rules! assert_elements_eq {
     ($graph:expr, $actual:expr, $expected:expr) => {
-        if let Err(e) = $crate::assert_element_eq($graph, $actual, $expected) {
+        if let Err(e) = $crate::assert_elements_eq($graph, $actual, $expected) {
+            panic!("{}", e);
+        }
+    };
+}
+
+#[macro_export]
+macro_rules! assert_elements_one_of {
+    ($graph:expr, $actual:expr, $expected:expr) => {
+        if let Err(e) = $crate::assert_elements_one_of($graph, $actual, $expected) {
             panic!("{}", e);
         }
     };

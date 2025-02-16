@@ -1,15 +1,15 @@
 use crate::graph::{EdgeReference, Graph};
 use crate::walker::{EdgeWalker, Element, VertexWalker, Walker};
-use crate::{Direction, EdgeSearch, Element as OtherElement};
+use crate::EdgeSearch;
 
-pub struct Edges<'a, 'graph, Parent>
+pub struct Edges<'search, 'graph, Parent>
 where
     Parent: VertexWalker<'graph>,
     <Parent as Walker<'graph>>::Graph: 'graph,
 {
     parent: Parent,
-    current_iter: Option<<Parent::Graph as Graph>::EdgeIter<'graph>>,
-    search: EdgeSearch<'a, Parent::Graph>,
+    current_iter: Option<<Parent::Graph as Graph>::EdgeIter<'search, 'graph>>,
+    edge_search: EdgeSearch<'search, Parent::Graph>,
     current: Option<<Parent::Graph as Graph>::VertexId>,
 }
 
@@ -23,18 +23,18 @@ where
     ) -> Edges<'a, 'graph, Parent> {
         Self {
             parent,
-            search,
+            edge_search: search,
             current_iter: None,
             current: None,
         }
     }
 }
 
-impl<'graph, Parent> Walker<'graph> for Edges<'_, 'graph, Parent>
+impl<'search, 'graph, Parent> Walker<'graph> for Edges<'_, 'graph, Parent>
 where
     Parent: VertexWalker<'graph>,
     <Parent as Walker<'graph>>::Graph: 'graph,
-    <Parent::Graph as Graph>::EdgeIter<'graph>:
+    <Parent::Graph as Graph>::EdgeIter<'search, 'graph>:
         Iterator<Item = <Parent::Graph as Graph>::EdgeReference<'graph>>,
 {
     type Graph = Parent::Graph;
@@ -54,8 +54,6 @@ impl<'graph, Parent> EdgeWalker<'graph> for Edges<'_, 'graph, Parent>
 where
     Parent: VertexWalker<'graph>,
     <Parent as Walker<'graph>>::Graph: 'graph,
-    <Parent::Graph as Graph>::EdgeIter<'graph>:
-        Iterator<Item = <Parent::Graph as Graph>::EdgeReference<'graph>>,
 {
     fn next(
         &mut self,
@@ -64,59 +62,15 @@ where
         loop {
             if let Some(ref mut iter) = self.current_iter {
                 if let Some(edge) = iter.next() {
-                    if self
-                        .search
-                        .evaluate(self.current.expect("source vertex must be set"), &edge)
-                    {
-                        return Some(edge);
-                    }
-                    // This edge didn't match the search
-                    continue;
+                    return Some(edge);
                 }
                 self.current_iter = None;
             } else if let Some(vertex) = self.parent.next(graph) {
                 self.current = Some(vertex);
-                self.current_iter = Some(graph.edges(vertex, &self.search));
+                self.current_iter = Some(graph.edges(vertex, &self.edge_search));
             } else {
                 return None;
             }
         }
-    }
-}
-
-impl<Graph> EdgeSearch<'_, Graph>
-where
-    Graph: crate::Graph,
-{
-    fn evaluate<'graph, T: EdgeReference<'graph, Graph>>(
-        &self,
-        current: Graph::VertexId,
-        edge_reference: &T,
-    ) -> bool
-    where
-        Graph: crate::Graph,
-    {
-        match self.direction {
-            Some(Direction::All)
-                if edge_reference.head() != current && edge_reference.tail() != current =>
-            {
-                return false
-            }
-            Some(Direction::Incoming) if edge_reference.head() != current => return false,
-            Some(Direction::Outgoing) => {
-                if edge_reference.tail() != current {
-                    return false;
-                }
-            }
-            _ => {}
-        }
-        if let Some(label) = &self.label {
-            let element_label = edge_reference.weight().label();
-            if element_label != *label {
-                return false;
-            }
-        }
-
-        true
     }
 }

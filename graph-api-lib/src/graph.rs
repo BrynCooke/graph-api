@@ -72,6 +72,8 @@ pub trait Graph: Sized + Debug {
     type SupportsEdgeOrderedIndex: Support;
     /// Supports indexing of vertices by field using an inverted full text index.
     type SupportsVertexFullTextIndex: Support;
+    /// Supports indexing of edges by adjacent vertex label.
+    type SupportsEdgeAdjacentLabelIndex: Support;
     /// Supports clearing of all vertices and edges
     type SupportsClear: Support;
 
@@ -122,12 +124,12 @@ pub trait Graph: Sized + Debug {
         Self: 'graph;
 
     /// An iterator over the edge references.
-    type EdgeIter<'graph>: Iterator<Item = Self::EdgeReference<'graph>>
+    type EdgeIter<'search, 'graph>: Iterator<Item = Self::EdgeReference<'graph>>
     where
         Self: 'graph;
 
     /// An iterator over the vertex references.
-    type VertexIter<'graph>: Iterator<Item = Self::VertexReference<'graph>>
+    type VertexIter<'search, 'graph>: Iterator<Item = Self::VertexReference<'graph>>
     where
         Self: 'graph;
 
@@ -156,7 +158,10 @@ pub trait Graph: Sized + Debug {
 
     /// Iterate over vertex identifiers.
     /// Graphs should try to narrow down the returned vertices using the search criteria, but overfetch will be filtered.
-    fn vertices(&self, vertex_search: &VertexSearch<Self>) -> Self::VertexIter<'_>;
+    fn vertices<'search>(
+        &self,
+        vertex_search: &VertexSearch<'search, Self>,
+    ) -> Self::VertexIter<'search, '_>;
 
     /// Gets the edge with the specified identifier.
     fn edge(&self, id: Self::EdgeId) -> Option<Self::EdgeReference<'_>>;
@@ -166,7 +171,11 @@ pub trait Graph: Sized + Debug {
 
     /// Returns an iterator over the edges of a vertex.
     /// Graphs should try to narrow down the returned edges using the search criteria, but overfetch will be filtered.
-    fn edges(&self, id: Self::VertexId, search: &EdgeSearch<Self>) -> Self::EdgeIter<'_>;
+    fn edges<'search>(
+        &self,
+        id: Self::VertexId,
+        search: &EdgeSearch<'search, Self>,
+    ) -> Self::EdgeIter<'search, '_>;
 
     /// Clears the graph. This may not be supported by all graph implementations.
     fn clear(&mut self)

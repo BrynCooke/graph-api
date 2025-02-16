@@ -29,12 +29,12 @@ where
     }
 }
 
-impl<'graph, Parent> Walker<'graph> for Endpoints<'graph, Parent>
+impl<'search, 'graph, Parent> Walker<'graph> for Endpoints<'graph, Parent>
 where
     Parent: EdgeWalker<'graph>,
     <Parent as Walker<'graph>>::Context: Clone + 'static,
     <Parent as Walker<'graph>>::Graph: 'graph,
-    <Parent::Graph as Graph>::EdgeIter<'graph>:
+    <Parent::Graph as Graph>::EdgeIter<'search, 'graph>:
         Iterator<Item = <Parent::Graph as Graph>::EdgeReference<'graph>>,
 {
     type Graph = Parent::Graph;
@@ -51,12 +51,12 @@ where
     }
 }
 
-impl<'graph, Parent> VertexWalker<'graph> for Endpoints<'graph, Parent>
+impl<'search, 'graph, Parent> VertexWalker<'graph> for Endpoints<'graph, Parent>
 where
     Parent: EdgeWalker<'graph>,
     <Parent as Walker<'graph>>::Context: Clone + 'static,
     <Parent as Walker<'graph>>::Graph: 'graph,
-    <Parent::Graph as Graph>::EdgeIter<'graph>:
+    <Parent::Graph as Graph>::EdgeIter<'search, 'graph>:
         Iterator<Item = <Parent::Graph as Graph>::EdgeReference<'graph>>,
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {

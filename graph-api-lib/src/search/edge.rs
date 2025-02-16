@@ -1,13 +1,14 @@
-use crate::{Direction, Element};
+use crate::{Direction, Element, Supported};
 
 /// A search to apply to edges when querying a graph.
 /// This allows graph implementations to support vertex centric indexes.
 /// In the future, this will be expanded to support more complex filters than just label and direction.
-pub struct EdgeSearch<'a, Graph>
+pub struct EdgeSearch<'search, Graph>
 where
     Graph: crate::Graph,
 {
-    _phantom: std::marker::PhantomData<&'a Graph>,
+    // Futureproof: edges may eventually be indexable
+    _phantom: std::marker::PhantomData<&'search ()>,
 
     /// the label of the edges
     pub label: Option<<Graph::Edge as Element>::Label>,
@@ -75,6 +76,15 @@ where
     /// The maximum number of edges to return relative to the starting vertex.
     pub fn limit(mut self, limit: usize) -> Self {
         self.limit = Some(limit);
+        self
+    }
+
+    /// Adjacent vertex label must match
+    pub fn adjacent_labelled(mut self, adjacent_label: <Graph::Vertex as Element>::Label) -> Self
+    where
+        Graph: crate::Graph<SupportsEdgeAdjacentLabelIndex = Supported>,
+    {
+        self.adjacent_label = Some(adjacent_label);
         self
     }
 }
