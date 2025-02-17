@@ -1,3 +1,5 @@
+![CI](https://github.com/BrynCooke/graph-api/actions/workflows/ci.yml/badge.svg)
+
 # Graph API
 
 An ergonomic API for working with **in memory** graphs in Rust that provides a flexible and type-safe way to interact
