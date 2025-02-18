@@ -205,7 +205,7 @@ where
     type Item = VertexReferenceWrapper<'graph, Graph, Ix>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.count >= self.vertex_search.limit.unwrap_or(usize::MAX) {
+        if self.count >= self.vertex_search.limit() {
             return None;
         }
         loop {
@@ -216,8 +216,8 @@ where
                     .node_weight(node)
                     .expect("node weight should exist"),
             }) {
-                if let Some(label) = self.vertex_search.label {
-                    if label != Element::label(next.weight()) {
+                if let VertexSearch::Label { label, .. } = &self.vertex_search {
+                    if *label != Element::label(next.weight()) {
                         continue;
                     }
                 }

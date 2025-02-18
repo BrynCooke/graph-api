@@ -1,7 +1,7 @@
 use crate::index::VertexIndexStorage;
 use crate::tombstone_vec::TombstoneVec;
 use crate::{EdgeId, VertexId};
-use graph_api_lib::{Direction, Element, Index};
+use graph_api_lib::{Direction, Element, Index, Label};
 use std::collections::BTreeSet;
 use std::marker::PhantomData;
 use std::ops::RangeInclusive;
@@ -120,13 +120,15 @@ where
     }
 
     pub(crate) fn add(&mut self, vertex: Vertex, indexes: &mut [VertexIndexStorage]) -> u32 {
+        let label = vertex.label();
         let vertex_id = self.vertices.push(VertexStorage::new(vertex)) as u32;
         let storage = self
             .vertices
             .get(vertex_id as usize)
             .expect("we just inserted the vertex, qed");
         let weight = &storage.weight;
-        for index in Vertex::Index::variants() {
+
+        for index in label.indexes() {
             if let Some(value) = weight.value(index) {
                 let index_storage = &mut indexes[index.ordinal()];
                 index_storage.insert(value, vertex_id, index);
@@ -148,8 +150,9 @@ where
     ) -> Option<VertexStorage<Vertex>> {
         // Get the vertex before removing it so we can clean up indexes
         if let Some(vertex) = self.vertices.get(vertex_id as usize) {
+            let label = vertex.weight.label();
             // Remove from all indexes first
-            for index in Vertex::Index::variants() {
+            for index in label.indexes() {
                 if let Some(value) = vertex.weight.value(index) {
                     let index_storage = &mut indexes[index.ordinal()];
                     index_storage.remove(&value, vertex_id, index);

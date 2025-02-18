@@ -15,9 +15,6 @@ pub trait Element: Debug {
     /// Information about the Label for this element
     type Label: Eq + Copy + Hash + Debug + Label + 'static;
 
-    /// Information about indexes for this element
-    type Index: Eq + Copy + Hash + Debug + Index + 'static;
-
     /// Returns the label of the element.
     fn label(&self) -> Self::Label;
 
@@ -28,16 +25,28 @@ pub trait Element: Debug {
 }
 ```
 
-An `Element` is implemented by both `Vertex` and `Edge`. It has two associated types: `Label` and `Index`.
+An `Element` is implemented by both `Vertex` and `Edge`. The associated type `Label` contains information about the element that can be introspected at runtime.
 
-Both the `Label` and `Index` traits contain introspection methods that allow your graph to allocate
-datastructures that can hold your element data.
+A `Label` in a graph is a type of element, for instance a `Person` vertex, or a `Knows` edge.
+
+It is often useful to index elements in a graph so that they can be accessed quickly. For instance, looking up a person by name, or all people that have a biography that contains a keyword. 
+The `Label` trait allows graph implementors to determine if an element added to the graph needs indexing.
+
+Each Label can be indexed by more than one index.
 
 ```rust
-/// A label for an `Element`. This can be either a vertex or an edge.
-pub trait Label {
-    /// All the `Label` variants
+pub trait Label
+where
+    Self: Sized + Copy + Eq + Hash + Debug,
+{
+    /// Information about indexes for this label
+    type Index: Eq + Copy + Hash + Debug + Index + 'static;
+
+    /// All label variants
     fn variants() -> &'static [Self];
+
+    /// The indexes associated with this label
+    fn indexes(&self) -> &'static [Self::Index];
 
     /// A unique ordinal for this label
     fn ordinal(&self) -> usize;
@@ -47,29 +56,28 @@ pub trait Label {
 }
 ```
 
+The `Index` trait contains details about how an element is to be indexed.
+The current options are:
+* default - a regular lookup by value.
+* ordered - supports range searches.
+* full_text - full text search. (The exact semantics of this need to be tightened up)
 ```rust
 pub trait Index
 where
     Self: Sized + Copy + Eq + Hash + Debug,
 {
-    /// All the index variants
-    fn variants() -> &'static [Self];
-
-    /// The type of the index
+    /// The type of the element being indexed.
+    /// Supported types are graph dependant, however all graphs support basic rust type and strings.
     fn ty(&self) -> TypeId;
 
     /// The index ordinal
     fn ordinal(&self) -> usize;
 
     /// If the index is ordered
-    fn ordered(&self) -> bool {
-        false
-    }
+    fn ordered(&self) -> bool;
 
     /// If the index is full text
-    fn full_text(&self) -> bool {
-        false
-    }
+    fn full_text(&self) -> bool;
 }
 ```
 

@@ -9,7 +9,7 @@ use crate::index::VertexIndexStorage;
 use crate::EdgeId;
 use graph_api_lib::{
     Direction, EdgeSearch, Element, Graph, Index, Label, Project, ProjectMut, Supported, Value,
-    ValueOrRange,
+    VertexSearch,
 };
 use smallbox::space::S8;
 use smallbox::{smallbox, SmallBox};
@@ -146,7 +146,7 @@ impl<'reference, Element> graph_api_lib::MutationListener<'reference, Element>
 where
     Element: graph_api_lib::Element,
 {
-    fn update(&mut self, index: Element::Index, before: Value, after: Value) {
+    fn update(&mut self, index: <Element::Label as Label>::Index, before: Value, after: Value) {
         let actual_index = &mut self.indexes[index.ordinal()];
         actual_index.remove(&before, self.id, &index);
         actual_index.insert(after, self.id, &index);
@@ -383,7 +383,11 @@ where
             vertices: (0..Vertex::Label::variants().len())
                 .map(|_i| LabelledVertices::new())
                 .collect(),
-            indexes: Vertex::Index::variants().iter().map(|i| i.into()).collect(),
+            indexes: <Vertex::Label as Label>::variants()
+                .iter()
+                .flat_map(|label| label.indexes().iter())
+                .map(|i| i.into())
+                .collect(),
             edges: (0..Edge::Label::variants().len())
                 .map(|_i| LabelledEdges::new())
                 .collect(),
@@ -541,28 +545,10 @@ where
 
     fn vertices<'search>(
         &self,
-        search: &graph_api_lib::VertexSearch<'search, Self>,
+        search: &VertexSearch<'search, Self>,
     ) -> Self::VertexIter<'search, '_> {
-        let iter: SmallBox<dyn Iterator<Item = VertexId> + '_, S8> =
-            if let Some((index, value_or_range)) = &search.index {
-                let label = search
-                    .label
-                    .expect("SimpleGraph only supports indexes on labels");
-                let index_storage = &self.indexes[index.ordinal()];
-                match &value_or_range {
-                    ValueOrRange::Value(value) => {
-                        index_storage.get(value, index, label.ordinal() as u16)
-                    }
-                    ValueOrRange::Range(range) => {
-                        index_storage.range(range, index, label.ordinal() as u16)
-                    }
-                }
-            } else if let Some(label) = search.label {
-                // Only iterate over vertices for the specified label
-                smallbox!(self.vertices[label.ordinal()]
-                    .iter()
-                    .map(move |idx| VertexId::new(label.ordinal() as u16, idx)))
-            } else {
+        let iter: SmallBox<dyn Iterator<Item = VertexId> + '_, S8> = match search {
+            VertexSearch::Scan { .. } => {
                 // Start iterating through the first group; the iterator will handle the rest
                 smallbox!(self
                     .vertices
@@ -571,14 +557,34 @@ where
                     .flat_map(|(ordinal, label)| label
                         .iter()
                         .map(move |idx| VertexId::new(ordinal as u16, idx))))
-            };
+            }
+            VertexSearch::Label { label, .. } => {
+                // Only iterate over vertices for the specified label
+                let label_ordinal = label.ordinal() as u16;
+                smallbox!(self.vertices[label.ordinal()]
+                    .iter()
+                    .map(move |idx| VertexId::new(label_ordinal, idx)))
+            }
+            VertexSearch::Index { index, value, .. } => {
+                let index_storage = &self.indexes[index.ordinal()];
+                index_storage.get(value, index)
+            }
+            VertexSearch::Range { index, range, .. } => {
+                let index_storage = &self.indexes[index.ordinal()];
+                index_storage.range(range, index)
+            }
+            VertexSearch::FullText { index, search, .. } => {
+                let index_storage = &self.indexes[index.ordinal()];
+                index_storage.get(search, index)
+            }
+        };
 
         VertexIter {
             _phantom: Default::default(),
             vertices: &self.vertices,
             iter,
             count: 0,
-            limit: search.limit.unwrap_or(usize::MAX),
+            limit: search.limit(),
         }
     }
 

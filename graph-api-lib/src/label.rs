@@ -1,3 +1,4 @@
+use crate::Index;
 use std::fmt::Debug;
 use std::hash::Hash;
 
@@ -6,8 +7,14 @@ pub trait Label
 where
     Self: Sized + Copy + Eq + Hash + Debug,
 {
+    /// Information about indexes for this label
+    type Index: Eq + Copy + Hash + Debug + Index + 'static;
+
     /// All label variants
     fn variants() -> &'static [Self];
+
+    /// The indexes associated with this label
+    fn indexes(&self) -> &'static [Self::Index];
 
     /// A unique ordinal for this label
     fn ordinal(&self) -> usize;
@@ -17,9 +24,15 @@ where
 }
 
 impl Label for () {
+    type Index = ();
+
     /// The anonymous label
     fn variants() -> &'static [Self] {
         &[()]
+    }
+
+    fn indexes(&self) -> &'static [Self::Index] {
+        &[]
     }
 
     fn ordinal(&self) -> usize {

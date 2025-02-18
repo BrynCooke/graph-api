@@ -1,6 +1,6 @@
 use crate::walker::builder::{ImmutableMarker, MutableMarker, StartWalkerBuilder};
-use crate::VertexSearch;
 use crate::{walker, EdgeSearch, Element, Value};
+use crate::{Label, VertexSearch};
 use std::fmt::Debug;
 use std::hash::Hash;
 
@@ -310,12 +310,12 @@ where
     Element: crate::Element,
 {
     /// Called when a setter is called on a projection of an indexed `Element`.
-    fn update(&mut self, index: Element::Index, before: Value, after: Value);
+    fn update(&mut self, index: <Element::Label as Label>::Index, before: Value, after: Value);
 }
 
 impl<Element> MutationListener<'_, Element> for ()
 where
     Element: crate::Element,
 {
-    fn update(&mut self, _index: <Element>::Index, _before: Value, _after: Value) {}
+    fn update(&mut self, _index: <Element::Label as Label>::Index, _before: Value, _after: Value) {}
 }

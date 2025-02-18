@@ -180,8 +180,8 @@ impl VertexIndexStorage {
         &'a self,
         key: &Value,
         index: &I,
-        label: u16,
     ) -> SmallBox<dyn Iterator<Item = VertexId> + 'a, S8> {
+        let label = 0;
         macro_rules! search {
             ($ident: ident) => {
                 search!($ident, $ident);
@@ -231,8 +231,8 @@ impl VertexIndexStorage {
         &'a self,
         range: &Range<Value>,
         index: &I,
-        label: u16,
     ) -> SmallBox<dyn Iterator<Item = VertexId> + 'a, S8> {
+        let label = 0;
         macro_rules! search {
             ($ident: ident) => {
                 paste! {

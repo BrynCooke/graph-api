@@ -157,11 +157,6 @@ impl Model {
         if index_count == 0 {
             quote! {
                 impl graph_api_lib::Index for #index_ident {
-                    fn variants()-> &'static[#index_ident] {
-                        static VARIANTS: [#index_ident; #index_count] = [#(#index_ident::#all_indexes),*];
-                        &VARIANTS
-                    }
-
                     fn ty(&self) -> core::any::TypeId {
                         unreachable!("this index enum has no variants")
                     }
@@ -169,16 +164,19 @@ impl Model {
                     fn ordinal(&self) -> usize {
                         unreachable!("this index enum has no variants")
                     }
+
+                    fn full_text(&self) -> bool {
+                        false
+                    }
+
+                    fn ordered(&self) -> bool {
+                        false
+                    }
                 }
             }
         } else {
             quote! {
                  impl graph_api_lib::Index for #index_ident {
-                    fn variants()-> &'static[#index_ident] {
-                        static VARIANTS: [#index_ident; #index_count] = [#(#index_ident::#all_indexes),*];
-                        &VARIANTS
-                    }
-
                     fn ty(&self) -> core::any::TypeId {
                         match self {
                             #(#index_ident::#all_indexes => core::any::TypeId::of::<#index_types>()),*
@@ -210,7 +208,6 @@ impl Model {
     fn as_impl_element(&self) -> TokenStream {
         let ident = &self.ident;
         let label_ident = &self.label_ident;
-        let index_ident = &self.index_ident;
         let variants: Vec<TokenStream> = self
             .variants
             .iter()
@@ -227,7 +224,7 @@ impl Model {
             quote! {}
         } else {
             quote! {
-                fn value(&self, index: &Self::Index) -> Option<graph_api_lib::Value> {
+                fn value(&self, index: &<Self::Label as graph_api_lib::Label>::Index) -> Option<graph_api_lib::Value> {
                     match (self, index) {
                         #(#index_accessor),*
                         (_,_)=> None
@@ -239,7 +236,6 @@ impl Model {
         quote! {
             impl graph_api_lib::Element for #ident {
                 type Label = #label_ident;
-                type Index = #index_ident;
                 fn label(&self) -> Self::Label {
                     match self {
                         #(#variants),*
@@ -255,12 +251,19 @@ impl Model {
     fn as_enum_label(&self) -> TokenStream {
         let vis = &self.visibility;
         let label_ident = &self.label_ident;
+        let index_ident = &self.index_ident;
         let label_count = self.variants.len();
         let labels: Vec<TokenStream> = self
             .variants
             .iter()
             .map(Variant::labels)
             .collect::<Vec<_>>();
+        let index_by_label: Vec<TokenStream> = self
+            .variants
+            .iter()
+            .map(Variant::static_indexes)
+            .collect::<Vec<_>>();
+
         quote! {
             #[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]
             #vis enum #label_ident {
@@ -269,9 +272,17 @@ impl Model {
 
             impl graph_api_lib::Label for #label_ident {
 
+                type Index = #index_ident;
+
                 fn variants()-> &'static[#label_ident] {
                     static VARIANTS: [#label_ident; #label_count] = [#(#label_ident::#labels),*];
                     &VARIANTS
+                }
+
+                fn indexes(&self) -> &'static[#index_ident] {
+                    match self {
+                        #(#index_by_label),*
+                    }
                 }
 
                 fn ordinal(&self) -> usize {
@@ -623,11 +634,25 @@ impl Variant {
     fn indexes(&self) -> Vec<TokenStream> {
         self.indexed_fields()
             .map(|f| {
-                let index_variant =
-                    format_ident!("{}{}", self.ident, f.ident.to_string().to_camel());
+                let index_variant = &f.index_variant;
                 quote! {#index_variant}
             })
             .collect()
+    }
+
+    fn static_indexes(&self) -> TokenStream {
+        let variant = &self.ident;
+        let label_ident = &self.label_ident;
+        let index_ident = &self.index_ident;
+        let index_variants = self.indexed_fields().map(|f|&f.index_variant).collect::<Vec<_>>();
+        let index_count = index_variants.len();
+        quote! {
+            #label_ident::#variant => {
+                static INDEXES: [#index_ident; #index_count] = [#(#index_ident::#index_variants),*];
+                &INDEXES
+            }
+        }
+
     }
 
     fn label_selector(&self) -> TokenStream {
@@ -642,13 +667,14 @@ impl Variant {
         quote! {#vis fn #select_name<'reference, Graph>() -> graph_api_lib::#search_ident<'reference, Graph>
             where
                 Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge, #feature = graph_api_lib::Supported>,
-                #element_type: graph_api_lib::Element<Index = Self>,
+                #element_type: graph_api_lib::Element<Label = #label_ident>,
             {
-            graph_api_lib::#search_ident::new().labelled(#label_ident::#variant)
+            graph_api_lib::#search_ident::label(#label_ident::#variant)
         }}
     }
 
     fn index_selectors(&self) -> Vec<TokenStream> {
+        let label_ident = &self.label_ident;
         let index_ident = &self.index_ident;
         let element_type = &self.element_type;
         let search_ident = &self.search_ident;
@@ -663,25 +689,31 @@ impl Variant {
                 };
 
                 let vis = &self.visibility;
+
                 let index_variant =
                     format_ident!("{}{}", self.ident, f.ident.to_string().to_camel());
                 let select_name =
                     format_ident!("{}_by_{}", self.ident.to_string().to_snake(), f.ident);
                 let ty = f.ref_ty.clone();
-                let label_ident = &self.label_ident;
-                let variant = &self.ident;
+                let call = if f.full_text {
+                    format_ident!("full_text")
+                }
+                else {
+                    format_ident!("get")
+                };
                 quote! {#vis fn #select_name<'reference, Graph>(value: #ty) -> graph_api_lib::#search_ident<'reference, Graph>
                     where
                         Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge, #feature = graph_api_lib::Supported>,
-                        #element_type: graph_api_lib::Element<Index = Self>,
+                        #element_type: graph_api_lib::Element<Label = #label_ident>,
                     {
-                    graph_api_lib::#search_ident::new().labelled(#label_ident::#variant).indexed(#index_ident::#index_variant, value)
+                    graph_api_lib::#search_ident::#call(#index_ident::#index_variant, value)
                 }}
             })
             .collect()
     }
 
     fn index_range_selectors(&self) -> Vec<TokenStream> {
+        let label_ident = &self.label_ident;
         let index_ident = &self.index_ident;
         let element_type = &self.element_type;
         let search_ident = &self.search_ident;
@@ -696,14 +728,12 @@ impl Variant {
                 let select_name =
                     format_ident!("{}_by_{}_range", self.ident.to_string().to_snake(), f.ident);
                 let ty = f.ref_ty.clone();
-                let label_ident = &self.label_ident;
-                let variant = &self.ident;
                 quote! {#vis fn #select_name<'reference, Graph>(range: std::ops::Range<#ty>) -> graph_api_lib::#search_ident<'reference, Graph>
                     where
                         Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge, #feature = graph_api_lib::Supported>,
-                        #element_type: graph_api_lib::Element<Index = Self>,
+                        #element_type: graph_api_lib::Element<Label = #label_ident>,
                     {
-                    graph_api_lib::#search_ident::new().labelled(#label_ident::#variant).indexed(#index_ident::#index_variant, range)
+                    graph_api_lib::#search_ident::range(#index_ident::#index_variant, range)
                 }}
             })
             .collect()
@@ -837,6 +867,7 @@ impl Variant {
         let variant_ident = &self.ident;
         let ident = &self.ident;
         let mut_ident = &self.mut_ident;
+        let label_ident = &self.label_ident;
         let fields = self.fields.iter().map(Field::ident).collect::<Vec<_>>();
         let struct_fields = self.fields.iter().map(Field::field);
         let struct_mut_fields = self.fields.iter().map(Field::mut_field);
@@ -868,7 +899,7 @@ impl Variant {
 
                 impl <'reference, Element, MutationListener> #mut_ident<'reference, Element, MutationListener>
                 where
-                    Element: graph_api_lib::Element<Index = VertexIndex>,
+                    Element: graph_api_lib::Element<Label = #label_ident>,
                     MutationListener: graph_api_lib::MutationListener<'reference, Element>,
                 {
                     #(#fields_getters)*

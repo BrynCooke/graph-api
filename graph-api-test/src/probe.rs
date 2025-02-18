@@ -1,5 +1,5 @@
 use crate::{populate_graph, Edge, Vertex};
-use graph_api_lib::Graph;
+use graph_api_lib::{Graph, VertexSearch};
 
 pub fn test_vertices_probe<G>(graph: &mut G)
 where
@@ -11,7 +11,7 @@ where
     let mut count = 0;
     let result = graph
         .walk()
-        .vertices(None)
+        .vertices(VertexSearch::scan())
         .probe(|_| {
             count += 1;
         })

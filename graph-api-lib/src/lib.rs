@@ -22,7 +22,7 @@ pub use graph::VertexReference;
 pub use graph::VertexReferenceMut;
 pub use index::Index;
 pub use value::Value;
-pub use value::ValueOrRange;
+pub use value::ValueRange;
 
 pub use error::Error;
 pub use search::edge::EdgeSearch;

@@ -41,6 +41,7 @@ pub(crate) struct Field {
     pub(crate) full_text: bool,
 }
 
+
 #[cfg_attr(test, derive(Debug))]
 #[derive(Eq, PartialEq)]
 pub(crate) enum VariantType {

@@ -1,79 +1,112 @@
-use crate::{Element, ValueOrRange};
+use crate::{Element, Label, Supported, Value, ValueRange};
+use derivative::Derivative;
+use std::ops::Range;
 
 /// A search to apply to vertices when querying a graph.
-pub struct VertexSearch<'search, Graph>
+#[derive(Derivative)]
+#[derivative(Clone(bound = ""))]
+pub enum VertexSearch<'search, Graph>
 where
     Graph: crate::Graph,
 {
-    /// The vertex label to search
-    pub label: Option<<Graph::Vertex as Element>::Label>,
-
-    /// The index to search.
-    pub index: Option<(<Graph::Vertex as Element>::Index, ValueOrRange<'search>)>,
-
-    /// The maximum number of vertices to return for the current vertex
-    pub limit: Option<usize>,
+    Scan {
+        limit: Option<usize>,
+    },
+    Label {
+        label: <Graph::Vertex as Element>::Label,
+        limit: Option<usize>,
+    },
+    Index {
+        index: <<Graph::Vertex as Element>::Label as Label>::Index,
+        value: Value<'search>,
+        limit: Option<usize>,
+    },
+    Range {
+        index: <<Graph::Vertex as Element>::Label as Label>::Index,
+        range: Range<Value<'search>>,
+        limit: Option<usize>,
+    },
+    FullText {
+        index: <<Graph::Vertex as Element>::Label as Label>::Index,
+        search: Value<'search>,
+        limit: Option<usize>,
+    },
 }
 
-impl<Graph> Clone for VertexSearch<'_, Graph>
+impl<'search, Graph> VertexSearch<'search, Graph>
 where
     Graph: crate::Graph,
 {
-    fn clone(&self) -> Self {
-        Self {
-            label: self.label,
-            index: self.index.clone(),
-            limit: self.limit,
-        }
+    pub fn scan() -> Self {
+        Self::Scan { limit: None }
     }
-}
 
-impl<Graph> Default for VertexSearch<'_, Graph>
-where
-    Graph: crate::Graph,
-{
-    fn default() -> Self {
-        Self {
-            label: None,
-            index: None,
+    pub fn label(label: <Graph::Vertex as Element>::Label) -> Self
+    where
+        Graph: crate::Graph<SupportsVertexLabelIndex = Supported>,
+    {
+        Self::Label { label, limit: None }
+    }
+
+    pub fn get<V>(index: <<Graph::Vertex as Element>::Label as Label>::Index, value: V) -> Self
+    where
+        V: Into<Value<'search>>,
+        Graph: crate::Graph<SupportsVertexIndex = Supported>,
+    {
+        Self::Index {
+            index,
+            value: value.into(),
             limit: None,
         }
     }
-}
 
-impl<'a, Graph> VertexSearch<'a, Graph>
-where
-    Graph: crate::Graph,
-{
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    /// the label that
-    pub fn labelled(mut self, label: <Graph::Vertex as Element>::Label) -> Self {
-        self.label = Some(label);
-        self
-    }
-
-    /// Search for vertices with a field value that matches a given value.
-    /// The index parameter is the index of the field to search on.
-    /// The value parameter is the field value to search for.
-    /// This method can only be used if the graph supports vertex field search.
-    /// The method returns a reference to the updated search object.
-    /// # Arguments
-    /// * index: The index of the field to search on.
-    /// * value: The field value to
-    pub fn indexed<V>(mut self, index: <Graph::Vertex as Element>::Index, value: V) -> Self
+    pub fn range<R>(index: <<Graph::Vertex as Element>::Label as Label>::Index, range: R) -> Self
     where
-        V: 'a + Into<ValueOrRange<'a>>,
+        R: Into<ValueRange<'search>>,
+        Graph: crate::Graph<SupportsVertexOrderedIndex = Supported>,
     {
-        self.index = Some((index, value.into()));
-        self
+        Self::Range {
+            index,
+            range: range.into().0,
+            limit: None,
+        }
+    }
+
+    pub fn full_text(
+        index: <<Graph::Vertex as Element>::Label as Label>::Index,
+        search: &'search str,
+    ) -> Self
+    where
+        Graph: crate::Graph<SupportsVertexFullTextIndex = Supported>,
+    {
+        Self::FullText {
+            index,
+            search: Value::Str(search),
+            limit: None,
+        }
     }
 
     /// The maximum number of vertices to return from this search
-    pub fn limit(mut self, limit: usize) -> Self {
-        self.limit = Some(limit);
+    pub fn with_limit(mut self, new_limit: usize) -> Self {
+        match &mut self {
+            VertexSearch::Scan { limit } => *limit = Some(new_limit),
+            VertexSearch::Label { limit, .. } => *limit = Some(new_limit),
+            VertexSearch::Index { limit, .. } => *limit = Some(new_limit),
+            VertexSearch::Range { limit, .. } => *limit = Some(new_limit),
+            VertexSearch::FullText { limit, .. } => *limit = Some(new_limit),
+        }
+
         self
+    }
+
+    pub fn limit(&self) -> usize {
+        match self {
+            VertexSearch::Scan { limit, .. } => limit,
+            VertexSearch::Label { limit, .. } => limit,
+            VertexSearch::Index { limit, .. } => limit,
+            VertexSearch::Range { limit, .. } => limit,
+            VertexSearch::FullText { limit, .. } => limit,
+        }
+        .unwrap_or(usize::MAX)
     }
 }

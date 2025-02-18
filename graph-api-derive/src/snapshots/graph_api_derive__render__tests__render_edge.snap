@@ -9,6 +9,7 @@ pub enum EdgeLabel {
     Language,
 }
 impl graph_api_lib::Label for EdgeLabel {
+    type Index = EdgeIndex;
     fn variants() -> &'static [EdgeLabel] {
         static VARIANTS: [EdgeLabel; 3usize] = [
             EdgeLabel::Knows,
@@ -16,6 +17,22 @@ impl graph_api_lib::Label for EdgeLabel {
             EdgeLabel::Language,
         ];
         &VARIANTS
+    }
+    fn indexes(&self) -> &'static [EdgeIndex] {
+        match self {
+            EdgeLabel::Knows => {
+                static INDEXES: [EdgeIndex; 0usize] = [];
+                &INDEXES
+            }
+            EdgeLabel::Created => {
+                static INDEXES: [EdgeIndex; 0usize] = [];
+                &INDEXES
+            }
+            EdgeLabel::Language => {
+                static INDEXES: [EdgeIndex; 0usize] = [];
+                &INDEXES
+            }
+        }
     }
     fn ordinal(&self) -> usize {
         *self as usize
@@ -38,9 +55,9 @@ impl EdgeIndex {
             Edge = Edge,
             SupportsEdgeLabelIndex = graph_api_lib::Supported,
         >,
-        Edge: graph_api_lib::Element<Index = Self>,
+        Edge: graph_api_lib::Element<Label = EdgeLabel>,
     {
-        graph_api_lib::EdgeSearch::new().labelled(EdgeLabel::Knows)
+        graph_api_lib::EdgeSearch::label(EdgeLabel::Knows)
     }
     pub fn created<'reference, Graph>() -> graph_api_lib::EdgeSearch<'reference, Graph>
     where
@@ -49,9 +66,9 @@ impl EdgeIndex {
             Edge = Edge,
             SupportsEdgeLabelIndex = graph_api_lib::Supported,
         >,
-        Edge: graph_api_lib::Element<Index = Self>,
+        Edge: graph_api_lib::Element<Label = EdgeLabel>,
     {
-        graph_api_lib::EdgeSearch::new().labelled(EdgeLabel::Created)
+        graph_api_lib::EdgeSearch::label(EdgeLabel::Created)
     }
     pub fn language<'reference, Graph>() -> graph_api_lib::EdgeSearch<'reference, Graph>
     where
@@ -60,26 +77,27 @@ impl EdgeIndex {
             Edge = Edge,
             SupportsEdgeLabelIndex = graph_api_lib::Supported,
         >,
-        Edge: graph_api_lib::Element<Index = Self>,
+        Edge: graph_api_lib::Element<Label = EdgeLabel>,
     {
-        graph_api_lib::EdgeSearch::new().labelled(EdgeLabel::Language)
+        graph_api_lib::EdgeSearch::label(EdgeLabel::Language)
     }
 }
 impl graph_api_lib::Index for EdgeIndex {
-    fn variants() -> &'static [EdgeIndex] {
-        static VARIANTS: [EdgeIndex; 0usize] = [];
-        &VARIANTS
-    }
     fn ty(&self) -> core::any::TypeId {
         unreachable!("this index enum has no variants")
     }
     fn ordinal(&self) -> usize {
         unreachable!("this index enum has no variants")
     }
+    fn full_text(&self) -> bool {
+        false
+    }
+    fn ordered(&self) -> bool {
+        false
+    }
 }
 impl graph_api_lib::Element for Edge {
     type Label = EdgeLabel;
-    type Index = EdgeIndex;
     fn label(&self) -> Self::Label {
         match self {
             Edge::Knows { .. } => EdgeLabel::Knows,

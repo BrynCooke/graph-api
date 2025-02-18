@@ -57,14 +57,20 @@ impl<Graph> EdgeSearch<'_, Graph>
 where
     Graph: crate::Graph,
 {
-    pub fn new() -> Self {
+    /// Edges must match the label
+    pub fn scan() -> Self {
         Self::default()
     }
 
     /// Edges must match the label
-    pub fn labelled(mut self, label: <Graph::Edge as Element>::Label) -> Self {
-        self.label = Some(label);
-        self
+    pub fn label(label: <Graph::Edge as Element>::Label) -> Self {
+        Self {
+            _phantom: Default::default(),
+            label: Some(label),
+            adjacent_label: None,
+            direction: None,
+            limit: None,
+        }
     }
 
     /// The direction of the edges relative to the starting vertex

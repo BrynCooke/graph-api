@@ -687,27 +687,18 @@ pub struct StartWalkerBuilder<'graph, Mutability, Graph> {
     graph: GraphAccess<'graph, Graph>,
 }
 
-impl<'a, Graph> From<Option<VertexSearch<'a, Graph>>> for VertexSearch<'a, Graph>
-where
-    Graph: crate::Graph,
-{
-    fn from(val: Option<VertexSearch<'a, Graph>>) -> Self {
-        val.unwrap_or_default()
-    }
-}
-
 impl<'graph, Graph, Mutability> StartWalkerBuilder<'graph, Mutability, Graph>
 where
     Graph: crate::graph::Graph,
 {
-    pub fn vertices<'search, T: Into<VertexSearch<'search, Graph>>>(
+    pub fn vertices<'search>(
         self,
-        vertex_search: T,
+        vertex_search: VertexSearch<'search, Graph>,
     ) -> VertexWalkerBuilder<'graph, Mutability, Graph, Vertices<'search, 'graph, Empty<Graph>>>
     {
         VertexWalkerBuilder {
             _phantom: Default::default(),
-            walker: Empty::default().vertices(vertex_search.into()),
+            walker: Empty::default().vertices(vertex_search),
             graph: self.graph,
         }
     }

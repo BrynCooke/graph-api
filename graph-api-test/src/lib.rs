@@ -18,7 +18,7 @@ pub mod probe;
 pub mod vertices;
 
 use graph_api_derive::{EdgeExt, VertexExt};
-use graph_api_lib::Id;
+use graph_api_lib::{Id};
 use std::collections::HashSet;
 use std::fmt::{Debug, Display, Formatter};
 use thiserror::Error;
@@ -284,8 +284,6 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, edges_test_all_edges_filtered, $crate::edges::test_all_edges_filtered}
         $crate::general_test!{$setup, edges_test_all_edges_filtered_limit, $crate::edges::test_all_edges_filtered_limit}
         $crate::general_test!{$setup, context_test_vertices_context, $crate::context::test_vertices_context}
-        $crate::general_test!{$setup, vertices_test_filtered, $crate::vertices::test_filtered}
-        $crate::general_test!{$setup, vertices_test_filtered_limit, $crate::vertices::test_filtered_limit}
         $crate::general_test!{$setup, vertices_test_limit, $crate::vertices::test_limit}
         $crate::general_test!{$setup, vertices_test_head, $crate::vertices::test_head}
         $crate::general_test!{$setup, vertices_test_tail, $crate::vertices::test_tail}

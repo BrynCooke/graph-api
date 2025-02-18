@@ -22,12 +22,9 @@ pub enum Value<'a> {
 }
 
 #[derive(Clone)]
-pub enum ValueOrRange<'a> {
-    Value(Value<'a>),
-    Range(Range<Value<'a>>),
-}
+pub struct ValueRange<'a>(pub(crate) Range<Value<'a>>);
 
-macro_rules! value_coercion_copy {
+macro_rules! value_coercion {
     ($ty: ty,  $ident: ident) => {
         impl<'a> From<&'a $ty> for Value<'a> {
             fn from(value: &'a $ty) -> Self {
@@ -46,34 +43,28 @@ macro_rules! value_coercion_copy {
         }
     };
 }
-value_coercion_copy!(&'a String, Str);
-value_coercion_copy!(&'a str, Str);
-value_coercion_copy!(u128, U128);
-value_coercion_copy!(u64, U64);
-value_coercion_copy!(u32, U32);
-value_coercion_copy!(u16, U16);
-value_coercion_copy!(u8, U8);
-value_coercion_copy!(i128, I128);
-value_coercion_copy!(i64, I64);
-value_coercion_copy!(i32, I32);
-value_coercion_copy!(i16, I16);
-value_coercion_copy!(i8, I8);
-value_coercion_copy!(f64, F64);
-value_coercion_copy!(f32, F32);
-value_coercion_copy!(bool, Bool);
-value_coercion_copy!(Uuid, Uuid);
+value_coercion!(&'a String, Str);
+value_coercion!(&'a str, Str);
+value_coercion!(u128, U128);
+value_coercion!(u64, U64);
+value_coercion!(u32, U32);
+value_coercion!(u16, U16);
+value_coercion!(u8, U8);
+value_coercion!(i128, I128);
+value_coercion!(i64, I64);
+value_coercion!(i32, I32);
+value_coercion!(i16, I16);
+value_coercion!(i8, I8);
+value_coercion!(f64, F64);
+value_coercion!(f32, F32);
+value_coercion!(bool, Bool);
+value_coercion!(Uuid, Uuid);
 
 macro_rules! value_or_range_coercion {
     ($ty: ty) => {
-        impl<'a> From<$ty> for ValueOrRange<'a> {
-            fn from(value: $ty) -> Self {
-                Self::Value(value.into())
-            }
-        }
-
-        impl<'a> From<Range<$ty>> for ValueOrRange<'a> {
+        impl<'a> From<Range<$ty>> for ValueRange<'a> {
             fn from(range: Range<$ty>) -> Self {
-                Self::Range(range.start.into()..range.end.into())
+                ValueRange(range.start.into()..range.end.into())
             }
         }
     };

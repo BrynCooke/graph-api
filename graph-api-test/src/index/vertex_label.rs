@@ -20,7 +20,7 @@ where
     let refs = populate_graph(graph);
     let collected = graph
         .walk()
-        .vertices(VertexIndex::person().limit(1))
+        .vertices(VertexIndex::person().with_limit(1))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
 }

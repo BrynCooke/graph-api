@@ -81,10 +81,10 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
         VertexIter::new(self, vertex_ids.into_iter())
     }
 
-    fn vertices<'a>(
+    fn vertices<'search>(
         self,
-        vertex_search: VertexSearch<'a, Self::Graph>,
-    ) -> Vertices<'a, 'graph, Self> {
+        vertex_search: VertexSearch<'search, Self::Graph>,
+    ) -> Vertices<'search, 'graph, Self> {
         Vertices::new(self, vertex_search)
     }
 

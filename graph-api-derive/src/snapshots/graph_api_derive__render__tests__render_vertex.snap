@@ -9,6 +9,7 @@ pub enum VertexLabel {
     Rust,
 }
 impl graph_api_lib::Label for VertexLabel {
+    type Index = VertexIndex;
     fn variants() -> &'static [VertexLabel] {
         static VARIANTS: [VertexLabel; 3usize] = [
             VertexLabel::Person,
@@ -16,6 +17,28 @@ impl graph_api_lib::Label for VertexLabel {
             VertexLabel::Rust,
         ];
         &VARIANTS
+    }
+    fn indexes(&self) -> &'static [VertexIndex] {
+        match self {
+            VertexLabel::Person => {
+                static INDEXES: [VertexIndex; 5usize] = [
+                    VertexIndex::PersonName,
+                    VertexIndex::PersonAge,
+                    VertexIndex::PersonUniqueId,
+                    VertexIndex::PersonUsername,
+                    VertexIndex::PersonBiography,
+                ];
+                &INDEXES
+            }
+            VertexLabel::Project => {
+                static INDEXES: [VertexIndex; 0usize] = [];
+                &INDEXES
+            }
+            VertexLabel::Rust => {
+                static INDEXES: [VertexIndex; 0usize] = [];
+                &INDEXES
+            }
+        }
     }
     fn ordinal(&self) -> usize {
         *self as usize
@@ -44,9 +67,9 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexLabelIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new().labelled(VertexLabel::Person)
+        graph_api_lib::VertexSearch::label(VertexLabel::Person)
     }
     pub fn project<'reference, Graph>() -> graph_api_lib::VertexSearch<'reference, Graph>
     where
@@ -55,9 +78,9 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexLabelIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new().labelled(VertexLabel::Project)
+        graph_api_lib::VertexSearch::label(VertexLabel::Project)
     }
     pub fn rust<'reference, Graph>() -> graph_api_lib::VertexSearch<'reference, Graph>
     where
@@ -66,9 +89,9 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexLabelIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new().labelled(VertexLabel::Rust)
+        graph_api_lib::VertexSearch::label(VertexLabel::Rust)
     }
     pub fn person_by_name<'reference, Graph>(
         value: &'reference str,
@@ -79,11 +102,9 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new()
-            .labelled(VertexLabel::Person)
-            .indexed(VertexIndex::PersonName, value)
+        graph_api_lib::VertexSearch::get(VertexIndex::PersonName, value)
     }
     pub fn person_by_age<'reference, Graph>(
         value: u64,
@@ -94,11 +115,9 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new()
-            .labelled(VertexLabel::Person)
-            .indexed(VertexIndex::PersonAge, value)
+        graph_api_lib::VertexSearch::get(VertexIndex::PersonAge, value)
     }
     pub fn person_by_unique_id<'reference, Graph>(
         value: Uuid,
@@ -109,11 +128,9 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new()
-            .labelled(VertexLabel::Person)
-            .indexed(VertexIndex::PersonUniqueId, value)
+        graph_api_lib::VertexSearch::get(VertexIndex::PersonUniqueId, value)
     }
     pub fn person_by_username<'reference, Graph>(
         value: &'reference str,
@@ -124,11 +141,9 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new()
-            .labelled(VertexLabel::Person)
-            .indexed(VertexIndex::PersonUsername, value)
+        graph_api_lib::VertexSearch::get(VertexIndex::PersonUsername, value)
     }
     pub fn person_by_biography<'reference, Graph>(
         value: &'reference str,
@@ -139,11 +154,9 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexFullTextIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new()
-            .labelled(VertexLabel::Person)
-            .indexed(VertexIndex::PersonBiography, value)
+        graph_api_lib::VertexSearch::full_text(VertexIndex::PersonBiography, value)
     }
     pub fn person_by_age_range<'reference, Graph>(
         range: std::ops::Range<u64>,
@@ -154,11 +167,9 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexOrderedIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new()
-            .labelled(VertexLabel::Person)
-            .indexed(VertexIndex::PersonAge, range)
+        graph_api_lib::VertexSearch::range(VertexIndex::PersonAge, range)
     }
     pub fn person_by_username_range<'reference, Graph>(
         range: std::ops::Range<&'reference str>,
@@ -169,24 +180,12 @@ impl VertexIndex {
             Edge = Edge,
             SupportsVertexOrderedIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Index = Self>,
+        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
-        graph_api_lib::VertexSearch::new()
-            .labelled(VertexLabel::Person)
-            .indexed(VertexIndex::PersonUsername, range)
+        graph_api_lib::VertexSearch::range(VertexIndex::PersonUsername, range)
     }
 }
 impl graph_api_lib::Index for VertexIndex {
-    fn variants() -> &'static [VertexIndex] {
-        static VARIANTS: [VertexIndex; 5usize] = [
-            VertexIndex::PersonName,
-            VertexIndex::PersonAge,
-            VertexIndex::PersonUniqueId,
-            VertexIndex::PersonUsername,
-            VertexIndex::PersonBiography,
-        ];
-        &VARIANTS
-    }
     fn ty(&self) -> core::any::TypeId {
         match self {
             VertexIndex::PersonName => core::any::TypeId::of::<String>(),
@@ -226,7 +225,6 @@ impl graph_api_lib::Index for VertexIndex {
 }
 impl graph_api_lib::Element for Vertex {
     type Label = VertexLabel;
-    type Index = VertexIndex;
     fn label(&self) -> Self::Label {
         match self {
             Vertex::Person { .. } => VertexLabel::Person,
@@ -234,7 +232,10 @@ impl graph_api_lib::Element for Vertex {
             Vertex::Rust => VertexLabel::Rust,
         }
     }
-    fn value(&self, index: &Self::Index) -> Option<graph_api_lib::Value> {
+    fn value(
+        &self,
+        index: &<Self::Label as graph_api_lib::Label>::Index,
+    ) -> Option<graph_api_lib::Value> {
         match (self, index) {
             (Vertex::Person { name, .. }, VertexIndex::PersonName) => Some((name).into()),
             (Vertex::Person { age, .. }, VertexIndex::PersonAge) => Some((age).into()),
@@ -299,7 +300,7 @@ mod __vertex_projection {
         MutationListener,
     > PersonMut<'reference, Element, MutationListener>
     where
-        Element: graph_api_lib::Element<Index = VertexIndex>,
+        Element: graph_api_lib::Element<Label = VertexLabel>,
         MutationListener: graph_api_lib::MutationListener<'reference, Element>,
     {
         pub fn name(&'reference self) -> &'reference str {
