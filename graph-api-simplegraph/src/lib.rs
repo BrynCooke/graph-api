@@ -1,4 +1,3 @@
-#![doc = include_str!("../../README.md")]
 mod graph;
 mod id;
 mod index;

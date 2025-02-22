@@ -1,4 +1,4 @@
-#![doc = include_str!("../README.md")]
+#![doc = include_str!("../../README.md")]
 // The types that are flagged by clippy generally can't be factored out as they use trait associated types.
 #![allow(clippy::type_complexity)]
 mod element;

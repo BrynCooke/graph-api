@@ -51,14 +51,20 @@ pub trait Walker<'graph>
 where
     Self: Sized,
 {
+    /// The graph that the traversal is applied to.
     type Graph: Graph;
 
+    /// The current context of the walker, this allows users to collect data as they traverse
+    /// a graph.
     type Context: Clone + 'static;
 
+    /// Return the next element in the traversal.
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
     ) -> Option<Element<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>>;
+
+    /// Returns the current context of the walker.
     fn ctx(&self) -> &Self::Context;
 }
 

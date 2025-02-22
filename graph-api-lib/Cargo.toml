@@ -13,3 +13,7 @@ petgraph = { version = "0.6.4", optional = true }
 uuid = { version = "1.11.0", features = ["v4"] }
 thiserror = "2.0.3"
 derivative = "2.2.0"
+
+[dev-dependencies]
+graph-api-simplegraph = { path = "../graph-api-simplegraph" }
+graph-api-derive = { path = "../graph-api-derive" }

@@ -209,6 +209,8 @@ name = "graph-api-lib"
 version = "0.1.0"
 dependencies = [
  "derivative",
+ "graph-api-derive",
+ "graph-api-simplegraph",
  "petgraph",
  "thiserror",
  "uuid",

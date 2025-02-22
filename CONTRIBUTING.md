@@ -22,7 +22,7 @@ Issue resolution can happen in one of two ways:
 All contributions **must** include:
 
 - Unit tests for new functionality
-- Updated existing tests if modifying current functionality
+- Update existing tests if modifying current functionality
 - Tests must pass in the CI pipeline
 
 ### 2. Code Quality

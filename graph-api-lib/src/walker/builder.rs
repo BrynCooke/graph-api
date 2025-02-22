@@ -196,6 +196,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/default_context.md")]
     pub fn push_default_context(
         self,
     ) -> VertexWalkerBuilder<
@@ -222,6 +223,7 @@ where
         })
     }
 
+    #[doc = include_str!("../../../docs/users/steps/filter.md")]
     pub fn filter<Predicate>(
         self,
         predicate: Predicate,
@@ -237,6 +239,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/detour.md")]
     pub fn detour<Path, Terminal, WalkerBuilder>(
         self,
         predicate: Path,
@@ -260,6 +263,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/out_edges.md")]
     pub fn out_edges<'a, T: Into<Option<EdgeSearch<'a, Graph>>>>(
         self,
         search: T,
@@ -271,6 +275,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/in_edges.md")]
     pub fn in_edges<'a, T: Into<Option<EdgeSearch<'a, Graph>>>>(
         self,
         search: T,
@@ -282,6 +287,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/all_edges.md")]
     pub fn all_edges<'a, T: Into<Option<EdgeSearch<'a, Graph>>>>(
         self,
         search: T,
@@ -293,6 +299,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/collect.md")]
     pub fn collect<T: FromVertexWalker<'graph, Walker>>(mut self) -> T
     where
         Walker: VertexWalker<'graph>,
@@ -301,6 +308,7 @@ where
         T::from_vertex_walker(self.walker, self.graph.take())
     }
 
+    #[doc = include_str!("../../../docs/users/steps/mutate.md")]
     pub fn mutate<Callback>(mut self, callback: Callback) -> usize
     where
         Callback: Fn(&mut Walker::Graph, Graph::VertexId, &Walker::Context),
@@ -325,6 +333,7 @@ where
         count
     }
 
+    #[doc = include_str!("../../../docs/users/steps/count.md")]
     pub fn count(mut self) -> usize
     where
         'graph: 'graph,
@@ -338,6 +347,7 @@ where
         count
     }
 
+    #[doc = include_str!("../../../docs/users/steps/is_empty.md")]
     pub fn is_empty(self) -> bool
     where
         'graph: 'graph,
@@ -345,6 +355,7 @@ where
         self.count() == 0
     }
 
+    #[doc = include_str!("../../../docs/users/steps/limit.md")]
     pub fn limit(
         self,
         limit: usize,
@@ -356,6 +367,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/first.md")]
     pub fn first(mut self) -> Option<Graph::VertexId>
     where
         'graph: 'graph,
@@ -365,7 +377,8 @@ where
         walker.next(graph)
     }
 
-    pub fn debug_print(
+    #[doc = include_str!("../../../docs/users/steps/dbg.md")]
+    pub fn dbg(
         self,
     ) -> VertexWalkerBuilder<
         'graph,
@@ -376,6 +389,7 @@ where
         self.probe(vertex_debug_callback)
     }
 
+    #[doc = include_str!("../../../docs/users/steps/probe.md")]
     pub fn probe<Callback>(
         self,
         callback: Callback,
@@ -483,6 +497,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/default_context.md")]
     pub fn push_default_context(
         self,
     ) -> EdgeWalkerBuilder<
@@ -509,6 +524,7 @@ where
         })
     }
 
+    #[doc = include_str!("../../../docs/users/steps/filter.md")]
     pub fn filter<Predicate>(
         self,
         predicate: Predicate,
@@ -523,6 +539,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/head.md")]
     pub fn head(self) -> VertexWalkerBuilder<'graph, Mutability, Graph, Endpoints<'graph, Walker>> {
         VertexWalkerBuilder {
             _phantom: Default::default(),
@@ -531,6 +548,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/tail.md")]
     pub fn tail(self) -> VertexWalkerBuilder<'graph, Mutability, Graph, Endpoints<'graph, Walker>> {
         VertexWalkerBuilder {
             _phantom: Default::default(),
@@ -539,6 +557,7 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/collect.md")]
     pub fn collect<T: FromEdgeWalker<'graph, Walker>>(mut self) -> T
     where
         Walker: EdgeWalker<'graph>,
@@ -546,6 +565,8 @@ where
         T::from_edge_walker(self.walker, self.graph.take())
     }
 
+
+    #[doc = include_str!("../../../docs/users/steps/count.md")]
     pub fn count(mut self) -> usize
     where
         'graph: 'graph,
@@ -559,6 +580,7 @@ where
         count
     }
 
+    #[doc = include_str!("../../../docs/users/steps/is_empty.md")]
     pub fn is_empty(self) -> bool
     where
         'graph: 'graph,
@@ -566,6 +588,7 @@ where
         self.count() == 0
     }
 
+    #[doc = include_str!("../../../docs/users/steps/limit.md")]
     pub fn limit(
         self,
         limit: usize,
@@ -577,13 +600,15 @@ where
         }
     }
 
+    #[doc = include_str!("../../../docs/users/steps/first.md")]
     pub fn first(mut self) -> Option<Graph::EdgeReference<'graph>> {
         let graph = self.graph.take();
         let mut walker = self.walker;
         walker.next(graph)
     }
 
-    pub fn debug_print(
+    #[doc = include_str!("../../../docs/users/steps/dbg.md")]
+    pub fn dbg(
         self,
     ) -> EdgeWalkerBuilder<
         'graph,
@@ -594,6 +619,7 @@ where
         self.probe(edge_debug_callback)
     }
 
+    #[doc = include_str!("../../../docs/users/steps/probe.md")]
     pub fn probe<Callback>(
         self,
         callback: Callback,
