@@ -215,10 +215,13 @@ pub trait VertexReference<'graph, Graph>: Debug
 where
     Graph: crate::Graph,
 {
+    /// Return the ID of the vertex
     fn id(&self) -> Graph::VertexId;
 
+    /// Return the weight of the vertex
     fn weight(&self) -> &Graph::Vertex;
 
+    /// Project the element to a mutation safe struct representing a single labelled vertex.
     fn project<'reference, T: Project<'reference, <Graph as crate::Graph>::Vertex>>(
         &'reference self,
     ) -> Option<T>;
@@ -234,6 +237,8 @@ where
     /// It is only safe to use this if you are mutating non-indexed fields.
     /// Incorrect usage of this method will result in graph indexes being corrupted.
     fn weight_mut(&mut self) -> &mut Graph::Vertex;
+
+    /// Project the element to a mutation safe struct representing a single labelled vertex. Modifications to the projection will be reflected in graph indexes.
     fn project_mut<
         'reference,
         T: ProjectMut<'reference, <Graph as crate::Graph>::Vertex, Self::MutationListener<'reference>>,
@@ -259,6 +264,7 @@ where
     /// Returns a reference to the weight of the edge.
     fn weight(&self) -> &Graph::Edge;
 
+    /// Project the element to a struct representing a single labelled edge.
     fn project<'reference, T: Project<'reference, <Graph as crate::Graph>::Edge>>(
         &'reference self,
     ) -> Option<T>;
@@ -273,8 +279,13 @@ where
 {
     type MutationListener<'reference>: MutationListener<'reference, Graph::Edge>;
 
+    /// Get the raw mutable vertex weight.
+    /// WARNING! It is advised to use the generated projections to get a typed reference to the vertex and use the set_ methods instead.
+    /// It is only safe to use this if you are mutating non-indexed fields.
+    /// Incorrect usage of this method will result in graph indexes being corrupted.
     fn weight_mut(&mut self) -> &mut Graph::Edge;
 
+    /// Project the element to a mutation safe struct representing a single labelled edge. Modifications to the projection will be reflected in graph indexes.
     fn project_mut<
         'reference,
         T: ProjectMut<'reference, <Graph as crate::Graph>::Edge, Self::MutationListener<'reference>>,

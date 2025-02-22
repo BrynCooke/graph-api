@@ -22,8 +22,18 @@ and ergonomic usage patterns. It includes features for graph traversal, modifica
 ## Example usage
 
 ```rust
+# use graph_api_derive::VertexExt;
+# use graph_api_derive::EdgeExt;
+# use uuid::Uuid;
+# use graph_api_lib::Id;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use std::ops::Deref;
+# use graph_api_lib::VertexSearch;
+
 #[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
+pub enum MyVertex {
     Person {
         #[index]
         name: String,
@@ -43,7 +53,7 @@ pub enum Vertex {
 }
 
 #[derive(Debug, Clone, EdgeExt)]
-pub enum Edge {
+pub enum MyEdge {
     Knows { since: i32 },
     Created,
     Language {
@@ -51,44 +61,45 @@ pub enum Edge {
     },
 }
 
-fn main() {
+# fn main() {
     // Create a new graph
-    let graph = SimpleGraph::new();
+    let mut graph = SimpleGraph::new();
 
     // Populate the graph
-    let person = graph.add_vertex(Vertex::Person {
+    let person = graph.add_vertex(MyVertex::Person {
         name: "Bryn".to_string(),
         age: 45,
         unique_id: Uuid::from_u128(1),
         username: "bryn".to_string(),
         biography: "Did some graph stuff".to_string(),
     });
-    let project = graph.add_vertex(Vertex::Project { name: "Graph API".to_string() });
-    graph.add_edge(person, project, Edge::Created);
+    let project = graph.add_vertex(MyVertex::Project { name: "Graph API".to_string() });
+    graph.add_edge(person, project, MyEdge::Created);
 
     // Traverse the graph
-    let all_vertices = graph.walk().vertices().collect::<Vec<_>>();
+    let all_vertices = graph.walk().vertices(VertexSearch::scan()).collect::<Vec<_>>();
 
     // A more complicated traversal
     // For up to two people that Bryn knows find all the people that they know and add
     // their ages to Bryn's age and collect them into a list.
     let complex = graph
         .walk()
-        .vertices(VertexIndex::person_by_name("Bryn")) // Start at people named Bryn
+        .vertices(MyVertexIndex::person_by_name("Bryn")) // Start at people named Bryn
         .filter_by_person(|v| v.username().ends_with("e")) // Filter by username ending with e
         .push_context(|v, ctx| v.project::<Person<_>>().unwrap().age()) // Stash the age in the context
-        .out_edges(EdgeIndex::knows()) // Traverse to knows
+        .out_edges(MyEdgeIndex::knows()) // Traverse to knows
         .limit(2) // Limit the traversal to two elements
         .head() // Traverse to the head of the edge (the known person) 
         .detour(|v| { // Find the people that this person knows and collect their ages
-            v.out_edges(EdgeIndex::knows())
+            v.out_edges(MyEdgeIndex::knows())
                 .head()
                 .push_context(|v, ctx| v.project::<Person<_>>().unwrap().age())
         })
         .into_iter()
         .map(|(v, ctx)| ctx.parent().deref() + ctx.deref()) // Add the ages of 
-        .collect();
-}
+        .collect::<Vec<_>>();
+# }
+
 ```
 
 ## Documentation
@@ -106,7 +117,7 @@ fn main() {
 
 ## License
 
-[Apache 2.0](LICENSE)
+[Apache 2.0](./LICENSE)
 
 ## Contributing
 

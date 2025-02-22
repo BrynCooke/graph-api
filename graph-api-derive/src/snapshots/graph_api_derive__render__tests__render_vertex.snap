@@ -64,10 +64,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexLabelIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::label(VertexLabel::Person)
     }
@@ -75,10 +73,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexLabelIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::label(VertexLabel::Project)
     }
@@ -86,10 +82,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexLabelIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::label(VertexLabel::Rust)
     }
@@ -99,10 +93,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonName, value)
     }
@@ -112,10 +104,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonAge, value)
     }
@@ -125,10 +115,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonUniqueId, value)
     }
@@ -138,10 +126,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonUsername, value)
     }
@@ -151,10 +137,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexFullTextIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::full_text(VertexIndex::PersonBiography, value)
     }
@@ -164,10 +148,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexOrderedIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::range(VertexIndex::PersonAge, range)
     }
@@ -177,10 +159,8 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            Edge = Edge,
             SupportsVertexOrderedIndex = graph_api_lib::Supported,
         >,
-        Vertex: graph_api_lib::Element<Label = VertexLabel>,
     {
         graph_api_lib::VertexSearch::range(VertexIndex::PersonUsername, range)
     }
@@ -252,9 +232,9 @@ impl graph_api_lib::Element for Vertex {
         }
     }
 }
-pub use __vertex_projection::Person;
-pub use __vertex_projection::PersonMut;
-mod __vertex_projection {
+pub use __vertex_projection_vertex_person::Person;
+pub use __vertex_projection_vertex_person::PersonMut;
+mod __vertex_projection_vertex_person {
     use super::*;
     pub struct Person<'reference, Element> {
         _phantom: std::marker::PhantomData<Element>,
@@ -404,7 +384,7 @@ mod __vertex_projection {
 pub trait VertexExt<'graph, Mutability, Graph, Walker>
 where
     Walker: graph_api_lib::VertexWalker<'graph, Graph = Graph>,
-    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+    Graph: graph_api_lib::Graph<Vertex = Vertex>,
 {
     fn all_person(
         self,
@@ -473,7 +453,7 @@ impl<'graph, Mutability, Graph, Walker> VertexExt<'graph, Mutability, Graph, Wal
 for graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
 where
     Walker: graph_api_lib::VertexWalker<'graph, Graph = Graph>,
-    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+    Graph: graph_api_lib::Graph<Vertex = Vertex>,
 {
     fn all_person(
         self,

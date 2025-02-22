@@ -6,6 +6,7 @@ use quote::{format_ident, quote, ToTokens};
 impl Model {
     pub(crate) fn into_edge(self) -> TokenStream {
         let trait_name = &self.extension_trait.ident;
+        let element_ident = &self.ident;
         let enum_label = self.as_enum_label();
         let enum_index = self.as_enum_index();
         let impl_index = self.as_impl_index();
@@ -46,7 +47,7 @@ impl Model {
             #vis trait #trait_name<'graph, Mutability, Graph, Walker>
             where
                 Walker: graph_api_lib::EdgeWalker<'graph, Graph = Graph>,
-                Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+                Graph: graph_api_lib::Graph<Edge = #element_ident>,
             {
                 #(#nav_api)*
             }
@@ -55,7 +56,7 @@ impl Model {
                 for graph_api_lib::EdgeWalkerBuilder<'graph, Mutability, Graph, Walker>
             where
                 Walker: graph_api_lib::EdgeWalker<'graph, Graph = Graph>,
-                Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+                Graph: graph_api_lib::Graph<Edge = #element_ident>,
             {
                 #(#nav_impl)*
             }
@@ -64,6 +65,7 @@ impl Model {
 
     pub(crate) fn into_vertex(self) -> TokenStream {
         let trait_name = &self.extension_trait.ident;
+        let element_ident = &self.ident;
         let enum_label = self.as_enum_label();
         let enum_index = self.as_enum_index();
         let impl_index = self.as_impl_index();
@@ -104,7 +106,7 @@ impl Model {
             #vis trait #trait_name<'graph, Mutability, Graph, Walker>
             where
                 Walker: graph_api_lib::VertexWalker<'graph, Graph = Graph>,
-                Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+                Graph: graph_api_lib::Graph<Vertex = #element_ident>,
             {
                 #(#nav_api)*
             }
@@ -113,7 +115,7 @@ impl Model {
                 for graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
             where
                 Walker: graph_api_lib::VertexWalker<'graph, Graph = Graph>,
-                Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+                Graph: graph_api_lib::Graph<Vertex = #element_ident>,
             {
                 #(#nav_impl)*
             }
@@ -644,7 +646,10 @@ impl Variant {
         let variant = &self.ident;
         let label_ident = &self.label_ident;
         let index_ident = &self.index_ident;
-        let index_variants = self.indexed_fields().map(|f|&f.index_variant).collect::<Vec<_>>();
+        let index_variants = self
+            .indexed_fields()
+            .map(|f| &f.index_variant)
+            .collect::<Vec<_>>();
         let index_count = index_variants.len();
         quote! {
             #label_ident::#variant => {
@@ -652,11 +657,11 @@ impl Variant {
                 &INDEXES
             }
         }
-
     }
 
     fn label_selector(&self) -> TokenStream {
         let vis = &self.visibility;
+        let element_ident = &self.element_ident;
         let element_type = &self.element_type;
         let label_ident = &self.label_ident;
         let variant = &self.ident;
@@ -666,15 +671,15 @@ impl Variant {
         let select_name = format_ident!("{}", self.ident.to_string().to_snake());
         quote! {#vis fn #select_name<'reference, Graph>() -> graph_api_lib::#search_ident<'reference, Graph>
             where
-                Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge, #feature = graph_api_lib::Supported>,
-                #element_type: graph_api_lib::Element<Label = #label_ident>,
+                Graph: graph_api_lib::Graph<#element_type = #element_ident, #feature = graph_api_lib::Supported>,
             {
             graph_api_lib::#search_ident::label(#label_ident::#variant)
         }}
     }
 
     fn index_selectors(&self) -> Vec<TokenStream> {
-        let label_ident = &self.label_ident;
+        let vis = &self.visibility;
+        let element_ident = &self.element_ident;
         let index_ident = &self.index_ident;
         let element_type = &self.element_type;
         let search_ident = &self.search_ident;
@@ -687,9 +692,6 @@ impl Variant {
                 else {
                     format_ident!("Supports{}Index", element_type)
                 };
-
-                let vis = &self.visibility;
-
                 let index_variant =
                     format_ident!("{}{}", self.ident, f.ident.to_string().to_camel());
                 let select_name =
@@ -703,8 +705,7 @@ impl Variant {
                 };
                 quote! {#vis fn #select_name<'reference, Graph>(value: #ty) -> graph_api_lib::#search_ident<'reference, Graph>
                     where
-                        Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge, #feature = graph_api_lib::Supported>,
-                        #element_type: graph_api_lib::Element<Label = #label_ident>,
+                        Graph: graph_api_lib::Graph<#element_type = #element_ident, #feature = graph_api_lib::Supported>,
                     {
                     graph_api_lib::#search_ident::#call(#index_ident::#index_variant, value)
                 }}
@@ -713,7 +714,8 @@ impl Variant {
     }
 
     fn index_range_selectors(&self) -> Vec<TokenStream> {
-        let label_ident = &self.label_ident;
+        let vis = &self.visibility;
+        let element_ident = &self.element_ident;
         let index_ident = &self.index_ident;
         let element_type = &self.element_type;
         let search_ident = &self.search_ident;
@@ -722,7 +724,6 @@ impl Variant {
         self.indexed_fields()
             .filter(|f| f.ordered)
             .map(|f| {
-                let vis = &self.visibility;
                 let index_variant =
                     format_ident!("{}{}", self.ident, f.ident.to_string().to_camel());
                 let select_name =
@@ -730,8 +731,7 @@ impl Variant {
                 let ty = f.ref_ty.clone();
                 quote! {#vis fn #select_name<'reference, Graph>(range: std::ops::Range<#ty>) -> graph_api_lib::#search_ident<'reference, Graph>
                     where
-                        Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge, #feature = graph_api_lib::Supported>,
-                        #element_type: graph_api_lib::Element<Label = #label_ident>,
+                        Graph: graph_api_lib::Graph<#element_type = #element_ident, #feature = graph_api_lib::Supported>,
                     {
                     graph_api_lib::#search_ident::range(#index_ident::#index_variant, range)
                 }}
@@ -865,6 +865,7 @@ impl Variant {
         let vis = &self.visibility;
         let element_ident = &self.element_ident;
         let variant_ident = &self.ident;
+        let projection_module = &self.projection_module;
         let ident = &self.ident;
         let mut_ident = &self.mut_ident;
         let label_ident = &self.label_ident;
@@ -875,9 +876,9 @@ impl Variant {
         let fields_setters = self.fields.iter().map(Field::setter);
 
         quote! {
-            #vis use __vertex_projection::#ident;
-            #vis use __vertex_projection::#mut_ident;
-            mod __vertex_projection {
+            #vis use #projection_module::#ident;
+            #vis use #projection_module::#mut_ident;
+            mod #projection_module {
                 use super::*;
                 #vis struct #ident<'reference, Element> {
                     _phantom: std::marker::PhantomData<Element>,
@@ -939,6 +940,7 @@ impl Variant {
 
     fn edge_projection(&self) -> TokenStream {
         let vis = &self.visibility;
+        let projection_module = &self.projection_module;
         let element_ident = &self.element_ident;
         let variant_ident = &self.ident;
         let ident = &self.ident;
@@ -949,9 +951,9 @@ impl Variant {
         let fields_getters = self.fields.iter().map(Field::getter).collect::<Vec<_>>();
         let fields_setters = self.fields.iter().map(Field::setter);
         quote! {
-            #vis use __edge_projection::#ident;
-            #vis use __edge_projection::#mut_ident;
-            mod __edge_projection {
+            #vis use #projection_module::#ident;
+            #vis use #projection_module::#mut_ident;
+            mod #projection_module {
                 use super::*;
                 #vis struct #ident<'reference, Element> {
                     _phantom: std::marker::PhantomData<Element>,

@@ -17,7 +17,7 @@ pub mod probe;
 pub mod vertices;
 
 use graph_api_derive::{EdgeExt, VertexExt};
-use graph_api_lib::{Id};
+use graph_api_lib::Id;
 use std::collections::HashSet;
 use std::fmt::{Debug, Display, Formatter};
 use thiserror::Error;

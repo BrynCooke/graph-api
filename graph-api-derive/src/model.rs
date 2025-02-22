@@ -25,6 +25,7 @@ pub(crate) struct Variant {
     pub(crate) variant_type: VariantType,
     pub(crate) fields: Vec<Field>,
     pub(crate) element_type: Ident,
+    pub(crate) projection_module: Ident,
     pub(crate) search_ident: Ident,
 }
 
@@ -40,7 +41,6 @@ pub(crate) struct Field {
     pub(crate) ordered: bool,
     pub(crate) full_text: bool,
 }
-
 
 #[cfg_attr(test, derive(Debug))]
 #[derive(Eq, PartialEq)]
@@ -109,6 +109,10 @@ impl TryFrom<DeriveType<'_>> for Model {
                 enum_variants: vec![],
             },
         };
+        let element_type = match value {
+            DeriveType::Vertex(_) => {format_ident!("Vertex")}
+            DeriveType::Edge(_) => {format_ident!("Edge")}
+        };
 
         model.variants = match &value.data {
             Data::Enum(data) => {
@@ -126,10 +130,8 @@ impl TryFrom<DeriveType<'_>> for Model {
                             Fields::Unnamed(_) => VariantType::Unnamed,
                             Fields::Unit => VariantType::Unit,
                         },
-                        element_type: match value {
-                            DeriveType::Vertex(_) => {format_ident!("Vertex")}
-                            DeriveType::Edge(_) => {format_ident!("Edge")}
-                        },
+                        element_type: element_type.clone(),
+                        projection_module: format_ident!("__{}_projection_{}_{}", element_type.to_string().to_snake(), model.ident.to_string().to_snake(), variant.ident.to_string().to_snake()),
                         search_ident: match value {
                             DeriveType::Vertex(_) => {format_ident!("VertexSearch")}
                             DeriveType::Edge(_) => {format_ident!("EdgeSearch")}

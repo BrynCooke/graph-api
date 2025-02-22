@@ -7,6 +7,12 @@ test:
     cargo nextest run -p graph-api-simplegraph
     cargo nextest run -p graph-api-petgraph
 
+doctest:
+    cargo test -p graph-api-lib --doc
+    cargo test -p graph-api-derive --doc
+    cargo test -p graph-api-simplegraph --doc
+    cargo test -p graph-api-petgraph --doc
+
 lint:
     cargo clippy
 

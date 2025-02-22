@@ -36,6 +36,9 @@ Model {
             element_type: Ident(
                 Vertex,
             ),
+            projection_module: Ident(
+                __vertex_projection_test_unit,
+            ),
             search_ident: Ident(
                 VertexSearch,
             ),
@@ -61,6 +64,9 @@ Model {
             fields: [],
             element_type: Ident(
                 Vertex,
+            ),
+            projection_module: Ident(
+                __vertex_projection_test_unnammed,
             ),
             search_ident: Ident(
                 VertexSearch,
@@ -198,6 +204,9 @@ Model {
             ],
             element_type: Ident(
                 Vertex,
+            ),
+            projection_module: Ident(
+                __vertex_projection_test_named,
             ),
             search_ident: Ident(
                 VertexSearch,

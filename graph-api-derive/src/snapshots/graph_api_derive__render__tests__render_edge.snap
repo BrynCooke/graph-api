@@ -51,33 +51,27 @@ impl EdgeIndex {
     pub fn knows<'reference, Graph>() -> graph_api_lib::EdgeSearch<'reference, Graph>
     where
         Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
             Edge = Edge,
             SupportsEdgeLabelIndex = graph_api_lib::Supported,
         >,
-        Edge: graph_api_lib::Element<Label = EdgeLabel>,
     {
         graph_api_lib::EdgeSearch::label(EdgeLabel::Knows)
     }
     pub fn created<'reference, Graph>() -> graph_api_lib::EdgeSearch<'reference, Graph>
     where
         Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
             Edge = Edge,
             SupportsEdgeLabelIndex = graph_api_lib::Supported,
         >,
-        Edge: graph_api_lib::Element<Label = EdgeLabel>,
     {
         graph_api_lib::EdgeSearch::label(EdgeLabel::Created)
     }
     pub fn language<'reference, Graph>() -> graph_api_lib::EdgeSearch<'reference, Graph>
     where
         Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
             Edge = Edge,
             SupportsEdgeLabelIndex = graph_api_lib::Supported,
         >,
-        Edge: graph_api_lib::Element<Label = EdgeLabel>,
     {
         graph_api_lib::EdgeSearch::label(EdgeLabel::Language)
     }
@@ -106,9 +100,9 @@ impl graph_api_lib::Element for Edge {
         }
     }
 }
-pub use __edge_projection::Knows;
-pub use __edge_projection::KnowsMut;
-mod __edge_projection {
+pub use __edge_projection_edge_knows::Knows;
+pub use __edge_projection_edge_knows::KnowsMut;
+mod __edge_projection_edge_knows {
     use super::*;
     pub struct Knows<'reference, Element> {
         _phantom: std::marker::PhantomData<Element>,
@@ -176,7 +170,7 @@ mod __edge_projection {
 pub trait EdgeExt<'graph, Mutability, Graph, Walker>
 where
     Walker: graph_api_lib::EdgeWalker<'graph, Graph = Graph>,
-    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+    Graph: graph_api_lib::Graph<Edge = Edge>,
 {
     fn filter_by_knows<F: Fn(Knows<Graph::Edge>) -> bool>(
         self,
@@ -225,7 +219,7 @@ impl<'graph, Mutability, Graph, Walker> EdgeExt<'graph, Mutability, Graph, Walke
 for graph_api_lib::EdgeWalkerBuilder<'graph, Mutability, Graph, Walker>
 where
     Walker: graph_api_lib::EdgeWalker<'graph, Graph = Graph>,
-    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+    Graph: graph_api_lib::Graph<Edge = Edge>,
 {
     fn filter_by_knows<F: Fn(Knows<Graph::Edge>) -> bool>(
         self,
