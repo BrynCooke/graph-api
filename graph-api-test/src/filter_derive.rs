@@ -1,6 +1,6 @@
 use crate::{assert_elements_eq, populate_graph, Edge, Vertex};
 use crate::{EdgeExt, VertexExt};
-use graph_api_lib::Graph;
+use graph_api_lib::{EdgeSearch, Graph};
 
 pub fn test_vertices_filter<T>(graph: &mut T)
 where
@@ -37,7 +37,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .filter_by_knows(|knows| knows.since() >= 1999)
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.bryn_knows_julia]);
@@ -45,7 +45,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .all_created()
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.bryn_created_graph_api]);
@@ -53,7 +53,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn, refs.graph_api])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .filter_by_language(|language| language.name == "Rust")
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.graph_api_language_rust]);

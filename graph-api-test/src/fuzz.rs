@@ -1,4 +1,4 @@
-use graph_api_lib::EdgeReference;
+use graph_api_lib::{EdgeReference, EdgeSearch};
 use graph_api_lib::Graph;
 use proptest::prelude::*;
 use std::collections::HashSet;
@@ -105,7 +105,7 @@ pub fn test_fuzz(
             let reachable: HashSet<_> = graph
                 .walk()
                 .vertices_by_id([*start])
-                .out_edges(None)
+                .edges(EdgeSearch::scan().outgoing())
                 .head()
                 .collect();
 

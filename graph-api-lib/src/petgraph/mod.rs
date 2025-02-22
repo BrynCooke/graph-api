@@ -141,7 +141,7 @@ where
         }
         EdgeIter {
             _phantom: Default::default(),
-            edges: match search.direction.unwrap_or_default() {
+            edges: match search.direction {
                 Direction::Incoming => [
                     None,
                     Some(self.edges_directed(vertex, petgraph::Direction::Incoming)),

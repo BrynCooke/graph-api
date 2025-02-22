@@ -1,4 +1,4 @@
-use crate::graph::{Direction, Graph};
+use crate::graph::{Graph};
 use crate::search::vertex::VertexSearch;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder};
 use crate::walker::context::{EdgeContext, VertexContext};
@@ -135,22 +135,8 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
         VertexContext::new(self, predicate)
     }
 
-    fn out_edges(self, search: Option<EdgeSearch<Self::Graph>>) -> Edges<'_, 'graph, Self> {
-        Edges::new(
-            self,
-            search.unwrap_or_default().direction(Direction::Outgoing),
-        )
-    }
-
-    fn in_edges(self, search: Option<EdgeSearch<Self::Graph>>) -> Edges<'_, 'graph, Self> {
-        Edges::new(
-            self,
-            search.unwrap_or_default().direction(Direction::Incoming),
-        )
-    }
-
-    fn all_edges(self, search: Option<EdgeSearch<Self::Graph>>) -> Edges<'_, 'graph, Self> {
-        Edges::new(self, search.unwrap_or_default().direction(Direction::All))
+    fn edges(self, search: EdgeSearch<Self::Graph>) -> Edges<'_, 'graph, Self> {
+        Edges::new(self, search)
     }
 
     fn collect<T: FromVertexWalker<'graph, Self>>(self, graph: &'graph Self::Graph) -> T {

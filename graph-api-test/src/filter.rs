@@ -1,5 +1,5 @@
 use crate::{assert_elements_eq, populate_graph, Edge, Vertex};
-use graph_api_lib::{EdgeReference, Graph, VertexReference};
+use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexReference};
 
 pub fn test_vertices_filter<T>(graph: &mut T)
 where
@@ -25,7 +25,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .filter(|edge| match edge.weight() {
             Edge::Knows { since } => *since >= 1999,
             _ => false,

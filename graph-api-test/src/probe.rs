@@ -1,5 +1,5 @@
 use crate::{populate_graph, Edge, Vertex};
-use graph_api_lib::{Graph, VertexSearch};
+use graph_api_lib::{EdgeSearch, Graph, VertexSearch};
 
 pub fn test_vertices_probe<G>(graph: &mut G)
 where
@@ -32,7 +32,7 @@ where
     let result = graph
         .walk()
         .vertices_by_id([refs.bryn])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .probe(|_| {
             edge_count += 1;
         })

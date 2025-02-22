@@ -17,7 +17,7 @@ where
     pub adjacent_label: Option<<Graph::Vertex as Element>::Label>,
 
     /// The direction of the edge to match.
-    pub direction: Option<Direction>,
+    pub direction: Direction,
 
     /// The maximum number of edges to return for the current vertex
     pub limit: Option<usize>,
@@ -47,7 +47,7 @@ where
             _phantom: Default::default(),
             label: None,
             adjacent_label: None,
-            direction: None,
+            direction: Direction::All,
             limit: None,
         }
     }
@@ -68,14 +68,28 @@ where
             _phantom: Default::default(),
             label: Some(label),
             adjacent_label: None,
-            direction: None,
+            direction: Direction::All,
             limit: None,
         }
     }
 
+    /// Outgoing edges
+    pub fn outgoing(mut self) -> Self {
+        self.direction = Direction::Outgoing;
+        self
+    }
+
+
+
+    /// Outgoing edges
+    pub fn incoming(mut self) -> Self {
+        self.direction = Direction::Incoming;
+        self
+    }
+
     /// The direction of the edges relative to the starting vertex
     pub fn direction(mut self, direction: Direction) -> Self {
-        self.direction = Some(direction);
+        self.direction = direction;
         self
     }
 

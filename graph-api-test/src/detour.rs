@@ -1,5 +1,5 @@
 use crate::{populate_graph, Edge, Vertex};
-use graph_api_lib::Graph;
+use graph_api_lib::{EdgeSearch, Graph};
 
 pub fn test_vertices_detour<T>(graph: &mut T)
 where
@@ -10,7 +10,7 @@ where
         .walk()
         .vertices_by_id(vec![refs.bryn, refs.julia])
         .detour(|w| {
-            w.out_edges(None)
+            w.edges(EdgeSearch::scan().outgoing())
                 .push_default_context()
                 .head()
                 .push_default_context()

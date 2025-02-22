@@ -211,6 +211,7 @@ dependencies = [
  "derivative",
  "graph-api-derive",
  "graph-api-simplegraph",
+ "graph-api-test",
  "petgraph",
  "thiserror",
  "uuid",

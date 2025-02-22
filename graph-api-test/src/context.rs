@@ -1,5 +1,5 @@
 use crate::{assert_elements_eq, populate_graph, Edge, Vertex};
-use graph_api_lib::Graph;
+use graph_api_lib::{EdgeSearch, Graph};
 
 pub fn test_vertices_context<T>(graph: &mut T)
 where
@@ -24,7 +24,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .push_context(|_edge, _ctx| "hi".to_string())
         .push_context(|_edge, ctx| assert_eq!(ctx.as_str(), "hi"))
         .collect::<Vec<T::EdgeId>>();

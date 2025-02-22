@@ -1,5 +1,5 @@
 use crate::{assert_elements_eq, populate_graph, Edge, Vertex};
-use graph_api_lib::Graph;
+use graph_api_lib::{EdgeSearch, Graph};
 
 pub fn test_edges_collect<T>(graph: &mut T)
 where
@@ -9,7 +9,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .collect::<Vec<_>>();
     assert_elements_eq!(
         graph,

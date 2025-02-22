@@ -9,7 +9,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn])
-        .out_edges(EdgeIndex::knows())
+        .edges(EdgeIndex::knows().outgoing())
         .collect::<Vec<_>>();
 
     assert_elements_eq!(graph, collected, vec![refs.bryn_knows_julia])
@@ -23,7 +23,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn])
-        .out_edges(EdgeIndex::knows().limit(1))
+        .edges(EdgeIndex::knows().outgoing().limit(1))
         .collect::<Vec<_>>();
 
     assert_elements_eq!(graph, collected, vec![refs.bryn_knows_julia])

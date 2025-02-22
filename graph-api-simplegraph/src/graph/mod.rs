@@ -639,22 +639,15 @@ where
             .label
             .map(|label| label.ordinal() as u16..label.ordinal() as u16 + 1)
             .or_else(|| adjacent_label_range.as_ref().map(|_| 0..u16::MAX));
-        let direction_range = search
-            .direction
-            .map(|direction| match direction {
+        let direction_range = match search.direction {
                 Direction::All => Direction::Outgoing..Direction::All,
                 Direction::Outgoing => Direction::Outgoing..Direction::Incoming,
                 Direction::Incoming => Direction::Incoming..Direction::All,
-            })
-            .or_else(|| {
-                label_range
-                    .as_ref()
-                    .map(|_| Direction::Incoming..Direction::All)
-            });
+            };
 
         // Now flatmap all the ranges together.
         // This gives an iterator that can be used to generate iterators of adjacency.
-        let range_iter = RangeOrNoneIterator::new(direction_range, |d| match d {
+        let range_iter = RangeOrNoneIterator::new(Some(direction_range), |d| match d {
             Direction::Outgoing => Direction::Incoming,
             Direction::Incoming => Direction::All,
             Direction::All => unreachable!("range should never include all"),

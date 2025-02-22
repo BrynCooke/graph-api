@@ -1,5 +1,5 @@
 use crate::{assert_elements_eq, populate_graph, Edge, Vertex};
-use graph_api_lib::{Graph, VertexSearch};
+use graph_api_lib::{EdgeSearch, Graph, VertexSearch};
 
 pub fn test_head<T>(graph: &mut T)
 where
@@ -9,7 +9,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .head()
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.graph_api, refs.julia]);
@@ -23,7 +23,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .tail()
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn]);

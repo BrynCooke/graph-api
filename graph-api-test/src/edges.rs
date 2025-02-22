@@ -9,7 +9,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .out_edges(None)
+        .edges(EdgeSearch::scan().outgoing())
         .collect::<Vec<_>>();
     assert_elements_eq!(
         graph,
@@ -26,7 +26,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .out_edges(EdgeSearch::scan().limit(1))
+        .edges(EdgeSearch::scan().outgoing().limit(1))
         .collect::<Vec<_>>();
     assert_elements_one_of!(
         graph,
@@ -43,7 +43,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .in_edges(None)
+        .edges(EdgeSearch::scan().incoming())
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.julia_knows_bryn]);
 }
@@ -56,7 +56,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .in_edges(EdgeSearch::scan().limit(1))
+        .edges(EdgeSearch::scan().incoming().limit(1))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.julia_knows_bryn]);
 }
@@ -69,7 +69,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .all_edges(None)
+        .edges(EdgeSearch::scan())
         .collect::<Vec<_>>();
     assert_elements_eq!(
         graph,
@@ -90,7 +90,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .all_edges(EdgeSearch::scan().limit(1))
+        .edges(EdgeSearch::scan().limit(1))
         .collect::<Vec<_>>();
     assert_elements_one_of!(
         graph,
@@ -107,7 +107,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .out_edges(EdgeSearch::label(EdgeLabel::Knows))
+        .edges(EdgeSearch::label(EdgeLabel::Knows).outgoing())
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn_knows_julia]);
 }
@@ -120,7 +120,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .out_edges(EdgeSearch::label(EdgeLabel::Knows).limit(1))
+        .edges(EdgeSearch::label(EdgeLabel::Knows).outgoing().limit(1))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn_knows_julia]);
 }
@@ -133,7 +133,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .in_edges(EdgeSearch::label(EdgeLabel::Knows))
+        .edges(EdgeSearch::label(EdgeLabel::Knows).incoming())
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.julia_knows_bryn]);
 }
@@ -146,7 +146,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .in_edges(EdgeSearch::label(EdgeLabel::Knows).limit(1))
+        .edges(EdgeSearch::label(EdgeLabel::Knows).incoming().limit(1))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.julia_knows_bryn]);
 }
@@ -159,7 +159,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .all_edges(EdgeSearch::label(EdgeLabel::Knows))
+        .edges(EdgeSearch::label(EdgeLabel::Knows))
         .collect::<Vec<_>>();
     assert_elements_eq!(
         graph,
@@ -176,7 +176,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
-        .all_edges(EdgeSearch::label(EdgeLabel::Knows).limit(1))
+        .edges(EdgeSearch::label(EdgeLabel::Knows).limit(1))
         .collect::<Vec<_>>();
     assert_elements_one_of!(
         graph,

@@ -263,38 +263,14 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/out_edges.md")]
-    pub fn out_edges<'a, T: Into<Option<EdgeSearch<'a, Graph>>>>(
+    #[doc = include_str!("../../../docs/users/steps/edges.md")]
+    pub fn edges<'a, T: Into<EdgeSearch<'a, Graph>>>(
         self,
         search: T,
     ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, Edges<'a, 'graph, Walker>> {
         EdgeWalkerBuilder {
             _phantom: Default::default(),
-            walker: self.walker.out_edges(search.into()),
-            graph: self.graph,
-        }
-    }
-
-    #[doc = include_str!("../../../docs/users/steps/in_edges.md")]
-    pub fn in_edges<'a, T: Into<Option<EdgeSearch<'a, Graph>>>>(
-        self,
-        search: T,
-    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, Edges<'a, 'graph, Walker>> {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.in_edges(search.into()),
-            graph: self.graph,
-        }
-    }
-
-    #[doc = include_str!("../../../docs/users/steps/all_edges.md")]
-    pub fn all_edges<'a, T: Into<Option<EdgeSearch<'a, Graph>>>>(
-        self,
-        search: T,
-    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, Edges<'a, 'graph, Walker>> {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.all_edges(search.into()),
+            walker: self.walker.edges(search.into()),
             graph: self.graph,
         }
     }
@@ -380,6 +356,7 @@ where
     #[doc = include_str!("../../../docs/users/steps/dbg.md")]
     pub fn dbg(
         self,
+        tag: &'static str
     ) -> VertexWalkerBuilder<
         'graph,
         Mutability,
@@ -610,6 +587,7 @@ where
     #[doc = include_str!("../../../docs/users/steps/dbg.md")]
     pub fn dbg(
         self,
+        tag: &'static str
     ) -> EdgeWalkerBuilder<
         'graph,
         Mutability,

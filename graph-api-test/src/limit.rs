@@ -1,5 +1,5 @@
 use crate::{populate_graph, Edge, Vertex};
-use graph_api_lib::Graph;
+use graph_api_lib::{EdgeSearch, Graph};
 
 pub fn test_vertices_limit<T>(graph: &mut T)
 where
@@ -25,7 +25,7 @@ where
         graph
             .walk_mut()
             .vertices_by_id(vec![refs.bryn])
-            .out_edges(None)
+            .edges(EdgeSearch::scan().outgoing())
             .limit(1)
             .count(),
         1
