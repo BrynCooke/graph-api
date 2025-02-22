@@ -4,7 +4,6 @@ pub mod collect;
 pub mod context;
 pub mod count;
 pub mod detour;
-pub mod drain;
 pub mod edges;
 pub mod filter;
 pub mod filter_derive;
@@ -299,8 +298,6 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, filter_derive_test_edges_filter, $crate::filter_derive::test_edges_filter}
         $crate::general_test!{$setup, probe_test_vertices_probe, $crate::probe::test_vertices_probe}
         $crate::general_test!{$setup, probe_test_edges_probe, $crate::probe::test_edges_probe}
-        $crate::general_test!{$setup, drain_test_vertices_drain, $crate::drain::test_vertices_drain}
-        $crate::general_test!{$setup, drain_test_edges_drain, $crate::drain::test_edges_drain}
         $crate::edge_index_label_test!{$setup, index_edge_label_test_index, $crate::index::edge_label::test_index}
         $crate::edge_index_label_test!{$setup, index_edge_label_test_index_limit, $crate::index::edge_label::test_index_limit}
         $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index, $crate::index::vertex_label::test_index}

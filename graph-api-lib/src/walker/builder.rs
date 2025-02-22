@@ -607,10 +607,6 @@ where
             graph: self.graph,
         }
     }
-
-    pub fn drain(self) {
-        for _ in self.into_iter() {}
-    }
 }
 
 pub struct VertexIterImpl<'graph, Graph, Walker> {
