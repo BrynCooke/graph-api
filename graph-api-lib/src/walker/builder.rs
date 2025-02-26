@@ -542,6 +542,30 @@ where
         T::from_edge_walker(self.walker, self.graph.take())
     }
 
+    #[doc = include_str!("../../../docs/users/steps/mutate.md")]
+    pub fn mutate<Callback>(mut self, callback: Callback) -> usize
+    where
+        Callback: Fn(&mut Walker::Graph, Graph::EdgeId, &Walker::Context),
+        Mutability: Mutable,
+        'graph: 'graph,
+    {
+        let graph = self.graph.take_mut();
+        let graph_copy: &Graph = unsafe { std::mem::transmute(&*graph) };
+        let mut walker = self.walker;
+
+        let mut contexts = Vec::new();
+        while let Some(edge_ref) = walker.next(graph_copy) {
+            let ctx = walker.ctx().clone();
+            contexts.push((edge_ref.id(), ctx));
+        }
+
+        let mut count = 0;
+        for (edge_id, ctx) in contexts {
+            callback(graph, edge_id, &ctx);
+            count += 1;
+        }
+        count
+    }
 
     #[doc = include_str!("../../../docs/users/steps/count.md")]
     pub fn count(mut self) -> usize

@@ -13,6 +13,7 @@ edge-label-index = []
 edge-index = []
 edge-ordered-index = []
 grpah-clear = []
+benchmark = ["criterion", "rand"]
 
 [dependencies]
 graph-api-lib = { path = "../graph-api-lib" }
@@ -20,3 +21,13 @@ graph-api-derive = { path = "../graph-api-derive" }
 thiserror = "2.0.3"
 proptest = "1.5.0"
 uuid = { version = "1.11.0", features = ["v4"] }
+criterion = { version = "0.5", features = ["html_reports"], optional = true }
+rand = { version = "0.8", optional = true }
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+rand = "0.8"
+
+[[bench]]
+name = "graph_benchmarks"
+harness = false

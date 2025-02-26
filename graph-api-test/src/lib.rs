@@ -15,6 +15,7 @@ pub mod limit;
 pub mod mutation;
 pub mod probe;
 pub mod vertices;
+pub mod bench;
 
 use graph_api_derive::{EdgeExt, VertexExt};
 use graph_api_lib::Id;
@@ -287,6 +288,7 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, vertices_test_head, $crate::vertices::test_head}
         $crate::general_test!{$setup, vertices_test_tail, $crate::vertices::test_tail}
         $crate::general_test!{$setup, mutation_test_mutation, $crate::mutation::test_mutation}
+        $crate::general_test!{$setup, mutation_test_edge_mutation, $crate::mutation::test_edge_mutation}
         $crate::general_test!{$setup, count_test_vertices_count, $crate::count::test_vertices_count}
         $crate::general_test!{$setup, count_test_edges_count, $crate::count::test_edges_count}
         $crate::general_test!{$setup, limit_test_vertices_limit, $crate::limit::test_vertices_limit}
