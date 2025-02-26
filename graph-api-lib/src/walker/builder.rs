@@ -361,9 +361,12 @@ where
         'graph,
         Mutability,
         Graph,
-        VertexProbe<'graph, Walker, VertexDebugCallback<Graph>>,
+        VertexProbe<'graph, Walker, impl FnMut(&Graph::VertexReference<'_>)>,
     > {
-        self.probe(vertex_debug_callback)
+        let callback = move |vertex: &Graph::VertexReference<'_>| {
+            vertex_debug_callback::<Graph>(vertex, tag)
+        };
+        self.probe(callback)
     }
 
     #[doc = include_str!("../../../docs/users/steps/probe.md")]
@@ -382,20 +385,18 @@ where
     }
 }
 
-type VertexDebugCallback<Graph> = fn(&<Graph as crate::Graph>::VertexReference<'_>);
-fn vertex_debug_callback<Graph>(vertex: &Graph::VertexReference<'_>)
+fn vertex_debug_callback<Graph>(vertex: &Graph::VertexReference<'_>, tag: &'static str)
 where
     Graph: crate::graph::Graph,
 {
-    println!("{:?}", vertex);
+    println!("{}: {:?}", tag, vertex);
 }
 
-type EdgeDebugCallback<Graph> = fn(&<Graph as crate::Graph>::EdgeReference<'_>);
-fn edge_debug_callback<Graph>(edge: &Graph::EdgeReference<'_>)
+fn edge_debug_callback<Graph>(edge: &Graph::EdgeReference<'_>, tag: &'static str)
 where
     Graph: crate::graph::Graph,
 {
-    println!("{:?}", edge);
+    println!("{}: {:?}", tag, edge);
 }
 
 impl<'graph, Mutability, Graph, Walker> IntoIterator
@@ -616,9 +617,12 @@ where
         'graph,
         Mutability,
         Graph,
-        EdgeProbe<'graph, Walker, EdgeDebugCallback<Graph>>,
+        EdgeProbe<'graph, Walker, impl FnMut(&Graph::EdgeReference<'_>)>,
     > {
-        self.probe(edge_debug_callback)
+        let callback = move |edge: &Graph::EdgeReference<'_>| {
+            edge_debug_callback::<Graph>(edge, tag)
+        };
+        self.probe(callback)
     }
 
     #[doc = include_str!("../../../docs/users/steps/probe.md")]
