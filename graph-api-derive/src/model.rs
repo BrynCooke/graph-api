@@ -2,7 +2,7 @@ use case::CaseExt;
 use quote::format_ident;
 use std::ops::Deref;
 use syn::spanned::Spanned;
-use syn::{parse_quote, Data, DeriveInput, Fields, Ident, Type, Visibility};
+use syn::{parse_quote, Data, DeriveInput, Fields, Ident, Lifetime, Type, Visibility};
 
 #[cfg_attr(test, derive(Debug))]
 pub(crate) struct Model {
@@ -34,7 +34,6 @@ pub(crate) struct Field {
     pub(crate) visibility: Visibility,
     pub(crate) ident: Ident,
     pub(crate) ty: Type,
-    pub(crate) ref_ty: Type,
     pub(crate) index_ident: Ident,
     pub(crate) index_variant: Ident,
     pub(crate) indexed: bool,
@@ -110,8 +109,12 @@ impl TryFrom<DeriveType<'_>> for Model {
             },
         };
         let element_type = match value {
-            DeriveType::Vertex(_) => {format_ident!("Vertex")}
-            DeriveType::Edge(_) => {format_ident!("Edge")}
+            DeriveType::Vertex(_) => {
+                format_ident!("Vertex")
+            }
+            DeriveType::Edge(_) => {
+                format_ident!("Edge")
+            }
         };
 
         model.variants = match &value.data {
@@ -149,7 +152,6 @@ impl TryFrom<DeriveType<'_>> for Model {
                                             .expect("named field has ident")
                                             .clone(),
                                         ty: field.ty.clone(),
-                                        ref_ty: access_type(field.ty.clone()),
                                         ordered: false,
                                         full_text: false,
                                         indexed: false,
@@ -255,27 +257,41 @@ impl TryFrom<DeriveType<'_>> for Model {
     }
 }
 
-fn access_type(mut ty: Type) -> Type {
-    if ty == parse_quote!(String) {
-        ty = parse_quote!(&'reference str);
-    } else if ty != parse_quote!(usize)
-        && ty != parse_quote!(u8)
-        && ty != parse_quote!(i8)
-        && ty != parse_quote!(u16)
-        && ty != parse_quote!(i16)
-        && ty != parse_quote!(u32)
-        && ty != parse_quote!(i32)
-        && ty != parse_quote!(f32)
-        && ty != parse_quote!(u64)
-        && ty != parse_quote!(i64)
-        && ty != parse_quote!(f64)
-        && ty != parse_quote!(u128)
-        && ty != parse_quote!(i128)
-        && ty != parse_quote!(Uuid)
+pub(crate) fn ref_type(ty: &Type, lifetime: Option<Lifetime>) -> Type {
+    if *ty == parse_quote!(String) {
+        return match lifetime {
+            None => {
+                parse_quote!(&str)
+            }
+            Some(lifetime) => {
+                parse_quote!(&#lifetime str)
+            }
+        };
+    } else if *ty != parse_quote!(usize)
+        && *ty != parse_quote!(u8)
+        && *ty != parse_quote!(i8)
+        && *ty != parse_quote!(u16)
+        && *ty != parse_quote!(i16)
+        && *ty != parse_quote!(u32)
+        && *ty != parse_quote!(i32)
+        && *ty != parse_quote!(f32)
+        && *ty != parse_quote!(u64)
+        && *ty != parse_quote!(i64)
+        && *ty != parse_quote!(f64)
+        && *ty != parse_quote!(u128)
+        && *ty != parse_quote!(i128)
+        && *ty != parse_quote!(Uuid)
     {
-        ty = parse_quote!(&'reference #ty);
+        return match lifetime {
+            None => {
+                parse_quote!(&#ty)
+            }
+            Some(lifetime) => {
+                parse_quote!(&#lifetime #ty)
+            }
+        };
     }
-    ty
+    ty.clone()
 }
 
 #[cfg(test)]

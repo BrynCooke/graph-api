@@ -1,7 +1,8 @@
-use crate::model::{EnumVariants, Field, Model, Variant, VariantType};
+use crate::model::{ref_type, EnumVariants, Field, Model, Variant, VariantType};
 use case::CaseExt;
-use proc_macro2::TokenStream;
+use proc_macro2::{TokenStream};
 use quote::{format_ident, quote, ToTokens};
+use syn::Lifetime;
 
 impl Model {
     pub(crate) fn into_edge(self) -> TokenStream {
@@ -669,7 +670,7 @@ impl Variant {
         let feature = format_ident!("Supports{}LabelIndex", element_type);
 
         let select_name = format_ident!("{}", self.ident.to_string().to_snake());
-        quote! {#vis fn #select_name<'reference, Graph>() -> graph_api_lib::#search_ident<'reference, Graph>
+        quote! {#vis fn #select_name<'search, Graph>() -> graph_api_lib::#search_ident<'search, Graph>
             where
                 Graph: graph_api_lib::Graph<#element_type = #element_ident, #feature = graph_api_lib::Supported>,
             {
@@ -696,14 +697,14 @@ impl Variant {
                     format_ident!("{}{}", self.ident, f.ident.to_string().to_camel());
                 let select_name =
                     format_ident!("{}_by_{}", self.ident.to_string().to_snake(), f.ident);
-                let ty = f.ref_ty.clone();
+                let ty = ref_type(&f.ty, Some(Lifetime::new("'search", self.ident.span())));
                 let call = if f.full_text {
                     format_ident!("full_text")
                 }
                 else {
                     format_ident!("get")
                 };
-                quote! {#vis fn #select_name<'reference, Graph>(value: #ty) -> graph_api_lib::#search_ident<'reference, Graph>
+                quote! {#vis fn #select_name<'search, Graph>(value: #ty) -> graph_api_lib::#search_ident<'search, Graph>
                     where
                         Graph: graph_api_lib::Graph<#element_type = #element_ident, #feature = graph_api_lib::Supported>,
                     {
@@ -728,8 +729,8 @@ impl Variant {
                     format_ident!("{}{}", self.ident, f.ident.to_string().to_camel());
                 let select_name =
                     format_ident!("{}_by_{}_range", self.ident.to_string().to_snake(), f.ident);
-                let ty = f.ref_ty.clone();
-                quote! {#vis fn #select_name<'reference, Graph>(range: std::ops::Range<#ty>) -> graph_api_lib::#search_ident<'reference, Graph>
+                let ty = ref_type(&f.ty, Some(Lifetime::new("'search", self.ident.span())));
+                quote! {#vis fn #select_name<'search, Graph>(range: std::ops::Range<#ty>) -> graph_api_lib::#search_ident<'search, Graph>
                     where
                         Graph: graph_api_lib::Graph<#element_type = #element_ident, #feature = graph_api_lib::Supported>,
                     {
@@ -819,16 +820,16 @@ impl Field {
     fn getter(&self) -> TokenStream {
         let vis = &self.visibility;
         let ident = &self.ident;
-        let ty = &self.ref_ty;
-        if self.ref_ty == self.ty {
+        let ty = ref_type(&self.ty, None);
+        if ty == self.ty {
             quote! {
-                #vis fn #ident(&'reference self) -> #ty {
+                #vis fn #ident<'a>(&self) -> #ty {
                     *self.#ident
                 }
             }
         } else {
             quote! {
-                #vis fn #ident(&'reference self) -> #ty {
+                #vis fn #ident(&self) -> #ty {
                     self.#ident
                 }
             }

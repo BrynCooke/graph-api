@@ -10,8 +10,8 @@ where
         graph
             .walk_mut()
             .vertices_by_id(vec![refs.julia])
-            .mutate(|graph, _vertex_id, _context| {
-                graph.add_edge(refs.julia, refs.graph_api, Edge::Created);
+            .mutate(|graph, vertex_id, _context| {
+                graph.add_edge(vertex_id, refs.graph_api, Edge::Created);
             }),
         1
     );
@@ -79,3 +79,4 @@ where
     
     assert_eq!(bryn_language_edges, 2, "Expected to find 2 language edges");
 }
+

@@ -263,8 +263,10 @@ macro_rules! vertex_index_ordered_test {
 macro_rules! test_suite {
     ($setup:expr) => {
         $crate::general_test!{$setup, graph_test_add_vertex, $crate::graph::test_add_vertex}
+        $crate::general_test!{$setup, graph_test_mutate_vertex, $crate::graph::test_mutate_vertex}
         $crate::general_test!{$setup, graph_test_remove_vertex, $crate::graph::test_remove_vertex}
         $crate::general_test!{$setup, graph_test_add_edge, $crate::graph::test_add_edge}
+        $crate::general_test!{$setup, graph_test_mutate_edge, $crate::graph::test_mutate_edge}
         $crate::general_test!{$setup, graph_test_remove_edge, $crate::graph::test_remove_edge}
         $crate::general_test!{$setup, graph_test_remove_vertex_with_edges, $crate::graph::test_remove_vertex_with_edges}
         $crate::general_test!{$setup, filter_test_vertices_filter, $crate::filter::test_vertices_filter}
