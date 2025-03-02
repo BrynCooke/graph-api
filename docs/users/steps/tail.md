@@ -5,7 +5,7 @@ The `tail` step transforms an edge traversal into a vertex traversal by moving t
 ## Visual Diagram
 
 Before tail step (with edges as current elements):
-```
+```text
   [A] --- edge1* ---> [B] --- edge2* ---> [C]  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before tail step (with edges as current elements):
 ```
 
 After tail step (moved to target vertices of edges):
-```
+```text
   [A] --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         

@@ -5,7 +5,7 @@ The `limit` step restricts a traversal to return at most a specified number of e
 ## Visual Diagram
 
 Before limit step (with multiple elements in traversal):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before limit step (with multiple elements in traversal):
 ```
 
 After limit(2) step (only first 2 elements remain in traversal):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]  
    ^                                         
    |                                         

@@ -5,7 +5,7 @@ The `probe` step allows you to execute a callback function for each element in t
 ## Visual Diagram
 
 Before probe step:
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before probe step:
 ```
 
 After probe step (unchanged, but callback executed for each *):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         

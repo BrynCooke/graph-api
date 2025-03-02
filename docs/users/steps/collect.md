@@ -5,7 +5,7 @@ The `collect` step finalizes a traversal and gathers the results into a collecti
 ## Visual Diagram
 
 Before collect step (with elements in traversal):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before collect step (with elements in traversal):
 ```
 
 After collect step (all elements consumed and collected):
-```
+```text
   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
    ^                                         
    |                                         

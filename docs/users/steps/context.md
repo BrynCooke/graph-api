@@ -5,7 +5,7 @@ The `push_context` step allows you to associate additional data with each elemen
 ## Visual Diagram
 
 Before push_context step (traversal with regular elements):
-```
+```text
   [Person A]* --- created ---> [Project X]*  
    |
   knows
@@ -14,7 +14,7 @@ Before push_context step (traversal with regular elements):
 ```
 
 After push_context step (elements now have associated context data):
-```
+```text
   [Person A]* + {age: 30} --- created ---> [Project X]* + {name: "Graph API"}
    |
   knows

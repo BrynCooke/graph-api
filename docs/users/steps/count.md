@@ -5,7 +5,7 @@ The `count` step fully traverses the graph and returns the number of elements em
 ## Visual Diagram
 
 Before count step (with elements in traversal):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before count step (with elements in traversal):
 ```
 
 After count step (consumed all elements, returned count 4):
-```
+```text
   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
    ^                                         
    |                                         

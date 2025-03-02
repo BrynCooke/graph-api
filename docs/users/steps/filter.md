@@ -5,7 +5,7 @@ The `filter` step allows you to keep only elements that match a predicate functi
 ## Visual Diagram
 
 Before filter step (all vertices in traversal):
-```
+```text
   [Person A]* --- knows ---> [Person B]* --- created ---> [Project]*
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before filter step (all vertices in traversal):
 ```
 
 After filter(is_person) step (only Person vertices remain in traversal):
-```
+```text
   [Person A]* --- knows ---> [Person B]* --- created ---> [Project]
    ^                                         
    |                                         

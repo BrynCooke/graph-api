@@ -5,7 +5,7 @@ The `push_default_context` step is a specialized version of the `push_context` s
 ## Visual Diagram
 
 Before push_default_context step (traversal with regular elements):
-```
+```text
   [Person A]* --- created ---> [Project X]*  
    |
   knows
@@ -14,7 +14,7 @@ Before push_default_context step (traversal with regular elements):
 ```
 
 After push_default_context step (elements with default context):
-```
+```text
   [Person A]* + {vertex_id: id_a, vertex: Person{name: "A", age: 30}} --- created ---> [Project X]* + {vertex_id: id_x, vertex: Project{name: "X"}}
    |
   knows

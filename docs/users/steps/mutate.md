@@ -5,14 +5,14 @@ The `mutate` step allows you to modify the graph during traversal. For each elem
 ## Visual Diagram
 
 Before mutate step (traversal position on Person vertices):
-```
+```text
   [Person A]*        [Project X]
        |
   [Person B]*
 ```
 
 After mutate step (adding 'Created' edges to Project X):
-```
+```text
   [Person A]* ---- Created ----> [Project X]
        |
   [Person B]* ---- Created ----> [Project X]

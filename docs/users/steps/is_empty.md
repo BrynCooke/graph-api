@@ -5,7 +5,7 @@ The `is_empty` step checks if a traversal contains any elements. It's a terminal
 ## Visual Diagram
 
 Before is_empty step (with multiple elements in traversal):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before is_empty step (with multiple elements in traversal):
 ```
 
 After is_empty step (returns false, traversal consumed):
-```
+```text
   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
    ^                                         
    |                                         
@@ -25,7 +25,7 @@ After is_empty step (returns false, traversal consumed):
 ```
 
 Before is_empty step (with empty traversal):
-```
+```text
   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
    ^                                         
    |                                         
@@ -35,7 +35,7 @@ Before is_empty step (with empty traversal):
 ```
 
 After is_empty step (returns true, traversal consumed):
-```
+```text
   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
    ^                                         
    |                                         

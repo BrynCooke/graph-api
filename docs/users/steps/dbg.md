@@ -5,7 +5,7 @@ The `dbg` step prints elements as they are traversed through the graph, making i
 ## Visual Diagram
 
 Before dbg step:
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before dbg step:
 ```
 
 After dbg step (elements continue in traversal, but are also printed to console):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         

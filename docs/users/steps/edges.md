@@ -5,7 +5,7 @@ The `edges` step allows you to traverse to the edges in a graph. It moves the tr
 ## Visual Diagram
 
 Before edges step (traversal position on vertices):
-```
+```text
   [Person A]* --- knows ---> [Person B] --- created ---> [Project]
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before edges step (traversal position on vertices):
 ```
 
 After edges step with outgoing direction (traversal position moves to edges):
-```
+```text
   [Person A] --- knows --->* [Person B] --- created ---> [Project]
    ^                                         
    |                                         

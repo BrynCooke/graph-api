@@ -5,7 +5,7 @@ The `first` step returns the first element in a traversal and terminates the tra
 ## Visual Diagram
 
 Before first step (with multiple elements in traversal):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before first step (with multiple elements in traversal):
 ```
 
 After first step (returns only the first element):
-```
+```text
   [A]* --- edge1 ---> [B] --- edge2 ---> [C]  
    ^                                         
    |                                         

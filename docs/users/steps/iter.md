@@ -5,7 +5,7 @@ While there is no explicit `iter` step method in the walker API, the walker buil
 ## Visual Diagram
 
 Before iter (walker traversal):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before iter (walker traversal):
 ```
 
 After iter (converted to standard Rust iterator):
-```
+```text
   Iterator<Item = (reference, context)>
   [A, ctx] -> [B, ctx] -> [C, ctx] -> [D, ctx]
 ```

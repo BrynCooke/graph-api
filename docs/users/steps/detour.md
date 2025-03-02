@@ -5,7 +5,7 @@ The `detour` step allows you to create a sub-traversal for each element in the c
 ## Visual Diagram
 
 Before detour step (traversal position on Person A):
-```
+```text
   [Person A]* --- knows ---> [Person B] --- created ---> [Project 1]
                                              
                                              created
@@ -16,7 +16,7 @@ Before detour step (traversal position on Person A):
 ```
 
 During detour execution (for each element, a sub-traversal is performed):
-```
+```text
   Main traversal:
   [Person A]* --- knows ---> [Person B]
   
@@ -31,7 +31,7 @@ During detour execution (for each element, a sub-traversal is performed):
 ```
 
 After detour step (traversal position returns to original elements):
-```
+```text
   [Person A]* --- knows ---> [Person B] --- created ---> [Project 1]
                                              
                                              created

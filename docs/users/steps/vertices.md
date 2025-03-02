@@ -5,7 +5,7 @@ The `vertices` step is the primary entry point for graph traversals, allowing yo
 ## Visual Diagram
 
 Before vertices step (empty traversal):
-```
+```text
   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before vertices step (empty traversal):
 ```
 
 After vertices step (with VertexSearch::scan()):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         

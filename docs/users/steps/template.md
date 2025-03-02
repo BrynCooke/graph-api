@@ -5,7 +5,7 @@ Brief description of what the step does and its purpose in a graph traversal.
 ## Visual Diagram
 
 Before [step] step:
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before [step] step:
 ```
 
 After [step] step:
-```
+```text
   [A]* --- edge1 ---> [B] --- edge2 ---> [C]  
    ^                                         
    |                                         

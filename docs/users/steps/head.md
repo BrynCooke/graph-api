@@ -5,7 +5,7 @@ The `head` step transforms an edge traversal into a vertex traversal by moving t
 ## Visual Diagram
 
 Before head step (with edges as current elements):
-```
+```text
   [A] --- edge1* ---> [B] --- edge2* ---> [C]  
    ^                                         
    |                                         
@@ -15,7 +15,7 @@ Before head step (with edges as current elements):
 ```
 
 After head step (moved to source vertices of edges):
-```
+```text
   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]  
    ^                                         
    |                                         
