@@ -9,7 +9,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id(vec![refs.bryn, refs.julia])
-        .filter(|person| match person.weight() {
+        .filter(|person, _| match person.weight() {
             Vertex::Person { name, .. } => name == "Bryn",
             _ => false,
         })
@@ -26,7 +26,7 @@ where
         .walk()
         .vertices_by_id(vec![refs.bryn])
         .edges(EdgeSearch::scan().outgoing())
-        .filter(|edge| match edge.weight() {
+        .filter(|edge, _| match edge.weight() {
             Edge::Knows { since } => *since >= 1999,
             _ => false,
         })

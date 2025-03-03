@@ -21,7 +21,7 @@ impl<Parent, Predicate> VertexFilter<'_, Parent, Predicate> {
 impl<'graph, Parent, Predicate> Walker<'graph> for VertexFilter<'graph, Parent, Predicate>
 where
     Parent: VertexWalker<'graph>,
-    Predicate: Fn(&<Parent::Graph as Graph>::VertexReference<'_>) -> bool,
+    Predicate: Fn(&<Parent::Graph as Graph>::VertexReference<'_>, &Parent::Context) -> bool,
 {
     type Graph = Parent::Graph;
 
@@ -40,12 +40,12 @@ where
 impl<'graph, Parent, Predicate> VertexWalker<'graph> for VertexFilter<'graph, Parent, Predicate>
 where
     Parent: VertexWalker<'graph>,
-    Predicate: Fn(&<Parent::Graph as Graph>::VertexReference<'_>) -> bool,
+    Predicate: Fn(&<Parent::Graph as Graph>::VertexReference<'_>, &Parent::Context) -> bool,
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
         while let Some(next) = self.parent.next(graph) {
             if let Some(vertex) = graph.vertex(next) {
-                if (self.predicate)(&vertex) {
+                if (self.predicate)(&vertex, self.parent.ctx()) {
                     return Some(next);
                 }
             }
@@ -73,7 +73,7 @@ impl<Parent, Predicate> EdgeFilter<'_, Parent, Predicate> {
 impl<'graph, Parent, Predicate> Walker<'graph> for EdgeFilter<'graph, Parent, Predicate>
 where
     Parent: EdgeWalker<'graph>,
-    Predicate: Fn(&<Parent::Graph as Graph>::EdgeReference<'_>) -> bool,
+    Predicate: Fn(&<Parent::Graph as Graph>::EdgeReference<'_>, &Parent::Context) -> bool,
 {
     type Graph = Parent::Graph;
 
@@ -92,14 +92,14 @@ where
 impl<'graph, Parent, Predicate> EdgeWalker<'graph> for EdgeFilter<'graph, Parent, Predicate>
 where
     Parent: EdgeWalker<'graph>,
-    Predicate: Fn(&<Parent::Graph as Graph>::EdgeReference<'_>) -> bool,
+    Predicate: Fn(&<Parent::Graph as Graph>::EdgeReference<'_>, &Parent::Context) -> bool,
 {
     fn next(
         &mut self,
         graph: &'graph Self::Graph,
     ) -> Option<<Self::Graph as Graph>::EdgeReference<'graph>> {
         while let Some(next) = self.parent.next(graph) {
-            if (self.predicate)(&next) {
+            if (self.predicate)(&next, self.ctx()) {
                 return Some(next);
             }
         }

@@ -71,9 +71,9 @@ fn bench_traversal_filtered<G: Graph<Vertex = Vertex, Edge = Edge>>(
         b.iter(|| {
             graph.walk()
                 .vertices_by_id(vec![refs.bryn])
-                .filter_by_person(|_v| true)
+                .filter_by_person(|_, _| true)
                 .edges(EdgeSearch::scan().outgoing())
-                .filter_by_knows(|_e| true)
+                .filter_by_knows(|_, _| true)
                 .head()
                 .collect::<Vec<_>>()
         })
@@ -94,7 +94,7 @@ fn bench_traversal_complex<G: Graph<Vertex = Vertex, Edge = Edge>>(
         b.iter(|| {
             graph.walk()
                 .vertices_by_id(vec![refs.bryn])
-                .filter_by_person(|v| v.age() > 40)
+                .filter_by_person(|v, _| v.age() > 40)
                 .push_context(|v, _ctx| v.project::<Person<_>>().unwrap().age())
                 .edges(EdgeSearch::scan().outgoing())
                 .limit(5)

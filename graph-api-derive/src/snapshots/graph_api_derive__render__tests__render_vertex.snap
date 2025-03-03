@@ -60,7 +60,7 @@ pub enum VertexIndex {
     PersonBiography,
 }
 impl VertexIndex {
-    pub fn person<'reference, Graph>() -> graph_api_lib::VertexSearch<'reference, Graph>
+    pub fn person<'search, Graph>() -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -69,7 +69,7 @@ impl VertexIndex {
     {
         graph_api_lib::VertexSearch::label(VertexLabel::Person)
     }
-    pub fn project<'reference, Graph>() -> graph_api_lib::VertexSearch<'reference, Graph>
+    pub fn project<'search, Graph>() -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -78,7 +78,7 @@ impl VertexIndex {
     {
         graph_api_lib::VertexSearch::label(VertexLabel::Project)
     }
-    pub fn rust<'reference, Graph>() -> graph_api_lib::VertexSearch<'reference, Graph>
+    pub fn rust<'search, Graph>() -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -87,9 +87,9 @@ impl VertexIndex {
     {
         graph_api_lib::VertexSearch::label(VertexLabel::Rust)
     }
-    pub fn person_by_name<'reference, Graph>(
-        value: &'reference str,
-    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    pub fn person_by_name<'search, Graph>(
+        value: &'search str,
+    ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -98,9 +98,9 @@ impl VertexIndex {
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonName, value)
     }
-    pub fn person_by_age<'reference, Graph>(
+    pub fn person_by_age<'search, Graph>(
         value: u64,
-    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -109,9 +109,9 @@ impl VertexIndex {
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonAge, value)
     }
-    pub fn person_by_unique_id<'reference, Graph>(
+    pub fn person_by_unique_id<'search, Graph>(
         value: Uuid,
-    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -120,9 +120,9 @@ impl VertexIndex {
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonUniqueId, value)
     }
-    pub fn person_by_username<'reference, Graph>(
-        value: &'reference str,
-    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    pub fn person_by_username<'search, Graph>(
+        value: &'search str,
+    ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -131,9 +131,9 @@ impl VertexIndex {
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonUsername, value)
     }
-    pub fn person_by_biography<'reference, Graph>(
-        value: &'reference str,
-    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    pub fn person_by_biography<'search, Graph>(
+        value: &'search str,
+    ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -142,9 +142,9 @@ impl VertexIndex {
     {
         graph_api_lib::VertexSearch::full_text(VertexIndex::PersonBiography, value)
     }
-    pub fn person_by_age_range<'reference, Graph>(
+    pub fn person_by_age_range<'search, Graph>(
         range: std::ops::Range<u64>,
-    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -153,9 +153,9 @@ impl VertexIndex {
     {
         graph_api_lib::VertexSearch::range(VertexIndex::PersonAge, range)
     }
-    pub fn person_by_username_range<'reference, Graph>(
-        range: std::ops::Range<&'reference str>,
-    ) -> graph_api_lib::VertexSearch<'reference, Graph>
+    pub fn person_by_username_range<'search, Graph>(
+        range: std::ops::Range<&'search str>,
+    ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
@@ -245,19 +245,19 @@ mod __vertex_projection_vertex_person {
         biography: &'reference String,
     }
     impl<'reference, Element> Person<'reference, Element> {
-        pub fn name(&'reference self) -> &'reference str {
+        pub fn name(&self) -> &str {
             self.name
         }
-        pub fn age(&'reference self) -> u64 {
+        pub fn age<'a>(&self) -> u64 {
             *self.age
         }
-        pub fn unique_id(&'reference self) -> Uuid {
+        pub fn unique_id<'a>(&self) -> Uuid {
             *self.unique_id
         }
-        pub fn username(&'reference self) -> &'reference str {
+        pub fn username(&self) -> &str {
             self.username
         }
-        pub fn biography(&'reference self) -> &'reference str {
+        pub fn biography(&self) -> &str {
             self.biography
         }
     }
@@ -283,19 +283,19 @@ mod __vertex_projection_vertex_person {
         Element: graph_api_lib::Element<Label = VertexLabel>,
         MutationListener: graph_api_lib::MutationListener<'reference, Element>,
     {
-        pub fn name(&'reference self) -> &'reference str {
+        pub fn name(&self) -> &str {
             self.name
         }
-        pub fn age(&'reference self) -> u64 {
+        pub fn age<'a>(&self) -> u64 {
             *self.age
         }
-        pub fn unique_id(&'reference self) -> Uuid {
+        pub fn unique_id<'a>(&self) -> Uuid {
             *self.unique_id
         }
-        pub fn username(&'reference self) -> &'reference str {
+        pub fn username(&self) -> &str {
             self.username
         }
-        pub fn biography(&'reference self) -> &'reference str {
+        pub fn biography(&self) -> &str {
             self.biography
         }
         pub fn set_name(&mut self, value: String) {
@@ -398,7 +398,7 @@ where
             Context = Walker::Context,
         >,
     >;
-    fn filter_by_person<F: Fn(Person<Graph::Vertex>) -> bool>(
+    fn filter_by_person<F: Fn(Person<Graph::Vertex>, &Walker::Context) -> bool>(
         self,
         filter: F,
     ) -> graph_api_lib::VertexWalkerBuilder<
@@ -423,7 +423,7 @@ where
             Context = Walker::Context,
         >,
     >;
-    fn filter_by_project<F: Fn(&Project) -> bool>(
+    fn filter_by_project<F: Fn(&Project, &Walker::Context) -> bool>(
         self,
         filter: F,
     ) -> graph_api_lib::VertexWalkerBuilder<
@@ -467,12 +467,12 @@ where
             Context = Walker::Context,
         >,
     > {
-        self.filter(|f| match graph_api_lib::VertexReference::weight(f) {
+        self.filter(|f, _| match graph_api_lib::VertexReference::weight(f) {
             Vertex::Person { .. } => true,
             _ => false,
         })
     }
-    fn filter_by_person<F: Fn(Person<Graph::Vertex>) -> bool>(
+    fn filter_by_person<F: Fn(Person<Graph::Vertex>, &Walker::Context) -> bool>(
         self,
         filter: F,
     ) -> graph_api_lib::VertexWalkerBuilder<
@@ -485,9 +485,9 @@ where
             Context = Walker::Context,
         >,
     > {
-        self.filter(move |f| {
+        self.filter(move |f, c| {
             if let Some(projection) = graph_api_lib::VertexReference::project(f) {
-                (filter)(projection)
+                (filter)(projection, c)
             } else {
                 false
             }
@@ -505,12 +505,12 @@ where
             Context = Walker::Context,
         >,
     > {
-        self.filter(|f| match graph_api_lib::VertexReference::weight(f) {
+        self.filter(|f, _| match graph_api_lib::VertexReference::weight(f) {
             Vertex::Project { .. } => true,
             _ => false,
         })
     }
-    fn filter_by_project<F: Fn(&Project) -> bool>(
+    fn filter_by_project<F: Fn(&Project, &Walker::Context) -> bool>(
         self,
         filter: F,
     ) -> graph_api_lib::VertexWalkerBuilder<
@@ -523,8 +523,8 @@ where
             Context = Walker::Context,
         >,
     > {
-        self.filter(move |f| match graph_api_lib::VertexReference::weight(f) {
-            Vertex::Project(param0) => (filter)(param0),
+        self.filter(move |f, c| match graph_api_lib::VertexReference::weight(f) {
+            Vertex::Project(param0) => (filter)(param0, c),
             _ => false,
         })
     }
@@ -540,7 +540,7 @@ where
             Context = Walker::Context,
         >,
     > {
-        self.filter(|f| match graph_api_lib::VertexReference::weight(f) {
+        self.filter(|f, _| match graph_api_lib::VertexReference::weight(f) {
             Vertex::Rust { .. } => true,
             _ => false,
         })

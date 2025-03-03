@@ -229,7 +229,7 @@ where
         predicate: Predicate,
     ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexFilter<'graph, Walker, Predicate>>
     where
-        Predicate: Fn(&Graph::VertexReference<'_>) -> bool,
+        Predicate: Fn(&Graph::VertexReference<'_>, &Walker::Context) -> bool,
     {
         VertexWalkerBuilder {
             _phantom: Default::default(),
@@ -500,7 +500,7 @@ where
         predicate: Predicate,
     ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeFilter<'graph, Walker, Predicate>>
     where
-        Predicate: Fn(&Graph::EdgeReference<'_>) -> bool,
+        Predicate: Fn(&Graph::EdgeReference<'_>, &Walker::Context) -> bool,
     {
         EdgeWalkerBuilder {
             _phantom: Default::default(),

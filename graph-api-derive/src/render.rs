@@ -359,7 +359,7 @@ impl EnumVariants {
                 ..
             } => {
                 quote! {
-                  fn #filter_ident<F: Fn(#filter_param<Graph::Edge>)->bool>(
+                  fn #filter_ident<F: Fn(#filter_param<Graph::Edge>, &Walker::Context)->bool>(
                     self,
                         filter: F
                   ) -> graph_api_lib::EdgeWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context=Walker::Context>>;
@@ -376,7 +376,7 @@ impl EnumVariants {
                 ..
             } => {
                 quote! {
-                  fn #filter_ident<F: Fn(#(&#filter_params_types),*)->bool>(
+                  fn #filter_ident<F: Fn(#(&#filter_params_types),*, &Walker::Context)->bool>(
                     self,
                         filter: F
                   ) -> graph_api_lib::EdgeWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context=Walker::Context>>;
@@ -400,7 +400,7 @@ impl EnumVariants {
                         self,
                     ) -> graph_api_lib::EdgeWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>>
                     {
-                        self.filter(|f| match graph_api_lib::EdgeReference::weight(f) {
+                        self.filter(|f, _| match graph_api_lib::EdgeReference::weight(f) {
                             #target_ty::#target_variant { .. } => true,
                             _ => false,
                         })
@@ -415,14 +415,14 @@ impl EnumVariants {
                 filter_param,
             } => {
                 quote! {
-                    fn #filter_ident<F: Fn(#filter_param<Graph::Edge>)->bool>(
+                    fn #filter_ident<F: Fn(#filter_param<Graph::Edge>, &Walker::Context)->bool>(
                         self,
                         filter: F
                     ) -> graph_api_lib::EdgeWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context=Walker::Context>>
                     {
-                        self.filter(move |f| {
+                        self.filter(move |f, c| {
                             if let Some(projection) = graph_api_lib::EdgeReference::project(f) {
-                                (filter)(projection)
+                                (filter)(projection, c)
                             }
                             else {
                                 false
@@ -433,7 +433,7 @@ impl EnumVariants {
                         self,
                     ) -> graph_api_lib::EdgeWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context=Walker::Context>>
                     {
-                        self.filter(move |f| match graph_api_lib::EdgeReference::weight(f) {
+                        self.filter(move |f, _| match graph_api_lib::EdgeReference::weight(f) {
                             #target_ty::#target_variant { .. } => true,
                             _ => false,
                         })
@@ -451,13 +451,13 @@ impl EnumVariants {
                     .map(|p| format_ident!("param{}", p))
                     .collect::<Vec<_>>();
                 quote! {
-                    fn #filter_ident<F: Fn(#(&#filter_params_types),*)->bool>(
+                    fn #filter_ident<F: Fn(#(&#filter_params_types),*, &Walker::Context)->bool>(
                         self,
                         filter: F
                     ) -> graph_api_lib::EdgeWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context=Walker::Context>>
                     {
-                        self.filter(move |f| match graph_api_lib::EdgeReference::weight(f) {
-                            #target_ty::#target_variant ( #(#params),* ) => (filter)(#(#params),*),
+                        self.filter(move |f, c| match graph_api_lib::EdgeReference::weight(f) {
+                            #target_ty::#target_variant ( #(#params),* ) => (filter)(#(#params),*, c),
                             _ => false,
                         })
                     }
@@ -465,7 +465,7 @@ impl EnumVariants {
                         self,
                     ) -> graph_api_lib::EdgeWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context=Walker::Context>>
                     {
-                        self.filter(move |f| match graph_api_lib::EdgeReference::weight(f) {
+                        self.filter(move |f, _| match graph_api_lib::EdgeReference::weight(f) {
                             #target_ty::#target_variant ( .. ) => true,
                             _ => false,
                         })
@@ -497,7 +497,7 @@ impl EnumVariants {
                     self,
                   ) -> graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::VertexWalker<'graph, Graph = Graph, Context=Walker::Context>>;
 
-                  fn #ident<F: Fn(#filter_param<Graph::Vertex>)->bool>(
+                  fn #ident<F: Fn(#filter_param<Graph::Vertex>, &Walker::Context)->bool>(
                     self,
                         filter: F
                   ) -> graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::VertexWalker<'graph, Graph = Graph, Context=Walker::Context>>;
@@ -514,7 +514,7 @@ impl EnumVariants {
                     self,
                   ) -> graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::VertexWalker<'graph, Graph = Graph, Context=Walker::Context>>;
 
-                  fn #ident<F: Fn(#(&#filter_params_types),*)->bool>(
+                  fn #ident<F: Fn(#(&#filter_params_types),*, &Walker::Context)->bool>(
                     self,
                         filter: F
                   ) -> graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::VertexWalker<'graph, Graph = Graph, Context=Walker::Context>>;
@@ -534,7 +534,7 @@ impl EnumVariants {
                         self,
                     ) -> graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::VertexWalker<'graph, Graph = Graph, Context=Walker::Context>>
                     {
-                        self.filter(|f| match graph_api_lib::VertexReference::weight(f) {
+                        self.filter(|f, _| match graph_api_lib::VertexReference::weight(f) {
                             #target_ty::#target_variant { .. } => true,
                             _ => false,
                         })
@@ -554,19 +554,19 @@ impl EnumVariants {
                         self,
                     ) -> graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::VertexWalker<'graph, Graph = Graph, Context=Walker::Context>>
                     {
-                        self.filter(|f| match graph_api_lib::VertexReference::weight(f) {
+                        self.filter(|f, _| match graph_api_lib::VertexReference::weight(f) {
                             #target_ty::#target_variant { .. } => true,
                             _ => false,
                         })
                     }
-                    fn #filter_ident<F: Fn(#filter_param<Graph::Vertex>)->bool>(
+                    fn #filter_ident<F: Fn(#filter_param<Graph::Vertex>, &Walker::Context)->bool>(
                         self,
                         filter: F
                     ) -> graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::VertexWalker<'graph, Graph = Graph, Context=Walker::Context>>
                     {
-                        self.filter(move |f| {
+                        self.filter(move |f, c| {
                             if let Some(projection) = graph_api_lib::VertexReference::project(f) {
-                                (filter)(projection)
+                                (filter)(projection, c)
                             }
                             else {
                                 false
@@ -591,18 +591,18 @@ impl EnumVariants {
                         self,
                     ) -> graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::VertexWalker<'graph, Graph = Graph, Context=Walker::Context>>
                     {
-                        self.filter(|f| match graph_api_lib::VertexReference::weight(f) {
+                        self.filter(|f, _| match graph_api_lib::VertexReference::weight(f) {
                             #target_ty::#target_variant { .. } => true,
                             _ => false,
                         })
                     }
-                    fn #filter_ident<F: Fn(#(&#filter_params_types),*)->bool>(
+                    fn #filter_ident<F: Fn(#(&#filter_params_types),*, &Walker::Context)->bool>(
                         self,
                         filter: F
                     ) -> graph_api_lib::VertexWalkerBuilder<'graph, Mutability, Graph, impl graph_api_lib::VertexWalker<'graph, Graph = Graph, Context=Walker::Context>>
                     {
-                        self.filter(move |f| match graph_api_lib::VertexReference::weight(f) {
-                            #target_ty::#target_variant ( #(#params),* ) => (filter)(#(#params),*),
+                        self.filter(move |f, c| match graph_api_lib::VertexReference::weight(f) {
+                            #target_ty::#target_variant ( #(#params),* ) => (filter)(#(#params),*, c),
                             _ => false,
                         })
                     }

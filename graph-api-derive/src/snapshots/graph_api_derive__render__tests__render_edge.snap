@@ -48,7 +48,7 @@ impl graph_api_lib::Label for EdgeLabel {
 #[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]
 pub enum EdgeIndex {}
 impl EdgeIndex {
-    pub fn knows<'reference, Graph>() -> graph_api_lib::EdgeSearch<'reference, Graph>
+    pub fn knows<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Edge = Edge,
@@ -57,7 +57,7 @@ impl EdgeIndex {
     {
         graph_api_lib::EdgeSearch::label(EdgeLabel::Knows)
     }
-    pub fn created<'reference, Graph>() -> graph_api_lib::EdgeSearch<'reference, Graph>
+    pub fn created<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Edge = Edge,
@@ -66,7 +66,7 @@ impl EdgeIndex {
     {
         graph_api_lib::EdgeSearch::label(EdgeLabel::Created)
     }
-    pub fn language<'reference, Graph>() -> graph_api_lib::EdgeSearch<'reference, Graph>
+    pub fn language<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<
             Edge = Edge,
@@ -109,7 +109,7 @@ mod __edge_projection_edge_knows {
         since: &'reference i32,
     }
     impl<'reference, Element> Knows<'reference, Element> {
-        pub fn since(&'reference self) -> i32 {
+        pub fn since<'a>(&self) -> i32 {
             *self.since
         }
     }
@@ -123,7 +123,7 @@ mod __edge_projection_edge_knows {
         Element,
         MutationListener,
     > KnowsMut<'reference, Element, MutationListener> {
-        pub fn since(&'reference self) -> i32 {
+        pub fn since<'a>(&self) -> i32 {
             *self.since
         }
         pub fn set_since(&mut self, value: i32) {
@@ -172,7 +172,7 @@ where
     Walker: graph_api_lib::EdgeWalker<'graph, Graph = Graph>,
     Graph: graph_api_lib::Graph<Edge = Edge>,
 {
-    fn filter_by_knows<F: Fn(Knows<Graph::Edge>) -> bool>(
+    fn filter_by_knows<F: Fn(Knows<Graph::Edge>, &Walker::Context) -> bool>(
         self,
         filter: F,
     ) -> graph_api_lib::EdgeWalkerBuilder<
@@ -197,7 +197,7 @@ where
         Graph,
         impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>,
     >;
-    fn filter_by_language<F: Fn(&Language) -> bool>(
+    fn filter_by_language<F: Fn(&Language, &Walker::Context) -> bool>(
         self,
         filter: F,
     ) -> graph_api_lib::EdgeWalkerBuilder<
@@ -221,7 +221,7 @@ where
     Walker: graph_api_lib::EdgeWalker<'graph, Graph = Graph>,
     Graph: graph_api_lib::Graph<Edge = Edge>,
 {
-    fn filter_by_knows<F: Fn(Knows<Graph::Edge>) -> bool>(
+    fn filter_by_knows<F: Fn(Knows<Graph::Edge>, &Walker::Context) -> bool>(
         self,
         filter: F,
     ) -> graph_api_lib::EdgeWalkerBuilder<
@@ -230,9 +230,9 @@ where
         Graph,
         impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>,
     > {
-        self.filter(move |f| {
+        self.filter(move |f, c| {
             if let Some(projection) = graph_api_lib::EdgeReference::project(f) {
-                (filter)(projection)
+                (filter)(projection, c)
             } else {
                 false
             }
@@ -246,7 +246,7 @@ where
         Graph,
         impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>,
     > {
-        self.filter(move |f| match graph_api_lib::EdgeReference::weight(f) {
+        self.filter(move |f, _| match graph_api_lib::EdgeReference::weight(f) {
             Edge::Knows { .. } => true,
             _ => false,
         })
@@ -259,12 +259,12 @@ where
         Graph,
         impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>,
     > {
-        self.filter(|f| match graph_api_lib::EdgeReference::weight(f) {
+        self.filter(|f, _| match graph_api_lib::EdgeReference::weight(f) {
             Edge::Created { .. } => true,
             _ => false,
         })
     }
-    fn filter_by_language<F: Fn(&Language) -> bool>(
+    fn filter_by_language<F: Fn(&Language, &Walker::Context) -> bool>(
         self,
         filter: F,
     ) -> graph_api_lib::EdgeWalkerBuilder<
@@ -273,8 +273,8 @@ where
         Graph,
         impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>,
     > {
-        self.filter(move |f| match graph_api_lib::EdgeReference::weight(f) {
-            Edge::Language(param0) => (filter)(param0),
+        self.filter(move |f, c| match graph_api_lib::EdgeReference::weight(f) {
+            Edge::Language(param0) => (filter)(param0, c),
             _ => false,
         })
     }
@@ -286,7 +286,7 @@ where
         Graph,
         impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>,
     > {
-        self.filter(move |f| match graph_api_lib::EdgeReference::weight(f) {
+        self.filter(move |f, _| match graph_api_lib::EdgeReference::weight(f) {
             Edge::Language(..) => true,
             _ => false,
         })

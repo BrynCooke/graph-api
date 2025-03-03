@@ -74,7 +74,7 @@ where
         .walk()
         .vertices_by_id(vec![refs.bryn])
         .edges(EdgeSearch::scan().outgoing())
-        .filter_by_language(|_| true)
+        .filter_by_language(|_, _| true)
         .count();
     
     assert_eq!(bryn_language_edges, 2, "Expected to find 2 language edges");

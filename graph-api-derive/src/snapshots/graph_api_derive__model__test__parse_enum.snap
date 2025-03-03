@@ -110,32 +110,6 @@ Model {
                             ],
                         },
                     },
-                    ref_ty: Type::Reference {
-                        and_token: And,
-                        lifetime: Some(
-                            Lifetime {
-                                apostrophe: Span,
-                                ident: Ident(
-                                    reference,
-                                ),
-                            },
-                        ),
-                        mutability: None,
-                        elem: Type::Path {
-                            qself: None,
-                            path: Path {
-                                leading_colon: None,
-                                segments: [
-                                    PathSegment {
-                                        ident: Ident(
-                                            NamedParam1,
-                                        ),
-                                        arguments: PathArguments::None,
-                                    },
-                                ],
-                            },
-                        },
-                    },
                     index_ident: Ident(
                         TestIndex,
                     ),
@@ -163,32 +137,6 @@ Model {
                                     arguments: PathArguments::None,
                                 },
                             ],
-                        },
-                    },
-                    ref_ty: Type::Reference {
-                        and_token: And,
-                        lifetime: Some(
-                            Lifetime {
-                                apostrophe: Span,
-                                ident: Ident(
-                                    reference,
-                                ),
-                            },
-                        ),
-                        mutability: None,
-                        elem: Type::Path {
-                            qself: None,
-                            path: Path {
-                                leading_colon: None,
-                                segments: [
-                                    PathSegment {
-                                        ident: Ident(
-                                            NamedParam2,
-                                        ),
-                                        arguments: PathArguments::None,
-                                    },
-                                ],
-                            },
                         },
                     },
                     index_ident: Ident(

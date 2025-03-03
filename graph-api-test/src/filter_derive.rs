@@ -10,14 +10,14 @@ where
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn, refs.julia])
-        .filter_by_person(|person| person.name() == "Bryn")
+        .filter_by_person(|person, _| person.name() == "Bryn")
         .collect::<Vec<T::VertexId>>();
     assert_elements_eq!(graph, collected, [refs.bryn]);
 
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn, refs.graph_api])
-        .filter_by_project(|project| project.name == "GraphApi")
+        .filter_by_project(|project, _| project.name == "GraphApi")
         .collect::<Vec<T::VertexId>>();
     assert_elements_eq!(graph, collected, [refs.graph_api]);
 
@@ -38,7 +38,7 @@ where
         .walk()
         .vertices_by_id([refs.bryn])
         .edges(EdgeSearch::scan().outgoing())
-        .filter_by_knows(|knows| knows.since() >= 1999)
+        .filter_by_knows(|knows, _| knows.since() >= 1999)
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.bryn_knows_julia]);
 
@@ -54,7 +54,7 @@ where
         .walk()
         .vertices_by_id([refs.bryn, refs.graph_api])
         .edges(EdgeSearch::scan().outgoing())
-        .filter_by_language(|language| language.name == "Rust")
+        .filter_by_language(|language, _| language.name == "Rust")
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.graph_api_language_rust]);
 }

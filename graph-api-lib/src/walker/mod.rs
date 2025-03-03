@@ -1,4 +1,4 @@
-use crate::graph::{Graph};
+use crate::graph::Graph;
 use crate::search::vertex::VertexSearch;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder};
 use crate::walker::context::{EdgeContext, VertexContext};
@@ -96,7 +96,7 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
 
     fn filter<Predicate>(self, predicate: Predicate) -> VertexFilter<'graph, Self, Predicate>
     where
-        Predicate: Fn(&<Self::Graph as Graph>::VertexReference<'_>) -> bool,
+        Predicate: Fn(&<Self::Graph as Graph>::VertexReference<'_>, &Self::Context) -> bool,
     {
         VertexFilter::new(self, predicate)
     }
@@ -168,7 +168,7 @@ pub trait EdgeWalker<'graph>: Walker<'graph> {
 
     fn filter<Predicate>(self, predicate: Predicate) -> EdgeFilter<'graph, Self, Predicate>
     where
-        Predicate: Fn(&<Self::Graph as Graph>::EdgeReference<'_>) -> bool,
+        Predicate: Fn(&<Self::Graph as Graph>::EdgeReference<'_>, &Self::Context) -> bool,
     {
         EdgeFilter::new(self, predicate)
     }
