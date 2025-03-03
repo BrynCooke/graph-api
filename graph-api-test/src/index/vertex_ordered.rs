@@ -34,10 +34,10 @@ where
     graph.remove_vertex(refs.bryn).expect("person must exist");
 
     // The vertex should no longer appear in the age range query
-    assert!(graph
+    assert_eq!(graph
         .walk()
         .vertices(VertexIndex::person_by_age_range(20..46))
-        .is_empty());
+        .count(), 0);
 }
 
 pub fn test_index_update<T>(graph: &mut T)

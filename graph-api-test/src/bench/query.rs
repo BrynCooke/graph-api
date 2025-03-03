@@ -12,7 +12,7 @@ pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
     bench_query_count_edges(group, setup.clone());
     bench_query_first(group, setup.clone());
     bench_query_collect(group, setup.clone());
-    bench_query_is_empty(group, setup.clone());
+    bench_count(group, setup.clone());
 }
 
 /// Benchmark counting vertices
@@ -93,8 +93,8 @@ fn bench_query_collect<G: Graph<Vertex = Vertex, Edge = Edge>>(
     });
 }
 
-/// Benchmark checking if results are empty
-fn bench_query_is_empty<G: Graph<Vertex = Vertex, Edge = Edge>>(
+/// Benchmark checking raw iteration via count
+fn bench_count<G: Graph<Vertex = Vertex, Edge = Edge>>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) {
@@ -108,7 +108,7 @@ fn bench_query_is_empty<G: Graph<Vertex = Vertex, Edge = Edge>>(
             graph.walk()
                 .vertices(VertexSearch::scan())
                 .limit(0)
-                .is_empty()
+                .count()
         })
     });
 }

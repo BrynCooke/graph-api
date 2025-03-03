@@ -323,14 +323,6 @@ where
         count
     }
 
-    #[doc = include_str!("../../../docs/users/steps/is_empty.md")]
-    pub fn is_empty(self) -> bool
-    where
-        'graph: 'graph,
-    {
-        self.count() == 0
-    }
-
     #[doc = include_str!("../../../docs/users/steps/limit.md")]
     pub fn limit(
         self,
@@ -580,14 +572,6 @@ where
             count += 1;
         }
         count
-    }
-
-    #[doc = include_str!("../../../docs/users/steps/is_empty.md")]
-    pub fn is_empty(self) -> bool
-    where
-        'graph: 'graph,
-    {
-        self.count() == 0
     }
 
     #[doc = include_str!("../../../docs/users/steps/limit.md")]

@@ -63,7 +63,6 @@ The following steps have complete documentation with visual diagrams:
 5. **Terminal Operations**
    - [collect](collect.md) - Gather results into a collection
    - [count](count.md) - Count elements in the traversal
-   - [is_empty](is_empty.md) - Check if traversal contains any elements
    - [mutate](mutate.md) - Modify the graph during traversal
 
 6. **Debugging**
