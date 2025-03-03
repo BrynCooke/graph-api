@@ -1,7 +1,7 @@
 use crate::index::VertexIndexStorage;
 use crate::tombstone_vec::TombstoneVec;
 use crate::{EdgeId, VertexId};
-use graph_api_lib::{Direction, Element, Index, Label};
+use graph_api_lib::{Direction, Element,  Index, Label};
 use std::collections::BTreeSet;
 use std::marker::PhantomData;
 use std::ops::RangeInclusive;

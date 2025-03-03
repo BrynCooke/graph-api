@@ -1,7 +1,8 @@
 use crate::graph::{EdgeReference, Graph};
-use crate::walker::{EdgeWalker, Element, VertexWalker, Walker};
+use crate::walker::{EdgeWalker,  VertexWalker, Walker};
 use std::marker::PhantomData;
 use std::ops::Deref;
+use crate::ElementId;
 
 #[derive(Clone, Debug)]
 pub struct ContextRef<Current, Parent> {
@@ -104,8 +105,8 @@ where
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<Element<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
-        self.next(graph).map(Element::Vertex)
+    ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
+        self.next(graph).map(ElementId::Vertex)
     }
 
     fn ctx(&self) -> &Self::Context {
@@ -173,8 +174,8 @@ where
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<Element<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
-        self.next(graph).map(|e| Element::Edge(e.id()))
+    ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
+        self.next(graph).map(|e| ElementId::Edge(e.id()))
     }
     fn ctx(&self) -> &Self::Context {
         self.context

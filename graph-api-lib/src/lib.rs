@@ -11,12 +11,13 @@ mod value;
 mod walker;
 
 pub use element::Element;
+
 pub use error::Error;
 pub use graph::Direction;
 pub use graph::EdgeReference;
 pub use graph::EdgeReferenceMut;
 pub use graph::Graph;
-pub use graph::Id;
+pub use graph::ElementId;
 pub use graph::MutationListener;
 pub use graph::Project;
 pub use graph::ProjectMut;

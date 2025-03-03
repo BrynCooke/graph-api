@@ -1,4 +1,4 @@
-use graph_api_lib::Id;
+use graph_api_lib::ElementId;
 
 /// Simple vertex identifier using direct numeric values
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Hash)]
@@ -62,15 +62,15 @@ impl EdgeId {
     }
 }
 
-impl From<VertexId> for Id<VertexId, EdgeId> {
+impl From<VertexId> for ElementId<VertexId, EdgeId> {
     fn from(val: VertexId) -> Self {
-        Id::Vertex(val)
+        ElementId::Vertex(val)
     }
 }
 
-impl From<EdgeId> for Id<VertexId, EdgeId> {
+impl From<EdgeId> for ElementId<VertexId, EdgeId> {
     fn from(val: EdgeId) -> Self {
-        Id::Edge(val)
+        ElementId::Edge(val)
     }
 }
 
@@ -108,16 +108,16 @@ mod tests {
         let vid = VertexId::new(1, 100);
         let eid = EdgeId::new(2, 200, vid, VertexId::new(3, 300));
 
-        let id1: Id<VertexId, EdgeId> = vid.into();
-        let id2: Id<VertexId, EdgeId> = eid.into();
+        let id1: ElementId<VertexId, EdgeId> = vid.into();
+        let id2: ElementId<VertexId, EdgeId> = eid.into();
 
         match id1 {
-            Id::Vertex(v) => assert_eq!(v, vid),
+            ElementId::Vertex(v) => assert_eq!(v, vid),
             _ => panic!("Expected Vertex ID"),
         }
 
         match id2 {
-            Id::Edge(e) => assert_eq!(e, eid),
+            ElementId::Edge(e) => assert_eq!(e, eid),
             _ => panic!("Expected Edge ID"),
         }
     }

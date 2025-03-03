@@ -1,6 +1,7 @@
 use crate::graph::Graph;
-use crate::walker::{Element, VertexWalker, Walker};
+use crate::walker::{ VertexWalker, Walker};
 use std::marker::PhantomData;
+use crate::ElementId;
 
 pub struct VertexIter<'graph, Parent, Iter>
 where
@@ -37,8 +38,8 @@ where
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<Element<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
-        self.next(graph).map(Element::Vertex)
+    ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
+        self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Parent::Context {
         self.parent.ctx()

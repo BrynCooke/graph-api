@@ -1,7 +1,7 @@
 use crate::graph::Graph;
 use crate::search::vertex::VertexSearch;
-use crate::walker::{Element, VertexWalker, Walker};
-use crate::VertexReference;
+use crate::walker::{ VertexWalker, Walker};
+use crate::{ElementId, VertexReference};
 use std::marker::PhantomData;
 
 pub struct Vertices<'search, 'graph, Parent>
@@ -41,8 +41,8 @@ where
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<Element<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
-        self.next(graph).map(Element::Vertex)
+    ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
+        self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Parent::Context {
         self.parent.ctx()

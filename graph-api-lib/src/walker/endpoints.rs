@@ -1,6 +1,7 @@
 use crate::graph::{EdgeReference, Graph};
-use crate::walker::{EdgeWalker, Element, VertexWalker, Walker};
+use crate::walker::{EdgeWalker,  VertexWalker, Walker};
 use std::marker::PhantomData;
+use crate::ElementId;
 
 pub(crate) enum End {
     Head,
@@ -43,8 +44,8 @@ where
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<Element<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
-        self.next(graph).map(Element::Vertex)
+    ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
+        self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Parent::Context {
         self.parent.ctx()

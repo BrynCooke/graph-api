@@ -1,6 +1,7 @@
-use crate::{Element, Label, Supported, Value, ValueRange};
+use crate::{Label, Supported, Value, ValueRange};
 use derivative::Derivative;
 use std::ops::Range;
+use crate::element::Element;
 
 /// A search to apply to vertices when querying a graph.
 #[derive(Derivative)]

@@ -7,10 +7,7 @@ use crate::graph::label::{Adjacency, LabelledEdges, LabelledVertices, VertexStor
 use crate::id::VertexId;
 use crate::index::VertexIndexStorage;
 use crate::EdgeId;
-use graph_api_lib::{
-    Direction, EdgeSearch, Element, Graph, Index, Label, Project, ProjectMut, Supported, Value,
-    VertexSearch,
-};
+use graph_api_lib::{Direction, EdgeSearch, Element, Graph, Index, Label, Project, ProjectMut, Supported, Value, VertexSearch};
 use smallbox::space::S8;
 use smallbox::{smallbox, SmallBox};
 use std::fmt::{Debug, Formatter};

@@ -1,4 +1,5 @@
-use crate::{Direction, Element, Supported};
+use crate::{Direction, Supported};
+use crate::element::Element;
 
 /// A search to apply to edges when querying a graph.
 /// This allows graph implementations to support vertex centric indexes.

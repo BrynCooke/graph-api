@@ -1,9 +1,10 @@
 use crate::graph::Graph;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder};
-use crate::walker::{Element, VertexWalker, Walker};
+use crate::walker::{ VertexWalker, Walker};
 use std::cell::Cell;
 use std::marker::PhantomData;
 use std::rc::Rc;
+use crate::ElementId;
 
 pub struct Waypoint<'graph, Graph, Context>
 where
@@ -28,12 +29,12 @@ where
         &mut self,
         graph: &'graph Self::Graph,
     ) -> Option<
-        Element<
+        ElementId<
             <Self::Graph as crate::graph::Graph>::VertexId,
             <Self::Graph as crate::graph::Graph>::EdgeId,
         >,
     > {
-        self.next(graph).map(Element::Vertex)
+        self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Self::Context {
         self.current_context
@@ -116,8 +117,8 @@ where
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<Element<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
-        self.next(graph).map(Element::Vertex)
+    ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
+        self.next(graph).map(ElementId::Vertex)
     }
 
     fn ctx(&self) -> &Self::Context {

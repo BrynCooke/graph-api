@@ -1,4 +1,5 @@
-use crate::walker::{Element, VertexWalker, Walker};
+use crate::ElementId;
+use crate::walker::{VertexWalker, Walker};
 
 pub struct Empty<Graph> {
     _phantom: std::marker::PhantomData<Graph>,
@@ -25,12 +26,12 @@ where
         &mut self,
         graph: &'graph Self::Graph,
     ) -> Option<
-        Element<
+        ElementId<
             <Self::Graph as crate::graph::Graph>::VertexId,
             <Self::Graph as crate::graph::Graph>::EdgeId,
         >,
     > {
-        self.next(graph).map(Element::Vertex)
+        self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Self::Context {
         &()

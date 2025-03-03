@@ -18,7 +18,7 @@ pub mod vertices;
 pub mod bench;
 
 use graph_api_derive::{EdgeExt, VertexExt};
-use graph_api_lib::Id;
+use graph_api_lib::ElementId;
 use std::collections::HashSet;
 use std::fmt::{Debug, Display, Formatter};
 use thiserror::Error;
@@ -357,8 +357,8 @@ impl Display for TestError {
 
 pub fn assert_elements_one_of<Graph>(
     graph: &Graph,
-    actual: impl IntoIterator<Item = impl Into<Id<Graph::VertexId, Graph::EdgeId>>>,
-    expected: impl IntoIterator<Item = impl Into<Id<Graph::VertexId, Graph::EdgeId>>>,
+    actual: impl IntoIterator<Item = impl Into<ElementId<Graph::VertexId, Graph::EdgeId>>>,
+    expected: impl IntoIterator<Item = impl Into<ElementId<Graph::VertexId, Graph::EdgeId>>>,
 ) -> Result<(), TestError>
 where
     Graph: graph_api_lib::Graph,
@@ -375,8 +375,8 @@ where
 
 pub fn assert_elements_eq<Graph>(
     graph: &Graph,
-    actual: impl IntoIterator<Item = impl Into<Id<Graph::VertexId, Graph::EdgeId>>>,
-    expected: impl IntoIterator<Item = impl Into<Id<Graph::VertexId, Graph::EdgeId>>>,
+    actual: impl IntoIterator<Item = impl Into<ElementId<Graph::VertexId, Graph::EdgeId>>>,
+    expected: impl IntoIterator<Item = impl Into<ElementId<Graph::VertexId, Graph::EdgeId>>>,
 ) -> Result<(), TestError>
 where
     Graph: graph_api_lib::Graph,

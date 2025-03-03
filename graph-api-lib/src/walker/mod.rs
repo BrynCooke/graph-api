@@ -10,7 +10,7 @@ use crate::walker::from_vertex_walker::FromVertexWalker;
 use crate::walker::limit::{EdgeLimit, VertexLimit};
 use crate::walker::vertex_iter::VertexIter;
 use crate::walker::vertices::Vertices;
-use crate::EdgeSearch;
+use crate::{EdgeSearch, ElementId};
 use edges::Edges;
 
 pub mod builder;
@@ -26,15 +26,6 @@ mod limit;
 mod probe;
 mod vertex_iter;
 mod vertices;
-
-/// An enum representing either a vertex or an edge in a graph.
-///
-/// This is used as the return type for the `next_element` method of the `Walker` trait,
-/// to indicate whether the next element returned is a vertex or an edge.
-pub enum Element<VertexId, EdgeId> {
-    Vertex(VertexId),
-    Edge(EdgeId),
-}
 
 /// A trait that defines the basic behavior of a graph walker.
 ///
@@ -62,7 +53,7 @@ where
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<Element<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>>;
+    ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>>;
 
     /// Returns the current context of the walker.
     fn ctx(&self) -> &Self::Context;
