@@ -1,7 +1,6 @@
 use crate::graph::{EdgeReferenceMut, Unsupported, VertexReference, VertexReferenceMut};
 use crate::search::vertex::VertexSearch;
-use crate::ElementId;
-use crate::{Direction, EdgeReference, Graph, ElementId, Project, ProjectMut};
+use crate::{Direction, EdgeReference, Graph, ElementId, Project, ProjectMut, Element};
 use crate::{EdgeSearch, Supported};
 use petgraph::stable_graph::{EdgeIndex, Edges, IndexType};
 use petgraph::stable_graph::{NodeIndex, NodeIndices};
@@ -17,8 +16,8 @@ impl<Vertex, Edge, Ty, Ix> Graph for petgraph::stable_graph::StableGraph<Vertex,
 where
     Ty: EdgeType,
     Ix: IndexType,
-    Vertex: Debug + ElementId,
-    Edge: Debug + ElementId,
+    Vertex: Debug + Element,
+    Edge: Debug + Element,
 {
     type SupportsVertexLabelIndex = Unsupported;
     type SupportsEdgeLabelIndex = Unsupported;
@@ -217,7 +216,7 @@ where
                     .expect("node weight should exist"),
             }) {
                 if let VertexSearch::Label { label, .. } = &self.vertex_search {
-                    if *label != ElementId::label(next.weight()) {
+                    if *label != Element::label(next.weight()) {
                         continue;
                     }
                 }
@@ -262,7 +261,7 @@ where
                     // We don't have to check direction as this is supported by petgraph
                     // But we need to check everything else
                     if let Some(label) = self.edge_search.label {
-                        let edge_label = ElementId::label(edge.weight());
+                        let edge_label = Element::label(edge.weight());
                         if edge_label != label {
                             continue;
                         }
