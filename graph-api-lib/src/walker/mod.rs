@@ -182,5 +182,5 @@ pub trait EdgeWalker<'graph>: Walker<'graph> {
     fn next(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<<Self::Graph as Graph>::EdgeReference<'graph>>;
+    ) -> Option<<Self::Graph as Graph>::EdgeId>;
 }

@@ -1,5 +1,5 @@
 use crate::{populate_graph, Edge, Vertex};
-use graph_api_lib::{EdgeReference, EdgeSearch, Graph};
+use graph_api_lib::{ EdgeSearch, Graph};
 
 pub fn test_vertices_first<T>(graph: &mut T)
 where
@@ -25,8 +25,7 @@ where
             .walk_mut()
             .vertices_by_id(vec![refs.julia, refs.graph_api])
             .edges(EdgeSearch::scan().incoming())
-            .first()
-            .map(|e| e.id()),
+            .first(),
         Some(refs.bryn_knows_julia)
     );
 }

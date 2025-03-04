@@ -62,8 +62,9 @@ where
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
         self.parent.next(graph).map(|e| match &self.end {
-            End::Head => e.head(),
-            End::Tail => e.tail(),
+            End::Head =>
+                graph.edge(e).expect("edge must exist").head(),
+            End::Tail => graph.edge(e).expect("edge must exist").tail(),
         })
     }
 }

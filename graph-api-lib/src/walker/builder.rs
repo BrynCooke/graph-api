@@ -414,7 +414,7 @@ where
     Graph: crate::graph::Graph,
     Walker: EdgeWalker<'graph, Graph = Graph>,
 {
-    type Item = (Graph::EdgeReference<'graph>, Walker::Context);
+    type Item = (Graph::EdgeId, Walker::Context);
     type IntoIter = EdgeIterImpl<'graph, Graph, Walker>;
 
     fn into_iter(mut self) -> Self::IntoIter {
@@ -547,9 +547,9 @@ where
         let mut walker = self.walker;
 
         let mut contexts = Vec::new();
-        while let Some(edge_ref) = walker.next(graph_copy) {
+        while let Some(edge) = walker.next(graph_copy) {
             let ctx = walker.ctx().clone();
-            contexts.push((edge_ref.id(), ctx));
+            contexts.push((edge, ctx));
         }
 
         let mut count = 0;
@@ -587,7 +587,7 @@ where
     }
 
     #[doc = include_str!("../../../docs/users/steps/first.md")]
-    pub fn first(mut self) -> Option<Graph::EdgeReference<'graph>> {
+    pub fn first(mut self) -> Option<Graph::EdgeId> {
         let graph = self.graph.take();
         let mut walker = self.walker;
         walker.next(graph)
@@ -661,7 +661,7 @@ where
     Graph: crate::graph::Graph,
     Walker: EdgeWalker<'graph, Graph = Graph>,
 {
-    type Item = (Graph::EdgeReference<'graph>, Walker::Context);
+    type Item = (Graph::EdgeId, Walker::Context);
 
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(next) = self.walker.next(self.graph) {

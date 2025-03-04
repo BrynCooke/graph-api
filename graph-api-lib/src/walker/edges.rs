@@ -44,7 +44,7 @@ where
         &mut self,
         graph: &'graph Self::Graph,
     ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
-        self.next(graph).map(|e| ElementId::Edge(e.id()))
+        self.next(graph).map(ElementId::Edge)
     }
     fn ctx(&self) -> &Self::Context {
         self.parent.ctx()
@@ -58,11 +58,11 @@ where
     fn next(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<<Self::Graph as Graph>::EdgeReference<'graph>> {
+    ) -> Option<<Self::Graph as Graph>::EdgeId> {
         loop {
             if let Some(ref mut iter) = self.current_iter {
                 if let Some(edge) = iter.next() {
-                    return Some(edge);
+                    return Some(edge.id());
                 }
                 self.current_iter = None;
             } else if let Some(vertex) = self.parent.next(graph) {

@@ -1,4 +1,4 @@
-use crate::graph::{EdgeReference, Graph};
+use crate::graph::{ Graph};
 use crate::walker::{EdgeWalker,  VertexWalker, Walker};
 use std::marker::PhantomData;
 use crate::ElementId;
@@ -79,7 +79,7 @@ where
         &mut self,
         graph: &'graph Self::Graph,
     ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
-        self.next(graph).map(|e| ElementId::Edge(e.id()))
+        self.next(graph).map(ElementId::Edge)
     }
     fn ctx(&self) -> &Parent::Context {
         self.parent.ctx()
@@ -93,7 +93,7 @@ where
     fn next(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<<Self::Graph as Graph>::EdgeReference<'graph>> {
+    ) -> Option<<Self::Graph as Graph>::EdgeId> {
         if self.limit > 0 {
             self.limit -= 1;
             self.parent.next(graph)
