@@ -7,7 +7,7 @@ use crate::graph::label::{Adjacency, LabelledEdges, LabelledVertices, VertexStor
 use crate::id::VertexId;
 use crate::index::VertexIndexStorage;
 use crate::EdgeId;
-use graph_api_lib::{Direction, EdgeSearch, Element, Graph, Index, Label, Project, ProjectMut, Supported, Value, VertexSearch};
+use graph_api_lib::{Direction, EdgeSearch, Element, ElementId, Graph, Index, Label, Project, ProjectMut, Supported, Value, VertexSearch};
 use smallbox::space::S8;
 use smallbox::{smallbox, SmallBox};
 use std::fmt::{Debug, Formatter};
@@ -32,6 +32,15 @@ where
 {
     id: Graph::VertexId,
     weight: &'graph Graph::Vertex,
+}
+
+impl<'graph, Graph> Into<ElementId<Graph>> for VertexReference<'graph, Graph>
+where
+    Graph: graph_api_lib::Graph,
+{
+    fn into(self) -> ElementId<Graph> {
+        ElementId::Vertex(self.id)
+    }
 }
 
 impl<'graph, Graph> graph_api_lib::VertexReference<'graph, Graph> for VertexReference<'graph, Graph>
@@ -74,6 +83,15 @@ where
             .field("id", &self.id)
             .field("weight", &self.weight)
             .finish()
+    }
+}
+
+impl<'graph, Graph> Into<ElementId<Graph>> for VertexReferenceMut<'graph, Graph>
+where
+    Graph: graph_api_lib::Graph,
+{
+    fn into(self) -> ElementId<Graph> {
+        ElementId::Vertex(self.id)
     }
 }
 
@@ -159,6 +177,15 @@ where
     weight: &'a Graph::Edge,
 }
 
+impl<'a, Graph> Into<ElementId<Graph>> for EdgeReference<'a, Graph>
+where
+    Graph: graph_api_lib::Graph<VertexId=VertexId, EdgeId=EdgeId>,
+{
+    fn into(self) -> ElementId<Graph> {
+        ElementId::Edge(self.id)
+    }
+}
+
 impl<'a, Graph> graph_api_lib::EdgeReference<'a, Graph> for EdgeReference<'a, Graph>
 where
     Graph: graph_api_lib::Graph<VertexId = VertexId, EdgeId = EdgeId>,
@@ -195,6 +222,15 @@ where
     tail: Graph::VertexId,
     head: Graph::VertexId,
     weight: &'a mut Graph::Edge,
+}
+
+impl<'a, Graph> Into<ElementId<Graph>> for EdgeReferenceMut<'a, Graph>
+where
+    Graph: graph_api_lib::Graph,
+{
+    fn into(self) -> ElementId<Graph> {
+        ElementId::Edge(self.id)
+    }
 }
 
 impl<'a, Graph> graph_api_lib::EdgeReference<'a, Graph> for EdgeReferenceMut<'a, Graph>

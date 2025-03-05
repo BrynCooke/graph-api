@@ -11,7 +11,7 @@ where
         .vertices_by_id(vec![refs.bryn])
         .push_context(|_vertex, _ctx| "hi".to_string())
         .push_context(|_vertex, ctx| assert_eq!(ctx.as_str(), "hi"))
-        .collect::<Vec<T::VertexId>>();
+        .collect::<Vec<_>>();
 
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
 }
@@ -27,7 +27,7 @@ where
         .edges(EdgeSearch::scan().outgoing())
         .push_context(|_edge, _ctx| "hi".to_string())
         .push_context(|_edge, ctx| assert_eq!(ctx.as_str(), "hi"))
-        .collect::<Vec<T::EdgeId>>();
+        .collect::<Vec<_>>();
 
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
 }

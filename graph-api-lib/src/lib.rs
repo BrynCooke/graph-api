@@ -11,7 +11,6 @@ mod value;
 mod walker;
 
 pub use element::Element;
-
 pub use error::Error;
 pub use graph::Direction;
 pub use graph::EdgeReference;

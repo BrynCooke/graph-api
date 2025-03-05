@@ -8,8 +8,6 @@ use crate::walker::edges::Edges;
 use crate::walker::empty::Empty;
 use crate::walker::endpoints::Endpoints;
 use crate::walker::filter::{EdgeFilter, VertexFilter};
-use crate::walker::from_edge_walker::FromEdgeWalker;
-use crate::walker::from_vertex_walker::FromVertexWalker;
 use crate::walker::limit::{EdgeLimit, VertexLimit};
 use crate::walker::probe::{EdgeProbe, VertexProbe};
 use crate::walker::vertex_iter::VertexIter;
@@ -17,6 +15,7 @@ use crate::walker::vertices::Vertices;
 use crate::walker::{EdgeWalker, VertexWalker};
 use crate::{EdgeReference, EdgeSearch};
 use std::marker::PhantomData;
+use crate::walker::iter::{EdgeIterImpl, EdgeReferenceIterImpl, VertexIterImpl, VertexReferenceIterImpl};
 
 pub trait Mutable {}
 
@@ -276,12 +275,11 @@ where
     }
 
     #[doc = include_str!("../../../docs/users/steps/collect.md")]
-    pub fn collect<T: FromVertexWalker<'graph, Walker>>(mut self) -> T
+    pub fn collect<T: FromIterator<Graph::VertexId>>(self) -> T
     where
         Walker: VertexWalker<'graph>,
-        'graph: 'graph,
     {
-        T::from_vertex_walker(self.walker, self.graph.take())
+        self.into_iter().collect()
     }
 
     #[doc = include_str!("../../../docs/users/steps/mutate.md")]
@@ -375,6 +373,10 @@ where
             graph: self.graph,
         }
     }
+
+    pub fn map<R, M: FnMut(Graph::VertexReference<'graph>, Walker::Context) -> R>(mut self, mut mapping :M) -> impl Iterator<Item=R> + use<'graph, R, M, Mutability, Graph, Walker>{
+        VertexReferenceIterImpl::new(self.graph.take(),self.walker).map(move |(referemce, ctx)|mapping(referemce, ctx))
+    }
 }
 
 fn vertex_debug_callback<Graph>(vertex: &Graph::VertexReference<'_>, tag: &'static str)
@@ -397,14 +399,11 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    type Item = (Graph::VertexReference<'graph>, Walker::Context);
+    type Item = Graph::VertexId;
     type IntoIter = VertexIterImpl<'graph, Graph, Walker>;
 
     fn into_iter(mut self) -> Self::IntoIter {
-        VertexIterImpl {
-            graph: self.graph.take(),
-            walker: self.walker,
-        }
+        VertexIterImpl::new(self.graph.take(), self.walker)
     }
 }
 
@@ -414,14 +413,11 @@ where
     Graph: crate::graph::Graph,
     Walker: EdgeWalker<'graph, Graph = Graph>,
 {
-    type Item = (Graph::EdgeId, Walker::Context);
+    type Item = Graph::EdgeId;
     type IntoIter = EdgeIterImpl<'graph, Graph, Walker>;
 
     fn into_iter(mut self) -> Self::IntoIter {
-        EdgeIterImpl {
-            graph: self.graph.take(),
-            walker: self.walker,
-        }
+        EdgeIterImpl::new(self.graph.take(), self.walker)
     }
 }
 
@@ -528,11 +524,11 @@ where
     }
 
     #[doc = include_str!("../../../docs/users/steps/collect.md")]
-    pub fn collect<T: FromEdgeWalker<'graph, Walker>>(mut self) -> T
+    pub fn collect<T: FromIterator<Graph::EdgeId>>(self) -> T
     where
         Walker: EdgeWalker<'graph>,
     {
-        T::from_edge_walker(self.walker, self.graph.take())
+        self.into_iter().collect()
     }
 
     #[doc = include_str!("../../../docs/users/steps/mutate.md")]
@@ -623,54 +619,12 @@ where
             graph: self.graph,
         }
     }
-}
 
-pub struct VertexIterImpl<'graph, Graph, Walker> {
-    graph: &'graph Graph,
-    walker: Walker,
-}
-
-impl<'graph, Graph, Walker> Iterator for VertexIterImpl<'graph, Graph, Walker>
-where
-    Graph: crate::graph::Graph,
-    Walker: VertexWalker<'graph, Graph = Graph>,
-{
-    type Item = (Graph::VertexReference<'graph>, Walker::Context);
-
-    fn next(&mut self) -> Option<Self::Item> {
-        if let Some(next) = self.walker.next(self.graph) {
-            Some((
-                self.graph
-                    .vertex(next)
-                    .expect("vertex ID must resolve to vertex"),
-                self.walker.ctx().clone(),
-            ))
-        } else {
-            None
-        }
+    pub fn map<R, M: FnMut(Graph::EdgeReference<'graph>, Walker::Context) -> R>(mut self, mut mapping :M) -> impl Iterator<Item=R> + use<'graph, R, M, Mutability, Graph, Walker>{
+        EdgeReferenceIterImpl::new(self.graph.take(),self.walker).map(move |(referemce, ctx)|mapping(referemce, ctx))
     }
 }
 
-pub struct EdgeIterImpl<'graph, Graph, Walker> {
-    graph: &'graph Graph,
-    walker: Walker,
-}
-
-impl<'graph, Graph, Walker> Iterator for EdgeIterImpl<'graph, Graph, Walker>
-where
-    Graph: crate::graph::Graph,
-    Walker: EdgeWalker<'graph, Graph = Graph>,
-{
-    type Item = (Graph::EdgeId, Walker::Context);
-
-    fn next(&mut self) -> Option<Self::Item> {
-        if let Some(next) = self.walker.next(self.graph) {
-            Some((next, self.walker.ctx().clone()))
-        } else {
-            None
-        }
-    }
-}
 
 pub(crate) fn new_start<Graph>(graph: &Graph) -> StartWalkerBuilder<'_, ImmutableMarker, Graph>
 where

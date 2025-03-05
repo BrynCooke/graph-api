@@ -7,7 +7,7 @@ use petgraph::stable_graph::{NodeIndex, NodeIndices};
 use petgraph::visit::EdgeRef;
 use petgraph::EdgeType;
 /// Implement Graph for `petgraph::StableGraph`.
-/// Ideally implementations for specific graphs are not included, but we need one reference graph.
+/// Ideally implementations for specific graphs are not included, petgraph is the most popular graph in Rust..
 /// If ever petgraph decided to implement graph-api directly then this could be removed as a private implementation detail of the graph-api-tests crate.
 use std::fmt::Debug;
 use std::marker::PhantomData;
@@ -26,23 +26,19 @@ where
     type SupportsVertexOrderedIndex = Unsupported;
     type SupportsEdgeOrderedIndex = Unsupported;
     type SupportsVertexFullTextIndex = Unsupported;
-    type SupportsClear = Supported;
     type SupportsEdgeAdjacentLabelIndex = Unsupported;
+    type SupportsClear = Supported;
 
     type Vertex = Vertex;
     type Edge = Edge;
     type VertexId = NodeIndex<Ix>;
     type EdgeId = EdgeIndex<Ix>;
     type VertexReference<'graph>
-        = VertexReferenceWrapper<'graph, Self, Ix>
+        = VertexReferenceWrapper<'graph, Self>
     where
         Self: 'graph;
     type VertexReferenceMut<'graph>
-        = VertexReferenceWrapperMut<'graph, Self, Ix>
-    where
-        Self: 'graph;
-    type VertexIter<'search, 'graph>
-        = VertexIter<'search, 'graph, Self, Ty, Ix, NodeIndices<'graph, Vertex, Ix>>
+        = VertexReferenceWrapperMut<'graph, Self>
     where
         Self: 'graph;
     type EdgeReference<'graph>
@@ -50,12 +46,16 @@ where
     where
         Self: 'graph;
     type EdgeReferenceMut<'graph>
-        = EdgeReferenceWrapperMut<'graph, Self, Ix>
+        = EdgeReferenceWrapperMut<'graph, Self>
+    where
+        Self: 'graph;
+    type EdgeIter<'search, 'graph>
+        = EdgeIter<'search, Self, Edges<'graph, Self::Edge, Ty, Ix>>
     where
         Self: 'graph;
 
-    type EdgeIter<'search, 'graph>
-        = EdgeIter<'search, Self, Edges<'graph, Self::Edge, Ty, Ix>>
+    type VertexIter<'search, 'graph>
+        = VertexIter<'search, 'graph, Self, Ty, Ix, NodeIndices<'graph, Vertex, Ix>>
     where
         Self: 'graph;
 
@@ -164,21 +164,30 @@ where
     }
 }
 
-impl<Ix> From<NodeIndex<Ix>> for ElementId<NodeIndex<Ix>, EdgeIndex<Ix>>
+impl<Graph, Ix> From<NodeIndex<Ix>> for ElementId<Graph>
 where
-    Ix: Eq + Copy,
+    Graph: crate::Graph<VertexId=NodeIndex<Ix>>,
+    Ix: IndexType,
 {
     fn from(value: NodeIndex<Ix>) -> Self {
         ElementId::Vertex(value)
     }
 }
 
-impl<Ix> From<EdgeIndex<Ix>> for ElementId<NodeIndex<Ix>, EdgeIndex<Ix>>
+impl<Graph, Ix> From<EdgeIndex<Ix>> for ElementId<Graph>
 where
-    Ix: Eq + Copy,
+    Graph: crate::Graph<EdgeId=EdgeIndex<Ix>>,
+    Ix: IndexType,
 {
     fn from(value: EdgeIndex<Ix>) -> Self {
         ElementId::Edge(value)
+    }
+}
+
+impl<'graph, Graph> From<VertexReferenceWrapper<'graph, Graph>> for ElementId<Graph>
+where Graph: crate::Graph{
+    fn from(value: VertexReferenceWrapper<'graph, Graph>) -> Self {
+        ElementId::Vertex(value.id)
     }
 }
 
@@ -194,14 +203,13 @@ where
 
 impl<'graph, Graph, Ty, Ix, Vertices> Iterator for VertexIter<'_, 'graph, Graph, Ty, Ix, Vertices>
 where
-    Graph: crate::Graph,
+    Graph: crate::Graph<VertexId=NodeIndex<Ix>>,
     Ty: EdgeType,
     Ix: IndexType,
-    Vertices: Iterator<Item = NodeIndex<Ix>>,
+    Vertices: Iterator<Item = Graph::VertexId>,
     Ix: IndexType,
-    <Graph as crate::Graph>::VertexId: From<NodeIndex<Ix>>,
 {
-    type Item = VertexReferenceWrapper<'graph, Graph, Ix>;
+    type Item = VertexReferenceWrapper<'graph, Graph>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.count >= self.vertex_search.limit() {
@@ -242,11 +250,9 @@ where
 
 impl<'graph, Graph, Ty, Ix> Iterator for EdgeIter<'_, Graph, Edges<'graph, Graph::Edge, Ty, Ix>>
 where
+    Graph: crate::Graph<EdgeId=EdgeIndex<Ix>, VertexId=NodeIndex<Ix>>,
     Ty: EdgeType,
-    Ix: IndexType,
-    Graph: crate::Graph,
-    <Graph as crate::Graph>::VertexId: From<NodeIndex<Ix>>,
-    <Graph as crate::Graph>::EdgeId: From<EdgeIndex<Ix>>,
+    Ix: IndexType
 {
     type Item = EdgeReferenceWrapper<'graph, Graph, Ix>;
 
@@ -280,42 +286,40 @@ where
 pub enum EdgeReferenceWrapper<'graph, Graph, Ix>
 where
     Graph: crate::Graph,
-    Ix: IndexType,
+    Ix: Debug + Copy
 {
     Native(petgraph::stable_graph::EdgeReference<'graph, Graph::Edge, Ix>),
     Synthetic {
-        id: EdgeIndex<Ix>,
+        id: Graph::EdgeId,
         weight: &'graph Graph::Edge,
-        head: NodeIndex<Ix>,
-        tail: NodeIndex<Ix>,
+        head: Graph::VertexId,
+        tail: Graph::VertexId,
     },
 }
 
 impl<'graph, Graph, Ix> EdgeReference<'graph, Graph> for EdgeReferenceWrapper<'graph, Graph, Ix>
 where
-    Ix: IndexType,
-    Graph: crate::Graph,
-    <Graph as crate::Graph>::VertexId: From<NodeIndex<Ix>>,
-    <Graph as crate::Graph>::EdgeId: From<EdgeIndex<Ix>>,
+    Graph: crate::Graph<EdgeId=EdgeIndex<Ix>, VertexId=NodeIndex<Ix>>,
+    Ix: Debug + Copy + IndexType
 {
     fn id(&self) -> Graph::EdgeId {
         match self {
-            EdgeReferenceWrapper::Native(edge) => petgraph::visit::EdgeRef::id(edge).into(),
-            EdgeReferenceWrapper::Synthetic { id, .. } => (*id).into(),
+            EdgeReferenceWrapper::Native(edge) => petgraph::visit::EdgeRef::id(edge),
+            EdgeReferenceWrapper::Synthetic { id, .. } => *id,
         }
     }
 
     fn tail(&self) -> Graph::VertexId {
         match self {
-            EdgeReferenceWrapper::Native(edge) => edge.source().into(),
-            EdgeReferenceWrapper::Synthetic { tail, .. } => (*tail).into(),
+            EdgeReferenceWrapper::Native(edge) => edge.source(),
+            EdgeReferenceWrapper::Synthetic { tail, .. } => *tail,
         }
     }
 
     fn head(&self) -> Graph::VertexId {
         match self {
-            EdgeReferenceWrapper::Native(edge) => edge.target().into(),
-            EdgeReferenceWrapper::Synthetic { head, .. } => (*head).into(),
+            EdgeReferenceWrapper::Native(edge) => edge.target(),
+            EdgeReferenceWrapper::Synthetic { head, .. } => *head,
         }
     }
 
@@ -334,34 +338,39 @@ where
 }
 
 #[derive(Debug)]
-pub struct EdgeReferenceWrapperMut<'graph, Graph, Ix>
+pub struct EdgeReferenceWrapperMut<'graph, Graph>
 where
-    Ix: IndexType,
     Graph: crate::Graph,
 {
-    id: EdgeIndex<Ix>,
+    id: Graph::EdgeId,
     weight: &'graph mut Graph::Edge,
-    head: NodeIndex<Ix>,
-    tail: NodeIndex<Ix>,
+    head: Graph::VertexId,
+    tail: Graph::VertexId,
 }
 
-impl<'graph, Graph, Ix> EdgeReference<'graph, Graph> for EdgeReferenceWrapperMut<'graph, Graph, Ix>
+impl<Graph> Into<ElementId<Graph>> for EdgeReferenceWrapperMut<'_, Graph>
 where
-    Ix: IndexType,
     Graph: crate::Graph,
-    <Graph as crate::Graph>::VertexId: From<NodeIndex<Ix>>,
-    <Graph as crate::Graph>::EdgeId: From<EdgeIndex<Ix>>,
+{
+    fn into(self) -> ElementId<Graph> {
+        ElementId::Edge(self.id)
+    }
+}
+
+impl<'graph, Graph> EdgeReference<'graph, Graph> for EdgeReferenceWrapperMut<'graph, Graph>
+where
+    Graph: crate::Graph,
 {
     fn id(&self) -> Graph::EdgeId {
-        self.id.into()
+        self.id
     }
 
     fn tail(&self) -> Graph::VertexId {
-        self.tail.into()
+        self.tail
     }
 
     fn head(&self) -> Graph::VertexId {
-        self.head.into()
+        self.head
     }
 
     fn weight(&self) -> &Graph::Edge {
@@ -375,12 +384,9 @@ where
     }
 }
 
-impl<'a, Graph, Ix> EdgeReferenceMut<'a, Graph> for EdgeReferenceWrapperMut<'a, Graph, Ix>
+impl<'a, Graph> EdgeReferenceMut<'a, Graph> for EdgeReferenceWrapperMut<'a, Graph>
 where
-    Ix: IndexType,
     Graph: crate::Graph,
-    <Graph as crate::Graph>::VertexId: From<NodeIndex<Ix>>,
-    <Graph as crate::Graph>::EdgeId: From<EdgeIndex<Ix>>,
 {
     type MutationListener<'reference> = ();
 
@@ -399,22 +405,20 @@ where
 }
 
 #[derive(Debug)]
-pub struct VertexReferenceWrapper<'graph, Graph, Ix>
+pub struct VertexReferenceWrapper<'graph, Graph>
 where
     Graph: crate::Graph,
 {
-    id: NodeIndex<Ix>,
+    id: Graph::VertexId,
     vertex: &'graph Graph::Vertex,
 }
 
-impl<'graph, Graph, Ix> VertexReference<'graph, Graph> for VertexReferenceWrapper<'graph, Graph, Ix>
+impl<'graph, Graph> VertexReference<'graph, Graph> for VertexReferenceWrapper<'graph, Graph>
 where
-    Ix: IndexType,
     Graph: crate::Graph,
-    <Graph as crate::Graph>::VertexId: From<NodeIndex<Ix>>,
 {
     fn id(&self) -> Graph::VertexId {
-        self.id.into()
+        self.id
     }
 
     fn weight(&self) -> &Graph::Vertex {
@@ -429,23 +433,21 @@ where
 }
 
 #[derive(Debug)]
-pub struct VertexReferenceWrapperMut<'graph, Graph, Ix>
+pub struct VertexReferenceWrapperMut<'graph, Graph>
 where
     Graph: crate::Graph,
 {
-    id: NodeIndex<Ix>,
+    id: Graph::VertexId,
     vertex: &'graph mut Graph::Vertex,
 }
 
-impl<'graph, Graph, Ix> VertexReference<'graph, Graph>
-    for VertexReferenceWrapperMut<'graph, Graph, Ix>
+impl<'graph, Graph> VertexReference<'graph, Graph>
+    for VertexReferenceWrapperMut<'graph, Graph>
 where
-    Ix: IndexType,
     Graph: crate::Graph,
-    <Graph as crate::Graph>::VertexId: From<NodeIndex<Ix>>,
 {
     fn id(&self) -> Graph::VertexId {
-        self.id.into()
+        self.id
     }
 
     fn weight(&self) -> &Graph::Vertex {
@@ -459,12 +461,10 @@ where
     }
 }
 
-impl<'graph, Graph, Ix> VertexReferenceMut<'graph, Graph>
-    for VertexReferenceWrapperMut<'graph, Graph, Ix>
+impl<'graph, Graph> VertexReferenceMut<'graph, Graph>
+    for VertexReferenceWrapperMut<'graph, Graph>
 where
-    Ix: IndexType,
     Graph: crate::Graph + 'graph,
-    <Graph as crate::Graph>::VertexId: From<NodeIndex<Ix>>,
 {
     type MutationListener<'reference> = ();
 

@@ -82,17 +82,6 @@ pub fn test_fuzz(
             }
         }
 
-        //println!("Vertices: {:?}, Edges: {:?}", vertex_ids, edge_ids);
-        //println!(
-        //    "Graph vertices: {:?}, edges {:?}\n",
-        //    graph.walk().vertices(None).collect::<Vec<_>>(),
-        //   graph
-        //        .walk()
-        //        .vertices(None)
-        //         .all_edges(None)
-        //         .collect::<HashSet<_>>()
-        // );
-
         // Validate no dangling edges
         for edge_id in &edge_ids {
             let edge = graph.edge(*edge_id).expect("Edge must exist");

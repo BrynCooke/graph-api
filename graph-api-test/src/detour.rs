@@ -16,8 +16,7 @@ where
                 .push_default_context()
         })
         .push_default_context()
-        .into_iter()
-        .map(|(_, c)| {
+        .map(|_, c| {
             (
                 *c.vertex_id(),
                 *c.parent().parent().edge_id(),

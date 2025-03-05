@@ -3,6 +3,7 @@ use crate::{walker, EdgeSearch, Value};
 use crate::{Label, VertexSearch};
 use std::fmt::Debug;
 use std::hash::Hash;
+use derivative::Derivative;
 use crate::element::Element;
 
 /// Marker for feature support
@@ -44,18 +45,20 @@ impl Direction {
 }
 
 /// An identifier for a vertex or an edge in a graph.
-#[derive(Copy, Clone, Eq, PartialEq, Hash)]
-pub enum ElementId<VertexId, EdgeId>
+#[derive(Debug)]
+#[derive(Derivative)]
+#[derivative(Copy(bound = ""), Clone(bound = ""), Eq(bound = ""), PartialEq(bound=""), Hash(bound = ""))]
+pub enum ElementId<Graph>
 where
-    VertexId: Eq + Copy + Clone,
-    EdgeId: Eq + Copy + Clone,
+    Graph: crate::Graph,
 {
     /// A vertex identifier.
-    Vertex(VertexId),
+    Vertex(Graph::VertexId),
 
     /// An edge identifier.
-    Edge(EdgeId),
+    Edge(Graph::EdgeId),
 }
+
 
 /// Graphs that implement this trait can be used with the walker API.
 pub trait Graph: Sized + Debug {
@@ -91,7 +94,7 @@ pub trait Graph: Sized + Debug {
         + Copy
         + Clone
         + Hash
-        + Into<ElementId<Self::VertexId, Self::EdgeId>>
+        + Into<ElementId<Self>>
         + 'static;
 
     /// The `EdgeId` type of the graph.
@@ -101,7 +104,7 @@ pub trait Graph: Sized + Debug {
         + Copy
         + Clone
         + Hash
-        + Into<ElementId<Self::VertexId, Self::EdgeId>>
+        + Into<ElementId<Self>>
         + 'static;
 
     /// A reference to a vertex.
@@ -184,7 +187,7 @@ pub trait Graph: Sized + Debug {
         Self: Graph<SupportsClear = Supported>;
 
     /// Returns a string representation of an element in the graph.
-    fn dbg<T: Into<ElementId<Self::VertexId, Self::EdgeId>>>(&self, id: T) -> String {
+    fn dbg<T: Into<ElementId<Self>>>(&self, id: T) -> String {
         match id.into() {
             ElementId::Vertex(vertex_id) => self
                 .vertex(vertex_id)

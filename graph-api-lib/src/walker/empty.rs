@@ -26,10 +26,7 @@ where
         &mut self,
         graph: &'graph Self::Graph,
     ) -> Option<
-        ElementId<
-            <Self::Graph as crate::graph::Graph>::VertexId,
-            <Self::Graph as crate::graph::Graph>::EdgeId,
-        >,
+        ElementId<Self::Graph>,
     > {
         self.next(graph).map(ElementId::Vertex)
     }

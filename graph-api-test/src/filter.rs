@@ -13,7 +13,7 @@ where
             Vertex::Person { name, .. } => name == "Bryn",
             _ => false,
         })
-        .collect::<Vec<T::VertexId>>();
+        .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
 }
 

@@ -11,21 +11,21 @@ where
         .walk()
         .vertices_by_id([refs.bryn, refs.julia])
         .filter_by_person(|person, _| person.name() == "Bryn")
-        .collect::<Vec<T::VertexId>>();
+        .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.bryn]);
 
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn, refs.graph_api])
         .filter_by_project(|project, _| project.name == "GraphApi")
-        .collect::<Vec<T::VertexId>>();
+        .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.graph_api]);
 
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn, refs.rust])
         .all_rust()
-        .collect::<Vec<T::VertexId>>();
+        .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.rust]);
 }
 

@@ -29,10 +29,7 @@ where
         &mut self,
         graph: &'graph Self::Graph,
     ) -> Option<
-        ElementId<
-            <Self::Graph as crate::graph::Graph>::VertexId,
-            <Self::Graph as crate::graph::Graph>::EdgeId,
-        >,
+        ElementId<Self::Graph>,
     > {
         self.next(graph).map(ElementId::Vertex)
     }
@@ -117,7 +114,7 @@ where
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>> {
+    ) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
 

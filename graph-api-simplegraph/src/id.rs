@@ -1,4 +1,5 @@
-use graph_api_lib::ElementId;
+use graph_api_lib::{Element, ElementId};
+use crate::SimpleGraph;
 
 /// Simple vertex identifier using direct numeric values
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Hash)]
@@ -62,13 +63,19 @@ impl EdgeId {
     }
 }
 
-impl From<VertexId> for ElementId<VertexId, EdgeId> {
+impl <Vertex, Edge> From<VertexId> for ElementId<SimpleGraph<Vertex, Edge>> where
+Vertex: Element,
+Edge: Element
+{
     fn from(val: VertexId) -> Self {
         ElementId::Vertex(val)
     }
 }
 
-impl From<EdgeId> for ElementId<VertexId, EdgeId> {
+impl <Vertex, Edge> From<EdgeId> for ElementId<SimpleGraph<Vertex, Edge>> where
+    Vertex: Element,
+    Edge: Element
+{
     fn from(val: EdgeId) -> Self {
         ElementId::Edge(val)
     }
@@ -108,8 +115,11 @@ mod tests {
         let vid = VertexId::new(1, 100);
         let eid = EdgeId::new(2, 200, vid, VertexId::new(3, 300));
 
-        let id1: ElementId<VertexId, EdgeId> = vid.into();
-        let id2: ElementId<VertexId, EdgeId> = eid.into();
+        // Using SimpleGraph type for ElementId parameter
+        type TestGraph = SimpleGraph<(), ()>;
+        
+        let id1: ElementId<TestGraph> = vid.into();
+        let id2: ElementId<TestGraph> = eid.into();
 
         match id1 {
             ElementId::Vertex(v) => assert_eq!(v, vid),

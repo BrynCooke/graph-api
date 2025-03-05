@@ -26,6 +26,7 @@ mod limit;
 mod probe;
 mod vertex_iter;
 mod vertices;
+mod iter;
 
 /// A trait that defines the basic behavior of a graph walker.
 ///
@@ -53,7 +54,7 @@ where
     fn next_element(
         &mut self,
         graph: &'graph Self::Graph,
-    ) -> Option<ElementId<<Self::Graph as Graph>::VertexId, <Self::Graph as Graph>::EdgeId>>;
+    ) -> Option<ElementId<Self::Graph>>;
 
     /// Returns the current context of the walker.
     fn ctx(&self) -> &Self::Context;

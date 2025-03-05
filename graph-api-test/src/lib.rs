@@ -357,17 +357,24 @@ impl Display for TestError {
 
 pub fn assert_elements_one_of<Graph>(
     graph: &Graph,
-    actual: impl IntoIterator<Item = impl Into<ElementId<Graph::VertexId, Graph::EdgeId>>>,
-    expected: impl IntoIterator<Item = impl Into<ElementId<Graph::VertexId, Graph::EdgeId>>>,
+    actual: impl IntoIterator<Item = impl Into<ElementId<Graph>>>,
+    expected: impl IntoIterator<Item = impl Into<ElementId<Graph>>>,
 ) -> Result<(), TestError>
 where
     Graph: graph_api_lib::Graph,
 {
-    let actual: Vec<String> = actual.into_iter().map(|e| graph.dbg(e.into())).collect();
-    let expected: Vec<String> = expected.into_iter().map(|e| graph.dbg(e.into())).collect();
+    let actual: Vec<ElementId<Graph>> = actual.into_iter().map(Into::into).collect();
+    let expected: Vec<ElementId<Graph>> = expected.into_iter().map(Into::into).collect();
+    
+    // First convert to debug strings for error reporting
+    let actual_strings: Vec<String> = actual.iter().map(|e| graph.dbg(*e)).collect();
+    let expected_strings: Vec<String> = expected.iter().map(|e| graph.dbg(*e)).collect();
 
     if actual.len() != 1 {
-        return Err(TestError::MoreThanOneElement { expected, actual });
+        return Err(TestError::MoreThanOneElement { 
+            expected: expected_strings, 
+            actual: actual_strings 
+        });
     }
 
     Ok(())
@@ -375,8 +382,8 @@ where
 
 pub fn assert_elements_eq<Graph>(
     graph: &Graph,
-    actual: impl IntoIterator<Item = impl Into<ElementId<Graph::VertexId, Graph::EdgeId>>>,
-    expected: impl IntoIterator<Item = impl Into<ElementId<Graph::VertexId, Graph::EdgeId>>>,
+    actual: impl IntoIterator<Item = impl Into<ElementId<Graph>>>,
+    expected: impl IntoIterator<Item = impl Into<ElementId<Graph>>>,
 ) -> Result<(), TestError>
 where
     Graph: graph_api_lib::Graph,
