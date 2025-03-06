@@ -34,12 +34,13 @@ where
     weight: &'graph Graph::Vertex,
 }
 
-impl<'graph, Graph> Into<ElementId<Graph>> for VertexReference<'graph, Graph>
+impl<Graph> From<VertexReference<'_, Graph>> for ElementId<Graph>
 where
     Graph: graph_api_lib::Graph,
 {
-    fn into(self) -> ElementId<Graph> {
-        ElementId::Vertex(self.id)
+
+    fn from(value: VertexReference<Graph>) -> Self {
+        ElementId::Vertex(value.id)
     }
 }
 
@@ -86,12 +87,12 @@ where
     }
 }
 
-impl<'graph, Graph> Into<ElementId<Graph>> for VertexReferenceMut<'graph, Graph>
+impl<Graph> From<VertexReferenceMut<'_, Graph>> for ElementId<Graph>
 where
     Graph: graph_api_lib::Graph,
 {
-    fn into(self) -> ElementId<Graph> {
-        ElementId::Vertex(self.id)
+    fn from(value: VertexReferenceMut<Graph>) -> Self {
+        ElementId::Vertex(value.id)
     }
 }
 
@@ -177,12 +178,12 @@ where
     weight: &'a Graph::Edge,
 }
 
-impl<'a, Graph> Into<ElementId<Graph>> for EdgeReference<'a, Graph>
+impl<Graph> From<EdgeReference<'_, Graph>> for ElementId<Graph>
 where
     Graph: graph_api_lib::Graph<VertexId=VertexId, EdgeId=EdgeId>,
 {
-    fn into(self) -> ElementId<Graph> {
-        ElementId::Edge(self.id)
+    fn from(value: EdgeReference<Graph>) -> ElementId<Graph> {
+        ElementId::Edge(value.id)
     }
 }
 
@@ -224,16 +225,16 @@ where
     weight: &'a mut Graph::Edge,
 }
 
-impl<'a, Graph> Into<ElementId<Graph>> for EdgeReferenceMut<'a, Graph>
+impl<Graph> From<EdgeReferenceMut<'_, Graph>> for ElementId<Graph>
 where
     Graph: graph_api_lib::Graph,
 {
-    fn into(self) -> ElementId<Graph> {
-        ElementId::Edge(self.id)
+    fn from(value: EdgeReferenceMut<Graph>) -> Self {
+        ElementId::Edge(value.id)
     }
 }
 
-impl<'a, Graph> graph_api_lib::EdgeReference<'a, Graph> for EdgeReferenceMut<'a, Graph>
+impl<Graph> graph_api_lib::EdgeReference<'_, Graph> for EdgeReferenceMut<'_, Graph>
 where
     Graph: graph_api_lib::Graph,
 {
@@ -260,7 +261,7 @@ where
     }
 }
 
-impl<'a, Graph> graph_api_lib::EdgeReferenceMut<'a, Graph> for EdgeReferenceMut<'a, Graph>
+impl<Graph> graph_api_lib::EdgeReferenceMut<'_, Graph> for EdgeReferenceMut<'_, Graph>
 where
     Graph: graph_api_lib::Graph,
 {
