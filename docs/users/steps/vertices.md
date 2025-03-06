@@ -25,7 +25,7 @@ After vertices step (with VertexSearch::scan()):
 ```
 
 After vertices step (with VertexSearch::scan().with_label(Vertex::person_label())):
-```
+```text
   [Person A]* --- edge1 ---> [Project B]  --- edge2 ---> [Person C]*  
    ^                                         
    |                                         
@@ -45,29 +45,58 @@ Returns a traversal containing all vertices that match the search criteria.
 ## Examples
 
 ```rust
+# use graph_api_test::Vertex;
+# use graph_api_test::Edge;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
+# use graph_api_test::VertexIndex;
+# use graph_api_test::EdgeIndex;
+# use graph_api_test::Person;
+# use graph_api_test::Project;
+# use graph_api_test::populate_graph;
+# use graph_api_lib::EdgeSearch;
+# use graph_api_lib::VertexSearch;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use uuid::Uuid;
+# // Create a new graph
+# let mut graph = SimpleGraph::new();
+# // Populate the graph with some test data
+# let refs = populate_graph(&mut graph);
+# 
 // Get all vertices in the graph
 let all_vertices = graph
     .walk()
     .vertices(VertexSearch::scan())
     .collect::<Vec<_>>();
 
-// Get vertices with a specific label
+assert!(all_vertices.len() >= 4); // At least bryn, julia, graph_api, rust
+
+// Get vertices with a specific label (SupportsVertexLabelIndex)
 let people = graph
     .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
+    .vertices(VertexIndex::person())
     .collect::<Vec<_>>();
 
-// Get vertices by a specific property using an index
-let bryn = graph
-    .walk()
-    .vertices(VertexIndex::person_by_name("Bryn"))
-    .collect::<Vec<_>>();
+assert_eq!(people.len(), 2); // bryn and julia
 
-// Get vertices from an ID list
-let specific_vertices = graph
-    .walk()
-    .vertices_by_id(vec![id1, id2, id3])
-    .collect::<Vec<_>>();
+// Get vertices with a specific label (SupportsVertexIndex)
+let people = graph
+.walk()
+.vertices(VertexIndex::person_by_name("Bryn"))
+.collect::<Vec<_>>();
+
+assert_eq!(people.len(), 1); // bryn
+
+// Get vertices with a specific label (SupportsVertexRangeIndex)
+let people = graph
+.walk()
+.vertices(VertexIndex::person_by_age_range(20..50))
+.collect::<Vec<_>>();
+
+assert_eq!(people.len(), 2); // bryn and julia
+
 ```
 
 ## Notes

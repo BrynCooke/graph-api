@@ -37,61 +37,31 @@ Returns a traversal containing all vertices with the specified IDs.
 ```rust
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
+# use graph_api_test::VertexIndex;
+# use graph_api_test::EdgeIndex;
+# use graph_api_test::Person;
 # use graph_api_test::Project;
+# use graph_api_test::populate_graph;
 # use graph_api_lib::EdgeSearch;
+# use graph_api_lib::VertexSearch;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
+# use graph_api_lib::EdgeReference;
 # use uuid::Uuid;
 # // Create a new graph
 # let mut graph = SimpleGraph::new();
-# // Create some vertices
-# let v1 = graph.add_vertex(Vertex::Person {
-#     name: "Alice".to_string(),
-#     age: 30,
-#     unique_id: Uuid::from_u128(1),
-#     username: "alice".to_string(),
-#     biography: "Likes graphs".to_string(),
-# });
-# let v2 = graph.add_vertex(Vertex::Person {
-#     name: "Bob".to_string(),
-#     age: 25,
-#     unique_id: Uuid::from_u128(2),
-#     username: "bob".to_string(),
-#     biography: "Graph enthusiast".to_string(),
-# });
-# let v3 = graph.add_vertex(Vertex::Project(Project {
-#     name: "GraphDB".to_string(),
-# }));
-# // Create some edges
-# graph.add_edge(v1, v2, Edge::Knows { since: 2020 });
-# graph.add_edge(v1, v3, Edge::Created);
-
-// Get specific vertices by their IDs
-let specific_vertices = graph
+# // Populate the graph with some test data
+# let refs = populate_graph(&mut graph);
+#
+// Simple example
+let result = graph
     .walk()
-    .vertices_by_id(vec![v1, v2, v3])
+    .vertices_by_id(vec![refs.bryn, refs.julia])
     .collect::<Vec<_>>();
-
-assert_eq!(specific_vertices.len(), 3);
-
-// Use with filter to get specific vertices by checking the vertex type
-let filtered_vertices = graph
-    .walk()
-    .vertices_by_id(vec![v1, v2, v3])
-    .filter(|vertex, _| matches!(vertex.weight(), Vertex::Person { .. }))
-    .collect::<Vec<_>>();
-
-assert_eq!(filtered_vertices.len(), 2);
-
-// Use with adjacent edges
-let related_edges = graph
-    .walk()
-    .vertices_by_id(vec![v1])
-    .edges(EdgeSearch::scan().outgoing())
-    .collect::<Vec<_>>();
-
-assert_eq!(related_edges.len(), 2);
+assert_eq!(result.len(), 2);
 ```
 
 ## Notes

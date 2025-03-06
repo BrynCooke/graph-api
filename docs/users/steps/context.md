@@ -35,43 +35,46 @@ Returns a traversal with the same elements, but with additional context informat
 ```rust
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
-# use graph_api_derive::VertexExt;
-# use graph_api_derive::EdgeExt;
-# use uuid::Uuid;
-# use graph_api_lib::Id;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
+# use graph_api_test::Project;
+# use graph_api_test::Person;
+# use graph_api_test::populate_graph;
+# use graph_api_lib::EdgeSearch;
+# use graph_api_lib::VertexSearch;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
+# use graph_api_lib::EdgeReference;
 # use std::ops::Deref;
-# use graph_api_lib::VertexSearch;
+# use uuid::Uuid;
+# // Create a new graph
 # let mut graph = SimpleGraph::new();
-
-// Store vertex ages in context
-let results = graph
+# // Populate the graph with some test data
+# let refs = populate_graph(&mut graph);
+# 
+// Combine push_context with map to extract information from vertices
+let knows: Vec<_> = graph
     .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
-    .push_context(|person, ctx| person.project::<Person<_>>().unwrap().age())
-    .collect::<Vec<_>>();
-    
-// Access both vertex and context
-for (vertex, age) in results {
-    println!("Person ID: {:?}, Age: {}", vertex, age);
-}
-
-// Accumulate data across multiple traversal steps
-let total_age = graph
-    .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
-    .push_context(|_, _| 0) // Initialize counter
-    .out_edges(EdgeSearch::scan().with_label(Edge::knows_label()))
+    .vertices_by_id(vec![refs.bryn, refs.julia])
+    .push_default_context()
+    .edges(EdgeSearch::scan().outgoing())
+    .all_knows()
     .head()
-    .push_context(|person, ctx| {
-        *ctx + person.project::<Person<_>>().unwrap().age()
+    .map(|v, ctx| {
+        if let Vertex::Person { name, .. } = ctx.vertex() {
+            format!("{} knows {}", name, v.project::< Person < _ >> ().unwrap().name())
+        }
+        else {
+            "Not a person".to_string()
+        }
     })
-    .collect::<Vec<_>>()
-    .into_iter()
-    .map(|(_, age)| age)
-    .sum::<u64>();
+    .collect::<Vec<_>>();
+
+// Check the results - should have 2 person descriptions
+assert_eq!(knows.len(), 2);
+assert!(knows.iter().any(|desc| desc.contains("Bryn knows Julia")));
+assert!(knows.iter().any(|desc| desc.contains("Julia knows Bryn")));
 ```
 
 ## Notes

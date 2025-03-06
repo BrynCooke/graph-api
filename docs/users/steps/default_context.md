@@ -33,49 +33,51 @@ Returns a traversal with the same elements, but with each element's ID and data 
 ## Examples
 
 ```rust
-# use graph_api_test::Person;
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
-# use graph_api_test::VertexIndex;
-# use graph_api_test::EdgeIndex;
-# use graph_api_derive::VertexExt;
-# use graph_api_derive::EdgeExt;
-# use uuid::Uuid;
-# use graph_api_lib::Id;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
+# use graph_api_test::Project;
+# use graph_api_test::Person;
+# use graph_api_test::populate_graph;
+# use graph_api_lib::EdgeSearch;
+# use graph_api_lib::VertexSearch;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
+# use graph_api_lib::EdgeReference;
 # use std::ops::Deref;
-# use graph_api_lib::VertexSearch;
+# use uuid::Uuid;
+# // Create a new graph
 # let mut graph = SimpleGraph::new();
+# // Populate the graph with some test data
+# let refs = populate_graph(&mut graph);
+#
 
-// Store vertices with their data for later access
-let vertices_with_data = graph
+// Use default context to access vertex information directly from prior in the traversal
+let knows = graph
     .walk()
-    .vertices(VertexSearch::scan())
-    .push_default_context()
-    .collect::<Vec<_>>();
-    
-// Now we can access both the vertex and its data directly
-for (vertex, ctx) in vertices_with_data {
-    println!("Vertex ID: {:?}", vertex.id());
-    println!("Vertex data: {:?}", ctx.vertex());
-}
-
-// Useful for preserving source information while traversing
-let created_projects = graph
-    .walk()
-    .vertices(VertexIndex::person())
-    .push_default_context() // Store person data
-    .edges(EdgeIndex::created())
-    .head() // Navigate to created projects
-    .collect::<Vec<_>>()
-    .into_iter()
-    .map(|(project_vertex, ctx)| {
-        // ctx.parent() contains the person data
-        (project_vertex.id(), "Project creator")
+    .vertices_by_id(vec![refs.bryn, refs.julia])
+    .push_context(|v, _| {
+        if let Vertex::Person { name, .. } = v.weight() {
+            name.clone()    
+        }
+        else {
+            "Not a person".to_string()
+        }
+    })
+    .edges(EdgeSearch::scan().outgoing())
+    .all_knows()
+    .head()
+    .map(|v, ctx| {
+        format!("{} knows {}", *ctx, v.project::< Person < _ >> ().unwrap().name())
     })
     .collect::<Vec<_>>();
+
+// Check the results - should have 2 person descriptions
+assert_eq!(knows.len(), 2);
+assert!(knows.iter().any(|desc| desc.contains("Bryn knows Julia")));
+assert!(knows.iter().any(|desc| desc.contains("Julia knows Bryn")));
 ```
 
 ## Notes

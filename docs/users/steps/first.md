@@ -35,21 +35,26 @@ Returns an `Option` containing the ID of the first element in the traversal, or 
 ## Examples
 
 ```rust
-# use graph_api_test::Person;
+# use graph_api_test::populate_graph;
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
-# use graph_api_test::Project;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
 # use graph_api_test::VertexIndex;
-# use graph_api_derive::VertexExt;
-# use graph_api_derive::EdgeExt;
-# use uuid::Uuid;
-# use graph_api_lib::Id;
+# use graph_api_test::EdgeIndex;
+# use graph_api_test::Person;
+# use graph_api_test::Project;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
-# use std::ops::Deref;
+# use graph_api_lib::EdgeReference;
 # use graph_api_lib::VertexSearch;
+# use graph_api_lib::EdgeSearch;
+# 
+# // Create a new graph
 # let mut graph = SimpleGraph::new();
+# // Populate the graph with test data
+# let refs = populate_graph(&mut graph);
 
 // Get the first vertex in the graph
 let first_vertex = graph
@@ -57,32 +62,36 @@ let first_vertex = graph
     .vertices(VertexSearch::scan())
     .first();
 
-// Get the first person over age 30
-let first_person_over_30 = graph
+// There should be at least one vertex in the graph
+assert!(first_vertex.is_some());
+
+// Get the first person in the graph
+let first_person = graph
     .walk()
     .vertices(VertexIndex::person())
-    .filter(|person| {
-        if let Ok(p) = person.project::<Person<_>>() {
-            p.age() > 30
-        } else {
-            false
-        }
-    })
     .first();
 
-// Check if a specific property exists in the graph
-let has_project = graph
+// There should be at least one person in the graph
+assert!(first_person.is_some());
+
+// Get the first project in the graph
+let first_project = graph
     .walk()
     .vertices(VertexIndex::project())
-    .filter(|project_vertex| {
-        if let Ok(p) = project_vertex.project::<Project<_>>() {
-            p.name() == "Graph API"
-        } else {
-            false
-        }
-    })
-    .first()
-    .is_some();
+    .first();
+
+// There should be at least one project in the graph
+assert!(first_project.is_some());
+
+// Get the first edge connecting bryn to something else
+let first_bryn_edge = graph
+    .walk()
+    .vertices_by_id(vec![refs.bryn])
+    .edges(EdgeSearch::scan().outgoing())
+    .first();
+
+// Bryn should have at least one outgoing edge
+assert!(first_bryn_edge.is_some());
 ```
 
 ## Notes

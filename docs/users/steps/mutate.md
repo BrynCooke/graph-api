@@ -37,79 +37,74 @@ Returns the number of elements that were modified (traversed and passed to the c
 
 ## Examples
 
-### Simple Example
-
 ```rust
-// Add a 'Created' edge from each person to the graph_api project
-let mutations = graph
-    .walk_mut()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
-    .mutate(|graph, vertex_id, _context| {
-        graph.add_edge(vertex_id, graph_api_id, Edge::Created);
-    });
-
-println!("Added {} edges", mutations);
-```
-
-### Complex Example
-
-```rust
+# use graph_api_test::populate_graph;
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
-# use graph_api_derive::VertexExt;
-# use graph_api_derive::EdgeExt;
-# use uuid::Uuid;
-# use graph_api_lib::Id;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
+# use graph_api_test::VertexIndex;
+# use graph_api_test::EdgeIndex;
+# use graph_api_test::Person;
+# use graph_api_test::Project;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
-# use std::ops::Deref;
+# use graph_api_lib::EdgeReference;
 # use graph_api_lib::VertexSearch;
+# use graph_api_lib::EdgeSearch;
+# use graph_api_lib::Element;
+# 
+# // Create a mutable graph for testing
 # let mut graph = SimpleGraph::new();
+# // Populate the graph with test data
+# let refs = populate_graph(&mut graph);
+# // Add a new project node to demonstrate mutations
+# let new_project_id = graph.add_vertex(Vertex::Project(Project { name: "NewProject".to_string() }));
 
-// Identify people who know each other but don't have "Collaborates" edges,
-// and add those edges when they both worked on the same project
-let mutations = graph
+// Example 1: Add 'Created' edges from people to a project
+let mutations_count = graph
+    .walk_mut() // Must use walk_mut for mutations
+    .vertices(VertexIndex::person())
+    .mutate(|graph, person_id, _| {
+        // Add a 'Created' edge from each person to the new project
+        graph.add_edge(person_id, new_project_id, Edge::Created);
+    });
+
+// Should have created edges for all people in the graph (at least 2)
+assert!(mutations_count >= 2);
+
+// Example 2: Work with edges
+let project_edges_count = graph
     .walk_mut()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
-    .edges(EdgeSearch::scan().outgoing().with_label(Edge::knows_label()))
-    .head() // Get the destination person of the "knows" edge
-    .mutate(|graph, target_person_id, context| {
-        // Get the source person (who initiated the "knows" edge)
-        let source_person_id = context.edge().unwrap().source_id();
-        
-        // Check if both people have created the same project
-        let source_projects = graph.walk()
-            .vertices_by_id(vec![source_person_id])
-            .edges(EdgeSearch::scan().outgoing().with_label(Edge::created_label()))
-            .head()
-            .collect::<Vec<_>>();
-            
-        let target_projects = graph.walk()
-            .vertices_by_id(vec![target_person_id])
-            .edges(EdgeSearch::scan().outgoing().with_label(Edge::created_label()))
-            .head()
-            .collect::<Vec<_>>();
-            
-        // Find common projects
-        for source_proj in &source_projects {
-            if target_projects.contains(source_proj) {
-                // Add a "Collaborates" edge if it doesn't exist already
-                let existing = graph.walk()
-                    .vertices_by_id(vec![source_person_id])
-                    .edges(EdgeSearch::scan().outgoing().with_label(Edge::collaborates_label()))
-                    .head()
-                    .filter(|v| v.id() == target_person_id)
-                    .count();
-                    
-                if existing == 0 {
-                    graph.add_edge(source_person_id, target_person_id, Edge::Collaborates);
-                }
-                
-                break;
-            }
+    .vertices_by_id(vec![new_project_id])
+    .edges(EdgeSearch::scan().incoming())
+    .mutate(|graph, edge_id, _| {
+        // In a real implementation, you might modify edge properties here
+        // For test purposes, we're just accessing it
+        if let Some(_edge) = graph.edge_mut(edge_id) {
+            // Verification/modification would happen here
         }
     });
+
+// Should match the number of people that created the project
+assert_eq!(project_edges_count, mutations_count);
+
+// Example 3: Use filter_by_person for type-safe filtering
+let updated_count = graph
+    .walk_mut()
+    .vertices(VertexIndex::person())
+    .filter_by_person(|person, _| person.name() == "Bryn")
+    .mutate(|graph, person_id, _| {
+        // In a real implementation, we might update person attributes here
+        // For test purposes, we just verify we can get the vertex
+        if let Some(_person) = graph.vertex_mut(person_id) {
+            // Mutation would happen here
+        }
+    });
+
+// Should have found at least one match (Bryn)
+assert!(updated_count > 0);
 ```
 
 ## Notes

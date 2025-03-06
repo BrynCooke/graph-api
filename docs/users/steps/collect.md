@@ -35,25 +35,30 @@ None - but the resulting collection type is determined by the type parameter pro
 Returns a collection of the traversed elements. The exact type depends on what you're collecting into, commonly:
 - `Vec<ElementId>` for simple ID collection
 - `Vec<(ElementId, Context)>` when context is used
-- Custom types when implementing `FromVertexWalker` or `FromEdgeWalker`
+- Custom types when implementing `FromIterator`
 
 ## Examples
 
 ```rust
-# use graph_api_test::Person;
+# use graph_api_test::Vertex;
 # use graph_api_test::Edge;
-# use graph_api_test::VertexIndex;
-# use graph_api_derive::VertexExt;
-# use graph_api_derive::EdgeExt;
-# use uuid::Uuid;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
+# use graph_api_test::Person;
+# use graph_api_test::Project;
+# use graph_api_test::populate_graph;
+# use graph_api_lib::EdgeSearch;
+# use graph_api_lib::VertexSearch;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
-# use std::ops::Deref;
-# use graph_api_lib::VertexSearch;
-# use graph_api_lib::EdgeSearch;
-# use std::collections::HashMap;
+# use graph_api_lib::EdgeReference;
+# use std::collections::HashSet;
+# 
+# // Create a new graph
 # let mut graph = SimpleGraph::new();
+# // Populate the graph with test data
+# let refs = populate_graph(&mut graph);
 
 // Collect vertex IDs into a vector
 let vertex_ids = graph
@@ -61,32 +66,40 @@ let vertex_ids = graph
     .vertices(VertexSearch::scan())
     .collect::<Vec<_>>();
 
-// Collect vertices with their context
-let vertices_with_age = graph
+assert!(vertex_ids.len() >= 4); // At least bryn, julia, graph_api, rust
+
+// Collect into a HashSet
+let vertex_id_set = graph
     .walk()
-    .vertices(VertexIndex::person())
-    .push_context(|person, _| person.project::<Person<_>>().unwrap().age())
-    .map(|v, c| (v, *c))
+    .vertices(VertexSearch::scan())
+    .collect::<HashSet<_>>();
+
+assert!(vertex_id_set.len() >= 4);
+
+// Filter and collect only Person vertices
+let person_ids = graph
+    .walk()
+    .vertices(VertexSearch::scan())
+    .all_person()
     .collect::<Vec<_>>();
 
-// Process collected results
-for (vertex, age) in vertices_with_age {
-    println!("Person ID: {:?}, Age: {}", vertex.id(), age);
-}
+assert_eq!(person_ids.len(), 2); // bryn and julia
 
-// Collect into a custom type
-let person_map = graph
+// Collect edge IDs
+let edge_ids = graph
     .walk()
-    .vertices(VertexIndex::person())
-    .collect::<HashMap<_, _>>();
+    .vertices(VertexSearch::scan())
+    .edges(EdgeSearch::scan())
+    .collect::<Vec<_>>();
+
+assert!(edge_ids.len() > 0); // We should have some edges
 ```
 
 ## Notes
 
 - The `collect` step is a terminal operation - no further traversal steps can be added after it
-- When collecting with context, the result will be pairs of (element_id, context)
+- When collecting with context, use `map` first to format the data for collection
 - The collect step fully consumes the traversal
-- You can implement custom `FromVertexWalker` or `FromEdgeWalker` traits to collect into specialized types
-- Most commonly used with `Vec<_>`, but can collect into any type that implements the appropriate From traits
+- Most commonly used with `Vec<_>`, but can collect into any type that implements `FromIterator`
 - Consider using `limit` before `collect` for large graphs to avoid excessive memory use
 - For single-element queries, consider using `first()` instead of `collect` for efficiency

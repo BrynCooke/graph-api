@@ -35,18 +35,24 @@ Returns an integer representing the total number of elements in the traversal.
 ## Examples
 
 ```rust
+# use graph_api_test::populate_graph;
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
-# use graph_api_derive::VertexExt;
-# use graph_api_derive::EdgeExt;
-# use uuid::Uuid;
-# use graph_api_lib::Id;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
+# use graph_api_test::Person;
+# use graph_api_test::Project;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
-# use std::ops::Deref;
+# use graph_api_lib::EdgeReference;
 # use graph_api_lib::VertexSearch;
+# use graph_api_lib::EdgeSearch;
+# 
+# // Create a new graph
 # let mut graph = SimpleGraph::new();
+# // Populate the graph with test data
+# let refs = populate_graph(&mut graph);
 
 // Count all vertices in the graph
 let vertex_count = graph
@@ -54,18 +60,43 @@ let vertex_count = graph
     .vertices(VertexSearch::scan())
     .count();
 
-// Count vertices with a specific label
+assert!(vertex_count >= 4); // At least bryn, julia, graph_api, rust
+
+// Count only Person vertices
 let person_count = graph
     .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
+    .vertices(VertexSearch::scan())
+    .all_person()
     .count();
 
-// Count edges of a specific type
-let knows_edge_count = graph
+assert_eq!(person_count, 2); // bryn and julia
+
+// Count Project vertices
+let project_count = graph
     .walk()
     .vertices(VertexSearch::scan())
-    .out_edges(EdgeSearch::scan().with_label(Edge::knows_label()))
+    .filter(|v, _| matches!(v.weight(), Vertex::Project { .. }))
     .count();
+
+assert_eq!(project_count, 2); // graph_api and rust
+
+// Count edges between vertices
+let edge_count = graph
+    .walk()
+    .vertices(VertexSearch::scan())
+    .edges(EdgeSearch::scan())
+    .count();
+
+assert!(edge_count > 0);
+
+// Count created edges
+let created_edge_count = graph
+    .walk()
+    .vertices(VertexSearch::scan())
+    .edges(EdgeSearch::scan().with_label(Edge::created_label()))
+    .count();
+
+assert!(created_edge_count > 0);
 ```
 
 ## Notes

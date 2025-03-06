@@ -35,58 +35,67 @@ A new walker where the traversal position is on the edges matching the search cr
 ## Examples
 
 ```rust
-# use graph_api_test::Person;
-# use graph_api_test::Knows;
+# use graph_api_test::populate_graph;
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
 # use graph_api_test::VertexIndex;
 # use graph_api_test::EdgeIndex;
-# use graph_api_derive::VertexExt;
-# use graph_api_derive::EdgeExt;
-# use uuid::Uuid;
-# use graph_api_lib::Id;
+# use graph_api_test::Person;
+# use graph_api_test::Project;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
-# use std::ops::Deref;
+# use graph_api_lib::EdgeReference;
 # use graph_api_lib::VertexSearch;
 # use graph_api_lib::EdgeSearch;
+# 
+# // Create a new graph
 # let mut graph = SimpleGraph::new();
-# let person_id = graph.add_vertex(Vertex::Person {
-#     name: "Bryn".to_string(),
-#     age: 45,
-#     unique_id: Uuid::from_u128(1),
-#     username: "bryn".to_string(),
-#     biography: "Did some graph stuff".to_string(),
-# });
+# // Populate the graph with test data
+# let refs = populate_graph(&mut graph);
 
-// Get all edges in the graph
-let all_edges = graph
+// Get all edges from bryn
+let bryn_edges = graph
     .walk()
-    .vertices(VertexSearch::scan())
+    .vertices_by_id(vec![refs.bryn])
     .edges(EdgeSearch::scan())
     .collect::<Vec<_>>();
 
-// Get only 'knows' edges from people
-let knows_edges = graph
+// Bryn should have edges
+assert!(bryn_edges.len() > 0);
+
+// Get outgoing edges from bryn
+let bryn_outgoing_edges = graph
     .walk()
-    .vertices(VertexIndex::person())
-    .edges(EdgeIndex::knows())
+    .vertices_by_id(vec![refs.bryn])
+    .edges(EdgeSearch::scan().outgoing())
     .collect::<Vec<_>>();
+
+// Bryn should have edges
+assert!(bryn_outgoing_edges.len() > 0);
+
+// Get only 'Created' edges (SupportsEdgeLabelIndex)
+let bryn_created_edges = graph
+    .walk()
+    .vertices_by_id(vec![refs.bryn])
+    .edges(EdgeIndex::created())
+    .collect::<Vec<_>>();
+
+// Bryn should have at least one `Created` edge 
+assert!(bryn_edges.len() > 0);
     
-// Get edges in both directions with properties filter
-let recent_edges = graph
+// Get outgoing 'Created' edges (SupportsEdgeLabelIndex)
+let bryn_outgoing_edges = graph
     .walk()
-    .vertices_by_id(vec![person_id])
-    .edges(EdgeSearch::scan().bidirectional())
-    .filter(|e| {
-        if let Ok(knows) = e.project::<Knows<_>>() {
-            knows.since() > 2020
-        } else {
-            false
-        }
-    })
+    .vertices_by_id(vec![refs.bryn])
+    .edges(EdgeIndex::created().outgoing())
     .collect::<Vec<_>>();
+
+// Bryn should have outgoing edges
+assert!(bryn_outgoing_edges.len() > 0);
+
 ```
 
 ## Notes

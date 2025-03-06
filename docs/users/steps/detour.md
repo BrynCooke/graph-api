@@ -21,24 +21,24 @@ During detour execution (for each element, a sub-traversal is performed):
   [Person A]* --- knows ---> [Person B]
   
   Sub-traversal from Person A:
-  [Person A] --- knows ---> [Person B] --- created ---> [Project 1]*
+  [Person A] --- knows ---> [Person B] 
                                             
-                                            created
+   created
                                             
-                                            ↓
+     ↓
                                           
-                                         [Project 2]*
+  [Project 2]*
 ```
 
 After detour step (traversal position returns to original elements):
 ```text
-  [Person A]* --- knows ---> [Person B] --- created ---> [Project 1]
-                                             
-                                             created
-                                             
-                                             ↓
+  [Person A]* --- knows ---> [Person B] 
+                                                                                  
+   created
+                                            
+     ↓
                                           
-                                          [Project 2]
+  [Project 2]
 ```
 
 ## Parameters
@@ -52,51 +52,42 @@ A walker with the same elements as before, but with the results of the sub-trave
 ## Examples
 
 ```rust
+# use graph_api_test::populate_graph;
 # use graph_api_test::Vertex;
+# use graph_api_test::VertexExt;
 # use graph_api_test::Edge;
-# use graph_api_derive::VertexExt;
-# use graph_api_derive::EdgeExt;
-# use uuid::Uuid;
-# use graph_api_lib::Id;
+# use graph_api_test::EdgeExt;
+# use graph_api_test::Project;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
-# use std::ops::Deref;
+# use graph_api_lib::EdgeReference;
 # use graph_api_lib::VertexSearch;
+# use graph_api_lib::EdgeSearch;
+# use std::ops::Deref;
+# 
+# // Create a new graph
 # let mut graph = SimpleGraph::new();
+# // Populate the graph with test data
+# let refs = populate_graph(&mut graph);
 
-// Find people and their projects
-let people_with_projects = graph
+// Explore connected projects using detour
+let bryn_project_count = graph
     .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
-    .detour(|person| {
-        // For each person, find their projects
-        person.out_edges(EdgeSearch::scan().with_label(Edge::created_label()))
-            .tail()  // Move to the target vertices (projects)
+    .vertices_by_id(vec![refs.bryn])
+    .push_context(|_, _| 0) // Start with count 0
+    .detour(|waypoint| {
+        // For bryn, find and count projects
+        waypoint
+            .edges(EdgeSearch::scan())
+            .all_created()
+            .push_context(|_, count| **count + 1) // Increment count
     })
+    .map(|_, count| *count)
     .collect::<Vec<_>>();
-    
-// Calculate metrics using nested detours
-let detailed_analysis = graph
-    .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
-    .push_context(|v, ctx| v.project::<Person<_>>().unwrap().name().to_string())
-    .detour(|person| {
-        // Find all projects created by this person
-        person.out_edges(EdgeSearch::scan().with_label(Edge::created_label()))
-            .tail()
-            .push_context(|project, ctx| {
-                // Add project name to context
-                (project.project::<Project<_>>().unwrap().name().to_string(), 0)
-            })
-            .detour(|project| {
-                // For each project, count contributors
-                project.in_edges(EdgeSearch::scan().with_label(Edge::created_label()))
-                    .head()
-                    .map_context(|(name, count), _| (name.clone(), count + 1))
-            })
-    })
-    .collect::<Vec<_>>();
+
+// Bryn should have at least one project
+assert_eq!(bryn_project_count.len(), 1);
 ```
 
 ## Notes
@@ -104,5 +95,5 @@ let detailed_analysis = graph
 - The detour doesn't change the main traversal elements - it only adds context data
 - Detours can be nested for complex traversals
 - The detour function can return any walker, allowing for flexible sub-traversals
-- Use `push_context` and `map_context` inside detours to store data from the sub-traversal
+- Use `push_context` inside detours to store data from the sub-traversal
 - Detours are executed eagerly for each element in the traversal
