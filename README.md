@@ -25,12 +25,12 @@ and ergonomic usage patterns. It includes features for graph traversal, modifica
 # use graph_api_derive::VertexExt;
 # use graph_api_derive::EdgeExt;
 # use uuid::Uuid;
-# use graph_api_lib::Id;
 # use graph_api_simplegraph::SimpleGraph;
 # use graph_api_lib::Graph;
 # use graph_api_lib::VertexReference;
 # use std::ops::Deref;
 # use graph_api_lib::VertexSearch;
+# use graph_api_lib::Direction;
 
 #[derive(Debug, Clone, VertexExt)]
 pub enum Vertex {
@@ -85,18 +85,17 @@ pub enum Edge {
     let complex = graph
         .walk()
         .vertices(VertexIndex::person_by_name("Bryn")) // Start at people named Bryn
-        .filter_by_person(|v| v.username().ends_with("e")) // Filter by username ending with e
+        .filter_by_person(|v, _| v.username().ends_with("e")) // Filter by username ending with e
         .push_context(|v, ctx| v.project::<Person<_>>().unwrap().age()) // Stash the age in the context
-        .out_edges(EdgeIndex::knows()) // Traverse to knows
+        .edges(EdgeIndex::knows().direction(Direction::Outgoing)) // Traverse to knows
         .limit(2) // Limit the traversal to two elements
         .head() // Traverse to the head of the edge (the known person) 
         .detour(|v| { // Find the people that this person knows and collect their ages
-            v.out_edges(EdgeIndex::knows())
+            v.edges(EdgeIndex::knows().direction(Direction::Outgoing))
                 .head()
                 .push_context(|v, ctx| v.project::<Person<_>>().unwrap().age())
         })
-        .into_iter()
-        .map(|(v, ctx)| **ctx.parent() + *ctx) // Add the ages collected during the traversal 
+        .map(|v, ctx| **ctx.parent() + *ctx) // Add the ages collected during the traversal 
         .collect::<Vec<_>>();
 # }
 

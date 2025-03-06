@@ -44,7 +44,7 @@ pub enum Vertex {
 
 #[derive(Debug, Clone)]
 pub struct Project {
-    name: String,
+    pub name: String,
 }
 
 #[derive(Debug, Clone, EdgeExt)]
@@ -55,7 +55,7 @@ pub enum Edge {
 }
 #[derive(Debug, Clone)]
 pub struct Language {
-    name: String,
+    pub name: String,
 }
 pub struct Refs<Graph>
 where

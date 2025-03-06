@@ -140,7 +140,7 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    //#[doc = include_str!("../../../docs/users/steps/vertices_by_id.md")]
+    #[doc = include_str!("../../../docs/users/steps/vertices_by_id.md")]
     pub fn vertices_by_id<Iter>(
         self,
         vertex_ids: Iter,
@@ -453,7 +453,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/default_context.md")]
+    //#[doc = include_str!("../../../docs/users/steps/default_context.md")]
     pub fn push_default_context(
         self,
     ) -> EdgeWalkerBuilder<
