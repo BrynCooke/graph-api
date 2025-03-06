@@ -52,6 +52,19 @@ A walker with the same elements as before, but with the results of the sub-trave
 ## Examples
 
 ```rust
+# use graph_api_test::Vertex;
+# use graph_api_test::Edge;
+# use graph_api_derive::VertexExt;
+# use graph_api_derive::EdgeExt;
+# use uuid::Uuid;
+# use graph_api_lib::Id;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use std::ops::Deref;
+# use graph_api_lib::VertexSearch;
+# let mut graph = SimpleGraph::new();
+
 // Find people and their projects
 let people_with_projects = graph
     .walk()

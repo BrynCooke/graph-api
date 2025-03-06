@@ -41,6 +41,19 @@ Returns the same traversal that was passed in, allowing the traversal to continu
 ## Examples
 
 ```rust
+# use graph_api_test::Vertex;
+# use graph_api_test::Edge;
+# use graph_api_derive::VertexExt;
+# use graph_api_derive::EdgeExt;
+# use uuid::Uuid;
+# use graph_api_lib::Id;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use std::ops::Deref;
+# use graph_api_lib::VertexSearch;
+# let mut graph = SimpleGraph::new();
+
 // Debug vertices in a traversal
 graph.walk().vertices(VertexSearch::scan())
     .dbg("stage1") // elements are printed to the console 

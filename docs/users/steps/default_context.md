@@ -33,6 +33,22 @@ Returns a traversal with the same elements, but with each element's ID and data 
 ## Examples
 
 ```rust
+# use graph_api_test::Person;
+# use graph_api_test::Vertex;
+# use graph_api_test::Edge;
+# use graph_api_test::VertexIndex;
+# use graph_api_test::EdgeIndex;
+# use graph_api_derive::VertexExt;
+# use graph_api_derive::EdgeExt;
+# use uuid::Uuid;
+# use graph_api_lib::Id;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use std::ops::Deref;
+# use graph_api_lib::VertexSearch;
+# let mut graph = SimpleGraph::new();
+
 // Store vertices with their data for later access
 let vertices_with_data = graph
     .walk()
@@ -40,32 +56,24 @@ let vertices_with_data = graph
     .push_default_context()
     .collect::<Vec<_>>();
     
-// Now we can access both the vertex ID and its data directly
-for (id, ctx) in vertices_with_data {
-    println!("Vertex ID: {:?}", id);
-    println!("Vertex data: {:?}", ctx.vertex);
-    
-    // We can use the stored data without accessing the graph again
-    if let Some(person) = ctx.vertex.as_any().downcast_ref::<Person>() {
-        println!("Person name: {}", person.name);
-    }
+// Now we can access both the vertex and its data directly
+for (vertex, ctx) in vertices_with_data {
+    println!("Vertex ID: {:?}", vertex.id());
+    println!("Vertex data: {:?}", ctx.vertex());
 }
 
 // Useful for preserving source information while traversing
 let created_projects = graph
     .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
+    .vertices(VertexIndex::person())
     .push_default_context() // Store person data
-    .out_edges(EdgeSearch::scan().with_label(Edge::created_label()))
+    .edges(EdgeIndex::created())
     .head() // Navigate to created projects
     .collect::<Vec<_>>()
     .into_iter()
-    .map(|(project_id, ctx)| {
+    .map(|(project_vertex, ctx)| {
         // ctx.parent() contains the person data
-        let person_vertex = ctx.parent().vertex;
-        let person = person_vertex.as_any().downcast_ref::<Person>().unwrap();
-        
-        (project_id, person.name.clone())
+        (project_vertex.id(), "Project creator")
     })
     .collect::<Vec<_>>();
 ```

@@ -40,6 +40,21 @@ Returns a collection of the traversed elements. The exact type depends on what y
 ## Examples
 
 ```rust
+# use graph_api_test::Person;
+# use graph_api_test::Edge;
+# use graph_api_test::VertexIndex;
+# use graph_api_derive::VertexExt;
+# use graph_api_derive::EdgeExt;
+# use uuid::Uuid;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use std::ops::Deref;
+# use graph_api_lib::VertexSearch;
+# use graph_api_lib::EdgeSearch;
+# use std::collections::HashMap;
+# let mut graph = SimpleGraph::new();
+
 // Collect vertex IDs into a vector
 let vertex_ids = graph
     .walk()
@@ -49,19 +64,20 @@ let vertex_ids = graph
 // Collect vertices with their context
 let vertices_with_age = graph
     .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
+    .vertices(VertexIndex::person())
     .push_context(|person, _| person.project::<Person<_>>().unwrap().age())
+    .map(|v, c| (v, *c))
     .collect::<Vec<_>>();
 
 // Process collected results
-for (vertex_id, age) in vertices_with_age {
-    println!("Person ID: {:?}, Age: {}", vertex_id, age);
+for (vertex, age) in vertices_with_age {
+    println!("Person ID: {:?}, Age: {}", vertex.id(), age);
 }
 
 // Collect into a custom type
 let person_map = graph
     .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
+    .vertices(VertexIndex::person())
     .collect::<HashMap<_, _>>();
 ```
 

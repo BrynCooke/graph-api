@@ -35,6 +35,31 @@ A new walker where the traversal position is on the edges matching the search cr
 ## Examples
 
 ```rust
+# use graph_api_test::Person;
+# use graph_api_test::Knows;
+# use graph_api_test::Vertex;
+# use graph_api_test::Edge;
+# use graph_api_test::VertexIndex;
+# use graph_api_test::EdgeIndex;
+# use graph_api_derive::VertexExt;
+# use graph_api_derive::EdgeExt;
+# use uuid::Uuid;
+# use graph_api_lib::Id;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use std::ops::Deref;
+# use graph_api_lib::VertexSearch;
+# use graph_api_lib::EdgeSearch;
+# let mut graph = SimpleGraph::new();
+# let person_id = graph.add_vertex(Vertex::Person {
+#     name: "Bryn".to_string(),
+#     age: 45,
+#     unique_id: Uuid::from_u128(1),
+#     username: "bryn".to_string(),
+#     biography: "Did some graph stuff".to_string(),
+# });
+
 // Get all edges in the graph
 let all_edges = graph
     .walk()
@@ -42,13 +67,11 @@ let all_edges = graph
     .edges(EdgeSearch::scan())
     .collect::<Vec<_>>();
 
-// Get only outgoing 'knows' edges from people
+// Get only 'knows' edges from people
 let knows_edges = graph
     .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
-    .edges(EdgeSearch::scan()
-        .outgoing()
-        .with_label(Edge::knows_label()))
+    .vertices(VertexIndex::person())
+    .edges(EdgeIndex::knows())
     .collect::<Vec<_>>();
     
 // Get edges in both directions with properties filter

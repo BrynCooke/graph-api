@@ -35,21 +35,36 @@ A new walker containing only the elements that matched the predicate.
 ## Examples
 
 ```rust
-// Filter to keep only Person vertices
+# use graph_api_test::Person;
+# use graph_api_test::Vertex;
+# use graph_api_test::Edge;
+# use graph_api_test::VertexIndex;
+# use graph_api_derive::VertexExt;
+# use graph_api_derive::EdgeExt;
+# use uuid::Uuid;
+# use graph_api_lib::Id;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use std::ops::Deref;
+# use graph_api_lib::VertexSearch;
+# let mut graph = SimpleGraph::new();
+
+// Filter to keep only vertices with a specific property
 let people = graph
     .walk()
     .vertices(VertexSearch::scan())
-    .filter(|v| v.label() == Vertex::person_label())
+    .filter(|v| v.label() == Vertex::Person_LABEL)
     .collect::<Vec<_>>();
 
 // More complex filtering with projection
-let adult_developers = graph
+let adult_people = graph
     .walk()
-    .vertices(VertexSearch::scan().with_label(Vertex::person_label()))
+    .vertices(VertexIndex::person())
     .filter(|v| {
         // Project the vertex to a Person
         if let Ok(person) = v.project::<Person<_>>() {
-            person.age() >= 18 && person.has_skill("Rust")
+            person.age() >= 18
         } else {
             false
         }

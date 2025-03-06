@@ -140,6 +140,7 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
+    //#[doc = include_str!("../../../docs/users/steps/vertices_by_id.md")]
     pub fn vertices_by_id<Iter>(
         self,
         vertex_ids: Iter,
@@ -154,6 +155,7 @@ where
         }
     }
 
+    //#[doc = include_str!("../../../docs/users/steps/vertices.md")]
     pub fn vertices<'a, T: Into<VertexSearch<'a, Graph>>>(
         self,
         vertex_search: T,
@@ -165,6 +167,7 @@ where
         }
     }
 
+    //#[doc = include_str!("../../../docs/users/steps/context.md")]
     pub fn push_context<Callback, Context>(
         self,
         callback: Callback,
@@ -195,7 +198,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/default_context.md")]
+   // #[doc = include_str!("../../../docs/users/steps/default_context.md")]
     pub fn push_default_context(
         self,
     ) -> VertexWalkerBuilder<
@@ -222,7 +225,7 @@ where
         })
     }
 
-    #[doc = include_str!("../../../docs/users/steps/filter.md")]
+    //#[doc = include_str!("../../../docs/users/steps/filter.md")]
     pub fn filter<Predicate>(
         self,
         predicate: Predicate,
@@ -238,7 +241,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/detour.md")]
+    //#[doc = include_str!("../../../docs/users/steps/detour.md")]
     pub fn detour<Path, Terminal, WalkerBuilder>(
         self,
         predicate: Path,
@@ -262,7 +265,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/edges.md")]
+    //#[doc = include_str!("../../../docs/users/steps/edges.md")]
     pub fn edges<'a, T: Into<EdgeSearch<'a, Graph>>>(
         self,
         search: T,
@@ -274,7 +277,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/collect.md")]
+    //#[doc = include_str!("../../../docs/users/steps/collect.md")]
     pub fn collect<T: FromIterator<Graph::VertexId>>(self) -> T
     where
         Walker: VertexWalker<'graph>,
@@ -282,7 +285,7 @@ where
         self.into_iter().collect()
     }
 
-    #[doc = include_str!("../../../docs/users/steps/mutate.md")]
+    //#[doc = include_str!("../../../docs/users/steps/mutate.md")]
     pub fn mutate<Callback>(mut self, callback: Callback) -> usize
     where
         Callback: Fn(&mut Walker::Graph, Graph::VertexId, &Walker::Context),
@@ -307,7 +310,7 @@ where
         count
     }
 
-    #[doc = include_str!("../../../docs/users/steps/count.md")]
+    //#[doc = include_str!("../../../docs/users/steps/count.md")]
     pub fn count(mut self) -> usize
     where
         'graph: 'graph,
@@ -321,7 +324,7 @@ where
         count
     }
 
-    #[doc = include_str!("../../../docs/users/steps/limit.md")]
+    //#[doc = include_str!("../../../docs/users/steps/limit.md")]
     pub fn limit(
         self,
         limit: usize,
@@ -333,7 +336,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/first.md")]
+    //#[doc = include_str!("../../../docs/users/steps/first.md")]
     pub fn first(mut self) -> Option<Graph::VertexId>
     where
         'graph: 'graph,
@@ -343,7 +346,7 @@ where
         walker.next(graph)
     }
 
-    #[doc = include_str!("../../../docs/users/steps/dbg.md")]
+    //#[doc = include_str!("../../../docs/users/steps/dbg.md")]
     pub fn dbg(
         self,
         tag: &'static str
@@ -354,12 +357,12 @@ where
         VertexProbe<'graph, Walker, impl FnMut(&Graph::VertexReference<'_>)>,
     > {
         let callback = move |vertex: &Graph::VertexReference<'_>| {
-            vertex_debug_callback::<Graph>(vertex, tag)
+            println!("{}: {:?}", tag, vertex);
         };
         self.probe(callback)
     }
 
-    #[doc = include_str!("../../../docs/users/steps/probe.md")]
+    //#[doc = include_str!("../../../docs/users/steps/probe.md")]
     pub fn probe<Callback>(
         self,
         callback: Callback,
@@ -374,23 +377,10 @@ where
         }
     }
 
+    //#[doc = include_str!("../../../docs/users/steps/map.md")]
     pub fn map<R, M: FnMut(Graph::VertexReference<'graph>, Walker::Context) -> R>(mut self, mut mapping :M) -> impl Iterator<Item=R> + use<'graph, R, M, Mutability, Graph, Walker>{
         VertexReferenceIterImpl::new(self.graph.take(),self.walker).map(move |(referemce, ctx)|mapping(referemce, ctx))
     }
-}
-
-fn vertex_debug_callback<Graph>(vertex: &Graph::VertexReference<'_>, tag: &'static str)
-where
-    Graph: crate::graph::Graph,
-{
-    println!("{}: {:?}", tag, vertex);
-}
-
-fn edge_debug_callback<Graph>(edge: &Graph::EdgeReference<'_>, tag: &'static str)
-where
-    Graph: crate::graph::Graph,
-{
-    println!("{}: {:?}", tag, edge);
 }
 
 impl<'graph, Mutability, Graph, Walker> IntoIterator
@@ -490,7 +480,7 @@ where
         })
     }
 
-    #[doc = include_str!("../../../docs/users/steps/filter.md")]
+    //#[doc = include_str!("../../../docs/users/steps/filter.md")]
     pub fn filter<Predicate>(
         self,
         predicate: Predicate,
@@ -505,7 +495,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/head.md")]
+    //#[doc = include_str!("../../../docs/users/steps/head.md")]
     pub fn head(self) -> VertexWalkerBuilder<'graph, Mutability, Graph, Endpoints<'graph, Walker>> {
         VertexWalkerBuilder {
             _phantom: Default::default(),
@@ -514,7 +504,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/tail.md")]
+    //#[doc = include_str!("../../../docs/users/steps/tail.md")]
     pub fn tail(self) -> VertexWalkerBuilder<'graph, Mutability, Graph, Endpoints<'graph, Walker>> {
         VertexWalkerBuilder {
             _phantom: Default::default(),
@@ -523,7 +513,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/collect.md")]
+    //#[doc = include_str!("../../../docs/users/steps/collect.md")]
     pub fn collect<T: FromIterator<Graph::EdgeId>>(self) -> T
     where
         Walker: EdgeWalker<'graph>,
@@ -531,7 +521,7 @@ where
         self.into_iter().collect()
     }
 
-    #[doc = include_str!("../../../docs/users/steps/mutate.md")]
+    //#[doc = include_str!("../../../docs/users/steps/mutate.md")]
     pub fn mutate<Callback>(mut self, callback: Callback) -> usize
     where
         Callback: Fn(&mut Walker::Graph, Graph::EdgeId, &Walker::Context),
@@ -556,7 +546,7 @@ where
         count
     }
 
-    #[doc = include_str!("../../../docs/users/steps/count.md")]
+    //#[doc = include_str!("../../../docs/users/steps/count.md")]
     pub fn count(mut self) -> usize
     where
         'graph: 'graph,
@@ -570,7 +560,7 @@ where
         count
     }
 
-    #[doc = include_str!("../../../docs/users/steps/limit.md")]
+    //#[doc = include_str!("../../../docs/users/steps/limit.md")]
     pub fn limit(
         self,
         limit: usize,
@@ -582,14 +572,14 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/first.md")]
+    //#[doc = include_str!("../../../docs/users/steps/first.md")]
     pub fn first(mut self) -> Option<Graph::EdgeId> {
         let graph = self.graph.take();
         let mut walker = self.walker;
         walker.next(graph)
     }
 
-    #[doc = include_str!("../../../docs/users/steps/dbg.md")]
+    //#[doc = include_str!("../../../docs/users/steps/dbg.md")]
     pub fn dbg(
         self,
         tag: &'static str
@@ -600,12 +590,12 @@ where
         EdgeProbe<'graph, Walker, impl FnMut(&Graph::EdgeReference<'_>)>,
     > {
         let callback = move |edge: &Graph::EdgeReference<'_>| {
-            edge_debug_callback::<Graph>(edge, tag)
+            println!("{}: {:?}", tag, edge);
         };
         self.probe(callback)
     }
 
-    #[doc = include_str!("../../../docs/users/steps/probe.md")]
+    //#[doc = include_str!("../../../docs/users/steps/probe.md")]
     pub fn probe<Callback>(
         self,
         callback: Callback,
@@ -620,6 +610,7 @@ where
         }
     }
 
+    //#[doc = include_str!("../../../docs/users/steps/map.md")]
     pub fn map<R, M: FnMut(Graph::EdgeReference<'graph>, Walker::Context) -> R>(mut self, mut mapping :M) -> impl Iterator<Item=R> + use<'graph, R, M, Mutability, Graph, Walker>{
         EdgeReferenceIterImpl::new(self.graph.take(),self.walker).map(move |(referemce, ctx)|mapping(referemce, ctx))
     }

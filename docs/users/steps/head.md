@@ -35,6 +35,19 @@ A vertex walker that will traverse the source/origin vertices of the edges from 
 ## Examples
 
 ```rust
+# use graph_api_test::Vertex;
+# use graph_api_test::Edge;
+# use graph_api_derive::VertexExt;
+# use graph_api_derive::EdgeExt;
+# use uuid::Uuid;
+# use graph_api_lib::Id;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use std::ops::Deref;
+# use graph_api_lib::VertexSearch;
+# let mut graph = SimpleGraph::new();
+
 // Find the authors of all comments on a post
 let authors = graph
     .walk()
