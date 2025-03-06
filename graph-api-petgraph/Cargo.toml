@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 graph-api-lib = { path = "../graph-api-lib", features = ["petgraph"] }
-petgraph = "0.6.4"
+petgraph = { workspace = true }
 
 [dev-dependencies]
 graph-api-test = { path = "../graph-api-test", features = ["benchmark"] }

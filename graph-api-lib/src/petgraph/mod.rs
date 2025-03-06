@@ -11,13 +11,14 @@ use petgraph::EdgeType;
 /// If ever petgraph decided to implement graph-api directly then this could be removed as a private implementation detail of the graph-api-tests crate.
 use std::fmt::Debug;
 use std::marker::PhantomData;
+use petgraph::stable_graph::StableGraph;
 
-impl<Vertex, Edge, Ty, Ix> Graph for petgraph::stable_graph::StableGraph<Vertex, Edge, Ty, Ix>
+impl<Vertex, Edge, Ty, Ix> Graph for StableGraph<Vertex, Edge, Ty, Ix>
 where
     Ty: EdgeType,
     Ix: IndexType,
-    Vertex: Debug + Element,
-    Edge: Debug + Element,
+    Vertex: Element,
+    Edge: Element,
 {
     type SupportsVertexLabelIndex = Unsupported;
     type SupportsEdgeLabelIndex = Unsupported;
@@ -348,12 +349,12 @@ where
     tail: Graph::VertexId,
 }
 
-impl<Graph> Into<ElementId<Graph>> for EdgeReferenceWrapperMut<'_, Graph>
+impl<Graph> From<EdgeReferenceWrapperMut<'_, Graph>> for ElementId<Graph>
 where
     Graph: crate::Graph,
 {
-    fn into(self) -> ElementId<Graph> {
-        ElementId::Edge(self.id)
+    fn from(val: EdgeReferenceWrapperMut<'_, Graph>) -> Self {
+        ElementId::Edge(val.id)
     }
 }
 

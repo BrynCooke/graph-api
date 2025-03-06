@@ -101,11 +101,7 @@ where
     type Item = Graph::VertexId;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if let Some(next) = self.walker.next(self.graph) {
-            Some(next)
-        } else {
-            None
-        }
+        self.walker.next(self.graph)
     }
 }
 
@@ -135,11 +131,7 @@ where
     type Item = Graph::EdgeId;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if let Some(next) = self.walker.next(self.graph) {
-            Some(next)
-        } else {
-            None
-        }
+        self.walker.next(self.graph)
     }
 }
 
