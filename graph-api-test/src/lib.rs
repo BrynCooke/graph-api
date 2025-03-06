@@ -8,6 +8,7 @@ pub mod edges;
 pub mod filter;
 pub mod filter_derive;
 pub mod first;
+pub mod fold;
 pub mod fuzz;
 pub mod graph;
 pub mod index;
@@ -297,6 +298,8 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, limit_test_edges_limit, $crate::limit::test_edges_limit}
         $crate::general_test!{$setup, first_test_vertices_first, $crate::first::test_vertices_first}
         $crate::general_test!{$setup, first_test_edges_first, $crate::first::test_edges_first}
+        $crate::general_test!{$setup, fold_test_vertices_fold, $crate::fold::test_vertices_fold}
+        $crate::general_test!{$setup, fold_test_edges_fold, $crate::fold::test_edges_fold}
         $crate::general_test!{$setup, detour_test_vertices_detour, $crate::detour::test_vertices_detour}
         $crate::general_test!{$setup, filter_derive_test_vertices_filter, $crate::filter_derive::test_vertices_filter}
         $crate::general_test!{$setup, filter_derive_test_edges_filter, $crate::filter_derive::test_edges_filter}

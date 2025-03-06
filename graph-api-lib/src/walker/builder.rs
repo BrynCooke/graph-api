@@ -385,6 +385,24 @@ where
     {
         VertexReferenceIterImpl::new(self.graph.take(), self.walker).map(move |(reference, ctx)| mapping(reference, ctx))
     }
+    
+    #[doc = include_str!("../../../docs/users/steps/fold.md")]
+    pub fn fold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc 
+    where
+        F: FnMut(Acc, Graph::VertexReference<'graph>, &Walker::Context) -> Acc,
+        'graph: 'graph,
+    {
+        let graph = self.graph.take();
+        let mut walker = self.walker;
+        let mut acc = init;
+        
+        while let Some(vertex_id) = walker.next(graph) {
+            let vertex = graph.vertex(vertex_id).expect("vertex ID must resolve to vertex");
+            acc = f(acc, vertex, walker.ctx());
+        }
+        
+        acc
+    }
 }
 
 #[doc = include_str!("../../../docs/users/steps/iter.md")]
@@ -622,6 +640,24 @@ where
         Walker: 'graph,
     {
         EdgeReferenceIterImpl::new(self.graph.take(), self.walker).map(move |(reference, ctx)| mapping(reference, ctx))
+    }
+    
+    #[doc = include_str!("../../../docs/users/steps/fold.md")]
+    pub fn fold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc 
+    where
+        F: FnMut(Acc, Graph::EdgeReference<'graph>, &Walker::Context) -> Acc,
+        'graph: 'graph,
+    {
+        let graph = self.graph.take();
+        let mut walker = self.walker;
+        let mut acc = init;
+        
+        while let Some(edge_id) = walker.next(graph) {
+            let edge = graph.edge(edge_id).expect("edge ID must resolve to edge");
+            acc = f(acc, edge, walker.ctx());
+        }
+        
+        acc
     }
 }
 
