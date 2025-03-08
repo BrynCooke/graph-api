@@ -105,9 +105,9 @@ pub enum Edge {
 
 ### For API Users
 
-- [Getting Started](docs/users/getting-started.md)
-- [Defining A Model](docs/users/defining-a-model.md)
-- [Basic Operations](docs/users/basic-operations.md)
+- [Getting Started](docs/users/getting_started)
+- [Defining A Model](docs/users/defining_a_model)
+- [Basic Operations](docs/users/basic_operations)
 - [Graph Traversal](docs/users/traversal.md)
 
 ### For Graph Implementors

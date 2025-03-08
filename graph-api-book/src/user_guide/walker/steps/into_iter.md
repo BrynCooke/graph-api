@@ -72,53 +72,11 @@ let vertex_ids = graph
 // There should be at least 4 vertices in the graph
 assert!(vertex_ids.len() >= 4);
 
-// Using map to access vertex data directly
-let person_names = graph
-    .walk()
-    .vertices(VertexIndex::person())
-    .map(|vertex, _ctx| {
-        match vertex.weight() {
-            Vertex::Person { name, .. } => name.to_string(),
-            _ => "Unknown".to_string()
-        }
-    })
-    .collect::<Vec<_>>();
-
-// There should be at least 2 people in the graph
-assert!(person_names.len() >= 2);
-assert!(person_names.contains(&"Bryn".to_string()));
-assert!(person_names.contains(&"Julia".to_string()));
-
-// Edge iteration
-let bryn_edge_ids = graph
-    .walk()
-    .vertices_by_id(vec![refs.bryn])
-    .edges(EdgeSearch::scan())
-    .into_iter()
-    .collect::<Vec<_>>();
-
-// Bryn should have at least one edge
-assert!(!bryn_edge_ids.is_empty());
-
-// Example using filter and map
-let knows_edges = graph
-    .walk()
-    .vertices_by_id(vec![refs.bryn])
-    .edges(EdgeIndex::knows())
-    .into_iter()
-    .collect::<Vec<_>>();
-
-// There should be at least one "knows" edge from Bryn
-assert!(!knows_edges.is_empty());
 ```
 
 ## Notes
 
 - Using `.into_iter()` consumes the walker and returns an iterator over element IDs
-- Using `.map()` returns an iterator over tuples of `(reference, context)`
 - This is the bridge between Graph API's walker system and Rust's standard iterator ecosystem
 - After converting to an iterator, you can use all standard Rust iterator methods
-- The context system is particularly powerful when combined with iterator operations
 - Prefer using walker steps for graph traversal logic, and iterator methods for post-traversal processing
-- Using iterator methods allows for more complex transformations than the provided walker steps
-- When using `map()`, context data is accessible as the second element of the tuple

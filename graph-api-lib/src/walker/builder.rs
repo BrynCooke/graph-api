@@ -140,7 +140,7 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    #[doc = include_str!("../../../docs/users/steps/vertices_by_id.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/vertices_by_id.md")]
     pub fn vertices_by_id<Iter>(
         self,
         vertex_ids: Iter,
@@ -155,7 +155,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/vertices.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/vertices.md")]
     pub fn vertices<'a, T: Into<VertexSearch<'a, Graph>>>(
         self,
         vertex_search: T,
@@ -167,7 +167,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/context.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/context.md")]
     pub fn push_context<Callback, Context>(
         self,
         callback: Callback,
@@ -198,7 +198,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/default_context.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/default_context.md")]
     pub fn push_default_context(
         self,
     ) -> VertexWalkerBuilder<
@@ -225,7 +225,7 @@ where
         })
     }
 
-    #[doc = include_str!("../../../docs/users/steps/filter.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/filter.md")]
     pub fn filter<Predicate>(
         self,
         predicate: Predicate,
@@ -241,7 +241,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/detour.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/detour.md")]
     pub fn detour<Path, Terminal, WalkerBuilder>(
         self,
         predicate: Path,
@@ -265,7 +265,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/edges.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/edges.md")]
     pub fn edges<'a, T: Into<EdgeSearch<'a, Graph>>>(
         self,
         search: T,
@@ -277,7 +277,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/collect.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/collect.md")]
     pub fn collect<T: FromIterator<Graph::VertexId>>(self) -> T
     where
         Walker: VertexWalker<'graph>,
@@ -285,7 +285,7 @@ where
         self.into_iter().collect()
     }
 
-    #[doc = include_str!("../../../docs/users/steps/mutate.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/mutate.md")]
     pub fn mutate<Callback>(mut self, callback: Callback) -> usize
     where
         Callback: Fn(&mut Walker::Graph, Graph::VertexId, &Walker::Context),
@@ -310,7 +310,7 @@ where
         count
     }
 
-    //#[doc = include_str!("../../../docs/users/steps/count.md")]
+    //#[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/count.md")]
     pub fn count(mut self) -> usize
     where
         'graph: 'graph,
@@ -324,7 +324,7 @@ where
         count
     }
 
-    #[doc = include_str!("../../../docs/users/steps/limit.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/limit.md")]
     pub fn limit(
         self,
         limit: usize,
@@ -336,7 +336,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/first.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/first.md")]
     pub fn first(mut self) -> Option<Graph::VertexId>
     where
         'graph: 'graph,
@@ -346,7 +346,7 @@ where
         walker.next(graph)
     }
 
-    #[doc = include_str!("../../../docs/users/steps/dbg.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/dbg.md")]
     pub fn dbg(
         self,
         tag: &'static str
@@ -362,7 +362,7 @@ where
         self.probe(callback)
     }
 
-    #[doc = include_str!("../../../docs/users/steps/probe.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/probe.md")]
     pub fn probe<Callback>(
         self,
         callback: Callback,
@@ -377,16 +377,16 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/map.md")]
-    pub fn map<R, M: FnMut(Graph::VertexReference<'graph>, Walker::Context) -> R>(mut self, mut mapping: M) -> impl Iterator<Item=R> + 'graph
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/map.md")]
+    pub fn map<R, M>(mut self, mut mapping: M) -> impl Iterator<Item=R> + 'graph
     where
-        M: 'graph,
+        M: FnMut(Graph::VertexReference<'graph>, Walker::Context) -> R + 'graph,
         Walker: 'graph,
     {
         VertexReferenceIterImpl::new(self.graph.take(), self.walker).map(move |(reference, ctx)| mapping(reference, ctx))
     }
     
-    #[doc = include_str!("../../../docs/users/steps/fold.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/fold.md")]
     pub fn fold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc 
     where
         F: FnMut(Acc, Graph::VertexReference<'graph>, &Walker::Context) -> Acc,
@@ -405,7 +405,7 @@ where
     }
 }
 
-#[doc = include_str!("../../../docs/users/steps/iter.md")]
+#[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/into_iter.md")]
 impl<'graph, Mutability, Graph, Walker> IntoIterator
     for VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
 where
@@ -476,7 +476,7 @@ where
         }
     }
 
-    //#[doc = include_str!("../../../docs/users/steps/default_context.md")]
+    //#[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/default_context.md")]
     pub fn push_default_context(
         self,
     ) -> EdgeWalkerBuilder<
@@ -503,7 +503,7 @@ where
         })
     }
 
-    //#[doc = include_str!("../../../docs/users/steps/filter.md")]
+    //#[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/filter.md")]
     pub fn filter<Predicate>(
         self,
         predicate: Predicate,
@@ -518,7 +518,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/head.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/head.md")]
     pub fn head(self) -> VertexWalkerBuilder<'graph, Mutability, Graph, Endpoints<'graph, Walker>> {
         VertexWalkerBuilder {
             _phantom: Default::default(),
@@ -527,7 +527,7 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/tail.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/tail.md")]
     pub fn tail(self) -> VertexWalkerBuilder<'graph, Mutability, Graph, Endpoints<'graph, Walker>> {
         VertexWalkerBuilder {
             _phantom: Default::default(),
@@ -536,7 +536,7 @@ where
         }
     }
 
-    //#[doc = include_str!("../../../docs/users/steps/collect.md")]
+    //#[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/collect.md")]
     pub fn collect<T: FromIterator<Graph::EdgeId>>(self) -> T
     where
         Walker: EdgeWalker<'graph>,
@@ -544,7 +544,7 @@ where
         self.into_iter().collect()
     }
 
-    #[doc = include_str!("../../../docs/users/steps/mutate.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/mutate.md")]
     pub fn mutate<Callback>(mut self, callback: Callback) -> usize
     where
         Callback: Fn(&mut Walker::Graph, Graph::EdgeId, &Walker::Context),
@@ -569,7 +569,7 @@ where
         count
     }
 
-    //#[doc = include_str!("../../../docs/users/steps/count.md")]
+    //#[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/count.md")]
     pub fn count(mut self) -> usize
     where
         'graph: 'graph,
@@ -583,7 +583,7 @@ where
         count
     }
 
-    //#[doc = include_str!("../../../docs/users/steps/limit.md")]
+    //#[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/limit.md")]
     pub fn limit(
         self,
         limit: usize,
@@ -595,14 +595,14 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/first.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/first.md")]
     pub fn first(mut self) -> Option<Graph::EdgeId> {
         let graph = self.graph.take();
         let mut walker = self.walker;
         walker.next(graph)
     }
 
-    #[doc = include_str!("../../../docs/users/steps/dbg.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/dbg.md")]
     pub fn dbg(
         self,
         tag: &'static str
@@ -618,7 +618,7 @@ where
         self.probe(callback)
     }
 
-    #[doc = include_str!("../../../docs/users/steps/probe.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/probe.md")]
     pub fn probe<Callback>(
         self,
         callback: Callback,
@@ -633,16 +633,16 @@ where
         }
     }
 
-    #[doc = include_str!("../../../docs/users/steps/map.md")]
-    pub fn map<R, M: FnMut(Graph::EdgeReference<'graph>, Walker::Context) -> R>(mut self, mut mapping: M) -> impl Iterator<Item=R> + 'graph
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/map.md")]
+    pub fn map<R, M>(mut self, mut mapping: M) -> impl Iterator<Item=R> + 'graph
     where
-        M: 'graph,
+        M: FnMut(Graph::EdgeReference<'graph>, Walker::Context) -> R + 'graph,
         Walker: 'graph,
     {
         EdgeReferenceIterImpl::new(self.graph.take(), self.walker).map(move |(reference, ctx)| mapping(reference, ctx))
     }
     
-    #[doc = include_str!("../../../docs/users/steps/fold.md")]
+    #[doc = include_str!("../../../graph-api-book/src/user_guide/walker/steps/fold.md")]
     pub fn fold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc 
     where
         F: FnMut(Acc, Graph::EdgeReference<'graph>, &Walker::Context) -> Acc,

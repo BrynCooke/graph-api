@@ -5,6 +5,7 @@ members = [
     "graph-api-test",
     "graph-api-petgraph",
     "graph-api-simplegraph",
+    "graph-api-book",
 ]
 
 resolver = "2"

@@ -105,6 +105,6 @@ let total_age = graph
 
 ## Further Reading
 
-- [Basic Operations](./basic-operations.md) - Core graph operations
-- [Defining a Model](./defining-a-model.md) - Creating vertex and edge types
+- [Basic Operations](./basic_operations) - Core graph operations
+- [Defining a Model](./defining_a_model) - Creating vertex and edge types
 - [Walker Steps Directory](./steps/README.md) - Detailed documentation for all steps

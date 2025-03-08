@@ -1,0 +1,14 @@
+[package]
+name = "graph-api-book"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+graph-api-derive = { path = "../graph-api-derive" }
+graph-api-lib = { path = "../graph-api-lib" }
+graph-api-test = { path = "../graph-api-test" }
+graph-api-simplegraph = { path = "../graph-api-simplegraph" }
+graph-api-petgraph = { path = "../graph-api-petgraph" }
+include-doc = "0.2.1"

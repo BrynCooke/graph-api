@@ -13,6 +13,9 @@ doctest:
     cargo test -p graph-api-simplegraph --doc
     cargo test -p graph-api-petgraph --doc
 
+book:
+    cargo test -p graph-api-book --doc
+
 lint:
     cargo clippy
 
