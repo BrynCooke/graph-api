@@ -1,8 +1,11 @@
-use crate::graph::Graph;
 use crate::search::vertex::VertexSearch;
-use crate::walker::{ VertexWalker, Walker};
+use crate::walker::builder::VertexWalkerBuilder;
+use crate::walker::{VertexWalker, Walker};
+use crate::graph::Graph;
 use crate::{ElementId, VertexReference};
 use std::marker::PhantomData;
+
+// ================ VERTICES IMPLEMENTATION ================
 
 pub struct Vertices<'search, 'graph, Parent>
 where
@@ -48,6 +51,7 @@ where
         self.parent.ctx()
     }
 }
+
 impl<'graph, Parent> VertexWalker<'graph> for Vertices<'_, 'graph, Parent>
 where
     Parent: VertexWalker<'graph>,
@@ -63,5 +67,23 @@ where
             .expect("iterator must be populated")
             .next()
             .map(|next| next.id())
+    }
+}
+
+impl<'graph, Mutability, Graph, Walker> VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
+where
+    Graph: crate::graph::Graph,
+    Walker: VertexWalker<'graph, Graph = Graph>,
+{
+    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/vertices.md")]
+    pub fn vertices<'a, T: Into<VertexSearch<'a, Graph>>>(
+        self,
+        vertex_search: T,
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, Vertices<'a, 'graph, Walker>> {
+        VertexWalkerBuilder {
+            _phantom: Default::default(),
+            walker: self.walker.vertices(vertex_search.into()),
+            graph: self.graph,
+        }
     }
 }

@@ -1,8 +1,11 @@
-use crate::graph::{ Graph};
-use crate::walker::{EdgeWalker,  VertexWalker, Walker};
+use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
+use crate::walker::{EdgeWalker, VertexWalker, Walker};
+use crate::graph::Graph;
+use crate::ElementId;
 use std::marker::PhantomData;
 use std::ops::Deref;
-use crate::ElementId;
+
+// ================ CONTEXT IMPLEMENTATION ================
 
 #[derive(Clone, Debug)]
 pub struct ContextRef<Current, Parent> {
@@ -202,5 +205,77 @@ where
             }
         }
         None
+    }
+}
+
+impl<'graph, Mutability, Graph, Walker> VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
+where
+    Graph: crate::graph::Graph,
+    Walker: VertexWalker<'graph, Graph = Graph>,
+{
+    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/context.md")]
+    pub fn push_context<Callback, Context>(
+        self,
+        callback: Callback,
+    ) -> VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        VertexContext<
+            'graph,
+            Walker,
+            impl Fn(
+                &Graph::VertexReference<'_>,
+                &Walker::Context,
+            ) -> ContextRef<Context, Walker::Context>,
+            ContextRef<Context, Walker::Context>,
+        >,
+    >
+    where
+        Callback: Fn(&Graph::VertexReference<'_>, &Walker::Context) -> Context + 'graph,
+        Context: Clone + 'static,
+    {
+        VertexWalkerBuilder {
+            _phantom: Default::default(),
+            walker: self.walker.context(move |vertex, context| {
+                ContextRef::new(callback(vertex, context), context.clone())
+            }),
+            graph: self.graph,
+        }
+    }
+}
+
+impl<'graph, Mutability, Graph, Walker> EdgeWalkerBuilder<'graph, Mutability, Graph, Walker>
+where
+    Graph: crate::graph::Graph,
+    Walker: EdgeWalker<'graph, Graph = Graph>,
+    <Walker as crate::walker::Walker<'graph>>::Context: Clone + 'static,
+{
+    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/context.md")]
+    pub fn push_context<Callback, Context>(
+        self,
+        callback: Callback,
+    ) -> EdgeWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        EdgeContext<
+            'graph,
+            Walker,
+            impl Fn(&Graph::EdgeReference<'_>, &Walker::Context) -> ContextRef<Context, Walker::Context>,
+            ContextRef<Context, Walker::Context>,
+        >,
+    >
+    where
+        Callback: Fn(&Graph::EdgeReference<'_>, &Walker::Context) -> Context,
+        Context: Clone + 'static,
+    {
+        EdgeWalkerBuilder {
+            _phantom: Default::default(),
+            walker: self.walker.context(move |edge, context| {
+                ContextRef::new(callback(edge, context), context.clone())
+            }),
+            graph: self.graph,
+        }
     }
 }

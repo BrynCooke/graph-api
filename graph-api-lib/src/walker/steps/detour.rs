@@ -1,10 +1,12 @@
+use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder, WalkerBuilder};
+use crate::walker::{VertexWalker, Walker};
 use crate::graph::Graph;
-use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder};
-use crate::walker::{ VertexWalker, Walker};
+use crate::ElementId;
 use std::cell::Cell;
 use std::marker::PhantomData;
 use std::rc::Rc;
-use crate::ElementId;
+
+// ================ DETOUR IMPLEMENTATION ================
 
 pub struct Waypoint<'graph, Graph, Context>
 where
@@ -183,6 +185,36 @@ where
                     return self.next;
                 }
             }
+        }
+    }
+}
+
+impl<'graph, Mutability, Graph, Walker> VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
+where
+    Graph: crate::graph::Graph,
+    Walker: VertexWalker<'graph, Graph = Graph>,
+{
+    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/detour.md")]
+    pub fn detour<Path, Terminal, WalkerBuilderT>(
+        self,
+        predicate: Path,
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, Detour<'graph, Walker, Path, Terminal>>
+    where
+        Path: Fn(
+            VertexWalkerBuilder<
+                'graph,
+                ImmutableMarker,
+                Graph,
+                Waypoint<'graph, Graph, Walker::Context>,
+            >,
+        ) -> WalkerBuilderT,
+        WalkerBuilderT: Into<self::WalkerBuilder<'graph, ImmutableMarker, Graph, Terminal>>,
+        Terminal: crate::walker::Walker<'graph, Graph = Graph>,
+    {
+        VertexWalkerBuilder {
+            _phantom: Default::default(),
+            walker: Detour::new(self.walker, predicate),
+            graph: self.graph,
         }
     }
 }

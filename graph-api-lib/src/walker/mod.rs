@@ -1,32 +1,12 @@
 use crate::graph::Graph;
 use crate::search::vertex::VertexSearch;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder};
-use crate::walker::context::{EdgeContext, VertexContext};
-use crate::walker::detour::{Detour, Waypoint};
-use crate::walker::endpoints::{End, Endpoints};
-use crate::walker::filter::{EdgeFilter, VertexFilter};
-use crate::walker::from_edge_walker::FromEdgeWalker;
-use crate::walker::from_vertex_walker::FromVertexWalker;
-use crate::walker::limit::{EdgeLimit, VertexLimit};
-use crate::walker::vertex_iter::VertexIter;
-use crate::walker::vertices::Vertices;
+use crate::walker::steps::{Detour, EdgeContext, EdgeFilter, EdgeLimit, Edges, End, Endpoints, VertexContext, VertexFilter, VertexIter, VertexLimit, Vertices, Waypoint};
 use crate::{EdgeSearch, ElementId};
-use edges::Edges;
 
 pub mod builder;
-mod context;
-mod detour;
-mod edges;
-pub(crate) mod empty;
-mod endpoints;
-mod filter;
-mod from_edge_walker;
-mod from_vertex_walker;
-mod limit;
-mod probe;
-mod vertex_iter;
-mod vertices;
 mod iter;
+pub mod steps;
 
 /// A trait that defines the basic behavior of a graph walker.
 ///
@@ -131,10 +111,6 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
         Edges::new(self, search)
     }
 
-    fn collect<T: FromVertexWalker<'graph, Self>>(self, graph: &'graph Self::Graph) -> T {
-        T::from_vertex_walker(self, graph)
-    }
-
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId>;
 }
 
@@ -173,9 +149,6 @@ pub trait EdgeWalker<'graph>: Walker<'graph> {
         Endpoints::new(self, End::Tail)
     }
 
-    fn collect<T: FromEdgeWalker<'graph, Self>>(self, graph: &'graph Self::Graph) -> T {
-        T::from_edge_walker(self, graph)
-    }
     fn limit(self, limit: usize) -> EdgeLimit<'graph, Self> {
         EdgeLimit::new(self, limit)
     }

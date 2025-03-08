@@ -1,7 +1,10 @@
+use crate::walker::builder::VertexWalkerBuilder;
+use crate::walker::{VertexWalker, Walker};
 use crate::graph::Graph;
-use crate::walker::{ VertexWalker, Walker};
-use std::marker::PhantomData;
 use crate::ElementId;
+use std::marker::PhantomData;
+
+// ================ VERTEX_ITER IMPLEMENTATION ================
 
 pub struct VertexIter<'graph, Parent, Iter>
 where
@@ -45,6 +48,7 @@ where
         self.parent.ctx()
     }
 }
+
 impl<'graph, Parent, Iter> VertexWalker<'graph> for VertexIter<'graph, Parent, Iter>
 where
     Parent: VertexWalker<'graph>,
@@ -52,5 +56,26 @@ where
 {
     fn next(&mut self, _graph: &Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
         self.start.next()
+    }
+}
+
+impl<'graph, Mutability, Graph, Walker> VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
+where
+    Graph: crate::graph::Graph,
+    Walker: VertexWalker<'graph, Graph = Graph>,
+{
+    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/vertices_by_id.md")]
+    pub fn vertices_by_id<Iter>(
+        self,
+        vertex_ids: Iter,
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexIter<'graph, Walker, Iter::IntoIter>>
+    where
+        Iter: IntoIterator<Item = Graph::VertexId>,
+    {
+        VertexWalkerBuilder {
+            _phantom: Default::default(),
+            walker: self.walker.vertices_by_id(vertex_ids),
+            graph: self.graph,
+        }
     }
 }

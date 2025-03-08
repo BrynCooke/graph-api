@@ -1,9 +1,9 @@
 use crate::graph::{EdgeReference, Graph};
-use crate::walker::{EdgeWalker,  VertexWalker, Walker};
+use crate::walker::{EdgeWalker, VertexWalker, Walker};
 use std::marker::PhantomData;
 use crate::ElementId;
 
-pub(crate) enum End {
+pub enum End {
     Head,
     Tail,
 }

@@ -1,7 +1,10 @@
-use crate::graph::{ Graph};
-use crate::walker::{EdgeWalker,  VertexWalker, Walker};
-use std::marker::PhantomData;
+use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
+use crate::walker::{EdgeWalker, VertexWalker, Walker};
+use crate::graph::Graph;
 use crate::ElementId;
+use std::marker::PhantomData;
+
+// ================ LIMIT IMPLEMENTATION ================
 
 pub struct VertexLimit<'graph, Parent> {
     _phantom_data: PhantomData<&'graph ()>,
@@ -10,7 +13,7 @@ pub struct VertexLimit<'graph, Parent> {
 }
 
 impl<Parent> VertexLimit<'_, Parent> {
-    pub fn new(parent: Parent, limit: usize) -> Self {
+    pub(crate) fn new(parent: Parent, limit: usize) -> Self {
         Self {
             _phantom_data: Default::default(),
             parent,
@@ -59,7 +62,7 @@ pub struct EdgeLimit<'graph, Parent> {
 }
 
 impl<Parent> EdgeLimit<'_, Parent> {
-    pub fn new(parent: Parent, limit: usize) -> Self {
+    pub(crate) fn new(parent: Parent, limit: usize) -> Self {
         Self {
             _phantom_data: Default::default(),
             parent,
@@ -99,6 +102,41 @@ where
             self.parent.next(graph)
         } else {
             None
+        }
+    }
+}
+
+impl<'graph, Mutability, Graph, Walker> VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
+where
+    Graph: crate::graph::Graph,
+    Walker: VertexWalker<'graph, Graph = Graph>,
+{
+    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/limit.md")]
+    pub fn limit(
+        self,
+        limit: usize,
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexLimit<'graph, Walker>> {
+        VertexWalkerBuilder {
+            _phantom: Default::default(),
+            walker: self.walker.limit(limit),
+            graph: self.graph,
+        }
+    }
+}
+
+impl<'graph, Mutability, Graph, Walker> EdgeWalkerBuilder<'graph, Mutability, Graph, Walker>
+where
+    Graph: crate::graph::Graph,
+    Walker: EdgeWalker<'graph, Graph = Graph>,
+{
+    pub fn limit(
+        self,
+        limit: usize,
+    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeLimit<'graph, Walker>> {
+        EdgeWalkerBuilder {
+            _phantom: Default::default(),
+            walker: self.walker.limit(limit),
+            graph: self.graph,
         }
     }
 }
