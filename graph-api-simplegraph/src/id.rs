@@ -1,6 +1,5 @@
 use crate::SimpleGraph;
 use graph_api_lib::{Element, ElementId};
-use std::fmt::{Display, Formatter};
 
 /// Simple vertex identifier using direct numeric values
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Hash)]
