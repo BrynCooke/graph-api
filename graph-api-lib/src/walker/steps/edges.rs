@@ -2,6 +2,7 @@ use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
 use crate::graph::{EdgeReference, Graph};
 use crate::{EdgeSearch, ElementId};
+use include_doc::function_body;
 
 // ================ EDGES IMPLEMENTATION ================
 
@@ -84,7 +85,56 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/edges.md")]
+    /// # Edges Step
+    ///
+    /// The `edges` step allows you to traverse to the edges in a graph. 
+    /// It moves the traversal position from vertices to their connected edges based on the provided search criteria.
+    ///
+    /// ## Visual Diagram
+    ///
+    /// Before edges step (traversal position on vertices):
+    /// ```text
+    ///   [Person A]* --- knows ---> [Person B] --- created ---> [Project]
+    ///    ^                                         
+    ///    |                                         
+    ///   owns                                       
+    ///    |                                         
+    ///   [Company C]                                        
+    /// ```
+    ///
+    /// After edges step with outgoing direction (traversal position moves to edges):
+    /// ```text
+    ///   [Person A] --- knows --->* [Person B] --- created ---> [Project]
+    ///    ^                                         
+    ///    |                                         
+    ///   owns -*                                        
+    ///    |                                         
+    ///   [Company C]                                        
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `search`: An `EdgeSearch` that defines which edges to include. This can filter by label, direction, and other criteria.
+    ///
+    /// ## Return Value
+    ///
+    /// A new walker where the traversal position is on the edges matching the search criteria.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/edges.rs", example, [])]
+    /// ```
+    ///
+    /// For more examples, see the [edges example](https://github.com/yourusername/graph-api/blob/main/graph-api-lib/examples/edges.rs).
+    ///
+    /// ## Notes
+    ///
+    /// - The edges step changes the traversal position from vertices to edges
+    /// - To get back to vertices after an edges step, use `head()` or `tail()`
+    /// - The search direction matters: `.outgoing()` finds edges where the current vertex is the source, 
+    ///   `.incoming()` finds edges where the current vertex is the target, and `.bidirectional()` finds both
+    /// - The edges step can filter by label and other properties through the EdgeSearch parameter
     pub fn edges<'a, T: Into<EdgeSearch<'a, Graph>>>(
         self,
         search: T,

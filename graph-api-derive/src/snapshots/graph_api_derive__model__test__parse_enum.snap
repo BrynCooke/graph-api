@@ -168,7 +168,7 @@ Model {
         enum_variants: [
             Unit {
                 all_ident: Ident(
-                    all_unit,
+                    filter_unit,
                 ),
                 target_ty: Ident(
                     Test,
@@ -182,7 +182,7 @@ Model {
                     filter_by_unnammed,
                 ),
                 all_ident: Ident(
-                    all_unnammed,
+                    filter_unnammed,
                 ),
                 target_ty: Ident(
                     Test,
@@ -226,7 +226,7 @@ Model {
                     filter_by_named,
                 ),
                 all_ident: Ident(
-                    all_named,
+                    filter_named,
                 ),
                 target_ty: Ident(
                     Test,

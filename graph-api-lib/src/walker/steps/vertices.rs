@@ -3,6 +3,7 @@ use crate::walker::builder::VertexWalkerBuilder;
 use crate::walker::{VertexWalker, Walker};
 use crate::graph::Graph;
 use crate::{ElementId, VertexReference};
+use include_doc::function_body;
 use std::marker::PhantomData;
 
 // ================ VERTICES IMPLEMENTATION ================
@@ -75,7 +76,68 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/vertices.md")]
+    /// # Vertices Step
+    ///
+    /// The `vertices` step is the primary entry point for graph traversals, allowing you to select a set of 
+    /// vertices to start traversing from. It accepts a `VertexSearch` parameter that specifies which 
+    /// vertices to include in the traversal.
+    ///
+    /// ## Visual Diagram
+    ///
+    /// Before vertices step (empty traversal):
+    /// ```text
+    ///   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
+    ///    ^                                         
+    ///    |                                         
+    ///   edge3                                       
+    ///    |                                         
+    ///   [D]                                        
+    /// ```
+    ///
+    /// After vertices step (with VertexSearch::scan()):
+    /// ```text
+    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
+    ///    ^                                         
+    ///    |                                         
+    ///   edge3                                       
+    ///    |                                         
+    ///   [D]*                                        
+    /// ```
+    ///
+    /// After vertices step (with VertexSearch::scan().with_label(Vertex::person_label())):
+    /// ```text
+    ///   [Person A]* --- edge1 ---> [Project B]  --- edge2 ---> [Person C]*  
+    ///    ^                                         
+    ///    |                                         
+    ///   edge3                                       
+    ///    |                                         
+    ///   [Person D]*                                        
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `vertex_search`: A `VertexSearch` object that defines the criteria for selecting vertices
+    ///
+    /// ## Return Value
+    ///
+    /// Returns a traversal containing all vertices that match the search criteria.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/vertices.rs", example, [])]
+    /// ```
+    ///
+    /// For more examples, see the [vertices example](https://github.com/yourusername/graph-api/blob/main/graph-api-lib/examples/vertices.rs).
+    ///
+    /// ## Notes
+    ///
+    /// - The `vertices` step is typically the first step in a traversal
+    /// - Use `VertexIndex` methods for faster access when you have appropriate indexes defined
+    /// - For more complex criteria, you can chain the `filter` step after this one
+    /// - When working with large graphs, consider using indexed properties for better performance
+    /// - This step supports all vertex search mechanisms, including label-based, index-based, and full scans
+    /// - The traversal order is not guaranteed unless you specifically use an ordered index
     pub fn vertices<'a, T: Into<VertexSearch<'a, Graph>>>(
         self,
         vertex_search: T,

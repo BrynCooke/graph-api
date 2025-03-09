@@ -2,6 +2,7 @@ use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
 use crate::graph::Graph;
 use crate::ElementId;
+use include_doc::function_body;
 use std::marker::PhantomData;
 
 // ================ FILTER IMPLEMENTATION ================
@@ -117,7 +118,56 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/filter.md")]
+    /// # Filter Step
+    ///
+    /// The `filter` step allows you to keep only elements that match a predicate function. 
+    /// Elements that don't match the predicate are excluded from further traversal.
+    ///
+    /// ## Visual Diagram
+    ///
+    /// Before filter step (all vertices in traversal):
+    /// ```text
+    ///   [Person A]* --- knows ---> [Person B]* --- created ---> [Project]*
+    ///    ^                                         
+    ///    |                                         
+    ///   owns                                       
+    ///    |                                         
+    ///   [Company C]*                                        
+    /// ```
+    ///
+    /// After filter(is_person) step (only Person vertices remain in traversal):
+    /// ```text
+    ///   [Person A]* --- knows ---> [Person B]* --- created ---> [Project]
+    ///    ^                                         
+    ///    |                                         
+    ///   owns                                       
+    ///    |                                         
+    ///   [Company C]                                        
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `predicate`: A function that takes a reference to an element and returns a boolean. 
+    ///   Only elements for which this function returns `true` will be included in the traversal.
+    ///
+    /// ## Return Value
+    ///
+    /// A new walker containing only the elements that matched the predicate.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/filter.rs", example, [])]
+    /// ```
+    ///
+    /// For more examples, see the [filter example](https://github.com/yourusername/graph-api/blob/main/graph-api-lib/examples/filter.rs).
+    ///
+    /// ## Notes
+    ///
+    /// - The filter step does not modify the graph, only the traversal
+    /// - For complex filtering logic, consider breaking into multiple filter steps for better readability
+    /// - Use type projections when filtering to access type-specific methods and properties
+    /// - The filter is applied lazily during traversal, not when the step is added to the walker
     pub fn filter<Predicate>(
         self,
         predicate: Predicate,
@@ -139,6 +189,11 @@ where
     Walker: EdgeWalker<'graph, Graph = Graph>,
     <Walker as crate::walker::Walker<'graph>>::Context: Clone + 'static,
 {
+    /// Filters edges from this traversal based on a predicate function.
+    ///
+    /// This allows you to keep only edges that match a condition, discarding the rest.
+    ///
+    /// See the documentation for [`VertexWalkerBuilder::filter`] for more details.
     pub fn filter<Predicate>(
         self,
         predicate: Predicate,

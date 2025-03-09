@@ -208,7 +208,7 @@ impl TryFrom<DeriveType<'_>> for Model {
                 .iter()
                 .map(|variant| {
                     let name = variant.ident.to_string().to_snake();
-                    let all_ident = format_ident!("all_{}", name);
+                    let all_ident = format_ident!("filter_{}", name);
                     let filter_ident = format_ident!("filter_by_{}", name);
                     match &variant.fields {
                         Fields::Named(_fields) => EnumVariants::NamedFields {

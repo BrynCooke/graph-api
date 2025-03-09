@@ -2,6 +2,7 @@ use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
 use crate::graph::Graph;
 use crate::ElementId;
+use include_doc::function_body;
 use std::marker::PhantomData;
 
 // ================ PROBE IMPLEMENTATION ================
@@ -117,7 +118,61 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/probe.md")]
+    /// # Probe Step
+    ///
+    /// The `probe` step allows you to execute a callback function for each element in the traversal 
+    /// without altering the traversal itself. This is useful for debugging, logging, or collecting 
+    /// information during a traversal.
+    ///
+    /// ## Visual Diagram
+    ///
+    /// Before probe step:
+    /// ```text
+    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
+    ///    ^                                         
+    ///    |                                         
+    ///   edge3                                       
+    ///    |                                         
+    ///   [D]*                                        
+    /// ```
+    ///
+    /// After probe step (unchanged, but callback executed for each *):
+    /// ```text
+    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
+    ///    ^                                         
+    ///    |                                         
+    ///   edge3                                       
+    ///    |                                         
+    ///   [D]*                                        
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `callback`: A function that takes a reference to the current element being traversed (vertex or edge). 
+    ///   For vertices, the function signature is `FnMut(&Graph::VertexReference<'_>)` and for edges, 
+    ///   it's `FnMut(&Graph::EdgeReference<'_>)`.
+    ///
+    /// ## Return Value
+    ///
+    /// A walker of the same type as the input with the probe operation added to the pipeline, 
+    /// allowing for further chaining of operations.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/probe.rs", example, [])]
+    /// ```
+    ///
+    /// For more examples, see the [probe example](https://github.com/yourusername/graph-api/blob/main/graph-api-lib/examples/probe.rs).
+    ///
+    /// ## Notes
+    ///
+    /// - The `probe` step does not modify the traversal path or elements
+    /// - The callback function is executed for each element as it's traversed
+    /// - It's useful for debugging complex traversals without modifying the traversal logic
+    /// - Side effects in the callback function (like printing or collecting statistics) do not affect the traversal
+    /// - Can be used at multiple points in a traversal to monitor the flow at different stages
+    /// - Consider using `probe` instead of creating temporary variables outside the traversal for debugging purposes
     pub fn probe<Callback>(
         self,
         callback: Callback,
@@ -138,7 +193,11 @@ where
     Graph: crate::graph::Graph,
     Walker: EdgeWalker<'graph, Graph = Graph>,
 {
-    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/probe.md")]
+    /// Executes a callback function for each edge in the traversal without altering the traversal.
+    ///
+    /// This is useful for debugging, logging, or collecting information during a traversal.
+    ///
+    /// See the documentation for [`VertexWalkerBuilder::probe`] for more details.
     pub fn probe<Callback>(
         self,
         callback: Callback,

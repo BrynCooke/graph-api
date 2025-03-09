@@ -2,6 +2,7 @@ use crate::walker::builder::VertexWalkerBuilder;
 use crate::walker::{VertexWalker, Walker};
 use crate::graph::Graph;
 use crate::ElementId;
+use include_doc::function_body;
 use std::marker::PhantomData;
 
 // ================ VERTEX_ITER IMPLEMENTATION ================
@@ -64,7 +65,56 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/vertices_by_id.md")]
+    /// # Vertices By ID Step
+    ///
+    /// The `vertices_by_id` step allows you to begin a traversal from a specific set of vertex IDs. 
+    /// This is useful when you already know the IDs of the vertices you want to include in your traversal.
+    ///
+    /// ## Visual Diagram
+    ///
+    /// Before vertices_by_id step (empty traversal):
+    /// ```text
+    ///   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
+    ///    ^                                         
+    ///    |                                         
+    ///   edge3                                       
+    ///    |                                         
+    ///   [D]                                        
+    /// ```
+    ///
+    /// After vertices_by_id step (with [id_A, id_C]):
+    /// ```text
+    ///   [A]* --- edge1 ---> [B] --- edge2 ---> [C]*  
+    ///    ^                                         
+    ///    |                                         
+    ///   edge3                                       
+    ///    |                                         
+    ///   [D]                                        
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `vertex_ids`: An iterator that yields vertex IDs to include in the traversal
+    ///
+    /// ## Return Value
+    ///
+    /// Returns a traversal containing all vertices with the specified IDs.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/vertices_by_id.rs", example, [])]
+    /// ```
+    ///
+    /// For more examples, see the [vertices_by_id example](https://github.com/yourusername/graph-api/blob/main/graph-api-lib/examples/vertices_by_id.rs).
+    ///
+    /// ## Notes
+    ///
+    /// - This step is efficient when you already know the exact IDs of vertices you want to work with
+    /// - The order of vertices in the traversal will match the order of IDs in the input iterator
+    /// - For vertices that don't exist in the graph, they will be skipped without error
+    /// - This step is often used after a previous traversal has produced vertex IDs of interest
+    /// - When working with a large number of IDs, consider using a `HashSet` for deduplication if needed
     pub fn vertices_by_id<Iter>(
         self,
         vertex_ids: Iter,

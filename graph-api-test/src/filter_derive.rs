@@ -24,7 +24,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn, refs.rust])
-        .all_rust()
+        .filter_rust()
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.rust]);
 }
@@ -46,7 +46,7 @@ where
         .walk()
         .vertices_by_id([refs.bryn])
         .edges(EdgeSearch::scan().outgoing())
-        .all_created()
+        .filter_created()
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, [refs.bryn_created_graph_api]);
 

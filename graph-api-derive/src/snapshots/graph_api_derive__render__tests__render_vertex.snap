@@ -386,7 +386,7 @@ where
     Walker: graph_api_lib::VertexWalker<'graph, Graph = Graph>,
     Graph: graph_api_lib::Graph<Vertex = Vertex>,
 {
-    fn all_person(
+    fn filter_person(
         self,
     ) -> graph_api_lib::VertexWalkerBuilder<
         'graph,
@@ -411,7 +411,7 @@ where
             Context = Walker::Context,
         >,
     >;
-    fn all_project(
+    fn filter_project(
         self,
     ) -> graph_api_lib::VertexWalkerBuilder<
         'graph,
@@ -436,7 +436,7 @@ where
             Context = Walker::Context,
         >,
     >;
-    fn all_rust(
+    fn filter_rust(
         self,
     ) -> graph_api_lib::VertexWalkerBuilder<
         'graph,
@@ -455,7 +455,7 @@ where
     Walker: graph_api_lib::VertexWalker<'graph, Graph = Graph>,
     Graph: graph_api_lib::Graph<Vertex = Vertex>,
 {
-    fn all_person(
+    fn filter_person(
         self,
     ) -> graph_api_lib::VertexWalkerBuilder<
         'graph,
@@ -493,7 +493,7 @@ where
             }
         })
     }
-    fn all_project(
+    fn filter_project(
         self,
     ) -> graph_api_lib::VertexWalkerBuilder<
         'graph,
@@ -528,7 +528,7 @@ where
             _ => false,
         })
     }
-    fn all_rust(
+    fn filter_rust(
         self,
     ) -> graph_api_lib::VertexWalkerBuilder<
         'graph,

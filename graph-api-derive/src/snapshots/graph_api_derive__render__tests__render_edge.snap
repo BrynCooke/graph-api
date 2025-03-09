@@ -181,7 +181,7 @@ where
         Graph,
         impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>,
     >;
-    fn all_knows(
+    fn filter_knows(
         self,
     ) -> graph_api_lib::EdgeWalkerBuilder<
         'graph,
@@ -189,7 +189,7 @@ where
         Graph,
         impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>,
     >;
-    fn all_created(
+    fn filter_created(
         self,
     ) -> graph_api_lib::EdgeWalkerBuilder<
         'graph,
@@ -206,7 +206,7 @@ where
         Graph,
         impl graph_api_lib::EdgeWalker<'graph, Graph = Graph, Context = Walker::Context>,
     >;
-    fn all_language(
+    fn filter_language(
         self,
     ) -> graph_api_lib::EdgeWalkerBuilder<
         'graph,
@@ -238,7 +238,7 @@ where
             }
         })
     }
-    fn all_knows(
+    fn filter_knows(
         self,
     ) -> graph_api_lib::EdgeWalkerBuilder<
         'graph,
@@ -251,7 +251,7 @@ where
             _ => false,
         })
     }
-    fn all_created(
+    fn filter_created(
         self,
     ) -> graph_api_lib::EdgeWalkerBuilder<
         'graph,
@@ -278,7 +278,7 @@ where
             _ => false,
         })
     }
-    fn all_language(
+    fn filter_language(
         self,
     ) -> graph_api_lib::EdgeWalkerBuilder<
         'graph,
