@@ -1,5 +1,6 @@
-use graph_api_lib::{Element, ElementId};
 use crate::SimpleGraph;
+use graph_api_lib::{Element, ElementId};
+use std::fmt::{Display, Formatter};
 
 /// Simple vertex identifier using direct numeric values
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Hash)]
@@ -63,18 +64,20 @@ impl EdgeId {
     }
 }
 
-impl <Vertex, Edge> From<VertexId> for ElementId<SimpleGraph<Vertex, Edge>> where
-Vertex: Element,
-Edge: Element
+impl<Vertex, Edge> From<VertexId> for ElementId<SimpleGraph<Vertex, Edge>>
+where
+    Vertex: Element,
+    Edge: Element,
 {
     fn from(val: VertexId) -> Self {
         ElementId::Vertex(val)
     }
 }
 
-impl <Vertex, Edge> From<EdgeId> for ElementId<SimpleGraph<Vertex, Edge>> where
+impl<Vertex, Edge> From<EdgeId> for ElementId<SimpleGraph<Vertex, Edge>>
+where
     Vertex: Element,
-    Edge: Element
+    Edge: Element,
 {
     fn from(val: EdgeId) -> Self {
         ElementId::Edge(val)
@@ -117,7 +120,7 @@ mod tests {
 
         // Using SimpleGraph type for ElementId parameter
         type TestGraph = SimpleGraph<(), ()>;
-        
+
         let id1: ElementId<TestGraph> = vid.into();
         let id2: ElementId<TestGraph> = eid.into();
 

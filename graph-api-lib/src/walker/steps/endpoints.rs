@@ -3,11 +3,44 @@ use crate::walker::{EdgeWalker, VertexWalker, Walker};
 use std::marker::PhantomData;
 use crate::ElementId;
 
+/// # Endpoint Type
+///
+/// Identifies which endpoint of an edge to navigate to.
+///
+/// - `Head`: The target/destination vertex of a directed edge
+/// - `Tail`: The source/origin vertex of a directed edge
 pub enum End {
+    /// The head (target/destination) of a directed edge
     Head,
+    /// The tail (source/origin) of a directed edge
     Tail,
 }
 
+/// # Endpoints Walker
+///
+/// Internal implementation for the head() and tail() steps.
+/// This walker traverses from edges to their endpoint vertices.
+///
+/// ## Visual Diagram
+///
+/// For a Tail traversal:
+/// ```text
+///   [Person A] --- edge1* ---> [Person B]
+///    ^
+///    |
+///   edge2*
+///    |
+///   [Person C]
+/// ```
+///
+/// After endpoints step:
+/// ```text
+///   [Person A]* --- edge1 ---> [Person B]
+///    
+///   [Person C]*
+/// ```
+///
+/// For a Head traversal the target vertices would be selected instead.
 pub struct Endpoints<'graph, Parent>
 where
     Parent: EdgeWalker<'graph>,
@@ -21,6 +54,8 @@ impl<'graph, Parent> Endpoints<'graph, Parent>
 where
     Parent: EdgeWalker<'graph>,
 {
+    /// Creates a new Endpoints walker that navigates to either the head 
+    /// or tail of each edge in the parent walker
     pub(crate) fn new(parent: Parent, end: End) -> Endpoints<'graph, Parent> {
         Self {
             _phantom_data: Default::default(),

@@ -1,6 +1,6 @@
+use crate::graph::{EdgeReference, Graph};
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
-use crate::graph::{EdgeReference, Graph};
 use crate::{EdgeSearch, ElementId};
 use include_doc::function_body;
 
@@ -44,10 +44,7 @@ where
     type Graph = Parent::Graph;
 
     type Context = Parent::Context;
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Edge)
     }
     fn ctx(&self) -> &Self::Context {
@@ -60,10 +57,7 @@ where
     Parent: VertexWalker<'graph>,
     <Parent as Walker<'graph>>::Graph: 'graph,
 {
-    fn next(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<<Self::Graph as Graph>::EdgeId> {
+    fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId> {
         loop {
             if let Some(ref mut iter) = self.current_iter {
                 if let Some(edge) = iter.next() {
@@ -87,7 +81,7 @@ where
 {
     /// # Edges Step
     ///
-    /// The `edges` step allows you to traverse to the edges in a graph. 
+    /// The `edges` step allows you to traverse to the edges in a graph.
     /// It moves the traversal position from vertices to their connected edges based on the provided search criteria.
     ///
     /// ## Visual Diagram
@@ -126,13 +120,11 @@ where
     #[doc = function_body!("examples/edges.rs", example, [])]
     /// ```
     ///
-    /// For more examples, see the [edges example](https://github.com/yourusername/graph-api/blob/main/graph-api-lib/examples/edges.rs).
-    ///
     /// ## Notes
     ///
     /// - The edges step changes the traversal position from vertices to edges
     /// - To get back to vertices after an edges step, use `head()` or `tail()`
-    /// - The search direction matters: `.outgoing()` finds edges where the current vertex is the source, 
+    /// - The search direction matters: `.outgoing()` finds edges where the current vertex is the source,
     ///   `.incoming()` finds edges where the current vertex is the target, and `.bidirectional()` finds both
     /// - The edges step can filter by label and other properties through the EdgeSearch parameter
     pub fn edges<'a, T: Into<EdgeSearch<'a, Graph>>>(

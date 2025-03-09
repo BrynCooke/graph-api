@@ -120,8 +120,8 @@ where
 {
     /// # Filter Step
     ///
-    /// The `filter` step allows you to keep only elements that match a predicate function. 
-    /// Elements that don't match the predicate are excluded from further traversal.
+    /// The `filter` step allows you to keep only vertices that match a predicate function. 
+    /// Vertices that don't match the predicate are excluded from further traversal.
     ///
     /// ## Visual Diagram
     ///
@@ -135,9 +135,9 @@ where
     ///   [Company C]*                                        
     /// ```
     ///
-    /// After filter(is_person) step (only Person vertices remain in traversal):
+    /// After filter(is_project) step (only Project vertices remain in traversal):
     /// ```text
-    ///   [Person A]* --- knows ---> [Person B]* --- created ---> [Project]
+    ///   [Person A] --- knows ---> [Person B] --- created ---> [Project]*
     ///    ^                                         
     ///    |                                         
     ///   owns                                       
@@ -147,26 +147,24 @@ where
     ///
     /// ## Parameters
     ///
-    /// - `predicate`: A function that takes a reference to an element and returns a boolean. 
-    ///   Only elements for which this function returns `true` will be included in the traversal.
+    /// - `predicate`: A function that takes a reference to a vertex and its context, and returns a boolean. 
+    ///   Only vertices for which this function returns `true` will be included in the traversal.
     ///
     /// ## Return Value
     ///
-    /// A new walker containing only the elements that matched the predicate.
+    /// A new walker containing only the vertices that matched the predicate.
     ///
     /// ## Example
     ///
     /// ```rust
-    #[doc = function_body!("examples/filter.rs", example, [])]
+    #[doc = function_body!("examples/filter.rs", vertex_example, [])]
     /// ```
-    ///
-    /// For more examples, see the [filter example](https://github.com/yourusername/graph-api/blob/main/graph-api-lib/examples/filter.rs).
     ///
     /// ## Notes
     ///
     /// - The filter step does not modify the graph, only the traversal
     /// - For complex filtering logic, consider breaking into multiple filter steps for better readability
-    /// - Use type projections when filtering to access type-specific methods and properties
+    /// - Use type projections or pattern matching when filtering to access type-specific methods and properties
     /// - The filter is applied lazily during traversal, not when the step is added to the walker
     pub fn filter<Predicate>(
         self,
@@ -189,11 +187,54 @@ where
     Walker: EdgeWalker<'graph, Graph = Graph>,
     <Walker as crate::walker::Walker<'graph>>::Context: Clone + 'static,
 {
-    /// Filters edges from this traversal based on a predicate function.
+    /// # Filter Step
     ///
-    /// This allows you to keep only edges that match a condition, discarding the rest.
+    /// The `filter` step allows you to keep only edges that match a predicate function.
+    /// Edges that don't match the predicate are excluded from further traversal.
     ///
-    /// See the documentation for [`VertexWalkerBuilder::filter`] for more details.
+    /// ## Visual Diagram
+    ///
+    /// Before filter step (all edges in traversal):
+    /// ```text
+    ///   [Person A] --- knows(2018)* ---> [Person B] --- created(2022)* ---> [Project]
+    ///    ^                                         
+    ///    |                                         
+    ///   owns(2020)*                                      
+    ///    |                                         
+    ///   [Company C]                                        
+    /// ```
+    ///
+    /// After filter(year >= 2020) step (only recent edges remain in traversal):
+    /// ```text
+    ///   [Person A] --- knows(2018) ---> [Person B] --- created(2022)* ---> [Project]
+    ///    ^                                         
+    ///    |                                         
+    ///   owns(2020)*                                    
+    ///    |                                         
+    ///   [Company C]                                        
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `predicate`: A function that takes a reference to an edge and its context, and returns a boolean. 
+    ///   Only edges for which this function returns `true` will be included in the traversal.
+    ///
+    /// ## Return Value
+    ///
+    /// A new walker containing only the edges that matched the predicate.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/filter.rs", edge_example, [])]
+    /// ```
+    ///
+    /// ## Notes
+    ///
+    /// - The filter step does not modify the graph, only the traversal
+    /// - For complex filtering logic, consider breaking into multiple filter steps for better readability
+    /// - Use pattern matching to work with different edge types
+    /// - The filter is applied lazily during traversal, not when the step is added to the walker
     pub fn filter<Predicate>(
         self,
         predicate: Predicate,

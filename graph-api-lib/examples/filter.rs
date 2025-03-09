@@ -1,37 +1,49 @@
-use graph_api_lib::{Graph, VertexReference, VertexSearch};
+use graph_api_lib::{Graph, VertexSearch, EdgeSearch, VertexReference, EdgeReference};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{populate_graph, Edge, Vertex, VertexExt};
+use graph_api_test::{populate_graph, Edge, Vertex};
 
 fn main() {
     let mut graph = SimpleGraph::new();
     // Populate the graph with test data
-    let _refs = populate_graph(&mut graph);
-    example(graph);
+    let refs = populate_graph(&mut graph);
+    
+    vertex_example(&graph);
+    edge_example(&graph, refs.bryn);
 }
 
-fn example<G>(graph: G)
-where
+fn vertex_example<G>(graph: &G) 
+where 
     G: Graph<Vertex = Vertex, Edge = Edge>
 {
-    // Filter to keep only vertices with a specific type 
-    let people = graph
-        .walk()
-        .vertices(VertexSearch::scan())
-        .filter_person()
-        .collect::<Vec<_>>();
-
-    // Should find people (bryn and julia)
-    assert!(!people.is_empty());
-
-    // Filter based on a property in the vertex
+    // Filter vertices to keep only those of a specific type
     let projects = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .filter(|v, _| {
-            matches!(v.weight(), Vertex::Project(p) if p.name == "GraphApi")
+        .filter(|vertex, _| {
+            matches!(vertex.weight(), Vertex::Project(_))
         })
-        .collect::<Vec<_>>();
+        .count();
 
-    // Should find the GraphApi project
-    assert!(!projects.is_empty());
+    println!("Found {} project vertices", projects);
+}
+
+fn edge_example<G>(graph: &G, start_id: G::VertexId) 
+where 
+    G: Graph<Vertex = Vertex, Edge = Edge>
+{
+    // Filter edges to find relationships created in a specific year
+    let recent_connections = graph
+        .walk()
+        .vertices_by_id(vec![start_id])
+        .edges(EdgeSearch::scan())
+        .filter(|edge, _| {
+            if let Edge::Knows { since } = edge.weight() {
+                *since >= 2020
+            } else {
+                false
+            }
+        })
+        .count();
+
+    println!("Found {} connections made since 2020", recent_connections);
 }

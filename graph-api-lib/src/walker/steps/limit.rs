@@ -114,12 +114,12 @@ where
 {
     /// # Limit Step
     ///
-    /// The `limit` step restricts a traversal to return at most a specified number of elements. 
+    /// The `limit` step restricts a vertex traversal to return at most a specified number of vertices. 
     /// This is useful for pagination, performance optimization, or when you only need a subset of results.
     ///
     /// ## Visual Diagram
     ///
-    /// Before limit step (with multiple elements in traversal):
+    /// Before limit step (with multiple vertices in traversal):
     /// ```text
     ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
     ///    ^                                         
@@ -129,7 +129,7 @@ where
     ///   [D]*                                        
     /// ```
     ///
-    /// After limit(2) step (only first 2 elements remain in traversal):
+    /// After limit(2) step (only first 2 vertices remain in traversal):
     /// ```text
     ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]  
     ///    ^                                         
@@ -141,29 +141,27 @@ where
     ///
     /// ## Parameters
     ///
-    /// - `limit`: A usize value specifying the maximum number of elements to include in the traversal
+    /// - `limit`: A usize value specifying the maximum number of vertices to include in the traversal
     ///
     /// ## Return Value
     ///
-    /// Returns a traversal containing at most the specified number of elements.
+    /// Returns a traversal containing at most the specified number of vertices.
     ///
     /// ## Example
     ///
     /// ```rust
-    #[doc = function_body!("examples/limit.rs", example, [])]
+    #[doc = function_body!("examples/limit.rs", vertex_example, [])]
     /// ```
-    ///
-    /// For more examples, see the [limit example](https://github.com/yourusername/graph-api/blob/main/graph-api-lib/examples/limit.rs).
     ///
     /// ## Notes
     ///
-    /// - The `limit` step is generally applied after other filtering operations
-    /// - It does not guarantee which elements will be returned, just how many
+    /// - The `limit` step is generally applied after filtering operations but before terminal operations
+    /// - It does not guarantee which vertices will be returned, just how many
     /// - For predictable results, combine with sorting operations or ordered indexes
     /// - Can significantly improve performance by avoiding unnecessary traversal
     /// - Particularly useful for large graphs where full traversal would be expensive
-    /// - If the traversal contains fewer elements than the limit, all elements are returned
-    /// - Different from `first()` which returns only a single element as an Option
+    /// - If the traversal contains fewer vertices than the limit, all vertices are returned
+    /// - Different from `first()` which returns only a single vertex as an Option
     pub fn limit(
         self,
         limit: usize,
@@ -181,11 +179,54 @@ where
     Graph: crate::graph::Graph,
     Walker: EdgeWalker<'graph, Graph = Graph>,
 {
-    /// Limits the number of edges returned by this traversal to at most the specified number.
+    /// # Limit Step
     ///
-    /// This is useful for pagination, performance optimization, or when you only need a subset of results.
+    /// The `limit` step restricts an edge traversal to return at most a specified number of edges. 
+    /// This is useful for pagination, performance optimization, or when you only need a subset of edges.
     ///
-    /// See the documentation for [`VertexWalkerBuilder::limit`] for more details.
+    /// ## Visual Diagram
+    ///
+    /// Before limit step (with multiple edges in traversal):
+    /// ```text
+    ///   [Person A] --- knows* ---> [Person B] --- created* ---> [Project]
+    ///    ^                                         
+    ///    |                                         
+    ///   owns*                                       
+    ///    |                                         
+    ///   [Company]                                        
+    /// ```
+    ///
+    /// After limit(2) step (only first 2 edges remain in traversal):
+    /// ```text
+    ///   [Person A] --- knows* ---> [Person B] --- created* ---> [Project]
+    ///    ^                                         
+    ///    |                                         
+    ///   owns                                       
+    ///    |                                         
+    ///   [Company]                                        
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `limit`: A usize value specifying the maximum number of edges to include in the traversal
+    ///
+    /// ## Return Value
+    ///
+    /// Returns a traversal containing at most the specified number of edges.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/limit.rs", edge_example, [])]
+    /// ```
+    ///
+    /// ## Notes
+    ///
+    /// - Use limit to avoid processing excessive numbers of connections in a dense graph
+    /// - Improves performance for graphs with highly connected nodes
+    /// - Particularly useful when you only need to analyze a sample of connections
+    /// - The order of edges returned depends on the graph implementation
+    /// - For pagination purposes, consider combining with sorting or other ordering mechanisms
     pub fn limit(
         self,
         limit: usize,

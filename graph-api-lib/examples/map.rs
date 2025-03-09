@@ -1,30 +1,63 @@
-use graph_api_lib::{Graph, VertexReference};
+use graph_api_lib::{Graph, VertexSearch, EdgeSearch, VertexReference, EdgeReference};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{populate_graph, Vertex};
+use graph_api_test::{populate_graph, Vertex, Edge};
 
 fn main() {
     let mut graph = SimpleGraph::new();
     // Populate the graph with test data
     let refs = populate_graph(&mut graph);
-    example(graph, refs.bryn, refs.julia);
+    
+    vertex_example(&graph);
+    edge_example(&graph, refs.bryn);
 }
 
-fn example<G>(graph: G, bryn_id: G::VertexId, julia_id: G::VertexId)
-where
-    G: Graph<Vertex = Vertex>,
+fn vertex_example<G>(graph: &G) 
+where 
+    G: Graph<Vertex = Vertex, Edge = Edge>
 {
-    // The map() step transforms elements into a new value
-    // Here we extract names from Person vertices
-    let names: Vec<String> = graph
+    // Map vertices to their names
+    let project_names: Vec<String> = graph
         .walk()
-        .vertices_by_id(vec![bryn_id, julia_id])
-        .map(|vertex, _ctx| match vertex.weight() {
-            Vertex::Person { name, .. } => name.clone(),
-            _ => "Unknown".to_string(),
+        .vertices(VertexSearch::scan())
+        .map(|vertex, _| {
+            // Extract project names using pattern matching
+            match vertex.weight() {
+                Vertex::Project(project) => project.name.clone(),
+                _ => "Not a project".to_string()
+            }
+        })
+        .filter(|name| name != "Not a project")
+        .collect();
+    
+    // Print the project names
+    println!("Projects in the graph:");
+    for name in &project_names {
+        println!("- {}", name);
+    }
+}
+
+fn edge_example<G>(graph: &G, start_id: G::VertexId) 
+where 
+    G: Graph<Vertex = Vertex, Edge = Edge>
+{
+    // Map edges to relationship information
+    let relationships: Vec<String> = graph
+        .walk()
+        .vertices_by_id(vec![start_id])
+        .edges(EdgeSearch::scan())
+        .map(|edge, _| {
+            // Create a descriptive string for each relationship
+            match edge.weight() {
+                Edge::Knows { since } => format!("Knows since {}", since),
+                Edge::Created => "Created".to_string(),
+                Edge::Language(lang) => format!("Uses language {}", lang.name),
+            }
         })
         .collect();
-
-    // Should have mapped to person names
-    assert!(!names.is_empty());
-    assert!(names.contains(&"Bryn".to_string()));
+    
+    // Print the relationships
+    println!("\nRelationships from starting vertex:");
+    for relationship in &relationships {
+        println!("- {}", relationship);
+    }
 }

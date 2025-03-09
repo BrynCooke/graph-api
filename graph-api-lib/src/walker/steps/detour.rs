@@ -5,6 +5,7 @@ use crate::ElementId;
 use std::cell::Cell;
 use std::marker::PhantomData;
 use std::rc::Rc;
+use include_doc::function_body;
 
 // ================ DETOUR IMPLEMENTATION ================
 
@@ -225,7 +226,73 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/detour.md")]
+    /// # Detour Step
+    ///
+    /// The `detour` step allows you to create a sub-traversal for each element in the current traversal. 
+    /// It's like a temporary branch in the traversal that returns to the main traversal when complete. 
+    /// This is powerful for exploring connected elements without losing your current position.
+    ///
+    /// ## Visual Diagram
+    ///
+    /// Before detour step (traversal position on Person A):
+    /// ```text
+    ///   [Person A]* --- knows ---> [Person B] --- created ---> [Project 1]
+    ///                                             
+    ///                                             created
+    ///                                             
+    ///                                             ↓
+    ///                                          
+    ///                                          [Project 2]
+    /// ```
+    ///
+    /// During detour execution (for each element, a sub-traversal is performed):
+    /// ```text
+    ///   Main traversal:
+    ///   [Person A]* --- knows ---> [Person B]
+    ///   
+    ///   Sub-traversal from Person A:
+    ///   [Person A] --- knows ---> [Person B] 
+    ///                                            
+    ///    created
+    ///                                            
+    ///      ↓
+    ///                                          
+    ///   [Project 2]*
+    /// ```
+    ///
+    /// After detour step (traversal position returns to original elements):
+    /// ```text
+    ///   [Person A]* --- knows ---> [Person B] 
+    ///                                                                                  
+    ///    created
+    ///                                            
+    ///      ↓
+    ///                                          
+    ///   [Project 2]
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `traversal_fn`: A function that takes a reference to the current element and returns a new traversal. 
+    ///   The results of this traversal are collected in the context.
+    ///
+    /// ## Return Value
+    ///
+    /// A walker with the same elements as before, but with the results of the sub-traversals stored in the context.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/detour.rs", example, [])]
+    /// ```
+    ///
+    /// ## Notes
+    ///
+    /// - The detour doesn't change the main traversal elements - it only adds context data
+    /// - Detours can be nested for complex traversals
+    /// - The detour function can return any walker, allowing for flexible sub-traversals
+    /// - Use `push_context` inside detours to store data from the sub-traversal
+    /// - Detours are executed eagerly for each element in the traversal
     pub fn detour<Path, Terminal, WalkerBuilderT>(
         self,
         predicate: Path,

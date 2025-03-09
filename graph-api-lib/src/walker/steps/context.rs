@@ -4,6 +4,7 @@ use crate::graph::Graph;
 use crate::ElementId;
 use std::marker::PhantomData;
 use std::ops::Deref;
+use include_doc::function_body;
 
 // ================ CONTEXT IMPLEMENTATION ================
 
@@ -213,7 +214,57 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/context.md")]
+    /// # Context Step
+    ///
+    /// The `push_context` step allows you to associate additional data with each element in the traversal. 
+    /// This is useful for carrying information along as you traverse, preserving state between traversal steps, 
+    /// or accumulating results.
+    ///
+    /// ## Visual Diagram
+    ///
+    /// Before push_context step (traversal with regular elements):
+    /// ```text
+    ///   [Person A]* --- created ---> [Project X]*  
+    ///    |
+    ///   knows
+    ///    |
+    ///   [Person B]*
+    /// ```
+    ///
+    /// After push_context step (elements now have associated context data):
+    /// ```text
+    ///   [Person A]* + {age: 30} --- created ---> [Project X]* + {name: "Graph API"}
+    ///    |
+    ///   knows
+    ///    |
+    ///   [Person B]* + {age: 25}
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `callback`: A function that takes the current element and its existing context, 
+    ///   and returns a new context value to associate with that element
+    ///
+    /// ## Return Value
+    ///
+    /// Returns a traversal with the same elements, but with additional context information 
+    /// attached to each element.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/context.rs", basic_example, [])]
+    /// ```
+    ///
+    /// ## Notes
+    ///
+    /// - Context is carried through the entire traversal, even across different graph elements
+    /// - Each push_context call creates a new context layer, with the previous context available as `ctx.parent()`
+    /// - For complex traversals, you can build a nested context structure
+    /// - The context is cloned for each element, so keep context objects relatively small for performance
+    /// - Use `push_default_context()` for common patterns like storing the element's ID and data
+    /// - Context persists even when traversing to different elements (e.g., from vertex to connected edge)
+    /// - When retrieving results, both the element and its context are returned in a tuple
     pub fn push_context<Callback, Context>(
         self,
         callback: Callback,
@@ -251,7 +302,11 @@ where
     Walker: EdgeWalker<'graph, Graph = Graph>,
     <Walker as crate::walker::Walker<'graph>>::Context: Clone + 'static,
 {
-    #[doc = include_str!("../../../../graph-api-book/src/user_guide/walker/steps/context.md")]
+    /// # Context Step
+    ///
+    /// Allows you to associate additional data with each edge in the traversal.
+    ///
+    /// See the documentation for [`VertexWalkerBuilder::push_context`] for more details.
     pub fn push_context<Callback, Context>(
         self,
         callback: Callback,

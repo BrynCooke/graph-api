@@ -10,8 +10,8 @@ where
 {
     /// # Head Step
     ///
-    /// The `head` step transforms an edge traversal into a vertex traversal by moving to the 
-    /// head vertex of each edge. In graph theory, the head is the source/origin vertex that 
+    /// The `head` step transforms an edge traversal into a vertex traversal by moving to the
+    /// head vertex of each edge. In graph theory, the head is the source/origin vertex that
     /// the edge comes from.
     ///
     /// ## Visual Diagram
@@ -49,8 +49,6 @@ where
     /// ```rust
     #[doc = function_body!("examples/head.rs", example, [])]
     /// ```
-    ///
-    /// For more examples, see the [head example](https://github.com/yourusername/graph-api/blob/main/graph-api-lib/examples/head.rs).
     ///
     /// ## Notes
     ///

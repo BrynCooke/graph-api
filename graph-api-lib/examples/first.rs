@@ -1,34 +1,66 @@
-use graph_api_lib::{EdgeSearch, VertexSearch};
+use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexReference, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{populate_graph, Vertex, VertexExt};
+use graph_api_test::{populate_graph, Edge, Vertex, VertexExt};
+use std::fmt::Display;
 
 fn main() {
     let mut graph = SimpleGraph::new();
     // Populate the graph with test data
     let _refs = populate_graph(&mut graph);
-    example(graph);
+
+    vertex_example(&graph);
+    edge_example(&graph);
 }
 
-fn example<Graph>(graph: Graph)
+fn vertex_example<G>(graph: &G)
 where
-    Graph: graph_api_lib::Graph<Vertex = Vertex>,
+    G: Graph<Vertex = Vertex, Edge = Edge>,
 {
-    // Get the first person vertex
-    let first_person = graph
+    // Get the first project vertex in the graph
+    let first_project = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .filter_person()
+        .filter(|v, _| matches!(v.weight(), Vertex::Project(_)))
         .first();
 
-    assert!(first_person.is_some());
+    // If found, print project information
+    if let Some(project_id) = first_project {
+        if let Some(vertex) = graph.vertex(project_id) {
+            if let Vertex::Project(project) = vertex.weight() {
+                println!("Found first project: {}", project.name);
+            }
+        }
+    } else {
+        println!("No projects found");
+    }
+}
 
-    // Using first with edges
-    let first_created_edge = graph
+fn edge_example<G>(graph: &G)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // Get the first "Created" edge in the graph
+    let first_created = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .filter_person()
+        .filter_person() // Start with person vertices
         .edges(EdgeSearch::scan())
+        .filter(|e, _| matches!(e.weight(), Edge::Created))
         .first();
 
-    assert!(first_created_edge.is_some());
+    // If found, print relationship information
+    if let Some(edge_id) = first_created {
+        if let Some(edge) = graph.edge(edge_id) {
+            let source = graph.vertex(edge.tail()).unwrap();
+            let target = graph.vertex(edge.head()).unwrap();
+
+            println!(
+                "Found first 'Created' relationship: {:?} -> {:?}",
+                source.id(),
+                target.id()
+            );
+        }
+    } else {
+        println!("No 'Created' relationships found");
+    }
 }
