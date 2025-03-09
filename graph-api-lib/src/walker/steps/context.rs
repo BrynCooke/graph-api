@@ -253,7 +253,7 @@ where
     /// ## Example
     ///
     /// ```rust
-    #[doc = function_body!("examples/context.rs", basic_example, [])]
+    #[doc = function_body!("examples/context.rs", vertex_context_example, [])]
     /// ```
     ///
     /// ## Notes
@@ -304,9 +304,56 @@ where
 {
     /// # Context Step
     ///
-    /// Allows you to associate additional data with each edge in the traversal.
+    /// The `push_context` step allows you to associate additional data with each edge in the traversal. 
+    /// This is useful for carrying information along as you traverse, preserving state between traversal steps, 
+    /// or accumulating results.
     ///
-    /// See the documentation for [`VertexWalkerBuilder::push_context`] for more details.
+    /// ## Visual Diagram
+    ///
+    /// Before push_context step (traversal with regular edges):
+    /// ```text
+    ///   [Person A] --- created* ---> [Project X]  
+    ///    |
+    ///   knows*
+    ///    |
+    ///    v
+    ///   [Person B]
+    /// ```
+    ///
+    /// After push_context step (edges now have associated context data):
+    /// ```text
+    ///   [Person A] --- created* + {type: "maintainer"} ---> [Project X]  
+    ///    |
+    ///   knows* + {since: "2020"}
+    ///    |
+    ///    v
+    ///   [Person B]
+    /// ```
+    ///
+    /// ## Parameters
+    ///
+    /// - `callback`: A function that takes the current edge and its existing context, 
+    ///   and returns a new context value to associate with that edge
+    ///
+    /// ## Return Value
+    ///
+    /// Returns a traversal with the same elements, but with additional context information 
+    /// attached to each edge.
+    ///
+    /// ## Example
+    ///
+    /// ```rust
+    #[doc = function_body!("examples/context.rs", edge_context_example, [])]
+    /// ```
+    ///
+    /// ## Notes
+    ///
+    /// - Context is carried through the entire traversal, even across different graph elements
+    /// - Each push_context call creates a new context layer, with the previous context available as `ctx.parent()`
+    /// - For complex traversals, you can build a nested context structure
+    /// - The context is cloned for each element, so keep context objects relatively small for performance
+    /// - Use `push_default_context()` for common patterns like storing the edge's ID and data
+    /// - When retrieving results, both the element and its context are returned in a tuple
     pub fn push_context<Callback, Context>(
         self,
         callback: Callback,

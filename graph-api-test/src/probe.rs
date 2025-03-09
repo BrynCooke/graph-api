@@ -12,7 +12,7 @@ where
     let result = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .probe(|_| {
+        .probe(|_, _| {
             count += 1;
         })
         .collect::<Vec<_>>();
@@ -33,7 +33,7 @@ where
         .walk()
         .vertices_by_id([refs.bryn])
         .edges(EdgeSearch::scan().outgoing())
-        .probe(|_| {
+        .probe(|_, _| {
             edge_count += 1;
         })
         .collect::<Vec<_>>();

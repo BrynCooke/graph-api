@@ -21,7 +21,7 @@ where
     graph
         .walk()
         .vertices(VertexSearch::scan())
-        .probe(|vertex| {
+        .probe(|vertex, _| {
             // Inspect each vertex and count projects
             if let Vertex::Project(project) = vertex.weight() {
                 project_count += 1;
@@ -42,7 +42,7 @@ where
         .walk()
         .vertices_by_id(vec![bryn_id])
         .edges(EdgeSearch::scan())
-        .probe(|edge| {
+        .probe(|edge, _| {
             // Print information about each edge without affecting traversal
             println!(
                 "Found edge: {:?} connecting {:?} to {:?}",

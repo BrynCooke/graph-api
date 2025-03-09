@@ -1,24 +1,18 @@
-use graph_api_lib::EdgeSearch;
 use graph_api_lib::Graph;
 use graph_api_lib::VertexReference;
-use graph_api_lib::VertexSearch;
 use graph_api_lib::{EdgeReference, Supported};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::populate_graph;
 use graph_api_test::Edge;
-use graph_api_test::EdgeExt;
 use graph_api_test::EdgeIndex;
-use graph_api_test::Person;
-use graph_api_test::Project;
 use graph_api_test::Vertex;
-use graph_api_test::VertexExt;
 use graph_api_test::VertexIndex;
 
 fn main() {
     // Create a new graph
     let mut graph = SimpleGraph::new();
     // Populate the graph with test data
-    let refs = populate_graph(&mut graph);
+    let _refs = populate_graph(&mut graph);
 
     vertex_example(&graph);
     edge_example(&graph);

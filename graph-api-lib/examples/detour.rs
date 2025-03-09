@@ -1,6 +1,5 @@
 use graph_api_lib::Graph;
-use graph_api_lib::VertexSearch;
-use graph_api_lib::{EdgeSearch, Supported};
+use graph_api_lib::Supported;
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
 use graph_api_test::Vertex;
@@ -28,7 +27,7 @@ where
             // For each person, find outgoing created edges and count them
             waypoint
                 .edges(EdgeIndex::created().outgoing())
-                .map(|_, count| *count + 1) // Increment count for each created edge
+                .probe(|_e, _ctx| todo!()) // Increment count for each created edge
         })
         .map(|_, count| *count)
         .collect::<Vec<_>>();

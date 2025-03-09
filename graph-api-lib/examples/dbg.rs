@@ -2,7 +2,6 @@ use graph_api_lib::Graph;
 use graph_api_lib::VertexSearch;
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::populate_graph;
-use graph_api_test::Vertex;
 
 fn main() {
     // Create a new graph

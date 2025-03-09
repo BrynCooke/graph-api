@@ -1,4 +1,4 @@
-use graph_api_lib::{EdgeSearch, Supported};
+use graph_api_lib::EdgeSearch;
 use graph_api_lib::{Graph, VertexReference};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::populate_graph;
@@ -6,7 +6,6 @@ use graph_api_test::Edge;
 use graph_api_test::EdgeExt;
 use graph_api_test::Person;
 use graph_api_test::Vertex;
-use graph_api_test::VertexExt;
 
 fn main() {
     // Create a new graph

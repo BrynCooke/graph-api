@@ -2,6 +2,7 @@ use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::steps::{EdgeProbe, VertexProbe};
 use crate::walker::{EdgeWalker, VertexWalker};
 use include_doc::function_body;
+use std::fmt::Debug;
 
 impl<'graph, Mutability, Graph, Walker> VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
 where
@@ -10,7 +11,7 @@ where
 {
     /// # Debug Step
     ///
-    /// The `dbg` step prints elements as they are traversed through the graph, making it 
+    /// The `dbg` step prints elements as they are traversed through the graph, making it
     /// easier to debug complex traversals. Each element is tagged with the provided label.
     ///
     /// ## Visual Diagram
@@ -65,15 +66,18 @@ where
     /// - The `dbg` step has minimal performance impact when not in debug mode
     pub fn dbg(
         self,
-        tag: &'static str
+        tag: &'static str,
     ) -> VertexWalkerBuilder<
         'graph,
         Mutability,
         Graph,
-        VertexProbe<'graph, Walker, impl FnMut(&Graph::VertexReference<'_>)>,
-    > {
-        let callback = move |vertex: &Graph::VertexReference<'_>| {
-            println!("{}: {:?}", tag, vertex);
+        VertexProbe<'graph, Walker, impl FnMut(&Graph::VertexReference<'_>, &Walker::Context)>,
+    >
+    where
+        Walker::Context: Debug,
+    {
+        let callback = move |vertex: &Graph::VertexReference<'_>, ctx: &Walker::Context| {
+            println!("{}: {:?} {:?}", tag, vertex, ctx);
         };
         self.probe(callback)
     }
@@ -91,15 +95,18 @@ where
     /// See the documentation for [`VertexWalkerBuilder::dbg`] for more details.
     pub fn dbg(
         self,
-        tag: &'static str
+        tag: &'static str,
     ) -> EdgeWalkerBuilder<
         'graph,
         Mutability,
         Graph,
-        EdgeProbe<'graph, Walker, impl FnMut(&Graph::EdgeReference<'_>)>,
-    > {
-        let callback = move |edge: &Graph::EdgeReference<'_>| {
-            println!("{}: {:?}", tag, edge);
+        EdgeProbe<'graph, Walker, impl FnMut(&Graph::EdgeReference<'_>, &Walker::Context)>,
+    >
+    where
+        Walker::Context: Debug,
+    {
+        let callback = move |edge: &Graph::EdgeReference<'_>, ctx: &Walker::Context| {
+            println!("{}: {:?} {:?}", tag, edge, ctx);
         };
         self.probe(callback)
     }

@@ -4,14 +4,13 @@ use graph_api_test::populate_graph;
 use graph_api_test::Edge;
 use graph_api_test::Project;
 use graph_api_test::Vertex;
-use graph_api_test::VertexExt;
 use graph_api_test::VertexIndex;
 
 fn main() {
     // Create a mutable graph for testing
     let mut graph = SimpleGraph::new();
     // Populate the graph with test data
-    let refs = populate_graph(&mut graph);
+    let _refs = populate_graph(&mut graph);
 
     basic_example(&mut graph);
 }
