@@ -8,14 +8,24 @@ use std::rc::Rc;
 
 // ================ DETOUR IMPLEMENTATION ================
 
+/// A Waypoint represents a temporary position in a graph traversal.
+///
+/// It acts as a bridge between the main traversal and a detour (sub-traversal),
+/// storing the vertex ID and context needed to continue the main traversal
+/// after the detour completes.
 pub struct Waypoint<'graph, Graph, Context>
 where
     Graph: crate::graph::Graph,
     Context: Clone,
 {
     _phantom: PhantomData<&'graph (Graph, Context)>,
+    // Shared cell containing the next vertex ID to visit
+    // Rc is needed here to share state between the Detour and Waypoint
     next: Rc<Cell<Option<Graph::VertexId>>>,
+    // Shared cell containing the context from the parent traversal
+    // Rc is needed to share context between the Detour and Waypoint
     context: Rc<Cell<Option<Context>>>,
+    // The currently active context for this waypoint
     current_context: Option<Context>,
 }
 
@@ -51,25 +61,38 @@ where
         &mut self,
         _graph: &Self::Graph,
     ) -> Option<<Self::Graph as crate::graph::Graph>::VertexId> {
+        // Extract the context and vertex ID from the shared cells
         self.current_context = self.context.take();
         self.next.take()
     }
 }
 
+/// Detour creates a sub-traversal for each element in the main traversal.
+///
+/// It allows exploring connected elements without losing the current position
+/// in the main traversal. For each element in the parent traversal, a new
+/// sub-traversal is created using the provided path function.
 pub struct Detour<'graph, Parent, Path, Terminal>
 where
     Parent: VertexWalker<'graph>,
     Terminal: Walker<'graph, Graph = Parent::Graph>,
 {
     _phantom_data: PhantomData<&'graph Terminal>,
+    // The parent traversal that provides vertices to detour from
     parent: Parent,
+    // Function that builds the detour path for each vertex
     path: Path,
+    // The current sub-traversal walker (created on demand)
     walker: Option<
         crate::walker::builder::WalkerBuilder<'graph, ImmutableMarker, Parent::Graph, Terminal>,
     >,
+    // The current vertex ID from the parent traversal
     next: Option<<Parent::Graph as Graph>::VertexId>,
+    // The context from the terminal (detour) traversal
     context: Option<Terminal::Context>,
+    // Shared cell for the next vertex ID (shared with Waypoint)
     waypoint_next: Rc<Cell<Option<<Parent::Graph as Graph>::VertexId>>>,
+    // Shared cell for the context (shared with Waypoint)
     waypoint_context: Rc<Cell<Option<Parent::Context>>>,
 }
 
@@ -146,7 +169,10 @@ where
     <Parent as Walker<'graph>>::Graph: 'graph,
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
+        // Initialize the walker on first use
         if self.walker.is_none() {
+            // Create a new Waypoint that shares state with this Detour
+            // The waypoint allows the detour traversal to access the current vertex and context
             self.walker = Some(
                 (self.path)(crate::walker::builder::new(
                     graph,
@@ -165,23 +191,28 @@ where
         loop {
             match walker.next_element(graph) {
                 None => {
-                    // The detour needs a new waypoint
+                    // The detour traversal is exhausted, get the next vertex from parent
                     match self.parent.next(graph) {
                         None => {
-                            // Nothing left
+                            // No more vertices in parent traversal
                             return None;
                         }
                         Some(next) => {
-                            // Set the next waypoint
+                            // Found a new vertex from parent, set up for next detour
                             self.next = Some(next);
+                            // Share the next vertex ID with the waypoint
                             self.waypoint_next.replace(Some(next));
+                            // Share the context with the waypoint
                             self.waypoint_context
                                 .replace(Some(self.parent.ctx().clone()));
                         }
                     }
                 }
                 Some(_ctx) => {
+                    // The detour found an element, save its context
                     self.context = Some(walker.ctx().clone());
+                    // Return the original vertex from parent traversal
+                    // (detour only provides context, doesn't change the traversal elements)
                     return self.next;
                 }
             }
