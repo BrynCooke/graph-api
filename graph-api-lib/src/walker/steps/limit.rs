@@ -1,6 +1,6 @@
+use crate::graph::Graph;
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
-use crate::graph::Graph;
 use crate::ElementId;
 use include_doc::function_body;
 use std::marker::PhantomData;
@@ -30,15 +30,15 @@ where
     type Graph = Parent::Graph;
 
     type Context = Parent::Context;
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
 
     fn ctx(&self) -> &Parent::Context {
         self.parent.ctx()
+    }
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.parent.ctx_mut()
     }
 }
 
@@ -79,14 +79,14 @@ where
     type Graph = Parent::Graph;
 
     type Context = Parent::Context;
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Edge)
     }
     fn ctx(&self) -> &Parent::Context {
         self.parent.ctx()
+    }
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.parent.ctx_mut()
     }
 }
 
@@ -94,10 +94,7 @@ impl<'graph, Parent> EdgeWalker<'graph> for EdgeLimit<'graph, Parent>
 where
     Parent: EdgeWalker<'graph>,
 {
-    fn next(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<<Self::Graph as Graph>::EdgeId> {
+    fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId> {
         if self.limit > 0 {
             self.limit -= 1;
             self.parent.next(graph)
@@ -114,7 +111,7 @@ where
 {
     /// # Limit Step
     ///
-    /// The `limit` step restricts a vertex traversal to return at most a specified number of vertices. 
+    /// The `limit` step restricts a vertex traversal to return at most a specified number of vertices.
     /// This is useful for pagination, performance optimization, or when you only need a subset of results.
     ///
     /// ## Visual Diagram
@@ -181,7 +178,7 @@ where
 {
     /// # Limit Step
     ///
-    /// The `limit` step restricts an edge traversal to return at most a specified number of edges. 
+    /// The `limit` step restricts an edge traversal to return at most a specified number of edges.
     /// This is useful for pagination, performance optimization, or when you only need a subset of edges.
     ///
     /// ## Visual Diagram

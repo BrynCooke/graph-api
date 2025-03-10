@@ -2,6 +2,7 @@
 
 pub extern crate proptest;
 pub use proptest::*;
+pub mod bench;
 pub mod collect;
 pub mod context;
 pub mod count;
@@ -17,8 +18,8 @@ pub mod index;
 pub mod limit;
 pub mod mutation;
 pub mod probe;
+pub mod reduce;
 pub mod vertices;
-pub mod bench;
 
 use graph_api_derive::{EdgeExt, VertexExt};
 use graph_api_lib::ElementId;
@@ -302,6 +303,8 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, first_test_edges_first, $crate::first::test_edges_first}
         $crate::general_test!{$setup, fold_test_vertices_fold, $crate::fold::test_vertices_fold}
         $crate::general_test!{$setup, fold_test_edges_fold, $crate::fold::test_edges_fold}
+        $crate::general_test!{$setup, reduce_test_vertices_reduce, $crate::reduce::test_vertices_reduce}
+        $crate::general_test!{$setup, reduce_test_edges_reduce, $crate::reduce::test_edges_reduce}
         $crate::general_test!{$setup, detour_test_vertices_detour, $crate::detour::test_vertices_detour}
         $crate::general_test!{$setup, filter_derive_test_vertices_filter, $crate::filter_derive::test_vertices_filter}
         $crate::general_test!{$setup, filter_derive_test_edges_filter, $crate::filter_derive::test_edges_filter}
@@ -370,15 +373,15 @@ where
 {
     let actual: Vec<ElementId<Graph>> = actual.into_iter().map(Into::into).collect();
     let expected: Vec<ElementId<Graph>> = expected.into_iter().map(Into::into).collect();
-    
+
     // First convert to debug strings for error reporting
     let actual_strings: Vec<String> = actual.iter().map(|e| graph.dbg(*e)).collect();
     let expected_strings: Vec<String> = expected.iter().map(|e| graph.dbg(*e)).collect();
 
     if actual.len() != 1 {
-        return Err(TestError::MoreThanOneElement { 
-            expected: expected_strings, 
-            actual: actual_strings 
+        return Err(TestError::MoreThanOneElement {
+            expected: expected_strings,
+            actual: actual_strings,
         });
     }
 

@@ -1,7 +1,7 @@
+use crate::graph::Graph;
 use crate::search::vertex::VertexSearch;
 use crate::walker::builder::VertexWalkerBuilder;
 use crate::walker::{VertexWalker, Walker};
-use crate::graph::Graph;
 use crate::{ElementId, VertexReference};
 use include_doc::function_body;
 use std::marker::PhantomData;
@@ -42,14 +42,14 @@ where
     type Graph = Parent::Graph;
 
     type Context = Parent::Context;
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Parent::Context {
         self.parent.ctx()
+    }
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.parent.ctx_mut()
     }
 }
 
@@ -78,8 +78,8 @@ where
 {
     /// # Vertices Step
     ///
-    /// The `vertices` step is the primary entry point for graph traversals, allowing you to select a set of 
-    /// vertices to start traversing from. It accepts a `VertexSearch` parameter that specifies which 
+    /// The `vertices` step is the primary entry point for graph traversals, allowing you to select a set of
+    /// vertices to start traversing from. It accepts a `VertexSearch` parameter that specifies which
     /// vertices to include in the traversal.
     ///
     /// ## Visual Diagram

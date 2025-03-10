@@ -19,12 +19,14 @@ use std::marker::PhantomData;
 /// like vertices_by_id or that pull elements from non-graph sources.
 pub struct Empty<G> {
     _phantom: PhantomData<G>,
+    context: (),
 }
 
 impl<G> Default for Empty<G> {
     fn default() -> Self {
         Self {
             _phantom: PhantomData,
+            context: (),
         }
     }
 }
@@ -38,7 +40,11 @@ impl<'graph, G: Graph> Walker<'graph> for Empty<G> {
     }
 
     fn ctx(&self) -> &Self::Context {
-        &()
+        &self.context
+    }
+
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        &mut self.context
     }
 }
 

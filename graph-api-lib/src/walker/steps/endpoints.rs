@@ -1,7 +1,7 @@
 use crate::graph::{EdgeReference, Graph};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
-use std::marker::PhantomData;
 use crate::ElementId;
+use std::marker::PhantomData;
 
 /// # Endpoint Type
 ///
@@ -54,7 +54,7 @@ impl<'graph, Parent> Endpoints<'graph, Parent>
 where
     Parent: EdgeWalker<'graph>,
 {
-    /// Creates a new Endpoints walker that navigates to either the head 
+    /// Creates a new Endpoints walker that navigates to either the head
     /// or tail of each edge in the parent walker
     pub(crate) fn new(parent: Parent, end: End) -> Endpoints<'graph, Parent> {
         Self {
@@ -76,14 +76,15 @@ where
     type Graph = Parent::Graph;
 
     type Context = Parent::Context;
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Parent::Context {
         self.parent.ctx()
+    }
+
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.parent.ctx_mut()
     }
 }
 
@@ -97,8 +98,7 @@ where
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
         self.parent.next(graph).map(|e| match &self.end {
-            End::Head =>
-                graph.edge(e).expect("edge must exist").head(),
+            End::Head => graph.edge(e).expect("edge must exist").head(),
             End::Tail => graph.edge(e).expect("edge must exist").tail(),
         })
     }

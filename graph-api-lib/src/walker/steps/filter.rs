@@ -1,6 +1,6 @@
+use crate::graph::Graph;
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
-use crate::graph::Graph;
 use crate::ElementId;
 use include_doc::function_body;
 use std::marker::PhantomData;
@@ -31,14 +31,15 @@ where
     type Graph = Parent::Graph;
 
     type Context = Parent::Context;
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Self::Context {
         self.parent.ctx()
+    }
+
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.parent.ctx_mut()
     }
 }
 
@@ -83,14 +84,14 @@ where
     type Graph = Parent::Graph;
 
     type Context = Parent::Context;
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Edge)
     }
     fn ctx(&self) -> &Self::Context {
         self.parent.ctx()
+    }
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.parent.ctx_mut()
     }
 }
 
@@ -99,10 +100,7 @@ where
     Parent: EdgeWalker<'graph>,
     Predicate: Fn(&<Parent::Graph as Graph>::EdgeReference<'_>, &Parent::Context) -> bool,
 {
-    fn next(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<<Self::Graph as Graph>::EdgeId> {
+    fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId> {
         while let Some(next) = self.parent.next(graph) {
             let edge = graph.edge(next).expect("edge must exist");
             if (self.predicate)(&edge, self.parent.ctx()) {
@@ -120,7 +118,7 @@ where
 {
     /// # Filter Step
     ///
-    /// The `filter` step allows you to keep only vertices that match a predicate function. 
+    /// The `filter` step allows you to keep only vertices that match a predicate function.
     /// Vertices that don't match the predicate are excluded from further traversal.
     ///
     /// ## Visual Diagram
@@ -147,7 +145,7 @@ where
     ///
     /// ## Parameters
     ///
-    /// - `predicate`: A function that takes a reference to a vertex and its context, and returns a boolean. 
+    /// - `predicate`: A function that takes a reference to a vertex and its context, and returns a boolean.
     ///   Only vertices for which this function returns `true` will be included in the traversal.
     ///
     /// ## Return Value
@@ -216,7 +214,7 @@ where
     ///
     /// ## Parameters
     ///
-    /// - `predicate`: A function that takes a reference to an edge and its context, and returns a boolean. 
+    /// - `predicate`: A function that takes a reference to an edge and its context, and returns a boolean.
     ///   Only edges for which this function returns `true` will be included in the traversal.
     ///
     /// ## Return Value

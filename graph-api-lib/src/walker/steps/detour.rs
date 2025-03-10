@@ -1,11 +1,11 @@
+use crate::graph::Graph;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder, WalkerBuilder};
 use crate::walker::{VertexWalker, Walker};
-use crate::graph::Graph;
 use crate::ElementId;
+use include_doc::function_body;
 use std::cell::Cell;
 use std::marker::PhantomData;
 use std::rc::Rc;
-use include_doc::function_body;
 
 // ================ DETOUR IMPLEMENTATION ================
 
@@ -38,18 +38,19 @@ where
     type Graph = Graph;
     type Context = Context;
 
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<
-        ElementId<Self::Graph>,
-    > {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Self::Context {
         self.current_context
             .as_ref()
             .expect("context must be set before access")
+    }
+
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.current_context
+            .as_mut()
+            .expect("context cannot be retrieved before call to next")
     }
 }
 
@@ -137,10 +138,7 @@ where
     type Graph = Parent::Graph;
     type Context = Terminal::Context;
 
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
 
@@ -148,6 +146,12 @@ where
         self.context
             .as_ref()
             .expect("next must be called before trying to get context")
+    }
+
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.context
+            .as_mut()
+            .expect("context cannot be retrieved before call to next")
     }
 }
 
@@ -228,8 +232,8 @@ where
 {
     /// # Detour Step
     ///
-    /// The `detour` step allows you to create a sub-traversal for each element in the current traversal. 
-    /// It's like a temporary branch in the traversal that returns to the main traversal when complete. 
+    /// The `detour` step allows you to create a sub-traversal for each element in the current traversal.
+    /// It's like a temporary branch in the traversal that returns to the main traversal when complete.
     /// This is powerful for exploring connected elements without losing your current position.
     ///
     /// ## Visual Diagram
@@ -251,7 +255,7 @@ where
     ///   [Person A]* --- knows ---> [Person B]
     ///   
     ///   Sub-traversal from Person A:
-    ///   [Person A] --- knows ---> [Person B] 
+    ///   [Person A] --- knows ---> [Person B]
     ///                                            
     ///    created
     ///                                            
@@ -262,7 +266,7 @@ where
     ///
     /// After detour step (traversal position returns to original elements):
     /// ```text
-    ///   [Person A]* --- knows ---> [Person B] 
+    ///   [Person A]* --- knows ---> [Person B]
     ///                                                                                  
     ///    created
     ///                                            
@@ -273,7 +277,7 @@ where
     ///
     /// ## Parameters
     ///
-    /// - `traversal_fn`: A function that takes a reference to the current element and returns a new traversal. 
+    /// - `traversal_fn`: A function that takes a reference to the current element and returns a new traversal.
     ///   The results of this traversal are collected in the context.
     ///
     /// ## Return Value

@@ -1,10 +1,10 @@
+use crate::graph::Graph;
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
-use crate::graph::Graph;
 use crate::ElementId;
+use include_doc::function_body;
 use std::marker::PhantomData;
 use std::ops::Deref;
-use include_doc::function_body;
 
 // ================ CONTEXT IMPLEMENTATION ================
 
@@ -106,16 +106,19 @@ where
     type Graph = Parent::Graph;
     type Context = Context;
 
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
 
     fn ctx(&self) -> &Self::Context {
         self.context
             .as_ref()
+            .expect("context cannot be retrieved before call to next")
+    }
+
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.context
+            .as_mut()
             .expect("context cannot be retrieved before call to next")
     }
 }
@@ -175,15 +178,18 @@ where
 
     type Context = Context;
 
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Edge)
     }
     fn ctx(&self) -> &Self::Context {
         self.context
             .as_ref()
+            .expect("context cannot be retrieved before call to next")
+    }
+
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.context
+            .as_mut()
             .expect("context cannot be retrieved before call to next")
     }
 }
@@ -195,10 +201,7 @@ where
     Predicate: Fn(&<Parent::Graph as Graph>::EdgeReference<'_>, &Parent::Context) -> Context,
     Context: Clone + 'static,
 {
-    fn next(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<<Self::Graph as Graph>::EdgeId> {
+    fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId> {
         if let Some(next) = self.parent.next(graph) {
             if let Some(edge) = graph.edge(next) {
                 self.context = Some((self.callback)(&edge, self.parent.ctx()));
@@ -216,8 +219,8 @@ where
 {
     /// # Context Step
     ///
-    /// The `push_context` step allows you to associate additional data with each element in the traversal. 
-    /// This is useful for carrying information along as you traverse, preserving state between traversal steps, 
+    /// The `push_context` step allows you to associate additional data with each element in the traversal.
+    /// This is useful for carrying information along as you traverse, preserving state between traversal steps,
     /// or accumulating results.
     ///
     /// ## Visual Diagram
@@ -242,12 +245,12 @@ where
     ///
     /// ## Parameters
     ///
-    /// - `callback`: A function that takes the current element and its existing context, 
+    /// - `callback`: A function that takes the current element and its existing context,
     ///   and returns a new context value to associate with that element
     ///
     /// ## Return Value
     ///
-    /// Returns a traversal with the same elements, but with additional context information 
+    /// Returns a traversal with the same elements, but with additional context information
     /// attached to each element.
     ///
     /// ## Example
@@ -304,8 +307,8 @@ where
 {
     /// # Context Step
     ///
-    /// The `push_context` step allows you to associate additional data with each edge in the traversal. 
-    /// This is useful for carrying information along as you traverse, preserving state between traversal steps, 
+    /// The `push_context` step allows you to associate additional data with each edge in the traversal.
+    /// This is useful for carrying information along as you traverse, preserving state between traversal steps,
     /// or accumulating results.
     ///
     /// ## Visual Diagram
@@ -332,12 +335,12 @@ where
     ///
     /// ## Parameters
     ///
-    /// - `callback`: A function that takes the current edge and its existing context, 
+    /// - `callback`: A function that takes the current edge and its existing context,
     ///   and returns a new context value to associate with that edge
     ///
     /// ## Return Value
     ///
-    /// Returns a traversal with the same elements, but with additional context information 
+    /// Returns a traversal with the same elements, but with additional context information
     /// attached to each edge.
     ///
     /// ## Example

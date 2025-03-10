@@ -1,8 +1,13 @@
 use crate::graph::Graph;
 use crate::search::vertex::VertexSearch;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder};
-use crate::walker::steps::{Detour, EdgeContext, EdgeFilter, EdgeLimit, Edges, End, Endpoints, VertexContext, VertexFilter, VertexIter, VertexLimit, Vertices, Waypoint};
+use crate::walker::steps::reduce::VertexReduce;
+use crate::walker::steps::{
+    Detour, EdgeContext, EdgeFilter, EdgeLimit, Edges, End, Endpoints, VertexContext, VertexFilter,
+    VertexIter, VertexLimit, Vertices, Waypoint,
+};
 use crate::{EdgeSearch, ElementId};
+use steps::reduce::EdgeReduce;
 
 pub mod builder;
 mod iter;
@@ -31,13 +36,13 @@ where
     type Context: Clone + 'static;
 
     /// Return the next element in the traversal.
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>>;
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>>;
 
     /// Returns the current context of the walker.
     fn ctx(&self) -> &Self::Context;
+
+    /// Returns the mutable current context of the walker.
+    fn ctx_mut(&mut self) -> &mut Self::Context;
 }
 
 /// A trait that defines the basic behavior of a vertex walker, which is a specialized
@@ -111,6 +116,25 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
         Edges::new(self, search)
     }
 
+    fn reduce<Init, Reducer, Context>(
+        self,
+        init: Init,
+        reducer: Reducer,
+    ) -> VertexReduce<'graph, Self, Init, Reducer, Context>
+    where
+        Init: Fn(&<Self::Graph as Graph>::VertexReference<'graph>, &Self::Context) -> Context,
+        Reducer: for<'a> Fn(
+            &'a <Self::Graph as Graph>::VertexReference<'graph>,
+            &mut Context,
+            &'a <Self::Graph as Graph>::VertexReference<'graph>,
+            &Self::Context,
+        ) -> &'a <Self::Graph as Graph>::VertexReference<'graph>,
+        Context: Clone + 'static,
+        <Self as Walker<'graph>>::Graph: 'graph,
+    {
+        VertexReduce::new(self, init, reducer)
+    }
+
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId>;
 }
 
@@ -153,8 +177,24 @@ pub trait EdgeWalker<'graph>: Walker<'graph> {
         EdgeLimit::new(self, limit)
     }
 
-    fn next(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<<Self::Graph as Graph>::EdgeId>;
+    fn reduce<Init, Reducer, Context>(
+        self,
+        init: Init,
+        reducer: Reducer,
+    ) -> EdgeReduce<'graph, Self, Init, Reducer, Context>
+    where
+        Init: Fn(&<Self::Graph as Graph>::EdgeReference<'graph>, &Self::Context) -> Context,
+        Reducer: for<'a> Fn(
+            &'a <Self::Graph as Graph>::EdgeReference<'graph>,
+            &mut Context,
+            &'a <Self::Graph as Graph>::EdgeReference<'graph>,
+            &Self::Context,
+        ) -> &'a <Self::Graph as Graph>::EdgeReference<'graph>,
+        Context: Clone + 'static,
+        <Self as Walker<'graph>>::Graph: 'graph,
+    {
+        EdgeReduce::new(self, init, reducer)
+    }
+
+    fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId>;
 }

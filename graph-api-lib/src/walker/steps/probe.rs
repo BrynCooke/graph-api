@@ -38,6 +38,9 @@ where
     fn ctx(&self) -> &Self::Context {
         self.parent.ctx()
     }
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.parent.ctx_mut()
+    }
 }
 
 impl<'graph, Parent, Callback> VertexWalker<'graph> for VertexProbe<'graph, Parent, Callback>
@@ -86,6 +89,9 @@ where
 
     fn ctx(&self) -> &Self::Context {
         self.parent.ctx()
+    }
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.parent.ctx_mut()
     }
 }
 

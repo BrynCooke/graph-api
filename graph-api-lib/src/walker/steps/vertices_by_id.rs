@@ -1,6 +1,6 @@
+use crate::graph::Graph;
 use crate::walker::builder::VertexWalkerBuilder;
 use crate::walker::{VertexWalker, Walker};
-use crate::graph::Graph;
 use crate::ElementId;
 use include_doc::function_body;
 use std::marker::PhantomData;
@@ -39,14 +39,14 @@ where
     type Graph = Parent::Graph;
 
     type Context = Parent::Context;
-    fn next_element(
-        &mut self,
-        graph: &'graph Self::Graph,
-    ) -> Option<ElementId<Self::Graph>> {
+    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
     fn ctx(&self) -> &Parent::Context {
         self.parent.ctx()
+    }
+    fn ctx_mut(&mut self) -> &mut Self::Context {
+        self.parent.ctx_mut()
     }
 }
 
@@ -67,7 +67,7 @@ where
 {
     /// # Vertices By ID Step
     ///
-    /// The `vertices_by_id` step allows you to begin a traversal from a specific set of vertex IDs. 
+    /// The `vertices_by_id` step allows you to begin a traversal from a specific set of vertex IDs.
     /// This is useful when you already know the IDs of the vertices you want to include in your traversal.
     ///
     /// ## Visual Diagram
