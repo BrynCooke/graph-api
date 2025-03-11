@@ -14,3 +14,6 @@ book:
 lint:
     cargo fmt --check
     cargo clippy -- --deny warnings
+
+bench:
+    cargo bench
