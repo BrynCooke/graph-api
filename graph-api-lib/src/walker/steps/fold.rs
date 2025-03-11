@@ -9,7 +9,7 @@ where
 {
     /// # Fold Step
     ///
-    /// The `fold` step allows you to accumulate a result by processing each element in a traversal. 
+    /// The `fold` step allows you to accumulate a result by processing each element in a traversal.
     /// This is similar to the standard Rust `fold` operation but works directly on graph traversals.
     ///
     /// ## Visual Diagram
@@ -57,7 +57,7 @@ where
     /// - More flexible than specialized steps like count when you need to calculate custom aggregates
     /// - The accumulator can be any type that matches your needs
     /// - Context is available if you need it for your calculations
-    pub fn fold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc 
+    pub fn fold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc
     where
         F: FnMut(Acc, Graph::VertexReference<'graph>, &Walker::Context) -> Acc,
         'graph: 'graph,
@@ -65,12 +65,14 @@ where
         let graph = self.graph.take();
         let mut walker = self.walker;
         let mut acc = init;
-        
+
         while let Some(vertex_id) = walker.next(graph) {
-            let vertex = graph.vertex(vertex_id).expect("vertex ID must resolve to vertex");
+            let vertex = graph
+                .vertex(vertex_id)
+                .expect("vertex ID must resolve to vertex");
             acc = f(acc, vertex, walker.ctx());
         }
-        
+
         acc
     }
 }
@@ -91,7 +93,7 @@ where
     /// ```rust
     #[doc = function_body!("examples/fold.rs", edge_example, [])]
     /// ```
-    pub fn fold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc 
+    pub fn fold<Acc, F>(mut self, init: Acc, mut f: F) -> Acc
     where
         F: FnMut(Acc, Graph::EdgeReference<'graph>, &Walker::Context) -> Acc,
         'graph: 'graph,
@@ -99,12 +101,12 @@ where
         let graph = self.graph.take();
         let mut walker = self.walker;
         let mut acc = init;
-        
+
         while let Some(edge_id) = walker.next(graph) {
             let edge = graph.edge(edge_id).expect("edge ID must resolve to edge");
             acc = f(acc, edge, walker.ctx());
         }
-        
+
         acc
     }
 }

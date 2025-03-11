@@ -1,6 +1,8 @@
+use crate::bench::generators::{
+    generate_project_graph, generate_random_graph, generate_social_graph, GraphSize,
+};
 use crate::{Edge, Vertex};
-use crate::bench::generators::{generate_random_graph, generate_social_graph, generate_project_graph, GraphSize};
-use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
+use criterion::{measurement::WallTime, BenchmarkGroup, Throughput};
 use graph_api_lib::Graph;
 
 /// Run all construction benchmarks
@@ -23,7 +25,7 @@ fn bench_construction_small<G: Graph<Vertex = Vertex, Edge = Edge>>(
     let size = GraphSize::Small;
     let vertex_count = size.vertex_count();
     let edge_count = vertex_count * size.edge_multiplier();
-    
+
     group.throughput(Throughput::Elements((vertex_count + edge_count) as u64));
     group.bench_function("construction_small", |b| {
         b.iter_batched(
@@ -44,7 +46,7 @@ fn bench_construction_medium<G: Graph<Vertex = Vertex, Edge = Edge>>(
     let size = GraphSize::Medium;
     let vertex_count = size.vertex_count();
     let edge_count = vertex_count * size.edge_multiplier();
-    
+
     group.throughput(Throughput::Elements((vertex_count + edge_count) as u64));
     group.bench_function("construction_medium", |b| {
         b.iter_batched(
@@ -65,7 +67,7 @@ fn bench_construction_social<G: Graph<Vertex = Vertex, Edge = Edge>>(
     let size = GraphSize::Small;
     let vertex_count = size.vertex_count();
     let edge_count = vertex_count * size.edge_multiplier();
-    
+
     group.throughput(Throughput::Elements((vertex_count + edge_count) as u64));
     group.bench_function("construction_social", |b| {
         b.iter_batched(
@@ -86,7 +88,7 @@ fn bench_construction_project<G: Graph<Vertex = Vertex, Edge = Edge>>(
     let size = GraphSize::Small;
     let vertex_count = size.vertex_count();
     let edge_count = vertex_count * size.edge_multiplier();
-    
+
     group.throughput(Throughput::Elements((vertex_count + edge_count) as u64));
     group.bench_function("construction_project", |b| {
         b.iter_batched(
@@ -105,7 +107,7 @@ fn bench_construction_batch<G: Graph<Vertex = Vertex, Edge = Edge>>(
     setup: impl Fn() -> G + Clone,
 ) {
     const BATCH_SIZE: usize = 100;
-    
+
     group.throughput(Throughput::Elements(BATCH_SIZE as u64));
     group.bench_function("construction_batch_vertex", |b| {
         b.iter_batched(

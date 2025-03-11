@@ -1,6 +1,6 @@
 use crate::model::{ref_type, EnumVariants, Field, Model, Variant, VariantType};
 use case::CaseExt;
-use proc_macro2::{TokenStream};
+use proc_macro2::TokenStream;
 use quote::{format_ident, quote, ToTokens};
 use syn::Lifetime;
 

@@ -4,9 +4,9 @@ use include_doc::function_body;
 
 /// # Iter Step
 ///
-/// While there is no explicit `iter` step method in the walker API, the walker builders implement 
-/// the `IntoIterator` trait, allowing you to convert a traversal into a standard Rust iterator 
-/// with the `.into_iter()` method. This enables using standard iterator methods like `map`, 
+/// While there is no explicit `iter` step method in the walker API, the walker builders implement
+/// the `IntoIterator` trait, allowing you to convert a traversal into a standard Rust iterator
+/// with the `.into_iter()` method. This enables using standard iterator methods like `map`,
 /// `filter`, and `fold` on your graph traversal results.
 ///
 /// ## Visual Diagram
@@ -87,7 +87,6 @@ where
     }
 }
 
-
 pub struct VertexReferenceIterImpl<'graph, Graph, Walker> {
     graph: &'graph Graph,
     walker: Walker,
@@ -97,12 +96,9 @@ impl<'graph, Graph, Walker> VertexReferenceIterImpl<'graph, Graph, Walker> {
     pub(crate) fn new(graph: &'graph Graph, walker: Walker) -> Self
     where
         Graph: crate::graph::Graph,
-        Walker: VertexWalker<'graph, Graph=Graph>,
+        Walker: VertexWalker<'graph, Graph = Graph>,
     {
-        Self {
-            graph,
-            walker
-        }
+        Self { graph, walker }
     }
 }
 
@@ -136,12 +132,9 @@ impl<'graph, Graph, Walker> EdgeReferenceIterImpl<'graph, Graph, Walker> {
     pub(crate) fn new(graph: &'graph Graph, walker: Walker) -> Self
     where
         Graph: crate::graph::Graph,
-        Walker: EdgeWalker<'graph, Graph=Graph>,
+        Walker: EdgeWalker<'graph, Graph = Graph>,
     {
-        Self {
-            graph,
-            walker,
-        }
+        Self { graph, walker }
     }
 }
 
@@ -154,14 +147,16 @@ where
 
     fn next(&mut self) -> Option<Self::Item> {
         if let Some(next) = self.walker.next(self.graph) {
-            let edge = self.graph.edge(next).expect("edge ID must resolve to an edge");
+            let edge = self
+                .graph
+                .edge(next)
+                .expect("edge ID must resolve to an edge");
             Some((edge, self.walker.ctx().clone()))
         } else {
             None
         }
     }
 }
-
 
 pub struct VertexIterImpl<'graph, Graph, Walker> {
     graph: &'graph Graph,
@@ -172,19 +167,16 @@ impl<'graph, Graph, Walker> VertexIterImpl<'graph, Graph, Walker> {
     pub(crate) fn new(graph: &'graph Graph, walker: Walker) -> Self
     where
         Graph: crate::graph::Graph,
-        Walker: VertexWalker<'graph, Graph=Graph>,
+        Walker: VertexWalker<'graph, Graph = Graph>,
     {
-        Self {
-            graph,
-            walker,
-        }
+        Self { graph, walker }
     }
 }
 
 impl<'graph, Graph, Walker> Iterator for VertexIterImpl<'graph, Graph, Walker>
 where
     Graph: crate::graph::Graph,
-    Walker: VertexWalker<'graph, Graph= Graph>,
+    Walker: VertexWalker<'graph, Graph = Graph>,
 {
     type Item = Graph::VertexId;
 
@@ -202,19 +194,16 @@ impl<'graph, Graph, Walker> EdgeIterImpl<'graph, Graph, Walker> {
     pub(crate) fn new(graph: &'graph Graph, walker: Walker) -> Self
     where
         Graph: crate::graph::Graph,
-        Walker: EdgeWalker<'graph, Graph=Graph>,
+        Walker: EdgeWalker<'graph, Graph = Graph>,
     {
-        Self {
-            graph,
-            walker
-        }
+        Self { graph, walker }
     }
 }
 
 impl<'graph, Graph, Walker> Iterator for EdgeIterImpl<'graph, Graph, Walker>
 where
     Graph: crate::graph::Graph,
-    Walker: EdgeWalker<'graph, Graph= Graph>,
+    Walker: EdgeWalker<'graph, Graph = Graph>,
 {
     type Item = Graph::EdgeId;
 
@@ -222,4 +211,3 @@ where
         self.walker.next(self.graph)
     }
 }
-

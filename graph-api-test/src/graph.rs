@@ -1,6 +1,6 @@
 use crate::{populate_graph, Edge, Knows, KnowsMut, Person, PersonMut, Vertex};
-use uuid::Uuid;
 use graph_api_lib::{EdgeReference, EdgeReferenceMut, VertexReference, VertexReferenceMut};
+use uuid::Uuid;
 
 pub fn test_add_vertex<Graph>(graph: &mut Graph)
 where
@@ -129,7 +129,9 @@ where
     let refs = populate_graph(graph);
     {
         let mut person = graph.vertex_mut(refs.bryn).expect("expected vertex");
-        let mut bryn = person.project_mut::<PersonMut<_, _>>().expect("expected person");
+        let mut bryn = person
+            .project_mut::<PersonMut<_, _>>()
+            .expect("expected person");
         let age = bryn.age();
         bryn.set_age(age + 1);
     }
@@ -138,15 +140,18 @@ where
     assert_eq!(bryn.age(), 46);
 }
 
-
 pub fn test_mutate_edge<Graph>(graph: &mut Graph)
 where
     Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
 {
     let refs = populate_graph(graph);
     {
-        let mut edge = graph.edge_mut(refs.bryn_knows_julia).expect("expected edge");
-        let mut knows = edge.project_mut::<KnowsMut<_, _>>().expect("expected knows");
+        let mut edge = graph
+            .edge_mut(refs.bryn_knows_julia)
+            .expect("expected edge");
+        let mut knows = edge
+            .project_mut::<KnowsMut<_, _>>()
+            .expect("expected knows");
         let since = knows.since();
         knows.set_since(since + 1);
     }

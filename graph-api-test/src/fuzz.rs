@@ -1,5 +1,5 @@
-use graph_api_lib::{EdgeReference, EdgeSearch};
 use graph_api_lib::Graph;
+use graph_api_lib::{EdgeReference, EdgeSearch};
 use proptest::prelude::*;
 use std::collections::HashSet;
 

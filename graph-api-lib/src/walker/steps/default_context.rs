@@ -1,6 +1,8 @@
 use crate::graph::{EdgeReference, VertexReference};
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
-use crate::walker::steps::{ContextRef, DefaultEdgeContext, DefaultVertexContext, EdgeContext, VertexContext};
+use crate::walker::steps::{
+    ContextRef, DefaultEdgeContext, DefaultVertexContext, EdgeContext, VertexContext,
+};
 use crate::walker::{EdgeWalker, VertexWalker};
 use include_doc::function_body;
 
@@ -11,8 +13,8 @@ where
 {
     /// # Default Context Step
     ///
-    /// The `push_default_context` step is a specialized version of the `push_context` step that 
-    /// automatically stores the current element's ID and data in the context. This provides a 
+    /// The `push_default_context` step is a specialized version of the `push_context` step that
+    /// automatically stores the current element's ID and data in the context. This provides a
     /// convenient way to preserve information about elements as you traverse through the graph.
     ///
     /// ## Visual Diagram
@@ -94,7 +96,7 @@ where
 {
     /// # Default Context Step
     ///
-    /// A specialized version of the `push_context` step for edges that automatically 
+    /// A specialized version of the `push_context` step for edges that automatically
     /// stores the current edge's ID and data in the context.
     ///
     /// See the documentation for [`VertexWalkerBuilder::push_default_context`] for more details.

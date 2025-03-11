@@ -12,4 +12,5 @@ book:
     cargo test -p graph-api-book --doc
 
 lint:
+    cargo fmt --check
     cargo clippy

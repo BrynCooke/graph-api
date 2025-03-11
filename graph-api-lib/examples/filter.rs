@@ -1,4 +1,4 @@
-use graph_api_lib::{Graph, VertexSearch, EdgeSearch, VertexReference, EdgeReference};
+use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexReference, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{populate_graph, Edge, Vertex};
 
@@ -6,30 +6,28 @@ fn main() {
     let mut graph = SimpleGraph::new();
     // Populate the graph with test data
     let refs = populate_graph(&mut graph);
-    
+
     vertex_example(&graph);
     edge_example(&graph, refs.bryn);
 }
 
-fn vertex_example<G>(graph: &G) 
-where 
-    G: Graph<Vertex = Vertex, Edge = Edge>
+fn vertex_example<G>(graph: &G)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
 {
     // Filter vertices to keep only those of a specific type
     let projects = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .filter(|vertex, _| {
-            matches!(vertex.weight(), Vertex::Project(_))
-        })
+        .filter(|vertex, _| matches!(vertex.weight(), Vertex::Project(_)))
         .count();
 
     println!("Found {} project vertices", projects);
 }
 
-fn edge_example<G>(graph: &G, start_id: G::VertexId) 
-where 
-    G: Graph<Vertex = Vertex, Edge = Edge>
+fn edge_example<G>(graph: &G, start_id: G::VertexId)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
 {
     // Filter edges to find relationships created in a specific year
     let recent_connections = graph

@@ -1,7 +1,8 @@
 use crate::graph::{EdgeReferenceMut, Unsupported, VertexReference, VertexReferenceMut};
 use crate::search::vertex::VertexSearch;
-use crate::{Direction, EdgeReference, Graph, ElementId, Project, ProjectMut, Element};
+use crate::{Direction, EdgeReference, Element, ElementId, Graph, Project, ProjectMut};
 use crate::{EdgeSearch, Supported};
+use petgraph::stable_graph::StableGraph;
 use petgraph::stable_graph::{EdgeIndex, Edges, IndexType};
 use petgraph::stable_graph::{NodeIndex, NodeIndices};
 use petgraph::visit::EdgeRef;
@@ -11,7 +12,6 @@ use petgraph::EdgeType;
 /// If ever petgraph decided to implement graph-api directly then this could be removed as a private implementation detail of the graph-api-tests crate.
 use std::fmt::Debug;
 use std::marker::PhantomData;
-use petgraph::stable_graph::StableGraph;
 
 impl<Vertex, Edge, Ty, Ix> Graph for StableGraph<Vertex, Edge, Ty, Ix>
 where
@@ -167,7 +167,7 @@ where
 
 impl<Graph, Ix> From<NodeIndex<Ix>> for ElementId<Graph>
 where
-    Graph: crate::Graph<VertexId=NodeIndex<Ix>>,
+    Graph: crate::Graph<VertexId = NodeIndex<Ix>>,
     Ix: IndexType,
 {
     fn from(value: NodeIndex<Ix>) -> Self {
@@ -177,7 +177,7 @@ where
 
 impl<Graph, Ix> From<EdgeIndex<Ix>> for ElementId<Graph>
 where
-    Graph: crate::Graph<EdgeId=EdgeIndex<Ix>>,
+    Graph: crate::Graph<EdgeId = EdgeIndex<Ix>>,
     Ix: IndexType,
 {
     fn from(value: EdgeIndex<Ix>) -> Self {
@@ -186,7 +186,9 @@ where
 }
 
 impl<'graph, Graph> From<VertexReferenceWrapper<'graph, Graph>> for ElementId<Graph>
-where Graph: crate::Graph{
+where
+    Graph: crate::Graph,
+{
     fn from(value: VertexReferenceWrapper<'graph, Graph>) -> Self {
         ElementId::Vertex(value.id)
     }
@@ -204,7 +206,7 @@ where
 
 impl<'graph, Graph, Ty, Ix, Vertices> Iterator for VertexIter<'_, 'graph, Graph, Ty, Ix, Vertices>
 where
-    Graph: crate::Graph<VertexId=NodeIndex<Ix>>,
+    Graph: crate::Graph<VertexId = NodeIndex<Ix>>,
     Ty: EdgeType,
     Ix: IndexType,
     Vertices: Iterator<Item = Graph::VertexId>,
@@ -251,9 +253,9 @@ where
 
 impl<'graph, Graph, Ty, Ix> Iterator for EdgeIter<'_, Graph, Edges<'graph, Graph::Edge, Ty, Ix>>
 where
-    Graph: crate::Graph<EdgeId=EdgeIndex<Ix>, VertexId=NodeIndex<Ix>>,
+    Graph: crate::Graph<EdgeId = EdgeIndex<Ix>, VertexId = NodeIndex<Ix>>,
     Ty: EdgeType,
-    Ix: IndexType
+    Ix: IndexType,
 {
     type Item = EdgeReferenceWrapper<'graph, Graph, Ix>;
 
@@ -287,7 +289,7 @@ where
 pub enum EdgeReferenceWrapper<'graph, Graph, Ix>
 where
     Graph: crate::Graph,
-    Ix: Debug + Copy
+    Ix: Debug + Copy,
 {
     Native(petgraph::stable_graph::EdgeReference<'graph, Graph::Edge, Ix>),
     Synthetic {
@@ -300,8 +302,8 @@ where
 
 impl<'graph, Graph, Ix> EdgeReference<'graph, Graph> for EdgeReferenceWrapper<'graph, Graph, Ix>
 where
-    Graph: crate::Graph<EdgeId=EdgeIndex<Ix>, VertexId=NodeIndex<Ix>>,
-    Ix: Debug + Copy + IndexType
+    Graph: crate::Graph<EdgeId = EdgeIndex<Ix>, VertexId = NodeIndex<Ix>>,
+    Ix: Debug + Copy + IndexType,
 {
     fn id(&self) -> Graph::EdgeId {
         match self {
@@ -442,8 +444,7 @@ where
     vertex: &'graph mut Graph::Vertex,
 }
 
-impl<'graph, Graph> VertexReference<'graph, Graph>
-    for VertexReferenceWrapperMut<'graph, Graph>
+impl<'graph, Graph> VertexReference<'graph, Graph> for VertexReferenceWrapperMut<'graph, Graph>
 where
     Graph: crate::Graph,
 {
@@ -462,8 +463,7 @@ where
     }
 }
 
-impl<'graph, Graph> VertexReferenceMut<'graph, Graph>
-    for VertexReferenceWrapperMut<'graph, Graph>
+impl<'graph, Graph> VertexReferenceMut<'graph, Graph> for VertexReferenceWrapperMut<'graph, Graph>
 where
     Graph: crate::Graph + 'graph,
 {

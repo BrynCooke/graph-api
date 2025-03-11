@@ -1,6 +1,6 @@
 use criterion::{criterion_group, criterion_main, Criterion};
-use graph_api_test::bench_suite;
 use graph_api_simplegraph::SimpleGraph;
+use graph_api_test::bench_suite;
 
 fn criterion_benchmark(c: &mut Criterion) {
     // Run benchmarks using SimpleGraph implementation

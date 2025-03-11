@@ -1,24 +1,19 @@
-use crate::{Edge, Vertex, VertexIndex, EdgeIndex};
-use crate::bench::generators::{generate_test_graph, generate_random_graph, GraphSize};
-use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
+use crate::bench::generators::{generate_random_graph, generate_test_graph, GraphSize};
+use crate::{Edge, EdgeIndex, Vertex, VertexIndex};
+use criterion::{measurement::WallTime, BenchmarkGroup, Throughput};
 use graph_api_lib::{Graph, Supported, VertexSearch};
 
 /// Run all index operation benchmarks
-pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>
-    (
+pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
-
-)
-
-where
-G: Graph<SupportsVertexLabelIndex=Supported>,
-G: Graph<SupportsVertexIndex=Supported>,
-G: Graph<SupportsEdgeLabelIndex=Supported>,
-G: Graph<SupportsVertexFullTextIndex=Supported>,
-G: Graph<SupportsVertexOrderedIndex=Supported>,
-G: Graph<SupportsVertexFullTextIndex=Supported>,
-
+) where
+    G: Graph<SupportsVertexLabelIndex = Supported>,
+    G: Graph<SupportsVertexIndex = Supported>,
+    G: Graph<SupportsEdgeLabelIndex = Supported>,
+    G: Graph<SupportsVertexFullTextIndex = Supported>,
+    G: Graph<SupportsVertexOrderedIndex = Supported>,
+    G: Graph<SupportsVertexFullTextIndex = Supported>,
 {
     bench_index_vertex_label(group, setup.clone());
     bench_index_vertex_property(group, setup.clone());
@@ -28,7 +23,9 @@ G: Graph<SupportsVertexFullTextIndex=Supported>,
 }
 
 /// Benchmark vertex label index lookup
-fn bench_index_vertex_label<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexLabelIndex=Supported>>(
+fn bench_index_vertex_label<
+    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexLabelIndex = Supported>,
+>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) {
@@ -37,9 +34,10 @@ fn bench_index_vertex_label<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVerte
         // Setup: Create graph with random data
         let mut graph = setup();
         generate_random_graph(&mut graph, GraphSize::Small, 42);
-        
+
         b.iter(|| {
-            graph.walk()
+            graph
+                .walk()
                 .vertices(VertexIndex::person())
                 .limit(10)
                 .collect::<Vec<_>>()
@@ -48,7 +46,9 @@ fn bench_index_vertex_label<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVerte
 }
 
 /// Benchmark vertex property index lookup
-fn bench_index_vertex_property<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexIndex=Supported>>(
+fn bench_index_vertex_property<
+    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexIndex = Supported>,
+>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) {
@@ -57,9 +57,10 @@ fn bench_index_vertex_property<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVe
         // Setup: Create graph with test data
         let mut graph = setup();
         generate_test_graph(&mut graph);
-        
+
         b.iter(|| {
-            graph.walk()
+            graph
+                .walk()
                 .vertices(VertexIndex::person_by_name("Bryn"))
                 .collect::<Vec<_>>()
         })
@@ -67,7 +68,9 @@ fn bench_index_vertex_property<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVe
 }
 
 /// Benchmark vertex full-text index lookup
-fn bench_index_vertex_fulltext<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexFullTextIndex=Supported>>(
+fn bench_index_vertex_fulltext<
+    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexFullTextIndex = Supported>,
+>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) {
@@ -76,9 +79,10 @@ fn bench_index_vertex_fulltext<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVe
         // Setup: Create graph with test data
         let mut graph = setup();
         generate_test_graph(&mut graph);
-        
+
         b.iter(|| {
-            graph.walk()
+            graph
+                .walk()
                 .vertices(VertexIndex::person_by_biography("graph"))
                 .collect::<Vec<_>>()
         })
@@ -86,7 +90,9 @@ fn bench_index_vertex_fulltext<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVe
 }
 
 /// Benchmark vertex ordered index range queries
-fn bench_index_vertex_ordered_range<G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexOrderedIndex=Supported>>(
+fn bench_index_vertex_ordered_range<
+    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexOrderedIndex = Supported>,
+>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) {
@@ -95,9 +101,10 @@ fn bench_index_vertex_ordered_range<G: Graph<Vertex = Vertex, Edge = Edge, Suppo
         // Setup: Create graph with random data
         let mut graph = setup();
         generate_random_graph(&mut graph, GraphSize::Small, 42);
-        
+
         b.iter(|| {
-            graph.walk()
+            graph
+                .walk()
                 .vertices(VertexIndex::person_by_age_range(30..50))
                 .collect::<Vec<_>>()
         })
@@ -105,7 +112,9 @@ fn bench_index_vertex_ordered_range<G: Graph<Vertex = Vertex, Edge = Edge, Suppo
 }
 
 /// Benchmark edge label index lookup
-fn bench_index_edge_label<G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex=Supported>>(
+fn bench_index_edge_label<
+    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) {
@@ -114,9 +123,10 @@ fn bench_index_edge_label<G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLab
         // Setup: Create graph with random data
         let mut graph = setup();
         generate_random_graph(&mut graph, GraphSize::Small, 42);
-        
+
         b.iter(|| {
-            graph.walk()
+            graph
+                .walk()
                 .vertices(VertexSearch::scan())
                 .limit(1)
                 .edges(EdgeIndex::knows())

@@ -7,7 +7,10 @@ use crate::graph::label::{Adjacency, LabelledEdges, LabelledVertices, VertexStor
 use crate::id::VertexId;
 use crate::index::VertexIndexStorage;
 use crate::EdgeId;
-use graph_api_lib::{Direction, EdgeSearch, Element, ElementId, Graph, Index, Label, Project, ProjectMut, Supported, Value, VertexSearch};
+use graph_api_lib::{
+    Direction, EdgeSearch, Element, ElementId, Graph, Index, Label, Project, ProjectMut, Supported,
+    Value, VertexSearch,
+};
 use smallbox::space::S8;
 use smallbox::{smallbox, SmallBox};
 use std::fmt::{Debug, Formatter};
@@ -38,7 +41,6 @@ impl<Graph> From<VertexReference<'_, Graph>> for ElementId<Graph>
 where
     Graph: graph_api_lib::Graph,
 {
-
     fn from(value: VertexReference<Graph>) -> Self {
         ElementId::Vertex(value.id)
     }
@@ -180,7 +182,7 @@ where
 
 impl<Graph> From<EdgeReference<'_, Graph>> for ElementId<Graph>
 where
-    Graph: graph_api_lib::Graph<VertexId=VertexId, EdgeId=EdgeId>,
+    Graph: graph_api_lib::Graph<VertexId = VertexId, EdgeId = EdgeId>,
 {
     fn from(value: EdgeReference<Graph>) -> ElementId<Graph> {
         ElementId::Edge(value.id)
@@ -674,10 +676,10 @@ where
             .map(|label| label.ordinal() as u16..label.ordinal() as u16 + 1)
             .or_else(|| adjacent_label_range.as_ref().map(|_| 0..u16::MAX));
         let direction_range = match search.direction {
-                Direction::All => Direction::Outgoing..Direction::All,
-                Direction::Outgoing => Direction::Outgoing..Direction::Incoming,
-                Direction::Incoming => Direction::Incoming..Direction::All,
-            };
+            Direction::All => Direction::Outgoing..Direction::All,
+            Direction::Outgoing => Direction::Outgoing..Direction::Incoming,
+            Direction::Incoming => Direction::Incoming..Direction::All,
+        };
 
         // Now flatmap all the ranges together.
         // This gives an iterator that can be used to generate iterators of adjacency.

@@ -1,5 +1,5 @@
-use crate::{Direction, Supported};
 use crate::element::Element;
+use crate::{Direction, Supported};
 
 /// A search to apply to edges when querying a graph.
 /// This allows graph implementations to support vertex centric indexes.
@@ -79,8 +79,6 @@ where
         self.direction = Direction::Outgoing;
         self
     }
-
-
 
     /// Outgoing edges
     pub fn incoming(mut self) -> Self {

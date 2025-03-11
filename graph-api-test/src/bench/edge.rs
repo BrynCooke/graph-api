@@ -46,10 +46,8 @@ fn bench_edge_retrieve<G: Graph<Vertex = Vertex, Edge = Edge>>(
         // Setup: Create graph with test data
         let mut graph = setup();
         let refs = generate_test_graph(&mut graph);
-        
-        b.iter(|| {
-            graph.edge(refs.bryn_knows_julia)
-        })
+
+        b.iter(|| graph.edge(refs.bryn_knows_julia))
     });
 }
 
@@ -69,9 +67,7 @@ fn bench_edge_remove<G: Graph<Vertex = Vertex, Edge = Edge>>(
                 let edge_id = graph.add_edge(refs.bryn, refs.julia, Edge::Knows { since: 2023 });
                 (graph, edge_id)
             },
-            |(mut graph, edge_id)| {
-                graph.remove_edge(edge_id)
-            },
+            |(mut graph, edge_id)| graph.remove_edge(edge_id),
             criterion::BatchSize::SmallInput,
         )
     });
@@ -87,7 +83,7 @@ fn bench_edge_property_access<G: Graph<Vertex = Vertex, Edge = Edge>>(
         // Setup: Create graph with test data
         let mut graph = setup();
         let refs = generate_test_graph(&mut graph);
-        
+
         b.iter(|| {
             let edge = graph.edge(refs.bryn_knows_julia).unwrap();
             let knows = edge.project::<Knows<_>>().expect("knows");

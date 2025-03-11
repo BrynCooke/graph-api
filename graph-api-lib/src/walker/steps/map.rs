@@ -1,6 +1,6 @@
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
-use crate::walker::{EdgeWalker, VertexWalker};
 use crate::walker::steps::into_iter::{EdgeReferenceIterImpl, VertexReferenceIterImpl};
+use crate::walker::{EdgeWalker, VertexWalker};
 use include_doc::function_body;
 
 impl<'graph, Mutability, Graph, Walker> VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
@@ -10,8 +10,8 @@ where
 {
     /// # Map Step
     ///
-    /// The `map` step transforms vertices in the traversal by applying a mapping function to each vertex. 
-    /// Unlike other steps that continue the traversal chain, `map` returns an iterator that yields the 
+    /// The `map` step transforms vertices in the traversal by applying a mapping function to each vertex.
+    /// Unlike other steps that continue the traversal chain, `map` returns an iterator that yields the
     /// transformed elements directly.
     ///
     /// ## Visual Diagram
@@ -38,7 +38,7 @@ where
     ///
     /// ## Return Value
     ///
-    /// Returns an iterator that yields the transformed elements. The type of the iterator items 
+    /// Returns an iterator that yields the transformed elements. The type of the iterator items
     /// is determined by the return type of the mapping function.
     ///
     /// ## Example
@@ -55,12 +55,13 @@ where
     /// - Common uses include extracting properties from vertices (e.g., names, IDs, attributes)
     /// - For building complex data structures, consider using pattern matching in the mapping function
     /// - To map vertices with context data, use `push_context` before mapping
-    pub fn map<R, M>(mut self, mut mapping: M) -> impl Iterator<Item=R> + 'graph
+    pub fn map<R, M>(mut self, mut mapping: M) -> impl Iterator<Item = R> + 'graph
     where
         M: FnMut(Graph::VertexReference<'graph>, Walker::Context) -> R + 'graph,
         Walker: 'graph,
     {
-        VertexReferenceIterImpl::new(self.graph.take(), self.walker).map(move |(reference, ctx)| mapping(reference, ctx))
+        VertexReferenceIterImpl::new(self.graph.take(), self.walker)
+            .map(move |(reference, ctx)| mapping(reference, ctx))
     }
 }
 
@@ -115,11 +116,12 @@ where
     /// - You can access connected vertices through the edge's tail() and head() methods
     /// - For analyzing graph connectivity, pair with edge-traversal steps like filter
     /// - The iterator chain can continue with standard Rust iterator methods after mapping
-    pub fn map<R, M>(mut self, mut mapping: M) -> impl Iterator<Item=R> + 'graph
+    pub fn map<R, M>(mut self, mut mapping: M) -> impl Iterator<Item = R> + 'graph
     where
         M: FnMut(Graph::EdgeReference<'graph>, Walker::Context) -> R + 'graph,
         Walker: 'graph,
     {
-        EdgeReferenceIterImpl::new(self.graph.take(), self.walker).map(move |(reference, ctx)| mapping(reference, ctx))
+        EdgeReferenceIterImpl::new(self.graph.take(), self.walker)
+            .map(move |(reference, ctx)| mapping(reference, ctx))
     }
 }

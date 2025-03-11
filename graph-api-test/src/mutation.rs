@@ -30,7 +30,7 @@ where
     T: Graph<Vertex = Vertex, Edge = Edge>,
 {
     let refs = populate_graph(graph);
-    
+
     // Use a simple approach - start with one vertex, find all outgoing edges
     // We know bryn has two edges: knows julia and created graph_api
     let initial_edge_count = graph
@@ -38,10 +38,10 @@ where
         .vertices_by_id(vec![refs.bryn])
         .edges(EdgeSearch::scan().outgoing())
         .count();
-    
+
     // Should be 2 edges (bryn knows julia, bryn created graph_api)
     assert_eq!(initial_edge_count, 2, "Expected 2 initial edges from bryn");
-    
+
     // Now use the mutate fn to add a new edge for each outgoing edge from bryn
     let mutations = graph
         .walk_mut()
@@ -51,24 +51,28 @@ where
             let tail = graph.edge(edge_id).unwrap().tail();
 
             // Add a Language edge from this edge's source to the rust vertex
-            graph.add_edge(tail, refs.rust, Edge::Language(crate::Language {
-                name: "EdgeMutationTest".to_string()
-            }));
+            graph.add_edge(
+                tail,
+                refs.rust,
+                Edge::Language(crate::Language {
+                    name: "EdgeMutationTest".to_string(),
+                }),
+            );
         });
-    
+
     // Should have mutated 2 edges
     assert_eq!(mutations, 2, "Expected to process 2 edges");
-    
+
     // Count bryn's edges again
     let final_edge_count = graph
         .walk()
         .vertices_by_id(vec![refs.bryn])
         .edges(EdgeSearch::scan().outgoing())
         .count();
-    
+
     // Should have 4 edges now - the original 2 plus the 2 new ones
     assert_eq!(final_edge_count, 4, "Expected 4 final edges from bryn");
-    
+
     // Verify new edges connect bryn to rust
     let bryn_language_edges = graph
         .walk()
@@ -76,7 +80,6 @@ where
         .edges(EdgeSearch::scan().outgoing())
         .filter_by_language(|_, _| true)
         .count();
-    
+
     assert_eq!(bryn_language_edges, 2, "Expected to find 2 language edges");
 }
-

@@ -33,10 +33,13 @@ where
 {
     let refs = populate_graph(graph);
     graph.remove_vertex(refs.bryn);
-    assert_eq!(graph
-        .walk()
-        .vertices(VertexIndex::person_by_biography("graph"))
-        .count(), 0);
+    assert_eq!(
+        graph
+            .walk()
+            .vertices(VertexIndex::person_by_biography("graph"))
+            .count(),
+        0
+    );
 }
 
 /// Tests that a vertex's indexed field can be updated and that the graph's
@@ -59,12 +62,18 @@ where
         .project_mut::<PersonMut<_, _>>()
         .expect("must be a person")
         .set_biography("Developed a graphql proxy in Rust".to_string());
-    assert_eq!(graph
-        .walk()
-        .vertices(VertexIndex::person_by_biography("graph"))
-        .count(), 0);
-    assert_eq!(graph
-        .walk()
-        .vertices(VertexIndex::person_by_biography("proxy"))
-        .count(), 1);
+    assert_eq!(
+        graph
+            .walk()
+            .vertices(VertexIndex::person_by_biography("graph"))
+            .count(),
+        0
+    );
+    assert_eq!(
+        graph
+            .walk()
+            .vertices(VertexIndex::person_by_biography("proxy"))
+            .count(),
+        1
+    );
 }

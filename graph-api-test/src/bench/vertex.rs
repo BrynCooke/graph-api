@@ -1,6 +1,6 @@
+use crate::bench::generators::{generate_random_graph, generate_test_graph, GraphSize};
 use crate::{Edge, Person, PersonMut, Vertex};
-use crate::bench::generators::{generate_test_graph, generate_random_graph, GraphSize};
-use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
+use criterion::{measurement::WallTime, BenchmarkGroup, Throughput};
 use graph_api_lib::{Graph, VertexReference, VertexReferenceMut};
 use uuid::Uuid;
 
@@ -49,10 +49,8 @@ fn bench_vertex_retrieve<G: Graph<Vertex = Vertex, Edge = Edge>>(
         // Setup: Create graph with test data
         let mut graph = setup();
         let refs = generate_test_graph(&mut graph);
-        
-        b.iter(|| {
-            graph.vertex(refs.bryn)
-        })
+
+        b.iter(|| graph.vertex(refs.bryn))
     });
 }
 
@@ -70,9 +68,7 @@ fn bench_vertex_remove<G: Graph<Vertex = Vertex, Edge = Edge>>(
                 let vertex_ids = generate_random_graph(&mut graph, GraphSize::Small, 42);
                 (graph, vertex_ids.first().cloned().unwrap())
             },
-            |(mut graph, vertex_id)| {
-                graph.remove_vertex(vertex_id)
-            },
+            |(mut graph, vertex_id)| graph.remove_vertex(vertex_id),
             criterion::BatchSize::SmallInput,
         )
     });
@@ -88,7 +84,7 @@ fn bench_vertex_property_access<G: Graph<Vertex = Vertex, Edge = Edge>>(
         // Setup: Create graph with test data
         let mut graph = setup();
         let refs = generate_test_graph(&mut graph);
-        
+
         b.iter(|| {
             let vertex = graph.vertex(refs.bryn).unwrap();
             vertex.project::<Person<_>>().expect("person").name();

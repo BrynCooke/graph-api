@@ -1,6 +1,6 @@
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker};
-use include_doc::{function_body};
+use include_doc::function_body;
 
 impl<'graph, Mutability, Graph, Walker> VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
 where
@@ -9,29 +9,29 @@ where
 {
     /// # Collect Step
     ///
-    /// The `collect` step finalizes a traversal and gathers the results into a collection. 
+    /// The `collect` step finalizes a traversal and gathers the results into a collection.
     /// This is a terminal operation that ends the traversal and provides access to the traversed elements.
     ///
     /// ## Visual Diagram
     ///
     /// Before collect step (with elements in traversal):
     /// ```text
-    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
-    ///    ^                                         
-    ///    |                                         
-    ///   edge3                                       
-    ///    |                                         
-    ///   [D]*                                        
+    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*
+    ///    ^
+    ///    |
+    ///   edge3
+    ///    |
+    ///   [D]*
     /// ```
     ///
     /// After collect step (all elements consumed and collected):
     /// ```text
-    ///   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
-    ///    ^                                         
-    ///    |                                         
-    ///   edge3                                       
-    ///    |                                         
-    ///   [D]                                        
+    ///   [A] --- edge1 ---> [B] --- edge2 ---> [C]
+    ///    ^
+    ///    |
+    ///   edge3
+    ///    |
+    ///   [D]
     ///
     ///   Collection: [A, B, C, D]
     /// ```

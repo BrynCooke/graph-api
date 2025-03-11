@@ -29,7 +29,8 @@ fn bench_mutation_vertex_update<G: Graph<Vertex = Vertex, Edge = Edge>>(
             },
             |mut graph| {
                 // Update age of first 10 Person vertices by incrementing it
-                graph.walk_mut()
+                graph
+                    .walk_mut()
                     .vertices(VertexSearch::scan())
                     .limit(10)
                     .mutate(|graph, vertex_id, _context| {
@@ -59,7 +60,8 @@ fn bench_mutation_edge_add<G: Graph<Vertex = Vertex, Edge = Edge>>(
             },
             |(mut graph, source_id, target_id)| {
                 // Add an edge during traversal
-                graph.walk_mut()
+                graph
+                    .walk_mut()
                     .vertices_by_id(vec![source_id])
                     .mutate(|graph, _, _| {
                         graph.add_edge(source_id, target_id, Edge::Created);
@@ -86,7 +88,8 @@ fn bench_mutation_edge_remove<G: Graph<Vertex = Vertex, Edge = Edge>>(
             },
             |mut graph| {
                 // Find and remove the first outgoing edge from Bryn
-                let count = graph.walk_mut()
+                let count = graph
+                    .walk_mut()
                     .vertices(VertexSearch::scan())
                     .edges(EdgeSearch::scan().outgoing())
                     .limit(1)

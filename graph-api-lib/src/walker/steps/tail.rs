@@ -10,8 +10,8 @@ where
 {
     /// # Tail Step
     ///
-    /// The `tail` step transforms an edge traversal into a vertex traversal by moving to the 
-    /// tail vertex of each edge. In graph theory, the tail is the destination/target vertex 
+    /// The `tail` step transforms an edge traversal into a vertex traversal by moving to the
+    /// tail vertex of each edge. In graph theory, the tail is the destination/target vertex
     /// that the edge points to.
     ///
     /// ## Visual Diagram

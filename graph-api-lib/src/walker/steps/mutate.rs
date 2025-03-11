@@ -9,8 +9,8 @@ where
 {
     /// # Mutate Step
     ///
-    /// The `mutate` step allows you to modify the graph during traversal. For each element 
-    /// in the traversal (vertex or edge), the provided callback function is executed, giving 
+    /// The `mutate` step allows you to modify the graph during traversal. For each element
+    /// in the traversal (vertex or edge), the provided callback function is executed, giving
     /// you the ability to create, modify, or delete elements in the graph.
     ///
     /// ## Visual Diagram

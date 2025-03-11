@@ -33,10 +33,13 @@ where
 {
     let refs = populate_graph(graph);
     graph.remove_vertex(refs.bryn);
-    assert_eq!(graph
-        .walk()
-        .vertices(VertexIndex::person_by_name("Bryn"))
-        .count(), 0);
+    assert_eq!(
+        graph
+            .walk()
+            .vertices(VertexIndex::person_by_name("Bryn"))
+            .count(),
+        0
+    );
 }
 
 pub fn test_index_update<T>(graph: &mut T)
@@ -50,12 +53,18 @@ where
         .project_mut::<PersonMut<_, _>>()
         .expect("must be a person")
         .set_name("Dyllan".to_string());
-    assert_eq!(graph
-        .walk()
-        .vertices(VertexIndex::person_by_name("Bryn"))
-        .count(), 0);
-    assert_eq!(graph
-        .walk()
-        .vertices(VertexIndex::person_by_name("Dyllan"))
-        .count(), 1);
+    assert_eq!(
+        graph
+            .walk()
+            .vertices(VertexIndex::person_by_name("Bryn"))
+            .count(),
+        0
+    );
+    assert_eq!(
+        graph
+            .walk()
+            .vertices(VertexIndex::person_by_name("Dyllan"))
+            .count(),
+        1
+    );
 }

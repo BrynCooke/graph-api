@@ -1,10 +1,10 @@
+use crate::element::Element;
 use crate::walker::builder::{ImmutableMarker, MutableMarker, StartWalkerBuilder};
 use crate::{walker, EdgeSearch, Value};
 use crate::{Label, VertexSearch};
+use derivative::Derivative;
 use std::fmt::Debug;
 use std::hash::Hash;
-use derivative::Derivative;
-use crate::element::Element;
 
 /// Marker for feature support
 pub trait Support {}
@@ -45,9 +45,14 @@ impl Direction {
 }
 
 /// An identifier for a vertex or an edge in a graph.
-#[derive(Debug)]
-#[derive(Derivative)]
-#[derivative(Copy(bound = ""), Clone(bound = ""), Eq(bound = ""), PartialEq(bound=""), Hash(bound = ""))]
+#[derive(Debug, Derivative)]
+#[derivative(
+    Copy(bound = ""),
+    Clone(bound = ""),
+    Eq(bound = ""),
+    PartialEq(bound = ""),
+    Hash(bound = "")
+)]
 pub enum ElementId<Graph>
 where
     Graph: crate::Graph,
@@ -58,7 +63,6 @@ where
     /// An edge identifier.
     Edge(Graph::EdgeId),
 }
-
 
 /// Graphs that implement this trait can be used with the walker API.
 pub trait Graph: Sized + Debug {
@@ -88,24 +92,10 @@ pub trait Graph: Sized + Debug {
     type Edge: Debug + Element;
 
     /// The `VertexId` type of the graph.
-    type VertexId: Debug
-        + Eq
-        + PartialEq
-        + Copy
-        + Clone
-        + Hash
-        + Into<ElementId<Self>>
-        + 'static;
+    type VertexId: Debug + Eq + PartialEq + Copy + Clone + Hash + Into<ElementId<Self>> + 'static;
 
     /// The `EdgeId` type of the graph.
-    type EdgeId: Debug
-        + Eq
-        + PartialEq
-        + Copy
-        + Clone
-        + Hash
-        + Into<ElementId<Self>>
-        + 'static;
+    type EdgeId: Debug + Eq + PartialEq + Copy + Clone + Hash + Into<ElementId<Self>> + 'static;
 
     /// A reference to a vertex.
     type VertexReference<'graph>: VertexReference<'graph, Self>

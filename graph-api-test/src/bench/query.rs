@@ -25,12 +25,8 @@ fn bench_query_count_vertices<G: Graph<Vertex = Vertex, Edge = Edge>>(
         // Setup: Create graph with random data
         let mut graph = setup();
         generate_random_graph(&mut graph, GraphSize::Small, 42);
-        
-        b.iter(|| {
-            graph.walk()
-                .vertices(VertexSearch::scan())
-                .count()
-        })
+
+        b.iter(|| graph.walk().vertices(VertexSearch::scan()).count())
     });
 }
 
@@ -44,9 +40,10 @@ fn bench_query_count_edges<G: Graph<Vertex = Vertex, Edge = Edge>>(
         // Setup: Create graph with random data
         let mut graph = setup();
         generate_random_graph(&mut graph, GraphSize::Small, 42);
-        
+
         b.iter(|| {
-            graph.walk()
+            graph
+                .walk()
                 .vertices(VertexSearch::scan())
                 .edges(EdgeSearch::scan())
                 .count()
@@ -64,12 +61,8 @@ fn bench_query_first<G: Graph<Vertex = Vertex, Edge = Edge>>(
         // Setup: Create graph with test data
         let mut graph = setup();
         generate_test_graph(&mut graph);
-        
-        b.iter(|| {
-            graph.walk()
-                .vertices(VertexSearch::scan())
-                .first()
-        })
+
+        b.iter(|| graph.walk().vertices(VertexSearch::scan()).first())
     });
 }
 
@@ -83,9 +76,10 @@ fn bench_query_collect<G: Graph<Vertex = Vertex, Edge = Edge>>(
         // Setup: Create graph with random data
         let mut graph = setup();
         generate_random_graph(&mut graph, GraphSize::Small, 42);
-        
+
         b.iter(|| {
-            graph.walk()
+            graph
+                .walk()
                 .vertices(VertexSearch::scan())
                 .limit(25)
                 .collect::<Vec<_>>()
@@ -103,12 +97,7 @@ fn bench_count<G: Graph<Vertex = Vertex, Edge = Edge>>(
         // Setup: Create graph with test data
         let mut graph = setup();
         generate_test_graph(&mut graph);
-        
-        b.iter(|| {
-            graph.walk()
-                .vertices(VertexSearch::scan())
-                .limit(0)
-                .count()
-        })
+
+        b.iter(|| graph.walk().vertices(VertexSearch::scan()).limit(0).count())
     });
 }

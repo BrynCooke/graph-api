@@ -1,5 +1,5 @@
+use crate::{populate_graph, Edge, Vertex};
 use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexReference, VertexSearch};
-use crate::{Edge, Vertex, populate_graph};
 
 /// Test vertex fold operations
 pub fn test_vertices_fold<G>(graph: &mut G)
@@ -8,7 +8,7 @@ where
 {
     // Populate the graph with test data
     let _refs = populate_graph(graph);
-    
+
     // Calculate the sum of ages using fold
     let total_age = graph
         .walk()
@@ -20,7 +20,7 @@ where
                 total
             }
         });
-    
+
     // Check that the total age is positive - should include Bryn and Julia
     assert_eq!(total_age, 93);
 }
@@ -32,7 +32,7 @@ where
 {
     // Populate the graph with test data
     let _refs = populate_graph(graph);
-    
+
     // Find the relationship year in the graph
     let knows_year = graph
         .walk()
@@ -45,10 +45,9 @@ where
                 result
             }
         });
-    
+
     // There should be at least one relationship with a year
     assert!(knows_year.is_some());
     // The standard test data uses 1999
     assert_eq!(knows_year.unwrap(), 1999);
-
 }
