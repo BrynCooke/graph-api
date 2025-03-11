@@ -1,5 +1,9 @@
 use crate::bench::generators::{GraphSize, generate_random_graph, generate_test_graph};
 use crate::{Edge, EdgeIndex, Vertex, VertexIndex};
+use crate::{
+    SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexIndex,
+    SupportsVertexLabelIndex, SupportsVertexOrderedIndex,
+};
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{Graph, Supported, VertexSearch};
 
@@ -8,17 +12,21 @@ pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) where
-    G: Graph<SupportsVertexLabelIndex = Supported>,
-    G: Graph<SupportsVertexIndex = Supported>,
-    G: Graph<SupportsEdgeLabelIndex = Supported>,
-    G: Graph<SupportsVertexFullTextIndex = Supported>,
-    G: Graph<SupportsVertexOrderedIndex = Supported>,
-    G: Graph<SupportsVertexFullTextIndex = Supported>,
+    G: Graph<SupportsVertexLabelIndex = SupportsVertexLabelIndex>,
+    G: Graph<SupportsVertexIndex = SupportsVertexIndex>,
+    G: Graph<SupportsVertexFullTextIndex = SupportsVertexFullTextIndex>,
+    G: Graph<SupportsVertexOrderedIndex = SupportsVertexOrderedIndex>,
+    G: Graph<SupportsEdgeLabelIndex = SupportsEdgeLabelIndex>,
 {
+    #[cfg(feature = "vertex-label-index")]
     bench_index_vertex_label(group, setup.clone());
+    #[cfg(feature = "vertex-index")]
     bench_index_vertex_property(group, setup.clone());
+    #[cfg(feature = "vertex-full-text-index")]
     bench_index_vertex_fulltext(group, setup.clone());
+    #[cfg(feature = "vertex-ordered-index")]
     bench_index_vertex_ordered_range(group, setup.clone());
+    #[cfg(feature = "edge-label-index")]
     bench_index_edge_label(group, setup.clone());
 }
 

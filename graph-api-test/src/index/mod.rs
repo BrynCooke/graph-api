@@ -1,10 +1,5 @@
-#[cfg(feature = "edge-label-index")]
 pub mod edge_label;
-#[cfg(feature = "vertex-index")]
 pub mod vertex_default;
-#[cfg(feature = "vertex-full-text-index")]
 pub mod vertex_full_text;
-#[cfg(feature = "vertex-label-index")]
 pub mod vertex_label;
-#[cfg(feature = "vertex-ordered-index")]
 pub mod vertex_ordered;

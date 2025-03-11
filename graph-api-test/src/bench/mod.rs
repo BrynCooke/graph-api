@@ -1,35 +1,23 @@
-#[cfg(feature = "benchmark")]
 pub mod construction;
-#[cfg(feature = "benchmark")]
 pub mod edge;
-#[cfg(feature = "benchmark")]
 pub mod generators;
-#[cfg(feature = "benchmark")]
 pub mod index;
-#[cfg(feature = "benchmark")]
 pub mod mutation;
-#[cfg(feature = "benchmark")]
 pub mod query;
-#[cfg(feature = "benchmark")]
 pub mod scale;
-#[cfg(feature = "benchmark")]
 pub mod traversal;
-#[cfg(feature = "benchmark")]
 pub mod vertex;
 
-#[cfg(feature = "benchmark")]
 use crate::{Edge, Vertex};
-#[cfg(feature = "benchmark")]
+use crate::{
+    SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexIndex,
+    SupportsVertexLabelIndex, SupportsVertexOrderedIndex,
+};
 use criterion::{BenchmarkGroup, Criterion};
-#[cfg(feature = "benchmark")]
 use graph_api_lib::Graph;
-#[cfg(feature = "benchmark")]
-use graph_api_lib::Supported;
-#[cfg(feature = "benchmark")]
 use std::time::Duration;
 
 /// Configures the default settings for benchmark groups
-#[cfg(feature = "benchmark")]
 pub fn configure_group<G: Graph<Vertex = Vertex, Edge = Edge>>(
     group: &mut BenchmarkGroup<criterion::measurement::WallTime>,
 ) {
@@ -39,17 +27,15 @@ pub fn configure_group<G: Graph<Vertex = Vertex, Edge = Edge>>(
 }
 
 /// Run all benchmarks for a given graph implementation
-#[cfg(feature = "benchmark")]
 pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
     c: &mut Criterion,
     setup: impl Fn() -> G + Clone,
 ) where
-    G: Graph<SupportsVertexLabelIndex = Supported>,
-    G: Graph<SupportsVertexIndex = Supported>,
-    G: Graph<SupportsEdgeLabelIndex = Supported>,
-    G: Graph<SupportsVertexFullTextIndex = Supported>,
-    G: Graph<SupportsVertexOrderedIndex = Supported>,
-    G: Graph<SupportsVertexFullTextIndex = Supported>,
+    G: Graph<SupportsVertexLabelIndex = SupportsVertexLabelIndex>,
+    G: Graph<SupportsVertexIndex = SupportsVertexIndex>,
+    G: Graph<SupportsVertexFullTextIndex = SupportsVertexFullTextIndex>,
+    G: Graph<SupportsVertexOrderedIndex = SupportsVertexOrderedIndex>,
+    G: Graph<SupportsEdgeLabelIndex = SupportsEdgeLabelIndex>,
 {
     // Run vertex operation benchmarks
     let mut vertex_group = c.benchmark_group("vertex_operations");
@@ -100,19 +86,9 @@ pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
     scale_group.finish();
 }
 
-#[cfg(feature = "benchmark")]
 #[macro_export]
 macro_rules! bench_suite {
     ($criterion:expr, $setup:expr) => {
         $crate::bench::run_benchmarks($criterion, $setup);
-    };
-}
-
-#[cfg(not(feature = "benchmark"))]
-#[macro_export]
-macro_rules! bench_suite {
-    ($criterion:expr, $setup:expr) => {
-        // Benchmark feature is not enabled
-        compile_error!("Benchmark feature is not enabled. Add the 'benchmark' feature to graph-api-test to enable benchmarking.");
     };
 }

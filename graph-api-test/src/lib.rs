@@ -23,10 +23,37 @@ pub mod vertices;
 
 use graph_api_derive::{EdgeExt, VertexExt};
 use graph_api_lib::ElementId;
+#[allow(unused_imports)]
+use graph_api_lib::{Supported, Unsupported};
 use std::collections::HashSet;
 use std::fmt::{Debug, Display, Formatter};
 use thiserror::Error;
 use uuid::Uuid;
+
+#[cfg(feature = "vertex-label-index")]
+pub(crate) type SupportsVertexLabelIndex = Supported;
+#[cfg(not(feature = "vertex-label-index"))]
+pub(crate) type SupportsVertexLabelIndex = Unsupported;
+
+#[cfg(feature = "vertex-index")]
+pub(crate) type SupportsVertexIndex = Supported;
+#[cfg(not(feature = "vertex-index"))]
+pub(crate) type SupportsVertexIndex = Unsupported;
+
+#[cfg(feature = "vertex-full-text-index")]
+pub(crate) type SupportsVertexFullTextIndex = Supported;
+#[cfg(not(feature = "vertex-full-text-index"))]
+pub(crate) type SupportsVertexFullTextIndex = Unsupported;
+
+#[cfg(feature = "vertex-ordered-index")]
+pub(crate) type SupportsVertexOrderedIndex = Supported;
+#[cfg(not(feature = "vertex-ordered-index"))]
+pub(crate) type SupportsVertexOrderedIndex = Unsupported;
+
+#[cfg(feature = "edge-label-index")]
+pub(crate) type SupportsEdgeLabelIndex = Supported;
+#[cfg(not(feature = "edge-label-index"))]
+pub(crate) type SupportsEdgeLabelIndex = Unsupported;
 
 #[derive(Debug, Clone, VertexExt)]
 pub enum Vertex {
@@ -137,192 +164,94 @@ pub enum TestError {
 }
 
 #[macro_export]
-macro_rules! check_unsupported {
-    ($setup:expr, $name:ident, $feature:path) => {
-        #[test]
-        fn $name() {
-            fn check_unsupported<Graph>(graph: Graph)
-            where
-                Graph: graph_api_lib::Graph<
-                        Vertex = $crate::Vertex,
-                        Edge = $crate::Edge,
-                        $feature = graph_api_lib::Unsupported,
-                    >,
-            {
-            }
-            check_unsupported($setup);
-        }
-    };
-}
-
-#[macro_export]
-macro_rules! general_test {
+macro_rules! test {
     ($setup:expr, $name:ident, $path:path) => {
         #[test]
         fn $name() {
             let mut g = $setup;
             $path(&mut g);
         }
-    };
-}
-
-#[cfg(feature = "edge-label-index")]
-#[macro_export]
-macro_rules! edge_index_label_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        #[test]
-        fn $name() {
-            let mut g = $setup;
-            $path(&mut g);
-        }
-    };
-}
-#[cfg(not(feature = "edge-label-index"))]
-#[macro_export]
-macro_rules! edge_index_label_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        $crate::check_unsupported!($setup, $name, SupportsEdgeLabelIndex);
-    };
-}
-
-#[cfg(feature = "vertex-label-index")]
-#[macro_export]
-macro_rules! vertex_index_label_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        #[test]
-        fn $name() {
-            let mut g = $setup;
-            $path(&mut g);
-        }
-    };
-}
-
-#[cfg(not(feature = "vertex-label-index"))]
-#[macro_export]
-macro_rules! vertex_index_label_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        $crate::check_unsupported!($setup, $name, SupportsVertexLabelIndex);
-    };
-}
-
-#[cfg(feature = "vertex-index")]
-#[macro_export]
-macro_rules! vertex_index_default_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        #[test]
-        fn $name() {
-            let mut g = $setup;
-            $path(&mut g);
-        }
-    };
-}
-#[cfg(not(feature = "vertex-index"))]
-#[macro_export]
-macro_rules! vertex_index_default_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        $crate::check_unsupported!($setup, $name, SupportsVertexIndex);
-    };
-}
-
-#[cfg(feature = "vertex-full-text-index")]
-#[macro_export]
-macro_rules! vertex_index_full_text_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        #[test]
-        fn $name() {
-            let mut g = $setup;
-            $path(&mut g);
-        }
-    };
-}
-#[cfg(not(feature = "vertex-full-text-index"))]
-#[macro_export]
-macro_rules! vertex_index_full_text_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        $crate::check_unsupported!($setup, $name, SupportsVertexFullTextIndex);
-    };
-}
-
-#[cfg(feature = "vertex-ordered-index")]
-#[macro_export]
-macro_rules! vertex_index_ordered_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        #[test]
-        fn $name() {
-            let mut g = $setup;
-            $path(&mut g);
-        }
-    };
-}
-
-#[cfg(not(feature = "vertex-ordered-index"))]
-#[macro_export]
-macro_rules! vertex_index_ordered_test {
-    ($setup:expr, $name:ident, $path:path) => {
-        $crate::check_unsupported!($setup, $name, SupportsVertexOrderedIndex);
     };
 }
 
 #[macro_export]
 macro_rules! test_suite {
     ($setup:expr) => {
-        $crate::general_test!{$setup, graph_test_add_vertex, $crate::graph::test_add_vertex}
-        $crate::general_test!{$setup, graph_test_mutate_vertex, $crate::graph::test_mutate_vertex}
-        $crate::general_test!{$setup, graph_test_remove_vertex, $crate::graph::test_remove_vertex}
-        $crate::general_test!{$setup, graph_test_add_edge, $crate::graph::test_add_edge}
-        $crate::general_test!{$setup, graph_test_mutate_edge, $crate::graph::test_mutate_edge}
-        $crate::general_test!{$setup, graph_test_remove_edge, $crate::graph::test_remove_edge}
-        $crate::general_test!{$setup, graph_test_remove_vertex_with_edges, $crate::graph::test_remove_vertex_with_edges}
-        $crate::general_test!{$setup, filter_test_vertices_filter, $crate::filter::test_vertices_filter}
-        $crate::general_test!{$setup, filter_test_edges_filter, $crate::filter::test_edges_filter}
-        $crate::general_test!{$setup, vertices_test_vertices_collect, $crate::collect::test_vertices_collect}
-        $crate::general_test!{$setup, vertices_test_edges_collect, $crate::collect::test_edges_collect}
-        $crate::general_test!{$setup, edges_test_out_edges, $crate::edges::test_out_edges}
-        $crate::general_test!{$setup, edges_test_out_edges_limit, $crate::edges::test_out_edges_limit}
-        $crate::general_test!{$setup, edges_test_in_edges, $crate::edges::test_in_edges}
-        $crate::general_test!{$setup, edges_test_in_edges_limit, $crate::edges::test_in_edges_limit}
-        $crate::general_test!{$setup, edges_test_all_edges, $crate::edges::test_all_edges}
-        $crate::general_test!{$setup, edges_test_all_edges_limit, $crate::edges::test_all_edges_limit}
-        $crate::general_test!{$setup, edges_test_out_edges_filtered, $crate::edges::test_out_edges_filtered}
-        $crate::general_test!{$setup, edges_test_out_edges_filtered_limit, $crate::edges::test_out_edges_filtered_limit}
-        $crate::general_test!{$setup, edges_test_in_edges_filtered, $crate::edges::test_in_edges_filtered}
-        $crate::general_test!{$setup, edges_test_in_edges_filtered_limit, $crate::edges::test_in_edges_filtered_limit}
-        $crate::general_test!{$setup, edges_test_all_edges_filtered, $crate::edges::test_all_edges_filtered}
-        $crate::general_test!{$setup, edges_test_all_edges_filtered_limit, $crate::edges::test_all_edges_filtered_limit}
-        $crate::general_test!{$setup, context_test_vertices_context, $crate::context::test_vertices_context}
-        $crate::general_test!{$setup, vertices_test_limit, $crate::vertices::test_limit}
-        $crate::general_test!{$setup, vertices_test_head, $crate::vertices::test_head}
-        $crate::general_test!{$setup, vertices_test_tail, $crate::vertices::test_tail}
-        $crate::general_test!{$setup, mutation_test_mutation, $crate::mutation::test_mutation}
-        $crate::general_test!{$setup, mutation_test_edge_mutation, $crate::mutation::test_edge_mutation}
-        $crate::general_test!{$setup, count_test_vertices_count, $crate::count::test_vertices_count}
-        $crate::general_test!{$setup, count_test_edges_count, $crate::count::test_edges_count}
-        $crate::general_test!{$setup, limit_test_vertices_limit, $crate::limit::test_vertices_limit}
-        $crate::general_test!{$setup, limit_test_edges_limit, $crate::limit::test_edges_limit}
-        $crate::general_test!{$setup, first_test_vertices_first, $crate::first::test_vertices_first}
-        $crate::general_test!{$setup, first_test_edges_first, $crate::first::test_edges_first}
-        $crate::general_test!{$setup, fold_test_vertices_fold, $crate::fold::test_vertices_fold}
-        $crate::general_test!{$setup, fold_test_edges_fold, $crate::fold::test_edges_fold}
-        $crate::general_test!{$setup, reduce_test_vertices_reduce, $crate::reduce::test_vertices_reduce}
-        $crate::general_test!{$setup, reduce_test_edges_reduce, $crate::reduce::test_edges_reduce}
-        $crate::general_test!{$setup, detour_test_vertices_detour, $crate::detour::test_vertices_detour}
-        $crate::general_test!{$setup, filter_derive_test_vertices_filter, $crate::filter_derive::test_vertices_filter}
-        $crate::general_test!{$setup, filter_derive_test_edges_filter, $crate::filter_derive::test_edges_filter}
-        $crate::general_test!{$setup, probe_test_vertices_probe, $crate::probe::test_vertices_probe}
-        $crate::general_test!{$setup, probe_test_edges_probe, $crate::probe::test_edges_probe}
-        $crate::edge_index_label_test!{$setup, index_edge_label_test_index, $crate::index::edge_label::test_index}
-        $crate::edge_index_label_test!{$setup, index_edge_label_test_index_limit, $crate::index::edge_label::test_index_limit}
-        $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index, $crate::index::vertex_label::test_index}
-        $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index_limit, $crate::index::vertex_label::test_index_limit}
-        $crate::vertex_index_default_test!{$setup, index_vertex_default_test_index, $crate::index::vertex_default::test_index}
-        $crate::vertex_index_default_test!{$setup, index_vertex_default_test_index_remove, $crate::index::vertex_default::test_index_remove}
-        $crate::vertex_index_default_test!{$setup, index_vertex_default_test_index_update, $crate::index::vertex_default::test_index_update}
-        $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index, $crate::index::vertex_full_text::test_index}
-        $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index_remove, $crate::index::vertex_full_text::test_index_remove}
-        $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index_update, $crate::index::vertex_full_text::test_index_update}
-        $crate::vertex_index_ordered_test!{$setup, index_vertex_ordered_test_index, $crate::index::vertex_ordered::test_index}
-        $crate::vertex_index_ordered_test!{$setup, index_vertex_ordered_test_index_remove, $crate::index::vertex_ordered::test_index_remove}
-        $crate::vertex_index_ordered_test!{$setup, index_vertex_ordered_test_index_update, $crate::index::vertex_ordered::test_index_update}
+        $crate::test!{$setup, graph_test_add_vertex, $crate::graph::test_add_vertex}
+        $crate::test!{$setup, graph_test_mutate_vertex, $crate::graph::test_mutate_vertex}
+        $crate::test!{$setup, graph_test_remove_vertex, $crate::graph::test_remove_vertex}
+        $crate::test!{$setup, graph_test_add_edge, $crate::graph::test_add_edge}
+        $crate::test!{$setup, graph_test_mutate_edge, $crate::graph::test_mutate_edge}
+        $crate::test!{$setup, graph_test_remove_edge, $crate::graph::test_remove_edge}
+        $crate::test!{$setup, graph_test_remove_vertex_with_edges, $crate::graph::test_remove_vertex_with_edges}
+        $crate::test!{$setup, filter_test_vertices_filter, $crate::filter::test_vertices_filter}
+        $crate::test!{$setup, filter_test_edges_filter, $crate::filter::test_edges_filter}
+        $crate::test!{$setup, vertices_test_vertices_collect, $crate::collect::test_vertices_collect}
+        $crate::test!{$setup, vertices_test_edges_collect, $crate::collect::test_edges_collect}
+        $crate::test!{$setup, edges_test_out_edges, $crate::edges::test_out_edges}
+        $crate::test!{$setup, edges_test_out_edges_limit, $crate::edges::test_out_edges_limit}
+        $crate::test!{$setup, edges_test_in_edges, $crate::edges::test_in_edges}
+        $crate::test!{$setup, edges_test_in_edges_limit, $crate::edges::test_in_edges_limit}
+        $crate::test!{$setup, edges_test_all_edges, $crate::edges::test_all_edges}
+        $crate::test!{$setup, edges_test_all_edges_limit, $crate::edges::test_all_edges_limit}
+        $crate::test!{$setup, edges_test_out_edges_filtered, $crate::edges::test_out_edges_filtered}
+        $crate::test!{$setup, edges_test_out_edges_filtered_limit, $crate::edges::test_out_edges_filtered_limit}
+        $crate::test!{$setup, edges_test_in_edges_filtered, $crate::edges::test_in_edges_filtered}
+        $crate::test!{$setup, edges_test_in_edges_filtered_limit, $crate::edges::test_in_edges_filtered_limit}
+        $crate::test!{$setup, edges_test_all_edges_filtered, $crate::edges::test_all_edges_filtered}
+        $crate::test!{$setup, edges_test_all_edges_filtered_limit, $crate::edges::test_all_edges_filtered_limit}
+        $crate::test!{$setup, context_test_vertices_context, $crate::context::test_vertices_context}
+        $crate::test!{$setup, vertices_test_limit, $crate::vertices::test_limit}
+        $crate::test!{$setup, vertices_test_head, $crate::vertices::test_head}
+        $crate::test!{$setup, vertices_test_tail, $crate::vertices::test_tail}
+        $crate::test!{$setup, mutation_test_mutation, $crate::mutation::test_mutation}
+        $crate::test!{$setup, mutation_test_edge_mutation, $crate::mutation::test_edge_mutation}
+        $crate::test!{$setup, count_test_vertices_count, $crate::count::test_vertices_count}
+        $crate::test!{$setup, count_test_edges_count, $crate::count::test_edges_count}
+        $crate::test!{$setup, limit_test_vertices_limit, $crate::limit::test_vertices_limit}
+        $crate::test!{$setup, limit_test_edges_limit, $crate::limit::test_edges_limit}
+        $crate::test!{$setup, first_test_vertices_first, $crate::first::test_vertices_first}
+        $crate::test!{$setup, first_test_edges_first, $crate::first::test_edges_first}
+        $crate::test!{$setup, fold_test_vertices_fold, $crate::fold::test_vertices_fold}
+        $crate::test!{$setup, fold_test_edges_fold, $crate::fold::test_edges_fold}
+        $crate::test!{$setup, reduce_test_vertices_reduce, $crate::reduce::test_vertices_reduce}
+        $crate::test!{$setup, reduce_test_edges_reduce, $crate::reduce::test_edges_reduce}
+        $crate::test!{$setup, detour_test_vertices_detour, $crate::detour::test_vertices_detour}
+        $crate::test!{$setup, filter_derive_test_vertices_filter, $crate::filter_derive::test_vertices_filter}
+        $crate::test!{$setup, filter_derive_test_edges_filter, $crate::filter_derive::test_edges_filter}
+        $crate::test!{$setup, probe_test_vertices_probe, $crate::probe::test_vertices_probe}
+        $crate::test!{$setup, probe_test_edges_probe, $crate::probe::test_edges_probe}
+
+        #[cfg(feature = "edge-label-index")]
+        $crate::test!{$setup, index_edge_label_test_index, $crate::index::edge_label::test_index}
+        #[cfg(feature = "edge-label-index")]
+        $crate::test!{$setup, index_edge_label_test_index_limit, $crate::index::edge_label::test_index_limit}
+
+        #[cfg(feature = "vertex-label-index")]
+        $crate::test!{$setup, index_vertex_label_test_index, $crate::index::vertex_label::test_index}
+        #[cfg(feature = "vertex-label-index")]
+        $crate::test!{$setup, index_vertex_label_test_index_limit, $crate::index::vertex_label::test_index_limit}
+
+        #[cfg(feature = "vertex-index")]
+        $crate::test!{$setup, index_vertex_default_test_index, $crate::index::vertex_default::test_index}
+        #[cfg(feature = "vertex-index")]
+        $crate::test!{$setup, index_vertex_default_test_index_remove, $crate::index::vertex_default::test_index_remove}
+        #[cfg(feature = "vertex-index")]
+        $crate::test!{$setup, index_vertex_default_test_index_update, $crate::index::vertex_default::test_index_update}
+
+        #[cfg(feature="vertex-full-text-index")]
+        $crate::test!{$setup, index_vertex_full_text_test_index, $crate::index::vertex_full_text::test_index}
+        #[cfg(feature="vertex-full-text-index")]
+        $crate::test!{$setup, index_vertex_full_text_test_index_remove, $crate::index::vertex_full_text::test_index_remove}
+        #[cfg(feature="vertex-full-text-index")]
+        $crate::test!{$setup, index_vertex_full_text_test_index_update, $crate::index::vertex_full_text::test_index_update}
+
+        #[cfg(feature = "vertex-ordered-index")]
+        $crate::test!{$setup, index_vertex_ordered_test_index, $crate::index::vertex_ordered::test_index}
+        #[cfg(feature = "vertex-ordered-index")]
+        $crate::test!{$setup, index_vertex_ordered_test_index_remove, $crate::index::vertex_ordered::test_index_remove}
+        #[cfg(feature = "vertex-ordered-index")]
+        $crate::test!{$setup, index_vertex_ordered_test_index_update, $crate::index::vertex_ordered::test_index_update}
 
         $crate::proptest! {
             #[test]
