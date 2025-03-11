@@ -1,6 +1,6 @@
-use crate::bench::generators::{generate_random_graph, generate_test_graph, GraphSize};
+use crate::bench::generators::{GraphSize, generate_random_graph, generate_test_graph};
 use crate::{Edge, PersonMut, Vertex};
-use criterion::{measurement::WallTime, BenchmarkGroup, Throughput};
+use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{EdgeSearch, Graph, VertexReferenceMut, VertexSearch};
 
 /// Run all mutation operation benchmarks

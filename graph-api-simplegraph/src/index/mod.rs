@@ -1,8 +1,8 @@
 use crate::VertexId;
 use graph_api_lib::{Index, Value};
 use paste::paste;
-use smallbox::space::S8;
 use smallbox::SmallBox;
+use smallbox::space::S8;
 use std::any::TypeId;
 use std::ops::Deref;
 use std::ops::Range;

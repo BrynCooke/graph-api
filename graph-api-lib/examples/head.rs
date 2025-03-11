@@ -1,6 +1,6 @@
 use graph_api_lib::{EdgeSearch, Graph, Supported};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{populate_graph, Edge, EdgeIndex, Vertex, VertexIndex};
+use graph_api_test::{Edge, EdgeIndex, Vertex, VertexIndex, populate_graph};
 
 fn main() {
     let mut graph = SimpleGraph::new();
@@ -12,11 +12,11 @@ fn main() {
 fn example<G>(graph: G, graph_api_id: G::VertexId)
 where
     G: Graph<
-        Vertex = Vertex,
-        Edge = Edge,
-        SupportsVertexLabelIndex = Supported,
-        SupportsEdgeLabelIndex = Supported,
-    >,
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexLabelIndex = Supported,
+            SupportsEdgeLabelIndex = Supported,
+        >,
 {
     // Find all people who created projects
     // The head() step returns the source vertices of edges

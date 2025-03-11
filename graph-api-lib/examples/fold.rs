@@ -2,11 +2,11 @@ use graph_api_lib::Graph;
 use graph_api_lib::VertexReference;
 use graph_api_lib::{EdgeReference, Supported};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::populate_graph;
 use graph_api_test::Edge;
 use graph_api_test::EdgeIndex;
 use graph_api_test::Vertex;
 use graph_api_test::VertexIndex;
+use graph_api_test::populate_graph;
 
 fn main() {
     // Create a new graph
@@ -48,11 +48,11 @@ where
 fn edge_example<G>(graph: &G)
 where
     G: Graph<
-        Vertex = Vertex,
-        Edge = Edge,
-        SupportsVertexLabelIndex = Supported,
-        SupportsEdgeLabelIndex = Supported,
-    >,
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexLabelIndex = Supported,
+            SupportsEdgeLabelIndex = Supported,
+        >,
 {
     // Working with edges - find the earliest relationship year
     let earliest_relation = graph

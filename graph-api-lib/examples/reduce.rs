@@ -4,8 +4,8 @@ use graph_api_lib::{Graph, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Vertex;
 use graph_api_test::VertexExt;
-use graph_api_test::{populate_graph, Person};
 use graph_api_test::{Edge, Knows};
+use graph_api_test::{Person, populate_graph};
 
 fn main() {
     // Create a new graph
@@ -49,11 +49,11 @@ where
 fn edge_example<G>(graph: &G)
 where
     G: Graph<
-        Vertex = Vertex,
-        Edge = Edge,
-        SupportsVertexLabelIndex = Supported,
-        SupportsEdgeLabelIndex = Supported,
-    >,
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexLabelIndex = Supported,
+            SupportsEdgeLabelIndex = Supported,
+        >,
 {
     // Find the edge with the highest "since" value between two edges
     let oldest_edge = graph

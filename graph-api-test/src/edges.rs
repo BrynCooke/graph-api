@@ -1,4 +1,4 @@
-use crate::{assert_elements_eq, assert_elements_one_of, populate_graph, Edge, EdgeLabel, Vertex};
+use crate::{Edge, EdgeLabel, Vertex, assert_elements_eq, assert_elements_one_of, populate_graph};
 use graph_api_lib::{EdgeSearch, Graph};
 
 pub fn test_out_edges<T>(graph: &mut T)

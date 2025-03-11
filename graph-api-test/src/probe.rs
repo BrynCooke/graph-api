@@ -1,4 +1,4 @@
-use crate::{populate_graph, Edge, Vertex};
+use crate::{Edge, Vertex, populate_graph};
 use graph_api_lib::{EdgeSearch, Graph, VertexSearch};
 
 pub fn test_vertices_probe<G>(graph: &mut G)

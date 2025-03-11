@@ -3,7 +3,7 @@ use graph_api_lib::Supported;
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
 use graph_api_test::Vertex;
-use graph_api_test::{populate_graph, EdgeIndex};
+use graph_api_test::{EdgeIndex, populate_graph};
 
 fn main() {
     // Create a new graph

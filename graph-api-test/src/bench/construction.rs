@@ -1,8 +1,8 @@
 use crate::bench::generators::{
-    generate_project_graph, generate_random_graph, generate_social_graph, GraphSize,
+    GraphSize, generate_project_graph, generate_random_graph, generate_social_graph,
 };
 use crate::{Edge, Vertex};
-use criterion::{measurement::WallTime, BenchmarkGroup, Throughput};
+use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::Graph;
 
 /// Run all construction benchmarks

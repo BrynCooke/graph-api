@@ -1,14 +1,14 @@
-use crate::{assert_elements_eq, populate_graph, Edge, PersonMut, Vertex, VertexIndex};
+use crate::{Edge, PersonMut, Vertex, VertexIndex, assert_elements_eq, populate_graph};
 use graph_api_lib::{Graph, Supported, VertexReferenceMut};
 
 pub fn test_index<T>(graph: &mut T)
 where
     T: Graph<
-        Vertex = Vertex,
-        Edge = Edge,
-        SupportsVertexOrderedIndex = Supported,
-        SupportsVertexIndex = Supported,
-    >,
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexOrderedIndex = Supported,
+            SupportsVertexIndex = Supported,
+        >,
 {
     let refs = populate_graph(graph);
     // Test range query for age between 20-40

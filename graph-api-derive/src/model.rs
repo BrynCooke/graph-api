@@ -2,7 +2,7 @@ use case::CaseExt;
 use quote::format_ident;
 use std::ops::Deref;
 use syn::spanned::Spanned;
-use syn::{parse_quote, Data, DeriveInput, Fields, Ident, Lifetime, Type, Visibility};
+use syn::{Data, DeriveInput, Fields, Ident, Lifetime, Type, Visibility, parse_quote};
 
 #[cfg_attr(test, derive(Debug))]
 pub(crate) struct Model {
@@ -198,7 +198,7 @@ impl TryFrom<DeriveType<'_>> for Model {
                 return Err(syn::Error::new(
                     value.span(),
                     "derive Vertex may only be used on an enum",
-                ))
+                ));
             }
         };
 
@@ -241,7 +241,7 @@ impl TryFrom<DeriveType<'_>> for Model {
                 return Err(syn::Error::new(
                     value.span(),
                     "derive Vertex may only be used on an enum",
-                ))
+                ));
             }
         };
         if !errors.is_empty() {

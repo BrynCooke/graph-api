@@ -1,4 +1,4 @@
-use crate::{assert_elements_eq, populate_graph, Edge, Vertex};
+use crate::{Edge, Vertex, assert_elements_eq, populate_graph};
 use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexReference};
 
 pub fn test_vertices_filter<T>(graph: &mut T)

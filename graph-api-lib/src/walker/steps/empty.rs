@@ -1,6 +1,6 @@
+use crate::ElementId;
 use crate::graph::Graph;
 use crate::walker::{VertexWalker, Walker};
-use crate::ElementId;
 use std::marker::PhantomData;
 
 /// # Empty Walker

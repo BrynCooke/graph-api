@@ -1,6 +1,6 @@
 use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexReference, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{populate_graph, Edge, Vertex};
+use graph_api_test::{Edge, Vertex, populate_graph};
 
 fn main() {
     let mut graph = SimpleGraph::new();

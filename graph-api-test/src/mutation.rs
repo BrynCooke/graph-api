@@ -1,4 +1,4 @@
-use crate::{assert_elements_eq, populate_graph, Edge, EdgeExt, Vertex};
+use crate::{Edge, EdgeExt, Vertex, assert_elements_eq, populate_graph};
 use graph_api_lib::{EdgeReference, EdgeSearch, Graph};
 
 pub fn test_mutation<T>(graph: &mut T)

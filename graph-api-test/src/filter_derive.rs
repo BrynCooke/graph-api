@@ -1,4 +1,4 @@
-use crate::{assert_elements_eq, populate_graph, Edge, Vertex};
+use crate::{Edge, Vertex, assert_elements_eq, populate_graph};
 use crate::{EdgeExt, VertexExt};
 use graph_api_lib::{EdgeSearch, Graph};
 

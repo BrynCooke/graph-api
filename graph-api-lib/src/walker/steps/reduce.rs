@@ -1,9 +1,9 @@
+use crate::ElementId;
 use crate::graph::{
     EdgeReference as GraphEdgeReference, Graph, VertexReference as GraphVertexReference,
 };
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
-use crate::ElementId;
 use include_doc::function_body;
 use std::marker::PhantomData;
 

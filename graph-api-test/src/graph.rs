@@ -1,4 +1,4 @@
-use crate::{populate_graph, Edge, Knows, KnowsMut, Person, PersonMut, Vertex};
+use crate::{Edge, Knows, KnowsMut, Person, PersonMut, Vertex, populate_graph};
 use graph_api_lib::{EdgeReference, EdgeReferenceMut, VertexReference, VertexReferenceMut};
 use uuid::Uuid;
 

@@ -1,10 +1,10 @@
 use graph_api_lib::{Graph, Supported};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::populate_graph;
 use graph_api_test::Edge;
 use graph_api_test::Project;
 use graph_api_test::Vertex;
 use graph_api_test::VertexIndex;
+use graph_api_test::populate_graph;
 
 fn main() {
     // Create a mutable graph for testing

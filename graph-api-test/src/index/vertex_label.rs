@@ -1,4 +1,4 @@
-use crate::{assert_elements_eq, populate_graph, Edge, Vertex, VertexIndex};
+use crate::{Edge, Vertex, VertexIndex, assert_elements_eq, populate_graph};
 use graph_api_lib::{Graph, Supported};
 
 pub fn test_index<T>(graph: &mut T)

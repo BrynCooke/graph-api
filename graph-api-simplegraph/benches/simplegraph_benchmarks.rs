@@ -1,4 +1,4 @@
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::bench_suite;
 

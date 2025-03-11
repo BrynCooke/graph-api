@@ -1,6 +1,6 @@
-use crate::bench::generators::{generate_random_graph, generate_test_graph, GraphSize};
+use crate::bench::generators::{GraphSize, generate_random_graph, generate_test_graph};
 use crate::{Edge, EdgeIndex, Vertex, VertexIndex};
-use criterion::{measurement::WallTime, BenchmarkGroup, Throughput};
+use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{Graph, Supported, VertexSearch};
 
 /// Run all index operation benchmarks

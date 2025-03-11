@@ -2,17 +2,17 @@ mod debug;
 mod iter;
 mod label;
 
+use crate::EdgeId;
 use crate::graph::iter::RangeOrNoneIterator;
 use crate::graph::label::{Adjacency, LabelledEdges, LabelledVertices, VertexStorage};
 use crate::id::VertexId;
 use crate::index::VertexIndexStorage;
-use crate::EdgeId;
 use graph_api_lib::{
     Direction, EdgeSearch, Element, ElementId, Graph, Index, Label, Project, ProjectMut, Supported,
     Value, VertexSearch,
 };
 use smallbox::space::S8;
-use smallbox::{smallbox, SmallBox};
+use smallbox::{SmallBox, smallbox};
 use std::fmt::{Debug, Formatter};
 use std::marker::PhantomData;
 
@@ -135,10 +135,10 @@ where
     fn project_mut<
         'reference,
         T: graph_api_lib::ProjectMut<
-            'reference,
-            <Graph as graph_api_lib::Graph>::Vertex,
-            Self::MutationListener<'reference>,
-        >,
+                'reference,
+                <Graph as graph_api_lib::Graph>::Vertex,
+                Self::MutationListener<'reference>,
+            >,
     >(
         &'reference mut self,
     ) -> Option<T> {
@@ -276,10 +276,10 @@ where
     fn project_mut<
         'reference,
         T: ProjectMut<
-            'reference,
-            <Graph as graph_api_lib::Graph>::Edge,
-            Self::MutationListener<'reference>,
-        >,
+                'reference,
+                <Graph as graph_api_lib::Graph>::Edge,
+                Self::MutationListener<'reference>,
+            >,
     >(
         &'reference mut self,
     ) -> Option<T> {
@@ -586,20 +586,23 @@ where
         let iter: SmallBox<dyn Iterator<Item = VertexId> + '_, S8> = match search {
             VertexSearch::Scan { .. } => {
                 // Start iterating through the first group; the iterator will handle the rest
-                smallbox!(self
-                    .vertices
-                    .iter()
-                    .enumerate()
-                    .flat_map(|(ordinal, label)| label
+                smallbox!(
+                    self.vertices
                         .iter()
-                        .map(move |idx| VertexId::new(ordinal as u16, idx))))
+                        .enumerate()
+                        .flat_map(|(ordinal, label)| label
+                            .iter()
+                            .map(move |idx| VertexId::new(ordinal as u16, idx)))
+                )
             }
             VertexSearch::Label { label, .. } => {
                 // Only iterate over vertices for the specified label
                 let label_ordinal = label.ordinal() as u16;
-                smallbox!(self.vertices[label.ordinal()]
-                    .iter()
-                    .map(move |idx| VertexId::new(label_ordinal, idx)))
+                smallbox!(
+                    self.vertices[label.ordinal()]
+                        .iter()
+                        .map(move |idx| VertexId::new(label_ordinal, idx))
+                )
             }
             VertexSearch::Index { index, value, .. } => {
                 let index_storage = &self.indexes[index.ordinal()];

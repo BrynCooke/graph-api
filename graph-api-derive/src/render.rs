@@ -1,7 +1,7 @@
-use crate::model::{ref_type, EnumVariants, Field, Model, Variant, VariantType};
+use crate::model::{EnumVariants, Field, Model, Variant, VariantType, ref_type};
 use case::CaseExt;
 use proc_macro2::TokenStream;
-use quote::{format_ident, quote, ToTokens};
+use quote::{ToTokens, format_ident, quote};
 use syn::Lifetime;
 
 impl Model {

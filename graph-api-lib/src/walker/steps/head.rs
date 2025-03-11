@@ -1,6 +1,6 @@
+use crate::walker::EdgeWalker;
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::steps::Endpoints;
-use crate::walker::EdgeWalker;
 use include_doc::function_body;
 
 impl<'graph, Mutability, Graph, Walker> EdgeWalkerBuilder<'graph, Mutability, Graph, Walker>

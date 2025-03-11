@@ -2,11 +2,11 @@ use crate::graph::{EdgeReferenceMut, Unsupported, VertexReference, VertexReferen
 use crate::search::vertex::VertexSearch;
 use crate::{Direction, EdgeReference, Element, ElementId, Graph, Project, ProjectMut};
 use crate::{EdgeSearch, Supported};
+use petgraph::EdgeType;
 use petgraph::stable_graph::StableGraph;
 use petgraph::stable_graph::{EdgeIndex, Edges, IndexType};
 use petgraph::stable_graph::{NodeIndex, NodeIndices};
 use petgraph::visit::EdgeRef;
-use petgraph::EdgeType;
 /// Implement Graph for `petgraph::StableGraph`.
 /// Ideally implementations for specific graphs are not included, petgraph is the most popular graph in Rust..
 /// If ever petgraph decided to implement graph-api directly then this could be removed as a private implementation detail of the graph-api-tests crate.

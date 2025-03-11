@@ -1,6 +1,6 @@
+use crate::ElementId;
 use crate::graph::{EdgeReference, Graph};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
-use crate::ElementId;
 use std::marker::PhantomData;
 
 /// # Endpoint Type

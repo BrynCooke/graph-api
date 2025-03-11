@@ -1,6 +1,6 @@
 use graph_api_lib::{Graph, Supported, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{populate_graph, Vertex, VertexIndex};
+use graph_api_test::{Vertex, VertexIndex, populate_graph};
 
 fn main() {
     let mut graph = SimpleGraph::new();

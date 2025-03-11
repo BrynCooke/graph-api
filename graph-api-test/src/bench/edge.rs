@@ -1,6 +1,6 @@
 use crate::bench::generators::generate_test_graph;
 use crate::{Edge, Knows, Vertex};
-use criterion::{measurement::WallTime, BenchmarkGroup, Throughput};
+use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{EdgeReference, Graph};
 
 /// Run all edge operation benchmarks

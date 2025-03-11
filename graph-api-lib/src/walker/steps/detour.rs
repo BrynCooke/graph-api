@@ -1,7 +1,7 @@
+use crate::ElementId;
 use crate::graph::Graph;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder, WalkerBuilder};
 use crate::walker::{VertexWalker, Walker};
-use crate::ElementId;
 use include_doc::function_body;
 use std::cell::Cell;
 use std::marker::PhantomData;

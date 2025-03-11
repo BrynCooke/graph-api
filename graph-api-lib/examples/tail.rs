@@ -1,6 +1,6 @@
 use graph_api_lib::Graph;
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{populate_graph, Edge, EdgeIndex, Vertex};
+use graph_api_test::{Edge, EdgeIndex, Vertex, populate_graph};
 
 type MyGraph = SimpleGraph<Vertex, Edge>;
 type MyGraphVertexId = <SimpleGraph<Vertex, Edge> as Graph>::VertexId;

@@ -1,6 +1,6 @@
 use crate::element::Element;
 use crate::walker::builder::{ImmutableMarker, MutableMarker, StartWalkerBuilder};
-use crate::{walker, EdgeSearch, Value};
+use crate::{EdgeSearch, Value, walker};
 use crate::{Label, VertexSearch};
 use derivative::Derivative;
 use std::fmt::Debug;

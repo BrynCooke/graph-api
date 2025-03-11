@@ -1,6 +1,6 @@
 use crate::{
-    assert_elements_eq, assert_elements_one_of, populate_graph, Edge, EdgeExt, Knows, Person,
-    Vertex, VertexExt,
+    Edge, EdgeExt, Knows, Person, Vertex, VertexExt, assert_elements_eq, assert_elements_one_of,
+    populate_graph,
 };
 use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexReference, VertexSearch};
 

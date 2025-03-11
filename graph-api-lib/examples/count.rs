@@ -1,7 +1,7 @@
 use graph_api_lib::Supported;
 use graph_api_lib::{EdgeSearch, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{populate_graph, Edge, EdgeIndex, Vertex, VertexExt, VertexIndex};
+use graph_api_test::{Edge, EdgeIndex, Vertex, VertexExt, VertexIndex, populate_graph};
 
 fn main() {
     let mut graph = SimpleGraph::new();
@@ -13,12 +13,12 @@ fn main() {
 fn example<Graph>(graph: Graph)
 where
     Graph: graph_api_lib::Graph<
-        Vertex = Vertex,
-        Edge = Edge,
-        SupportsVertexIndex = Supported,
-        SupportsVertexLabelIndex = Supported,
-        SupportsEdgeLabelIndex = Supported,
-    >,
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexIndex = Supported,
+            SupportsVertexLabelIndex = Supported,
+            SupportsEdgeLabelIndex = Supported,
+        >,
 {
     // Count all vertices in the graph
     let vertex_count = graph.walk().vertices(VertexSearch::scan()).count();

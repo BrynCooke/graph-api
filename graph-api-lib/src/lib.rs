@@ -31,12 +31,12 @@ pub use search::edge::EdgeSearch;
 pub use search::vertex::VertexSearch;
 pub use value::Value;
 pub use value::ValueRange;
-pub use walker::builder::EdgeWalkerBuilder;
-pub use walker::builder::VertexWalkerBuilder;
-pub use walker::builder::WalkerBuilder;
 pub use walker::EdgeWalker;
 pub use walker::VertexWalker;
 pub use walker::Walker;
+pub use walker::builder::EdgeWalkerBuilder;
+pub use walker::builder::VertexWalkerBuilder;
+pub use walker::builder::WalkerBuilder;
 
 #[cfg(feature = "petgraph")]
 pub mod petgraph;

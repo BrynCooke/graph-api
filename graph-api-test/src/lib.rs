@@ -144,10 +144,10 @@ macro_rules! check_unsupported {
             fn check_unsupported<Graph>(graph: Graph)
             where
                 Graph: graph_api_lib::Graph<
-                    Vertex = $crate::Vertex,
-                    Edge = $crate::Edge,
-                    $feature = graph_api_lib::Unsupported,
-                >,
+                        Vertex = $crate::Vertex,
+                        Edge = $crate::Edge,
+                        $feature = graph_api_lib::Unsupported,
+                    >,
             {
             }
             check_unsupported($setup);

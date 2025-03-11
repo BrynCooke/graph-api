@@ -1,4 +1,4 @@
-use crate::{assert_elements_eq, populate_graph, Edge, PersonMut, Vertex, VertexIndex};
+use crate::{Edge, PersonMut, Vertex, VertexIndex, assert_elements_eq, populate_graph};
 use graph_api_lib::{Graph, Supported, VertexReferenceMut};
 
 /// Tests that a vertex can be added to the graph and that the indexed field

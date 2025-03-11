@@ -1,6 +1,6 @@
-use crate::bench::generators::{generate_random_graph, GraphSize};
+use crate::bench::generators::{GraphSize, generate_random_graph};
 use crate::{Edge, Vertex};
-use criterion::{measurement::WallTime, BenchmarkGroup, Throughput};
+use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{EdgeSearch, Graph, VertexSearch};
 
 /// Run all scaling benchmarks

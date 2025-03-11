@@ -1,4 +1,4 @@
-use crate::{populate_graph, Edge, Refs, Vertex};
+use crate::{Edge, Refs, Vertex, populate_graph};
 use graph_api_lib::Graph;
 use rand::rngs::StdRng;
 use rand::seq::SliceRandom;
