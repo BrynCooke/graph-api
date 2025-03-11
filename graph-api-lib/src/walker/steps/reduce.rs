@@ -190,7 +190,7 @@ where
                 let edge_reference = graph.edge(next).expect("edge must exist");
                 if let Some(acc_edge) = &mut acc_edge {
                     let result = (self.reducer)(
-                        &acc_edge,
+                        acc_edge,
                         self.context
                             .as_mut()
                             .expect("context must have been initialized"),
