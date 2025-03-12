@@ -96,7 +96,7 @@ where
             |vertex, _| vertex.project::<Person<_>>().unwrap().age(),
             |acc, ctx, vertex, _vertex_ctx| {
                 let vertex_age = vertex.project::<Person<_>>().unwrap().age();
-                
+
                 // Break on first person with age > 30
                 if vertex_age > 30 {
                     *ctx = vertex_age;
@@ -112,11 +112,7 @@ where
         .expect("should have got an element");
 
     // Either person could be returned depending on iteration order
-    assert_elements_one_of!(
-        graph,
-        vec![person],
-        vec![refs.bryn, refs.julia]
-    );
+    assert_elements_one_of!(graph, vec![person], vec![refs.bryn, refs.julia]);
     assert!(age > 30);
 }
 
@@ -126,7 +122,7 @@ where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
     let refs = populate_graph(graph);
-    
+
     // Break when we find any Knows edge
     let (edge_id, since) = graph
         .walk()

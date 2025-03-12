@@ -3,8 +3,8 @@ use graph_api_lib::{EdgeSearch, Supported};
 use graph_api_lib::{Graph, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Vertex;
-use graph_api_test::{EdgeExt, VertexExt};
 use graph_api_test::{Edge, Knows};
+use graph_api_test::{EdgeExt, VertexExt};
 use graph_api_test::{Person, populate_graph};
 use std::ops::ControlFlow;
 
