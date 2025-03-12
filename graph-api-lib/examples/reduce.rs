@@ -3,9 +3,10 @@ use graph_api_lib::{EdgeSearch, Supported};
 use graph_api_lib::{Graph, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Vertex;
-use graph_api_test::VertexExt;
+use graph_api_test::{EdgeExt, VertexExt};
 use graph_api_test::{Edge, Knows};
 use graph_api_test::{Person, populate_graph};
+use std::ops::ControlFlow;
 
 fn main() {
     // Create a new graph
@@ -15,6 +16,7 @@ fn main() {
 
     vertex_example(&graph);
     edge_example(&graph);
+    vertex_early_break_example(&graph);
 }
 
 fn vertex_example<G>(graph: &G)
@@ -33,9 +35,9 @@ where
                 let vertex_age = vertex.project::<Person<_>>().unwrap().age();
                 if vertex_age > acc_age {
                     *ctx = vertex_age;
-                    vertex
+                    ControlFlow::Continue(vertex)
                 } else {
-                    acc
+                    ControlFlow::Continue(acc)
                 }
             },
         )
@@ -61,6 +63,7 @@ where
         .vertices(VertexSearch::scan())
         .filter_person()
         .edges(EdgeSearch::scan())
+        .filter_knows()
         .reduce(
             |edge, _| edge.project::<Knows<_>>().unwrap().since(),
             |acc, ctx, edge, _edge_ctx| {
@@ -68,9 +71,9 @@ where
                 let edge_since = edge.project::<Knows<_>>().unwrap().since();
                 if edge_since > acc_since {
                     *ctx = edge_since;
-                    edge
+                    ControlFlow::Continue(edge)
                 } else {
-                    acc
+                    ControlFlow::Continue(acc)
                 }
             },
         )
@@ -85,4 +88,34 @@ where
         .expect("should have got a result");
 
     println!("{}", oldest_edge);
+}
+
+fn vertex_early_break_example<G>(graph: &G)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexLabelIndex = Supported>,
+{
+    // Find the first person over age 30, then break out of the reduction
+    let over_30 = graph
+        .walk()
+        .vertices(VertexSearch::scan())
+        .filter_person()
+        .reduce(
+            |vertex, _| vertex.project::<Person<_>>().unwrap().age(),
+            |acc, ctx, vertex, _vertex_ctx| {
+                let vertex_age = vertex.project::<Person<_>>().unwrap().age();
+                // As soon as we find someone over 30, break and return them
+                if vertex_age > 30 {
+                    *ctx = vertex_age;
+                    ControlFlow::Break(vertex)
+                } else {
+                    *ctx = vertex_age;
+                    ControlFlow::Continue(acc)
+                }
+            },
+        )
+        .map(|vertex, ctx| format!("Found person over 30: {:?}, age {}", vertex.id(), ctx))
+        .next()
+        .expect("should have got a result");
+
+    println!("{}", over_30);
 }

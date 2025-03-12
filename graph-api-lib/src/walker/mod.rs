@@ -7,6 +7,7 @@ use crate::walker::steps::{
     VertexIter, VertexLimit, Vertices, Waypoint,
 };
 use crate::{EdgeSearch, ElementId};
+use std::ops::ControlFlow;
 use steps::reduce::EdgeReduce;
 
 pub mod builder;
@@ -128,7 +129,10 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
             &mut Context,
             &'a <Self::Graph as Graph>::VertexReference<'graph>,
             &Self::Context,
-        ) -> &'a <Self::Graph as Graph>::VertexReference<'graph>,
+        ) -> ControlFlow<
+            &'a <Self::Graph as Graph>::VertexReference<'graph>,
+            &'a <Self::Graph as Graph>::VertexReference<'graph>,
+        >,
         Context: Clone + 'static,
         <Self as Walker<'graph>>::Graph: 'graph,
     {
@@ -189,7 +193,10 @@ pub trait EdgeWalker<'graph>: Walker<'graph> {
             &mut Context,
             &'a <Self::Graph as Graph>::EdgeReference<'graph>,
             &Self::Context,
-        ) -> &'a <Self::Graph as Graph>::EdgeReference<'graph>,
+        ) -> ControlFlow<
+            &'a <Self::Graph as Graph>::EdgeReference<'graph>,
+            &'a <Self::Graph as Graph>::EdgeReference<'graph>,
+        >,
         Context: Clone + 'static,
         <Self as Walker<'graph>>::Graph: 'graph,
     {
