@@ -1,4 +1,4 @@
-use crate::bench::generators::{GraphSize, generate_random_graph, generate_test_graph};
+use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
 use crate::{Edge, Vertex};
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{EdgeSearch, Graph, VertexSearch};

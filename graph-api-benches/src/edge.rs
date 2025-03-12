@@ -1,7 +1,8 @@
-use crate::bench::generators::generate_test_graph;
-use crate::{Edge, Knows, Vertex};
+use crate::generators::generate_test_graph;
+
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{EdgeReference, Graph};
+use graph_api_test::{Edge, Knows, Vertex};
 
 /// Run all edge operation benchmarks
 pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(

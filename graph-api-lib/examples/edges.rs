@@ -21,7 +21,7 @@ where
         .collect::<Vec<_>>();
 
     // Bryn should have edges
-    assert!(bryn_edges.len() > 0);
+    assert!(!bryn_edges.is_empty());
 
     // Get outgoing edges from bryn
     let bryn_outgoing_edges = graph
@@ -31,7 +31,7 @@ where
         .collect::<Vec<_>>();
 
     // Bryn should have outgoing edges
-    assert!(bryn_outgoing_edges.len() > 0);
+    assert!(!bryn_outgoing_edges.is_empty());
 
     // Get only 'Created' edges
     let bryn_created_edges = graph
@@ -41,7 +41,7 @@ where
         .collect::<Vec<_>>();
 
     // Bryn should have at least one `Created` edge
-    assert!(bryn_created_edges.len() > 0);
+    assert!(!bryn_created_edges.is_empty());
 
     // Get outgoing 'Created' edges
     let bryn_outgoing_created_edges = graph
@@ -51,7 +51,7 @@ where
         .collect::<Vec<_>>();
 
     // Bryn should have outgoing created edges
-    assert!(bryn_outgoing_created_edges.len() > 0);
+    assert!(!bryn_outgoing_created_edges.is_empty());
 
     // You can also use indexed edges when available
     let indexed_created_edges = graph
@@ -60,5 +60,5 @@ where
         .edges(EdgeIndex::created())
         .collect::<Vec<_>>();
 
-    assert!(indexed_created_edges.len() > 0);
+    assert!(!indexed_created_edges.is_empty());
 }

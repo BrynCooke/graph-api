@@ -5,6 +5,9 @@ edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+bench = false
+
 [dependencies]
 graph-api-lib = { path = "../graph-api-lib" }
 paste = "1.0.15"
@@ -14,7 +17,8 @@ smallbox = "0.8.6"
 uuid = { version = "1.11.0", features = ["v4"] }
 
 [dev-dependencies]
-graph-api-test = { path = "../graph-api-test", features = ["vertex-index", "vertex-label-index", "vertex-full-text-index", "vertex-ordered-index", "edge-label-index", "benchmark"] }
+graph-api-test = { path = "../graph-api-test", features = ["vertex-index", "vertex-label-index", "vertex-full-text-index", "vertex-ordered-index", "edge-label-index"] }
+graph-api-benches = { path = "../graph-api-benches", features = ["vertex-index", "vertex-label-index", "vertex-full-text-index", "vertex-ordered-index", "edge-label-index"] }
 graph-api-derive = { path = "../graph-api-derive" }
 criterion = { version = "0.5", features = ["html_reports"] }
 rand = "0.8"

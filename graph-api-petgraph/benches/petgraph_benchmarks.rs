@@ -1,5 +1,5 @@
 use criterion::{Criterion, criterion_group, criterion_main};
-use graph_api_test::bench_suite;
+use graph_api_benches::bench_suite;
 use petgraph::stable_graph::StableGraph;
 
 fn criterion_benchmark(c: &mut Criterion) {

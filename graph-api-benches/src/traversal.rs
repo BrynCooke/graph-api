@@ -1,7 +1,8 @@
-use crate::bench::generators::{GraphSize, generate_social_graph, generate_test_graph};
-use crate::{Edge, EdgeExt, Person, Vertex, VertexExt};
+use crate::generators::{GraphSize, generate_social_graph, generate_test_graph};
+
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{EdgeSearch, Graph, VertexReference};
+use graph_api_test::{Edge, EdgeExt, Person, Vertex, VertexExt};
 
 /// Run all traversal operation benchmarks
 pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(

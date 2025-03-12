@@ -1,7 +1,7 @@
-use crate::bench::generators::{GraphSize, generate_random_graph, generate_test_graph};
-use crate::{Edge, Person, PersonMut, Vertex};
+use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{Graph, VertexReference, VertexReferenceMut};
+use graph_api_test::{Edge, Person, PersonMut, Vertex};
 use uuid::Uuid;
 
 /// Run all vertex operation benchmarks
@@ -24,7 +24,7 @@ fn bench_vertex_add<G: Graph<Vertex = Vertex, Edge = Edge>>(
     group.throughput(Throughput::Elements(1));
     group.bench_function("vertex_add", |b| {
         b.iter_batched(
-            || setup(),
+            &setup,
             |mut graph| {
                 graph.add_vertex(Vertex::Person {
                     name: "Benchmark Person".to_string(),

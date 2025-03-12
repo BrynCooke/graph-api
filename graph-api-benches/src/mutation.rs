@@ -1,7 +1,8 @@
-use crate::bench::generators::{GraphSize, generate_random_graph, generate_test_graph};
-use crate::{Edge, PersonMut, Vertex};
+use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
+
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{EdgeSearch, Graph, VertexReferenceMut, VertexSearch};
+use graph_api_test::{Edge, PersonMut, Vertex, VertexExt};
 
 /// Run all mutation operation benchmarks
 pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
@@ -32,6 +33,7 @@ fn bench_mutation_vertex_update<G: Graph<Vertex = Vertex, Edge = Edge>>(
                 graph
                     .walk_mut()
                     .vertices(VertexSearch::scan())
+                    .filter_person()
                     .limit(10)
                     .mutate(|graph, vertex_id, _context| {
                         let mut vertex = graph.vertex_mut(vertex_id).expect("vertex");

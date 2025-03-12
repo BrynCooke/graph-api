@@ -15,5 +15,8 @@ lint:
     cargo fmt --check
     cargo clippy -- --deny warnings
 
-bench:
-    cargo bench
+bench-simplegraph:
+    cargo bench -p graph-api-simplegraph -- --save-baseline simplegraph
+
+bench-petgraph:
+    cargo bench -p graph-api-petgraph -- --save-baseline petgraph

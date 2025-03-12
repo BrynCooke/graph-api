@@ -7,7 +7,6 @@ use graph_api_lib::{Graph, Supported, VertexReferenceMut};
 /// This function creates a vertex, adds it to the graph, and then verifies
 /// that a search for the indexed field of the added vertex returns the
 /// expected result.
-
 pub fn test_index<T>(graph: &mut T)
 where
     T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexIndex = Supported>,

@@ -3,6 +3,7 @@ members = [
     "graph-api-lib",
     "graph-api-derive",
     "graph-api-test",
+    "graph-api-benches",
     "graph-api-petgraph",
     "graph-api-simplegraph",
     "graph-api-book",

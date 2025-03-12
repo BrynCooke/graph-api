@@ -1,22 +1,27 @@
-use crate::bench::generators::{GraphSize, generate_random_graph, generate_test_graph};
-use crate::{Edge, EdgeIndex, Vertex, VertexIndex};
+use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
 use crate::{
     SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexIndex,
     SupportsVertexLabelIndex, SupportsVertexOrderedIndex,
 };
+
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{Graph, Supported, VertexSearch};
+use graph_api_test::{Edge, EdgeIndex, Vertex, VertexIndex};
 
 /// Run all index operation benchmarks
-pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
-    group: &mut BenchmarkGroup<WallTime>,
-    setup: impl Fn() -> G + Clone,
+pub fn run_benchmarks<G>(
+    #[allow(unused_variables)] group: &mut BenchmarkGroup<WallTime>,
+    #[allow(unused_variables)] setup: impl Fn() -> G + Clone,
 ) where
-    G: Graph<SupportsVertexLabelIndex = SupportsVertexLabelIndex>,
-    G: Graph<SupportsVertexIndex = SupportsVertexIndex>,
-    G: Graph<SupportsVertexFullTextIndex = SupportsVertexFullTextIndex>,
-    G: Graph<SupportsVertexOrderedIndex = SupportsVertexOrderedIndex>,
-    G: Graph<SupportsEdgeLabelIndex = SupportsEdgeLabelIndex>,
+    G: Graph<
+            Vertex = Vertex,
+            Edge = Edge,
+            SupportsVertexLabelIndex = SupportsVertexLabelIndex,
+            SupportsVertexIndex = SupportsVertexIndex,
+            SupportsVertexFullTextIndex = SupportsVertexFullTextIndex,
+            SupportsVertexOrderedIndex = SupportsVertexOrderedIndex,
+            SupportsEdgeLabelIndex = SupportsEdgeLabelIndex,
+        >,
 {
     #[cfg(feature = "vertex-label-index")]
     bench_index_vertex_label(group, setup.clone());
@@ -31,6 +36,7 @@ pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
 }
 
 /// Benchmark vertex label index lookup
+#[allow(dead_code)]
 fn bench_index_vertex_label<
     G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexLabelIndex = Supported>,
 >(
@@ -54,6 +60,7 @@ fn bench_index_vertex_label<
 }
 
 /// Benchmark vertex property index lookup
+#[allow(dead_code)]
 fn bench_index_vertex_property<
     G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexIndex = Supported>,
 >(
@@ -76,6 +83,7 @@ fn bench_index_vertex_property<
 }
 
 /// Benchmark vertex full-text index lookup
+#[allow(dead_code)]
 fn bench_index_vertex_fulltext<
     G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexFullTextIndex = Supported>,
 >(
@@ -98,6 +106,7 @@ fn bench_index_vertex_fulltext<
 }
 
 /// Benchmark vertex ordered index range queries
+#[allow(dead_code)]
 fn bench_index_vertex_ordered_range<
     G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexOrderedIndex = Supported>,
 >(
@@ -120,6 +129,7 @@ fn bench_index_vertex_ordered_range<
 }
 
 /// Benchmark edge label index lookup
+#[allow(dead_code)]
 fn bench_index_edge_label<
     G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
 >(

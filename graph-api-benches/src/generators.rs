@@ -1,5 +1,5 @@
-use crate::{Edge, Refs, Vertex, populate_graph};
 use graph_api_lib::Graph;
+use graph_api_test::{Edge, Language, Project, Refs, Vertex, populate_graph};
 use rand::rngs::StdRng;
 use rand::seq::SliceRandom;
 use rand::{Rng, SeedableRng};
@@ -58,7 +58,7 @@ where
                 username: format!("user_{}", i),
                 biography: format!("Bio for person {}: {}", i, random_biography(&mut rng)),
             },
-            1 => Vertex::Project(crate::Project {
+            1 => Vertex::Project(Project {
                 name: format!("Project-{}", i),
             }),
             _ => Vertex::Rust,
@@ -87,7 +87,7 @@ where
                 since: rng.gen_range(1980..2023),
             },
             1 => Edge::Created,
-            _ => Edge::Language(crate::Language {
+            _ => Edge::Language(Language {
                 name: match rng.gen_range(0..4) {
                     0 => "Rust".to_string(),
                     1 => "Java".to_string(),
@@ -176,7 +176,7 @@ where
     // Generate project vertices
     let mut project_ids = Vec::with_capacity(project_count);
     for i in 0..project_count {
-        let vertex = Vertex::Project(crate::Project {
+        let vertex = Vertex::Project(Project {
             name: format!("Project-{}", i),
         });
         project_ids.push(graph.add_vertex(vertex));
@@ -255,7 +255,7 @@ where
             graph.add_edge(
                 project_id,
                 lang_id,
-                Edge::Language(crate::Language {
+                Edge::Language(Language {
                     name: "Rust".to_string(),
                 }),
             );

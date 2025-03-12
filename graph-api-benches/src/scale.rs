@@ -1,4 +1,4 @@
-use crate::bench::generators::{GraphSize, generate_random_graph};
+use crate::generators::{GraphSize, generate_random_graph};
 use crate::{Edge, Vertex};
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{EdgeSearch, Graph, VertexSearch};
@@ -27,7 +27,7 @@ fn bench_scale_vertex_count<G: Graph<Vertex = Vertex, Edge = Edge>>(
         let vertex_count = size.vertex_count();
 
         group.throughput(Throughput::Elements(vertex_count as u64));
-        group.bench_function(&format!("scale_vertex_count_{}", vertex_count), |b| {
+        group.bench_function(format!("scale_vertex_count_{}", vertex_count), |b| {
             // Setup: Create graph with given size
             let mut graph = setup();
             generate_random_graph(&mut graph, *size, 42);
@@ -50,7 +50,7 @@ fn bench_scale_edge_traversal<G: Graph<Vertex = Vertex, Edge = Edge>>(
         let vertex_count = size.vertex_count();
 
         group.throughput(Throughput::Elements(vertex_count as u64));
-        group.bench_function(&format!("scale_edge_traversal_{}", vertex_count), |b| {
+        group.bench_function(format!("scale_edge_traversal_{}", vertex_count), |b| {
             // Setup: Create graph with given size
             let mut graph = setup();
             let vertex_ids = generate_random_graph(&mut graph, *size, 42);
