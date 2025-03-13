@@ -1,0 +1,63 @@
+use graph_api_lib::{EdgeSearch, Graph, Supported};
+use graph_api_simplegraph::SimpleGraph;
+use graph_api_test::{Edge, EdgeIndex, Vertex, populate_graph};
+
+pub fn edges_step_example() {
+    // Create a new graph
+    let mut graph = SimpleGraph::new();
+    // Populate the graph with test data
+    let refs = populate_graph(&mut graph);
+    let start_id = refs.bryn;
+
+    // Get all edges (both incoming and outgoing) from a vertex
+    let all_connected_edges = graph
+        .walk()
+        .vertices_by_id(vec![start_id])
+        .edges(EdgeSearch::scan())
+        .collect::<Vec<_>>();
+
+    println!(
+        "Found {} total edges connected to vertex",
+        all_connected_edges.len()
+    );
+
+    // Get only outgoing edges from a vertex
+    let outgoing_edges = graph
+        .walk()
+        .vertices_by_id(vec![start_id])
+        .edges(EdgeSearch::scan().outgoing())
+        .collect::<Vec<_>>();
+
+    println!("Found {} outgoing edges", outgoing_edges.len());
+
+    // Get only incoming edges to a vertex
+    let incoming_edges = graph
+        .walk()
+        .vertices_by_id(vec![start_id])
+        .edges(EdgeSearch::scan().incoming())
+        .collect::<Vec<_>>();
+
+    println!("Found {} incoming edges", incoming_edges.len());
+
+    // Get only edges with a specific label
+    // Using the label index is more efficient
+    let created_edges = graph
+        .walk()
+        .vertices_by_id(vec![start_id])
+        .edges(EdgeIndex::created())
+        .collect::<Vec<_>>();
+
+    println!("Found {} edges with label 'Created'", created_edges.len());
+
+    // Combine direction and label filtering
+    let outgoing_knows_edges = graph
+        .walk()
+        .vertices_by_id(vec![start_id])
+        .edges(EdgeIndex::knows().outgoing())
+        .collect::<Vec<_>>();
+
+    println!(
+        "Found {} outgoing 'Knows' edges",
+        outgoing_knows_edges.len()
+    );
+}

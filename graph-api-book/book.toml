@@ -5,8 +5,5 @@ multilingual = false
 src = "src"
 title = "graph-api"
 
-
- [preprocessor.keeper]
- command     ="mdbook-keeper"
- manifest_dir="."
- externs     =["graph-api-derive", "graph-api-lib", "graph-api-test", "graph-api-simplegraph"]
+[preprocessor.include-fn]
+command = "./mdbook-include-fn"

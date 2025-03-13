@@ -1,0 +1,60 @@
+# Summary
+
+[Introduction](./introduction.md)
+
+# User Guide
+
+- [Getting Started](./user_guide/getting_started.md)
+- [Defining a Model](./user_guide/defining_a_model.md)
+- [Basic Operations](./user_guide/basic_operations.md)
+- [Graph Traversal](./user_guide/traversal.md)
+    - [Walker Overview](./user_guide/walker/overview.md)
+    - [Walker Steps](./user_guide/walker/steps.md)
+        - [vertices](./user_guide/walker/steps/vertices.md)
+        - [vertices_by_id](./user_guide/walker/steps/vertices_by_id.md)
+        - [edges](./user_guide/walker/steps/edges.md)
+        - [head](./user_guide/walker/steps/head.md)
+        - [tail](./user_guide/walker/steps/tail.md)
+        - [filter](./user_guide/walker/steps/filter.md)
+        - [map](./user_guide/walker/steps/map.md)
+        - [limit](./user_guide/walker/steps/limit.md)
+        - [first](./user_guide/walker/steps/first.md)
+        - [context](./user_guide/walker/steps/context.md)
+        - [default_context](./user_guide/walker/steps/default_context.md)
+        - [detour](./user_guide/walker/steps/detour.md)
+        - [collect](./user_guide/walker/steps/collect.md)
+        - [count](./user_guide/walker/steps/count.md)
+        - [into_iter](./user_guide/walker/steps/into_iter.md)
+        - [probe](./user_guide/walker/steps/probe.md)
+        - [mutate](./user_guide/walker/steps/mutate.md)
+        - [dbg](./user_guide/walker/steps/dbg.md)
+    - [Context System](./user_guide/walker/context.md)
+    - [Best Practices](./user_guide/walker/best_practices.md)
+
+# Implementation Guide
+
+- [Creating a Graph Implementation](./implementation/graphs.md)
+- [Testing Your Implementation](./implementation/testing.md)
+- [Features and Extensions](./implementation/features.md)
+- [Implementing Indexes](./implementation/indexes.md)
+- [Performance Considerations](./implementation/performance.md)
+- [Benchmarking](./implementation/benchmarks.md)
+
+# Reference
+
+- [API Reference](./reference/api.md)
+- [Derive Macros](./reference/derive_macros.md)
+    - [VertexExt](./reference/derive_macros/vertex_ext.md)
+    - [EdgeExt](./reference/derive_macros/edge_ext.md)
+- [Existing Implementations](./reference/implementations.md)
+    - [SimpleGraph](./reference/implementations/simple_graph.md)
+    - [PetGraph](./reference/implementations/pet_graph.md)
+
+****
+
+# Appendix
+
+- [Glossary](./appendix/glossary.md)
+- [Contributing](./appendix/contributing.md)
+- [Design Principles](./appendix/design_principles.md)
+- [Performance Specifications](./appendix/performance_specs.md)
