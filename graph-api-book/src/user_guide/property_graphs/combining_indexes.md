@@ -9,7 +9,7 @@ By applying different index types to various properties, you can create a rich q
 search patterns:
 
 ```rust,noplayground
-#![function_body!("combining_indexes.rs", define_combined_indexes)]
+{{#include combining_indexes.rs:define_combined_indexes}}
 ```
 
 ## Creating Multi-Step Traversals
@@ -17,7 +17,7 @@ search patterns:
 Graph traversals can start with indexed lookups and then follow relationships to find connected entities:
 
 ```rust,noplayground
-#![function_body!("combining_indexes.rs", multi_step_traversal)]
+{{#include combining_indexes.rs:multi_step_traversal}}
 ```
 
 ## Compound Queries
@@ -25,7 +25,7 @@ Graph traversals can start with indexed lookups and then follow relationships to
 For more complex requirements, you can combine multiple indexed lookups with filtering:
 
 ```rust,noplayground
-#![function_body!("combining_indexes.rs", compound_queries)]
+{{#include combining_indexes.rs:compound_queries}}
 ```
 
 ## Hierarchical Data Navigation
@@ -33,7 +33,7 @@ For more complex requirements, you can combine multiple indexed lookups with fil
 When working with hierarchical data structures, indexes can dramatically improve traversal efficiency:
 
 ```rust,noplayground
-#![function_body!("combining_indexes.rs", hierarchical_navigation)]
+{{#include combining_indexes.rs:hierarchical_navigation}}
 ```
 
 ## Performance Considerations

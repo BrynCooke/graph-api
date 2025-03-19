@@ -13,7 +13,7 @@ value without scanning the entire graph.
 In Graph API, you define a standard index by adding the `#[index]` attribute to a field in your vertex enum:
 
 ```rust,noplayground
-#![function_body!("standard_index.rs", define_standard_index, [User, Relation])]
+{{#include standard_index.rs:define_standard_index}}
 ```
 
 ## How Standard Indexes Work
@@ -29,7 +29,7 @@ When you apply the `#[index]` attribute to a field:
 The real power of standard indexes becomes apparent when querying the graph:
 
 ```rust,noplayground
-#![function_body!("standard_index.rs", standard_index_queries, [User, Relation])]
+{{#include standard_index.rs:standard_index_queries}}
 ```
 
 ## Performance Benefits

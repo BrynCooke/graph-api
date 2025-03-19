@@ -19,7 +19,7 @@ and ergonomic usage patterns. It includes features for graph traversal, modifica
 ## Example
 
 ```rust,noplayground
-#![function_body!("introduction_example.rs", basic_example)]
+{{#include introduction_example.rs:basic_example}}
 ```
 
 ## Book Organization

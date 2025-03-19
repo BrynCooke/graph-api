@@ -1,83 +1,30 @@
-use graph_api_derive::{EdgeExt, VertexExt};
+use crate::standard_model::{Vertex, VertexIndex, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference, VertexSearch};
-use graph_api_simplegraph::SimpleGraph;
 
-// Model with standard indexes
-#[derive(Debug, Clone, VertexExt)]
-pub enum User {
-    Person {
-        #[index] // Standard index for exact lookups
-        username: String,
-
-        #[index] // Another standard index
-        email: String,
-
-        // Not indexed
-        name: String,
-        age: u8,
-    },
-    Product {
-        #[index] // Index for product code
-        product_code: String,
-
-        name: String,
-        price: f64,
-    },
-}
-
-#[derive(Debug, Clone, EdgeExt)]
-pub enum Relation {
-    Purchased,
-    Reviewed { rating: u8 },
-}
-
+/* ANCHOR: all */
+// ANCHOR: define_standard_index
 // Function explaining standard indexes
 pub fn define_standard_index() {
     // Standard indexes provide efficient lookups based on exact property values
     // They are defined using the #[index] attribute
 
-    // In the User enum above:
+    // In the Vertex enum from standard_model.rs:
     // - Person::username has a standard index for exact username lookups
-    // - Person::email has a standard index for exact email lookups
-    // - Product::product_code has a standard index for exact product code lookups
+    // - Biography uses a full-text index for fuzzy text search
+    // - Age uses an ordered index for range queries
 
-    // Properties without the #[index] attribute (name, age, price)
+    // Properties without the #[index] attribute (e.g., Person::name, unique_id)
     // can only be searched via full scan
 }
+// ANCHOR_END: define_standard_index
 
+// ANCHOR: standard_index_queries
 // Example of querying with standard indexes
 pub fn standard_index_queries() {
-    // Create a graph with some data
-    let mut graph = SimpleGraph::<User, Relation>::new();
+    // Use the standard graph defined in standard_model.rs
+    let graph = standard_populated_graph();
 
-    // Add vertices
-    graph.add_vertex(User::Person {
-        username: "alice123".to_string(),
-        email: "alice@example.com".to_string(),
-        name: "Alice Smith".to_string(),
-        age: 30,
-    });
-
-    graph.add_vertex(User::Person {
-        username: "bob456".to_string(),
-        email: "bob@example.com".to_string(),
-        name: "Robert Jones".to_string(),
-        age: 42,
-    });
-
-    let _laptop_id = graph.add_vertex(User::Product {
-        product_code: "LAPTOP-X1".to_string(),
-        name: "High-Performance Laptop".to_string(),
-        price: 1299.99,
-    });
-
-    graph.add_vertex(User::Product {
-        product_code: "PHONE-P5".to_string(),
-        name: "Smartphone Pro".to_string(),
-        price: 899.99,
-    });
-
-    // The VertexIndex enum is automatically generated from the User enum
+    // The VertexIndex enum is automatically generated from the Vertex enum
     // by the VertexExt derive macro. It provides methods for each indexed field.
 
     // EFFICIENT: Find a person by username (using standard index)
@@ -85,33 +32,33 @@ pub fn standard_index_queries() {
     let _alice = graph
         .walk()
         // Use the index
-        .vertices(UserIndex::person_by_username("alice123"))
+        .vertices(VertexIndex::person_by_username("alice123"))
         .first();
 
-    // Also efficient: Find a person by email
-    let _bob = graph
+    // Also efficient: Find a person by age (using ordered index)
+    let _people_34 = graph
         .walk()
         // Use the index
-        .vertices(UserIndex::person_by_email("bob@example.com"))
-        .first();
+        .vertices(VertexIndex::person_by_age(34))
+        .collect::<Vec<_>>();
 
-    // Find a product by its product code
-    let _laptop = graph
+    // Find people with a specific biography text (using full-text index)
+    let _developers = graph
         .walk()
-        // use the index
-        .vertices(UserIndex::product_by_product_code("LAPTOP-X1"))
-        .first();
+        // Use the full-text index
+        .vertices(VertexIndex::person_by_biography("developer"))
+        .collect::<Vec<_>>();
 
-    // Note: No direct index for looking up by name or age
+    // Note: No direct index for looking up by name
     // This would require a full scan with filtering
-    let _people_named_robert = graph
+    let _people_named_bob = graph
         .walk()
         .vertices(VertexSearch::scan())
         .filter(|vertex, _| {
             // We need to manually check the type and fields
             // because there's no index for the name property
-            if let User::Person { name, .. } = vertex.weight() {
-                name.contains("Robert")
+            if let Vertex::Person { name, .. } = vertex.weight() {
+                name == "Bob"
             } else {
                 false
             }
@@ -122,3 +69,5 @@ pub fn standard_index_queries() {
     // It will examine every vertex in the graph, rather than just
     // going directly to the relevant vertices
 }
+// ANCHOR_END: standard_index_queries
+/* ANCHOR_END: all */

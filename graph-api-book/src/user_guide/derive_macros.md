@@ -12,7 +12,7 @@ Graph API provides two primary derive macros:
 2. `EdgeExt` - For edge enum types
 
 ```rust,noplayground
-#![function_body!("model_definition.rs", model_definition_example)]
+{{#include model_definition.rs:usage}}
 ```
 
 ## Generated Types for VertexExt

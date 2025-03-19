@@ -14,7 +14,7 @@ property that has a natural ordering.
 In Graph API, you define an ordered index by using the `#[index(ordered)]` attribute:
 
 ```rust,noplayground
-#![function_body!("ordered_index.rs", define_ordered_index)]
+{{#include ordered_index.rs:define_ordered_index}}
 ```
 
 ## How Ordered Indexes Work
@@ -30,7 +30,7 @@ The ordered index works by:
 Ordered indexes shine when used for range queries:
 
 ```rust,noplayground
-#![function_body!("ordered_index.rs", ordered_index_queries)]
+{{#include ordered_index.rs:ordered_index_queries}}
 ```
 
 ## Performance Benefits

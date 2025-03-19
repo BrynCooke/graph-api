@@ -1,12 +1,12 @@
-use graph_api_lib::{Graph, Supported};
-use graph_api_test::{Vertex, VertexExt, VertexIndex};
+use crate::standard_model::{VertexExt, VertexIndex, standard_populated_graph};
+use graph_api_lib::Graph;
 
 /* ANCHOR: all */
 // Function demonstrating the first step
-pub fn first_example<G>(graph: G)
-where
-    G: Graph<Vertex = Vertex, SupportsVertexLabelIndex = Supported>,
-{
+pub fn first_example() {
+    // Use the standard graph defined in standard_model.rs
+    let graph = standard_populated_graph();
+
     // ANCHOR: basic_usage
     // Get the first person in the graph (if any)
     let first_person = graph.walk().vertices(VertexIndex::person()).first();
@@ -21,8 +21,11 @@ where
     // Get the first person with a specific name
     let first_alice = graph
         .walk()
-        .vertices(VertexIndex::person())
-        .filter_by_person(|person, _| person.name().contains("Alice"))
+        .vertices(VertexIndex::person()) // Get all Person vertices
+        .filter_by_person(|person, _| {
+            // Using the typed projection with accessor methods
+            person.name().contains("Alice")
+        })
         .first();
 
     match first_alice {
@@ -36,12 +39,15 @@ where
     let has_young_person = graph
         .walk()
         .vertices(VertexIndex::person())
-        .filter_by_person(|person, _| person.age() < 25)
+        .filter_by_person(|person, _| {
+            // Using type-safe accessor methods
+            person.age() < 30
+        })
         .first()
         .is_some();
 
     println!(
-        "Graph {} people under 25",
+        "Graph {} people under 30",
         if has_young_person {
             "contains"
         } else {

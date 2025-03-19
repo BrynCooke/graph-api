@@ -1,18 +1,19 @@
-use graph_api_lib::{Graph, Supported, VertexReference};
-use graph_api_test::{Person, Vertex, VertexIndex};
+use crate::standard_model::{Person, VertexExt, VertexIndex, standard_populated_graph};
+use graph_api_lib::{Graph, VertexReference};
 use std::collections::{BTreeSet, HashSet};
 
 /* ANCHOR: all */
 // Function demonstrating how to use the collect step
-pub fn collect_example<G>(graph: G)
-where
-    G: Graph<Vertex = Vertex, SupportsVertexLabelIndex = Supported>,
-{
+pub fn collect_example() {
+    // Use the standard graph defined in standard_model.rs
+    let graph = standard_populated_graph();
+
     // ANCHOR: collect_vec
     // Collect results into a Vec
+    // Use the person() index method to get all Person vertices
     let person_vertices: Vec<_> = graph
         .walk()
-        .vertices(VertexIndex::person())
+        .vertices(VertexIndex::person()) // Type-safe vertex lookup by label
         .collect::<Vec<_>>();
 
     println!("Found {} person vertices", person_vertices.len());
@@ -25,10 +26,10 @@ where
         .vertices(VertexIndex::person())
         // Use map to extract properties from each person
         .map(|person, _| {
-            // Use projection to access Person methods
+            // Use projection to access Person methods in a type-safe way
             person
-                .project::<Person<_>>()
-                .map(|p| p.name().to_string())
+                .project::<Person<_>>() // Project to Person type
+                .map(|p| p.name().to_string()) // Use accessor method from projection
                 .unwrap_or_else(|| "Unknown".to_string())
         })
         .collect::<HashSet<String>>();
@@ -38,15 +39,20 @@ where
 
     // ANCHOR: collect_btreeset
     // Collect into a BTreeSet for ordered unique elements
-    let ordered_ages: BTreeSet<u64> = graph
+    let ordered_ages: BTreeSet<u8> = graph
         .walk()
         .vertices(VertexIndex::person())
+        // Use filter_person() to work exclusively with Person vertices (no closure needed)
+        .filter_person() // Label-based type filter with no closure
         // Extract age from each Person vertex
         .map(|person, _| {
-            // Use projection to access Person methods
-            person.project::<Person<_>>().map(|p| p.age()).unwrap_or(0)
+            // Use projection to access Person methods in a type-safe way
+            person
+                .project::<Person<_>>() // Project to Person type
+                .map(|p| p.age()) // Use age() accessor method
+                .unwrap_or(0)
         })
-        .collect::<BTreeSet<u64>>();
+        .collect::<BTreeSet<u8>>();
 
     // Print ages in ascending order (BTreeSet maintains order)
     println!("Person ages (ordered): {:?}", ordered_ages);

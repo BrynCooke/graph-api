@@ -1,59 +1,69 @@
-use graph_api_derive::VertexExt;
-use graph_api_lib::{Graph, Supported};
+use crate::standard_model::{VertexIndex, standard_populated_graph};
+use graph_api_lib::Graph;
 
-// Define a model with full-text indexes
-#[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
-    Article {
-        title: String,
+/* ANCHOR: all */
+// ANCHOR: define_full_text_index
+// Function explaining full-text indexes
+pub fn define_full_text_index() {
+    // Full-text indexes enable text search capabilities for string properties
+    // They are defined using the #[index(full_text)] attribute
 
-        #[index(full_text)] // Full-text index for content searching
-        content: String,
+    // In the Vertex enum from standard_model.rs:
+    // - Person::biography has a full-text index for text search
+    //   This allows for partial matches and fuzzy search
 
-        author: String,
-
-        #[index(full_text)] // Full-text index for tags
-        tags: String,
-    },
-    User {
-        username: String,
-
-        #[index(full_text)] // Full-text index for bio
-        biography: String,
-
-        #[index(full_text)] // Full-text index for skills
-        skills: String,
-    },
+    // Full-text indexes are ideal for:
+    // - Long text fields (descriptions, biographies, articles)
+    // - Search by keyword functionality
+    // - Natural language search
 }
+// ANCHOR_END: define_full_text_index
 
-fn define_full_text_index() {}
-
+// ANCHOR: full_text_queries
 // Example demonstrating full-text search capabilities
-pub fn full_text_queries<G>(graph: G)
-where
-    G: Graph<Vertex = Vertex, Edge = (), SupportsVertexFullTextIndex = Supported>,
-{
-    // Example 1: Find articles about "rust"
-    let _rust_articles = graph
+pub fn full_text_queries() {
+    // Use the standard graph defined in standard_model.rs
+    let graph = standard_populated_graph();
+
+    // Find people with "developer" in their biography
+    let developers = graph
         .walk()
-        .vertices(VertexIndex::article_by_content("rust"))
+        .vertices(VertexIndex::person_by_biography("developer"))
         .collect::<Vec<_>>();
 
-    // Example 2: Find articles tagged with "graph"
-    let _graph_articles = graph
+    println!("Found {} people who are developers", developers.len());
+
+    // Find people with "graph" in their biography
+    let graph_enthusiasts = graph
         .walk()
-        .vertices(VertexIndex::article_by_tags("graph"))
+        .vertices(VertexIndex::person_by_biography("graph"))
         .collect::<Vec<_>>();
 
-    // Example 3: Find users with "graph databases" mentioned in bio
-    let _graph_db_users = graph
+    println!(
+        "Found {} people interested in graphs",
+        graph_enthusiasts.len()
+    );
+
+    // Find people with "network" in their biography
+    let network_specialists = graph
         .walk()
-        .vertices(VertexIndex::user_by_biography("graph databases"))
+        .vertices(VertexIndex::person_by_biography("network"))
         .collect::<Vec<_>>();
 
-    // Example 4: Find users skilled in "systems programming"
-    let _systems_programmers = graph
+    println!("Found {} network specialists", network_specialists.len());
+
+    // Full-text search is more flexible than exact matching
+    // It can find partial matches, handle stemming, and more
+    // For example, searching for "develop" would also match "developer"
+    let develop_related = graph
         .walk()
-        .vertices(VertexIndex::user_by_skills("systems programming"))
+        .vertices(VertexIndex::person_by_biography("develop"))
         .collect::<Vec<_>>();
+
+    println!(
+        "Found {} people with 'develop' in their bio",
+        develop_related.len()
+    );
 }
+// ANCHOR_END: full_text_queries
+/* ANCHOR_END: all */

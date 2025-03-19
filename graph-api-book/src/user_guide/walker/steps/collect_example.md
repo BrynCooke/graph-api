@@ -7,7 +7,19 @@ The `collect` step is used to gather the results of a traversal into a collectio
 Here's how to use the `collect` step to gather vertex IDs into a vector:
 
 ```rust,noplayground
-#![function_body!("../../../../graph-api-lib/examples/collect.rs", example)]
+{{#include collect/collect_example.rs:collect_vec}}
+```
+
+You can also collect results into different collection types like a HashSet for unique values:
+
+```rust,noplayground
+{{#include collect/collect_example.rs:collect_hashset}}
+```
+
+Or into a BTreeSet for ordered values:
+
+```rust,noplayground
+{{#include collect/collect_example.rs:collect_btreeset}}
 ```
 
 ## Additional Features

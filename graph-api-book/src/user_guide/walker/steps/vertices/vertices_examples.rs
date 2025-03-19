@@ -1,14 +1,11 @@
+use crate::standard_model::{VertexExt, VertexIndex, standard_populated_graph};
 use graph_api_lib::{Graph, VertexSearch};
-use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{VertexExt, VertexIndex, populate_graph};
 
 /* ANCHOR: all */
 // Function demonstrating various ways to use the vertices step
 pub fn vertices_step_example() {
-    // Create a new graph
-    let mut graph = SimpleGraph::new();
-    // Populate the graph with test data
-    let _refs = populate_graph(&mut graph);
+    // Use the standard graph defined in standard_model.rs
+    let graph = standard_populated_graph();
 
     // ANCHOR: scan_all
     // Scan all vertices in the graph
@@ -38,7 +35,11 @@ pub fn vertices_step_example() {
     let people_named_bob = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .filter_by_person(|person, _| person.name() == "Bob")
+        .filter_person() // First filter by vertex type
+        .filter_by_person(|person, _| {
+            // Then use type-safe accessor methods
+            person.name() == "Bob"
+        })
         .collect::<Vec<_>>();
 
     println!("Found {} people named Bob", people_named_bob.len());
@@ -49,11 +50,14 @@ pub fn vertices_step_example() {
     // Filter after retrieval when specialized indexes aren't available
     let young_people = graph
         .walk()
-        .vertices(VertexIndex::person())
-        .filter_by_person(|person, _| person.age() < 25)
+        .vertices(VertexIndex::person()) // Get all Person vertices
+        .filter_by_person(|person, _| {
+            // Use type-safe accessor methods
+            person.age() < 30 // Find people under 30
+        })
         .collect::<Vec<_>>();
 
-    println!("Found {} people under age 25", young_people.len());
+    println!("Found {} people under age 30", young_people.len());
     // ANCHOR_END: combined_filter
 }
 /* ANCHOR_END: all */

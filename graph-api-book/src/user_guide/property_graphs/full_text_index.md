@@ -14,7 +14,7 @@ words, regardless of their position within the text.
 In Graph API, you define a full-text index by using the `#[index(full_text)]` attribute on string fields:
 
 ```rust,noplayground
-#![function_body!("full_text_index.rs", define_full_text_index, [Vertex])]
+{{#include full_text_index.rs:define_full_text_index}}
 ```
 
 ## How Full-text Indexes Work
@@ -31,7 +31,7 @@ Behind the scenes, full-text indexes:
 Full-text indexes dramatically simplify text search operations:
 
 ```rust,noplayground
-#![function_body!("full_text_index.rs", full_text_queries)]
+{{#include full_text_index.rs:full_text_queries}}
 ```
 
 ## Performance Benefits

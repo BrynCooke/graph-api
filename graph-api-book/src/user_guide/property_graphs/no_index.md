@@ -12,8 +12,7 @@ indexes, your only option is to scan the entire graph, examining each vertex to 
 Let's consider a simple social network model without any indexes:
 
 ```rust,noplayground
-#![enum!("no_index.rs", User)]
-#![enum!("no_index.rs", Relation)]
+{{#include ../standard_model.rs:model_definition}}
 ```
 
 ## Scanning the Entire Graph
@@ -21,7 +20,39 @@ Let's consider a simple social network model without any indexes:
 Without indexes, the only way to find vertices matching specific criteria is to scan the entire graph:
 
 ```rust,noplayground
-#![function_body!("no_index.rs", scan_example)]
+{{#include no_index.rs:non_indexed_fields}}
+```
+
+### Finding by Name (Without Index)
+
+When a field isn't indexed (like `name` in the `Person` vertex), we have to scan all vertices to find matches:
+
+```rust,noplayground
+{{#include no_index.rs:scan_for_name}}
+```
+
+### Finding Projects (Without Index)
+
+Similarly, to find a project by name, we need to scan the entire graph:
+
+```rust,noplayground
+{{#include no_index.rs:scan_for_project}}
+```
+
+### Performance Comparison
+
+Let's compare the performance of a full scan versus using an index:
+
+1. **Inefficient approach** - scanning all vertices:
+
+```rust,noplayground
+{{#include no_index.rs:comparison_scan}}
+```
+
+2. **Efficient approach** - using the index:
+
+```rust,noplayground
+{{#include no_index.rs:comparison_index}}
 ```
 
 ## Performance Implications
