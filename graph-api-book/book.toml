@@ -5,5 +5,4 @@ multilingual = false
 src = "src"
 title = "graph-api"
 
-[preprocessor.include-fn]
-command = "./mdbook-include-fn"
+[preprocessor.svgbob]

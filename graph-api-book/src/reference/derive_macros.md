@@ -30,7 +30,7 @@ When you apply `#[derive(VertexExt)]` to an enum, the following types are genera
 
 ### Example
 
-```rust
+```rust,noplayground
 use graph_api_derive::VertexExt;
 use uuid::Uuid;
 
@@ -57,7 +57,7 @@ pub enum Vertex {
 
 This generates:
 
-```rust
+```rust,noplayground
 // Label enum
 pub enum VertexLabel {
     Person,
@@ -96,7 +96,7 @@ The derive macro generates several methods on the `VertexIndex` enum:
 
 For each enum variant, a method is generated to query by label:
 
-```rust
+```rust,noplayground
 // Query for all Person vertices
 VertexIndex::person() -> VertexSearch<'_, Graph>
 ```
@@ -105,7 +105,7 @@ VertexIndex::person() -> VertexSearch<'_, Graph>
 
 For each indexed field, methods are generated for exact matching:
 
-```rust
+```rust,noplayground
 // Query for Person vertices with a specific name
 VertexIndex::person_by_name(value: & str) -> VertexSearch<'_, Graph>
 
@@ -117,7 +117,7 @@ VertexIndex::person_by_age(value: u64) -> VertexSearch<'_, Graph>
 
 For fields with the `#[index(ordered)]` attribute:
 
-```rust
+```rust,noplayground
 // Query for Person vertices with age in a range
 VertexIndex::person_by_age_range(range: Range<u64>) -> VertexSearch<'_, Graph>
 ```
@@ -126,7 +126,7 @@ VertexIndex::person_by_age_range(range: Range<u64>) -> VertexSearch<'_, Graph>
 
 For fields with the `#[index(full_text)]` attribute:
 
-```rust
+```rust,noplayground
 // Query for Person vertices with matching text in biography
 VertexIndex::person_by_biography(search: & str) -> VertexSearch<'_, Graph>
 ```
@@ -143,7 +143,7 @@ When you apply `#[derive(EdgeExt)]` to an enum, similar types are generated:
 
 ### Example
 
-```rust
+```rust,noplayground
 use graph_api_derive::EdgeExt;
 
 #[derive(Debug, Clone, EdgeExt)]
@@ -158,7 +158,7 @@ pub enum Edge {
 
 This generates:
 
-```rust
+```rust,noplayground
 // Label enum
 pub enum EdgeLabel {
     Knows,
@@ -176,7 +176,7 @@ pub enum EdgeIndex {
 
 The EdgeIndex enum offers methods for edge traversal:
 
-```rust
+```rust,noplayground
 // Query for all Knows edges
 EdgeIndex::knows() -> EdgeSearch<'_, Graph>
 
@@ -199,14 +199,14 @@ vertex/edge types.
 
 For unit variants (without fields), a single filter method is generated:
 
-```rust
+```rust,noplayground
 // Filter for all instances of the unit variant
 fn filter_tag(self) -> /* walker builder */
 ```
 
 Usage example:
 
-```rust
+```rust,noplayground
 // Get all Tag vertices
 let tags = graph
 .walk()
@@ -219,7 +219,7 @@ let tags = graph
 
 For variants with named fields, two filter methods are generated:
 
-```rust
+```rust,noplayground
 // 1. Filter for all instances of this variant
 fn filter_person(self) -> /* walker builder */
 
@@ -231,7 +231,7 @@ where
 
 Usage example:
 
-```rust
+```rust,noplayground
 // Get all Person vertices
 let all_persons = graph
 .walk()
@@ -251,7 +251,7 @@ let adults = graph
 
 For tuple variants, similar filter methods are generated:
 
-```rust
+```rust,noplayground
 // 1. Filter for all instances of this variant
 fn filter_rated(self) -> /* walker builder */
 
@@ -263,7 +263,7 @@ where
 
 Usage example:
 
-```rust
+```rust,noplayground
 // Get edges with high ratings
 let high_ratings = graph
 .walk()
@@ -289,7 +289,7 @@ These filter extensions provide several advantages:
 
 The generated types integrate with the Graph walker pattern:
 
-```rust
+```rust,noplayground
 // Find all person vertices
 let people = graph
 .walk()
@@ -320,7 +320,7 @@ let friends = graph
 
 Filter extensions can be combined with other walker steps:
 
-```rust
+```rust,noplayground
 // Find adults named "Alice" with a complex filter
 let result = graph
 .walk()
@@ -343,7 +343,7 @@ let old_friendships = graph
 
 When using these types, your Graph type needs to implement appropriate support:
 
-```rust
+```rust,noplayground
 fn example<G>(graph: &G)
 where
     G: Graph<Vertex=Vertex, Edge=Edge>,

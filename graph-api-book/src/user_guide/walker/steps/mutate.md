@@ -4,7 +4,7 @@ The `mutate` step allows you to modify vertices or edges during a traversal, ena
 
 ## Syntax
 
-```rust
+```rust,noplayground
 graph.walk_mut()
     .vertices(...)
     .mutate(|element, context| {
@@ -15,9 +15,9 @@ graph.walk_mut()
 ## Parameters
 
 - `modifier`: A function that takes:
-  - A mutable reference to the current element (vertex or edge)
-  - The element's context
-  - Performs in-place modifications to the element
+    - A mutable reference to the current element (vertex or edge)
+    - The element's context
+    - Performs in-place modifications to the element
 
 ## Return Value
 
@@ -25,24 +25,21 @@ Returns the same traversal unchanged, allowing you to continue chaining steps.
 
 ## Diagram
 
-```
-Before:
-  Graph: [A:age=30]---[B:age=25]---[C:age=40]
-  Position: [A]*, [B]*, [C]* (all vertices)
+```bob
+Before step:
+  [A:age=30]* --- [B:age=25]* --- [C:age=40]*
+  Position: All vertices in traversal
 
-During mutate (increment age):
-  [A:age=30]* -> [A:age=31]*
-  [B:age=25]* -> [B:age=26]*  
-  [C:age=40]* -> [C:age=41]*
-
-After:
-  Graph: [A:age=31]---[B:age=26]---[C:age=41]
-  Position: [A]*, [B]*, [C]* (all vertices, now modified)
+After step (increment age):
+  [A:age=31]* --- [B:age=26]* --- [C:age=41]*
+  Position: Same vertices, but now modified
 ```
 
 ## Example
 
-{% include_fn ./mutate.rs:mutate_example %}
+```rust,noplayground
+{{#include mutate/mutate_example.rs:all}}
+```
 
 ## Notes
 

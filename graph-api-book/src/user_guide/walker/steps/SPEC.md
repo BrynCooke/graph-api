@@ -1,0 +1,45 @@
+# Walker Steps Documentation
+
+This directory contains documentation for all available steps in the Graph API walker interface. Walker steps are the
+building blocks for graph traversals.
+
+## What are Walker Steps?
+
+Walker steps are chainable operations that build a graph traversal. Each step performs a specific operation on the
+traversal, such as:
+
+- Moving the traversal position (vertices, edges, head, tail)
+- Filtering elements (filter)
+- Limiting results (limit, first)
+- Collecting results (collect)
+- Modifying the graph (mutate)
+- And many more
+
+## Documentation Standards
+
+Each walker step documentation follows a consistent format:
+
+1. **Title and Description**: Brief overview of what the step does
+2. **Visual Diagram**: Illustration showing the before and after states of the traversal
+3. **Parameters**: Description of all parameters
+4. **Return Value**: What the step returns
+5. **Examples**: Code examples showing the step in use
+6. **Notes**: Additional information, edge cases, and common patterns
+
+## Visual Diagrams
+
+All walker step documentation includes ASCII diagrams that show:
+
+- The graph structure
+- The traversal position (marked with *)
+- How the step affects the traversal
+
+Example diagram:
+
+```bob
+Before step:
+  [A]* --- knows ---> [B] --- created ---> [C]
+
+After step:
+  [A] --- knows --->* [B] --- created ---> [C]
+```

@@ -4,7 +4,7 @@ The `limit` step restricts a traversal to return at most a specified number of e
 
 ## Syntax
 
-```rust
+```rust,noplayground
 walker.limit(n)
 ```
 
@@ -18,19 +18,21 @@ Returns a new walker that will yield at most `n` elements.
 
 ## Diagram
 
-```
-Before:
-  [A]*, [B]*, [C]*, [D]*, [E]*
-  (5 vertices in traversal)
+```bob
+Before step:
+  [A]* --- [B]* --- [C]* --- [D]* --- [E]*
+  Position: All vertices in traversal
 
-After (with limit 2):
-  [A]*, [B]*
-  (limited to 2 vertices)
+After step (with limit 2):
+  [A]* --- [B]* --- [C] --- [D] --- [E]
+  Position: Only the first 2 vertices
 ```
 
 ## Example
 
-{% include_fn ./examples/limit.rs:limit_example %}
+```rust,noplayground
+{{#include limit/limit_example.rs:all}}
+```
 
 ## Notes
 
@@ -38,6 +40,6 @@ After (with limit 2):
 - For ordered or predictable results, combine with sorted indexes or other ordering steps
 - Applying limit can significantly improve performance by avoiding unnecessary traversal work
 - Useful patterns:
-  - `limit(1)` to get a single element (though `first()` is more idiomatic)
-  - Setting reasonable limits on potentially large traversals
-  - Implementing pagination when combined with other techniques
+    - `limit(1)` to get a single element (though `first()` is more idiomatic)
+    - Setting reasonable limits on potentially large traversals
+    - Implementing pagination when combined with other techniques

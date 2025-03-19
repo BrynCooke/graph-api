@@ -1,10 +1,11 @@
 # Map Step
 
-The `map` step transforms vertices or edges in the traversal by applying a mapping function, returning an iterator over the transformed elements.
+The `map` step transforms vertices or edges in the traversal by applying a mapping function, returning an iterator over
+the transformed elements.
 
 ## Syntax
 
-```rust
+```rust,noplayground
 walker.map(|element, context| {
     // transformation logic
 })
@@ -13,28 +14,32 @@ walker.map(|element, context| {
 ## Parameters
 
 - `mapping`: A function that takes:
-  - A reference to the current element (vertex or edge)
-  - The element's context
-  - Returns a transformed value
+    - A reference to the current element (vertex or edge)
+    - The element's context
+    - Returns a transformed value
 
 ## Return Value
 
-Returns an iterator that yields the transformed elements. The type of the iterator items is determined by the return type of the mapping function.
+Returns an iterator that yields the transformed elements. The type of the iterator items is determined by the return
+type of the mapping function.
 
 ## Diagram
 
-```
-Before:
-  Graph: [Project A]---[Person B]---[Project C]
-  Position: [Project A]*, [Person B]*, [Project C]* (all vertices)
+```bob
+Before step:
+  [Project A]* --- [Person B]* --- [Project C]*
+  Position: All vertices in traversal
 
-After (map vertex -> name):
-  Iterator: "Project A", "Person B", "Project C"
+After step (map vertex -> name):
+  Result: Iterator of "Project A", "Person B", "Project C"
+  Position: Traversal converted to iterator of transformed values
 ```
 
 ## Example
 
-{% include_fn ./map.rs:vertex_example %}
+```rust,noplayground
+{{#include map/map_example.rs:all}}
+```
 
 ## Notes
 

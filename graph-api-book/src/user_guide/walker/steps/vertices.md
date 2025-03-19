@@ -4,7 +4,7 @@ The `vertices` step starts a traversal by selecting a set of vertices from the g
 
 ## Syntax
 
-```rust
+```rust,noplayground
 graph.walk().vertices(search_criteria)
 ```
 
@@ -20,25 +20,55 @@ Returns a new walker positioned at the vertices matching the search criteria.
 
 ## Diagram
 
-```
-Before:
-  Graph: [A]---[B]---[C]
+```bob
+Before step:
+  [A] --- [B] --- [C]
   Position: None (traversal not started)
 
-After:
-  Graph: [A]*---[B]---[C]
+After step:
+  [A]* --- [B] --- [C]*
   Position: Vertices matching search criteria (marked with *)
 ```
 
-## Example
+## Examples
 
-{% include_fn ./examples/vertices.rs:vertices_step_example %}
+### Full Scan
+
+When you need to find all vertices in a graph:
+
+```rust,noplayground
+{{#include vertices/vertices_examples.rs:scan_all}}
+```
+
+### Using a Label Index
+
+For more efficient queries, use label-based indexes:
+
+```rust,noplayground
+{{#include vertices/vertices_examples.rs:label_index}}
+```
+
+### Property-Based Filtering
+
+Find vertices based on their properties:
+
+```rust,noplayground
+{{#include vertices/vertices_examples.rs:property_filter}}
+```
+
+### Combined Filtering
+
+Chain multiple conditions for complex queries:
+
+```rust,noplayground
+{{#include vertices/vertices_examples.rs:combined_filter}}
+```
 
 ## Notes
 
 - The `vertices` step is typically the first step in a traversal
 - Performance varies based on the search criteria:
-  - Using a label index (e.g., `VertexIndex::person()`) is faster than a full scan
-  - Property-based searches are efficient when properly indexed
-  - Full scans with `VertexSearch::scan()` should be avoided for large graphs
+    - Using a label index (e.g., `VertexIndex::person()`) is faster than a full scan
+    - Property-based searches are efficient when properly indexed
+    - Full scans with `VertexSearch::scan()` should be avoided for large graphs
 - The order of vertices in the traversal is not guaranteed unless using an ordered index

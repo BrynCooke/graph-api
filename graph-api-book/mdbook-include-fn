@@ -46,15 +46,15 @@ def process_markdown_content(content, book_dir):
 
         # Check if file exists
         if not os.path.isfile(rust_file):
-            return f"```rust\n// ERROR: File not found: {rust_file}\n```"
+            return f"```rust,noplayground\n// ERROR: File not found: {rust_file}\n```"
 
         # Extract the function
         code = extract_function(rust_file, function_name)
         if not code:
-            return f"```rust\n// ERROR: Function '{function_name}' not found in {rust_file}\n```"
+            return f"```rust,noplayground\n// ERROR: Function '{function_name}' not found in {rust_file}\n```"
 
         # Format as a code block
-        return f"```rust\n{code}\n```"
+        return f"```rust,noplayground\n{code}\n```"
 
     # Replace all include directives
     return pattern.sub(replace_include, content)

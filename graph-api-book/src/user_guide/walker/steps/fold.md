@@ -1,10 +1,11 @@
 # Fold Step
 
-The `fold` step accumulates a result by processing each element in a traversal, operating like the standard Rust `fold` operation but specifically for graph traversals.
+The `fold` step accumulates a result by processing each element in a traversal, operating like the standard Rust `fold`
+operation but specifically for graph traversals.
 
 ## Syntax
 
-```rust
+```rust,noplayground
 walker.fold(initial_value, |accumulator, element, context| {
     // accumulation logic
 })
@@ -14,10 +15,10 @@ walker.fold(initial_value, |accumulator, element, context| {
 
 - `initial_value`: The starting value for the accumulator
 - `f`: A closure that takes:
-  - The current accumulator value
-  - A reference to the current element (vertex or edge)
-  - The current element's context
-  - Returns the updated accumulator value
+    - The current accumulator value
+    - A reference to the current element (vertex or edge)
+    - The current element's context
+    - Returns the updated accumulator value
 
 ## Return Value
 
@@ -25,18 +26,23 @@ Returns the final accumulated value after processing all elements in the travers
 
 ## Diagram
 
-```
-Before:
-  Graph: [A]---[B]---[C]---[D]
-  Position: [A]*, [B]*, [C]*, [D]* (all vertices)
+```bob
+Before step:
+  [A]* --- [B]* --- [C]* --- [D]*
+  Position: All vertices in traversal
+  Accumulator: Initial Value
 
-During fold:
-  Accumulator: Initial → [A] → [B] → [C] → [D] → Final Result
+After step:
+  [A] --- [B] --- [C] --- [D]
+  Result: Final accumulated value
+  Position: Traversal terminated
 ```
 
 ## Example
 
-{% include_fn ./fold.rs:vertex_example %}
+```rust,noplayground
+{{#include fold/fold_example.rs:all}}
+```
 
 ## Notes
 

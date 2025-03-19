@@ -1,6 +1,7 @@
 # Context System
 
-The context system is a powerful feature of the Graph API walker interface that allows you to carry data along with your traversal. This enables sophisticated data collection, transformation, and decision making during graph exploration.
+The context system is a powerful feature of the Graph API walker interface that allows you to carry data along with your
+traversal. This enables sophisticated data collection, transformation, and decision making during graph exploration.
 
 ## What is Context?
 
@@ -15,7 +16,7 @@ Context is data that is associated with each element in a traversal. As you move
 
 ### Adding Context to a Traversal
 
-```rust
+```rust,noplayground
 // Store a person's age in the context
 graph.walk()
     .vertices(VertexSearch::scan().with_label(Person::label()))
@@ -27,7 +28,7 @@ graph.walk()
 
 ### Using Context in Later Steps
 
-```rust
+```rust,noplayground
 // Store age and use it in a filter
 graph.walk()
     .vertices(VertexSearch::scan().with_label(Person::label()))
@@ -45,9 +46,10 @@ graph.walk()
 
 ## Context Nesting
 
-When you use operations like `detour`, context becomes nested. The parent context is still accessible through the context's parent reference:
+When you use operations like `detour`, context becomes nested. The parent context is still accessible through the
+context's parent reference:
 
-```rust
+```rust,noplayground
 graph.walk()
     .vertices(VertexSearch::scan().with_label(Person::label()))
     .push_context(|vertex, _| {
@@ -71,7 +73,7 @@ graph.walk()
 
 The Graph API provides built-in default contexts for common use cases:
 
-```rust
+```rust,noplayground
 // Use default vertex context (contains vertex ID and weight)
 graph.walk()
     .vertices(VertexSearch::scan())
@@ -88,7 +90,7 @@ graph.walk()
 
 You can transform context data as you traverse:
 
-```rust
+```rust,noplayground
 graph.walk()
     .vertices(VertexSearch::scan().with_label(Person::label()))
     .push_context(|v, _| v.project::<Person<_>>().unwrap().name().to_string())
@@ -114,7 +116,7 @@ graph.walk()
 
 ## Example: Building Complex Data Structures
 
-```rust
+```rust,noplayground
 // Build a map of people to their projects
 let person_projects = graph.walk()
     .vertices(VertexSearch::scan().with_label(Person::label()))

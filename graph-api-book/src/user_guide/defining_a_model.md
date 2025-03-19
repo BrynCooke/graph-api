@@ -1,18 +1,37 @@
 # Defining a Model
 
+## Overview
+
 Graph API provides a flexible way to define your graph data model using Rust's enum types and derive macros. This
 approach gives you the benefits of Rust's type system while maintaining the flexibility of property graphs.
 
-## Basic Model Definitions
+## Basic Concepts
 
 A graph consists of two primary elements:
 
 1. **Vertices** (nodes): The entities in your graph
 2. **Edges**: The relationships connecting vertices
 
-For each of these, you'll define a Rust enum that represents all possible types. Here's a simple example:
+For each of these, you'll define a Rust enum that represents all possible types.
 
-{% include_fn ./model_definition.rs:model_definition_example %}
+## Model Definition
+
+Here's a simple example of a social media model:
+
+```rust,noplayground
+{{#include defining_a_model/social_media_model.rs:model_definition}}
+```
+
+This model defines vertex types for people, projects, and comments, along with edge types for the relationships between
+them.
+
+## Creating Instances
+
+Once you've defined your model, you can create instances of vertices and edges:
+
+```rust,noplayground
+{{#include defining_a_model/social_media_model.rs:usage}}
+```
 
 ## Using Derive Macros
 
@@ -47,9 +66,7 @@ You can define indexes for efficient lookups using attributes:
 - `#[index(ordered)]`: Creates an ordered index for range queries
 - `#[index(full_text)]`: Creates a full-text index for text search
 
-Example:
-
-{% include_fn ./indexing_example.rs:indexing_example %}
+For more details on indexes and examples, see the [Property Graphs](./property_graphs.md) section.
 
 ## Best Practices
 

@@ -5,25 +5,25 @@ This page provides guidance on effectively using the Graph API walker system for
 ## General Best Practices
 
 1. **Chain steps logically**
-   - Build your traversal in a logical sequence that mirrors how you would describe the path
-   - Group related operations together to improve readability
+    - Build your traversal in a logical sequence that mirrors how you would describe the path
+    - Group related operations together to improve readability
 
 2. **Use appropriate search criteria**
-   - Limit vertices and edges early in the traversal to reduce the traversal set
-   - Use the most specific search criteria available (label, index, property)
+    - Limit vertices and edges early in the traversal to reduce the traversal set
+    - Use the most specific search criteria available (label, index, property)
 
 3. **Leverage type projections**
-   - Use `.project::<Type<_>>()` to access type-specific methods
-   - Handle projection failures gracefully with `match` or `if let`
+    - Use `.project::<Type<_>>()` to access type-specific methods
+    - Handle projection failures gracefully with `match` or `if let`
 
 4. **Use context for data collection**
-   - Store intermediate results in context rather than using external collections
-   - Use context to carry state through the traversal
+    - Store intermediate results in context rather than using external collections
+    - Use context to carry state through the traversal
 
 5. **Consider performance**
-   - For very large graphs, filter early to reduce the traversal set
-   - Use indexed lookups when available
-   - Limit traversal depth for potentially unbounded searches
+    - For very large graphs, filter early to reduce the traversal set
+    - Use indexed lookups when available
+    - Limit traversal depth for potentially unbounded searches
 
 ## Optimization Tips
 
@@ -31,7 +31,7 @@ This page provides guidance on effectively using the Graph API walker system for
 
 Filter vertices and edges as early as possible in the traversal:
 
-```rust
+```rust,noplayground
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
 # use graph_api_test::VertexExt;
@@ -71,7 +71,7 @@ graph.walk()
 
 Take advantage of indexes when available:
 
-```rust
+```rust,noplayground
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
 # use graph_api_test::VertexExt;
@@ -113,7 +113,7 @@ graph.walk()
 
 Use `limit()` to prevent processing excessive elements:
 
-```rust
+```rust,noplayground
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
 # use graph_api_test::VertexExt;
@@ -144,7 +144,7 @@ graph.walk()
 
 Detours allow for complex traversals without losing your place:
 
-```rust
+```rust,noplayground
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
 # use graph_api_test::VertexExt;
@@ -183,7 +183,7 @@ graph.walk()
 
 ### Finding Connected Vertices
 
-```rust
+```rust,noplayground
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
 # use graph_api_test::VertexExt;
@@ -213,7 +213,7 @@ let friends = graph.walk()
 
 ### Filtering by Properties
 
-```rust
+```rust,noplayground
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
 # use graph_api_test::VertexExt;
@@ -242,7 +242,7 @@ let seniors = graph.walk()
 
 ### Collecting Property Values
 
-```rust
+```rust,noplayground
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
 # use graph_api_test::VertexExt;
@@ -271,7 +271,7 @@ let project_names = graph.walk()
 
 ### Computing Aggregates
 
-```rust
+```rust,noplayground
 # use graph_api_test::Vertex;
 # use graph_api_test::Edge;
 # use graph_api_test::VertexExt;

@@ -1,10 +1,11 @@
 # Detour Step
 
-The `detour` step allows you to apply a sub-traversal to the current traversal, providing a way to create more complex traversal patterns.
+The `detour` step allows you to apply a sub-traversal to the current traversal, providing a way to create more complex
+traversal patterns.
 
 ## Syntax
 
-```rust
+```rust,noplayground
 walker.detour(|sub_walker| {
     // Configure the sub-walker
     sub_walker.filter(...).another_step(...)
@@ -36,7 +37,9 @@ After:
 
 ## Example
 
-{% include_fn ./detour.rs:detour_example %}
+```rust,noplayground
+{{#include detour/detour_example.rs:all}}
+```
 
 ## Notes
 

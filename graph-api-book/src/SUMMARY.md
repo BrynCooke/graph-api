@@ -5,7 +5,14 @@
 # User Guide
 
 - [Getting Started](./user_guide/getting_started.md)
-- [Defining a Model](./user_guide/defining_a_model.md)
+- [Defining a Model](****./user_guide/defining_a_model.md)
+- [Property Graphs](./user_guide/property_graphs.md)
+    - [Exploring Without Indexes](./user_guide/property_graphs/no_index.md)
+    - [Standard Indexes](./user_guide/property_graphs/standard_index.md)
+    - [Ordered Indexes](./user_guide/property_graphs/ordered_index.md)
+    - [Full-text Indexes](./user_guide/property_graphs/full_text_index.md)
+    - [Combining Indexes](./user_guide/property_graphs/combining_indexes.md)
+- [Derive Macros](./user_guide/derive_macros.md)
 - [Basic Operations](./user_guide/basic_operations.md)
 - [Graph Traversal](./user_guide/traversal.md)
     - [Walker Overview](./user_guide/walker/overview.md)

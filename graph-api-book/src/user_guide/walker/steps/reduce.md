@@ -4,7 +4,7 @@ The `reduce` step combines all elements in a traversal using a binary operation,
 
 ## Syntax
 
-```rust
+```rust,noplayground
 walker.reduce(|element1, element2, context1, context2| {
     // combine elements and return one of them
 })
@@ -13,9 +13,9 @@ walker.reduce(|element1, element2, context1, context2| {
 ## Parameters
 
 - `reducer`: A function that takes:
-  - Two elements from the traversal
-  - The contexts for each element
-  - Returns one of the elements as the accumulated result
+    - Two elements from the traversal
+    - The contexts for each element
+    - Returns one of the elements as the accumulated result
 
 ## Return Value
 
@@ -23,21 +23,27 @@ Returns an `Option` containing the result element if the traversal is not empty,
 
 ## Diagram
 
-```
-Before:
-  Graph: [A]---[B]---[C]---[D]
-  Position: [A]*, [B]*, [C]*, [D]* (all vertices)
+```bob
+Before step:
+  [A]* --- [B]* --- [C]* --- [D]*
+  Position: All vertices in traversal
 
-During reduce:
+During reduce execution:
   [A] + [B] = [A]
   [A] + [C] = [C]
   [C] + [D] = [C]
-  Final Result: [C]
+
+After step:
+  [A] --- [B] --- [C] --- [D]
+  Result: Some([C]) (single reduced vertex)
+  Position: Traversal terminated
 ```
 
 ## Example
 
-{% include_fn ./reduce.rs:reduce_example %}
+```rust,noplayground
+{{#include reduce/reduce_example.rs:all}}
+```
 
 ## Notes
 

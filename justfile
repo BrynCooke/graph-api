@@ -10,6 +10,7 @@ test:
 
 book:
     cargo test -p graph-api-book --doc
+    mdbook build graph-api-book -o
 
 lint:
     cargo fmt --check

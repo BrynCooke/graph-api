@@ -1,6 +1,7 @@
 # Walker Overview
 
-Walkers are the central concept in Graph API traversals. They provide a fluent interface for exploring and manipulating graph data.
+Walkers are the central concept in Graph API traversals. They provide a fluent interface for exploring and manipulating
+graph data.
 
 ## What are Walkers?
 
@@ -18,7 +19,8 @@ Walkers use a builder pattern where each step returns a new walker with the accu
 2. Chain steps to define your traversal: `.vertices().edges().tail()`
 3. End with a terminal operation: `.collect()`, `.first()`, `.count()`, etc.
 
-Each step in the chain modifies the traversal in a specific way, moving to different elements, filtering, or collecting data.
+Each step in the chain modifies the traversal in a specific way, moving to different elements, filtering, or collecting
+data.
 
 ## Types of Walkers
 
@@ -27,7 +29,8 @@ The Graph API has two main types of walkers:
 1. **Vertex Walkers**: Traverse vertex elements
 2. **Edge Walkers**: Traverse edge elements
 
-Some operations switch between these types. For example, `.edges()` converts a vertex walker to an edge walker, while `.head()` and `.tail()` convert an edge walker to a vertex walker.
+Some operations switch between these types. For example, `.edges()` converts a vertex walker to an edge walker, while
+`.head()` and `.tail()` convert an edge walker to a vertex walker.
 
 ## Walker States
 
@@ -41,7 +44,7 @@ A walker can be in one of several states:
 
 You create a walker by calling the `walk()` method on a graph:
 
-```rust
+```rust,noplayground
 let walker = graph.walk();
 ```
 
@@ -51,7 +54,7 @@ This returns an empty walker that can be used to start your traversal.
 
 There are several ways to populate a walker with initial elements:
 
-```rust
+```rust,noplayground
 // Start with all vertices
 graph.walk().vertices(VertexSearch::scan())
 
@@ -75,54 +78,20 @@ Walkers provide several ways to control the traversal flow:
 
 ### Basic Traversal
 
-```rust
-// Find all projects created by Alice
-let alice_projects = graph.walk()
-    .vertices(VertexSearch::index(Person::by_name_index(), "Alice"))
-    .edges(EdgeSearch::scan().with_label(Edge::created_label()))
-    .tail()
-    .collect::<Vec<_>>();
+```rust,noplayground
+#![function_body!("basic_traversal_example.rs", basic_walker_example)]
 ```
 
 ### Multi-Step Traversal
 
-```rust
-// Find friends of friends who are over 30
-let friends_of_friends = graph.walk()
-    .vertices(VertexSearch::index(Person::by_name_index(), "Alice"))
-    .edges(EdgeSearch::scan().with_label(Edge::knows_label()))
-    .tail() // Now at Alice's friends
-    .edges(EdgeSearch::scan().with_label(Edge::knows_label()))
-    .tail() // Now at friends of friends
-    .filter(|v, _| {
-        // Only keep people over 30
-        v.project::<Person<_>>().unwrap().age() > 30
-    })
-    .collect::<Vec<_>>();
+```rust,noplayground
+#![function_body!("multi_step_example.rs", multi_step_example)]
 ```
 
 ### Traversal with Detour
 
-```rust
-// For each person, find all their projects and collect as a list of (person, projects)
-let person_projects = graph.walk()
-    .vertices(VertexSearch::scan().with_label(Person::label()))
-    .push_context(|v, _| {
-        v.project::<Person<_>>().unwrap().name().to_string()
-    })
-    .detour(|v| {
-        // For each person, explore their projects
-        v.edges(EdgeSearch::scan().with_label(Edge::created_label()))
-        .tail()
-        .map(|v, ctx| {
-            // Return person name and project name
-            (
-                ctx.to_string(),
-                v.project::<Project<_>>().unwrap().name().to_string()
-            )
-        })
-    })
-    .collect::<Vec<(String, String)>>();
+```rust,noplayground
+#![function_body!("detour_example.rs", detour_traversal_example)]
 ```
 
 ## Next Steps

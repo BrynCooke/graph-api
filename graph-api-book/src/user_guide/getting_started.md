@@ -1,8 +1,28 @@
 # Getting Started
 
-`graph-api` is an API that helps you work with graphs in Rust. Any implementation of the Graph trait will benefit from an ergonomic walker API that allows you to perform traversals.
+## Overview
 
-For the purposes of documentation we will use `SimpleGraph`, but you may choose any other graph implementation.
+`graph-api` is an API that helps you work with graphs in Rust. Graphs are powerful data structures used to represent
+relationships between entities. With the Graph API, you can create, manipulate, and traverse graphs with ease.
+
+Any implementation of the Graph trait will benefit from an ergonomic walker API that allows you to perform complex
+traversals. For the purposes of this documentation, we will use `SimpleGraph`, but you may choose any other graph
+implementation.
+
+## Basic Concepts
+
+A graph consists of:
+
+- **Vertices** (also called nodes): These represent entities in your data model
+- **Edges** (also called links or connections): These represent relationships between entities
+- **Properties**: Both vertices and edges can have properties that store data
+
+The Graph API provides:
+
+- A common interface for working with graph data
+- Powerful traversal capabilities with the Walker API
+- Index support for efficient lookups
+- Derive macros for easy model definition
 
 ## Installation
 
@@ -21,64 +41,36 @@ For a simple graph implementation:
 graph-api-simplegraph = "0.1.0"
 ```
 
-## Your First Graph
+## Examples
 
-Let's define a simple graph to play with:
+### Your First Graph
 
-```rust
-use graph_api_derive::{VertexExt, EdgeExt};
-use graph_api_simplegraph::SimpleGraph;
-use graph_api_lib::{Graph, VertexSearch};
+Let's define a simple graph model with people and projects:
 
-// Define vertex types
-#[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
-    Person {
-        #[index]
-        name: String,
-        age: u64,
-    },
-    Project {
-        name: String,
-    },
-}
-
-// Define edge types
-#[derive(Debug, Clone, EdgeExt)]
-pub enum Edge {
-    Knows { since: i32 },
-    Created,
-}
-
-// Create a graph
-let mut graph = SimpleGraph::new();
-
-// Add vertices
-let alice = graph.add_vertex(Vertex::Person {
-    name: "Alice".to_string(),
-    age: 30,
-});
-
-let bob = graph.add_vertex(Vertex::Person {
-    name: "Bob".to_string(),
-    age: 28,
-});
-
-let project = graph.add_vertex(Vertex::Project {
-    name: "Graph API".to_string(),
-});
-
-// Add edges
-graph.add_edge(alice, bob, Edge::Knows { since: 2020 });
-graph.add_edge(alice, project, Edge::Created);
-
-// Find all vertices
-let vertex_count = graph.walk()
-    .vertices(VertexSearch::scan())
-    .count::<Vec<_>>();
-
-println!("Found {} vertices", vertex_count);
+```rust,noplayground
+{{#include getting_started/first_graph.rs:model}}
 ```
+
+Now we can create a graph and add some data:
+
+```rust,noplayground
+{{#include getting_started/first_graph.rs:create_graph}}
+```
+
+And finally, we can query the graph:
+
+```rust,noplayground
+{{#include getting_started/first_graph.rs:query}}
+```
+
+## Advanced Usage
+
+Graph API supports more advanced features that we'll explore in later sections:
+
+- Complex traversals with the Walker API
+- Different index types for optimized queries
+- Transaction support (with appropriate graph implementations)
+- Custom property types
 
 ## Next Steps
 

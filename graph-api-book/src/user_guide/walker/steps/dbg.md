@@ -1,10 +1,11 @@
 # Debug Step
 
-The `dbg` step prints detailed information about the current traversal state, making it easier to debug complex graph operations.
+The `dbg` step prints detailed information about the current traversal state, making it easier to debug complex graph
+operations.
 
 ## Syntax
 
-```rust
+```rust,noplayground
 walker.dbg("Custom label")
 ```
 
@@ -18,26 +19,28 @@ Returns the same traversal unchanged, allowing you to continue chaining steps.
 
 ## Diagram
 
-```
-Before:
-  Graph: [A]---[B]---[C]
-  Position: [A]*, [B]*, [C]* (all vertices)
+```bob
+Before step:
+  [A]* --- [B]* --- [C]*
+  Position: All vertices in traversal
 
-During dbg:
+During dbg execution:
   Console output:
   [dbg "After filter"] Traversal contains 3 elements:
   - Vertex { id: 1, label: Person { name: "A", age: 32 } }
   - Vertex { id: 2, label: Person { name: "B", age: 28 } }
   - Vertex { id: 3, label: Person { name: "C", age: 45 } }
 
-After:
-  Graph: [A]---[B]---[C]
-  Position: [A]*, [B]*, [C]* (unchanged)
+After step:
+  [A]* --- [B]* --- [C]*
+  Position: All vertices (unchanged)
 ```
 
 ## Example
 
-{% include_fn ./dbg.rs:dbg_example %}
+```rust,noplayground
+{{#include dbg/dbg_example.rs:all}}
+```
 
 ## Notes
 

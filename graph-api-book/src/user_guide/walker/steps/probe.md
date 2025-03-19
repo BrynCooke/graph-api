@@ -4,7 +4,7 @@ The `probe` step allows you to inspect or log vertices or edges during a travers
 
 ## Syntax
 
-```rust
+```rust,noplayground
 walker.probe(|element, context| {
     // inspection logic
 })
@@ -13,9 +13,9 @@ walker.probe(|element, context| {
 ## Parameters
 
 - `inspector`: A function that takes:
-  - A reference to the current element (vertex or edge)
-  - The element's context
-  - Performs some side effect like logging or debugging
+    - A reference to the current element (vertex or edge)
+    - The element's context
+    - Performs some side effect like logging or debugging
 
 ## Return Value
 
@@ -23,22 +23,26 @@ Returns the same traversal unchanged, allowing you to continue chaining steps.
 
 ## Diagram
 
-```
-Before:
-  Graph: [A]---[B]---[C]
-  Position: [A]*, [B]*, [C]* (all vertices)
+```bob
+Before step:
+  [A]* --- [B]* --- [C]*
+  Position: All vertices in traversal
 
-During probe (with logging):
-  [A]* (logs "Element A") -> [B]* (logs "Element B") -> [C]* (logs "Element C")
+During probe execution:
+  [A]* logs "Element A"
+  [B]* logs "Element B"
+  [C]* logs "Element C"
 
-After:
-  Graph: [A]---[B]---[C]
-  Position: [A]*, [B]*, [C]* (unchanged)
+After step:
+  [A]* --- [B]* --- [C]*
+  Position: All vertices (unchanged)
 ```
 
 ## Example
 
-{% include_fn ./probe.rs:probe_example %}
+```rust,noplayground
+{{#include probe/probe_example.rs:all}}
+```
 
 ## Notes
 

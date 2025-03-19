@@ -6,8 +6,11 @@ The `collect` step is used to gather the results of a traversal into a collectio
 
 Here's how to use the `collect` step to gather vertex IDs into a vector:
 
-{% include_fn ../../../../graph-api-lib/examples/collect.rs:example %}
+```rust,noplayground
+#![function_body!("../../../../graph-api-lib/examples/collect.rs", example)]
+```
 
 ## Additional Features
 
-The `collect` step works with any collection type that implements `FromIterator`, allowing you to collect into various collection types.
+The `collect` step works with any collection type that implements `FromIterator`, allowing you to collect into various
+collection types.

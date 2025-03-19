@@ -1,10 +1,12 @@
 # Introduction to Graph API
 
-Graph API is an ergonomic library for working with **in memory** graphs in Rust that provides a flexible and type-safe way to interact with graph data structures.
+Graph API is an ergonomic library for working with **in memory** graphs in Rust that provides a flexible and type-safe
+way to interact with graph data structures.
 
 ## Overview
 
-This library offers a unified interface for working with different types of graphs while maintaining strong type safety and ergonomic usage patterns. It includes features for graph traversal, modification, and custom extensions.
+This library offers a unified interface for working with different types of graphs while maintaining strong type safety
+and ergonomic usage patterns. It includes features for graph traversal, modification, and custom extensions.
 
 ## Key Features
 
@@ -16,48 +18,8 @@ This library offers a unified interface for working with different types of grap
 
 ## Example
 
-```rust
-#[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
-    Person {
-        #[index]
-        name: String,
-        #[index(ordered)]
-        age: u64,
-        // Other fields...
-    },
-    Project {
-        name: String
-    },
-    Rust,
-}
-
-#[derive(Debug, Clone, EdgeExt)]
-pub enum Edge {
-    Knows { since: i32 },
-    Created,
-    Language {
-        name: String
-    },
-}
-
-// Create a graph and populate it
-let mut graph = SimpleGraph::new();
-let person = graph.add_vertex(Vertex::Person { 
-    name: "Bryn".to_string(),
-    age: 45,
-    // Other fields...
-});
-let project = graph.add_vertex(Vertex::Project { name: "Graph API".to_string() });
-graph.add_edge(person, project, Edge::Created);
-
-// Perform a graph traversal
-let people_who_created_projects = graph
-    .walk()
-    .vertices(VertexIndex::person_by_name("Bryn"))
-    .edges(EdgeIndex::created().direction(Direction::Outgoing))
-    .tail()
-    .collect::<Vec<_>>();
+```rust,noplayground
+#![function_body!("introduction_example.rs", basic_example)]
 ```
 
 ## Book Organization
@@ -69,4 +31,5 @@ This book is organized into several sections:
 - **Reference**: Detailed information about API components and functionality
 - **Appendix**: Additional resources and reference materials
 
-Whether you're a graph API user or implementing your own graph backend, this book provides comprehensive documentation to help you make the most of the Graph API library.
+Whether you're a graph API user or implementing your own graph backend, this book provides comprehensive documentation
+to help you make the most of the Graph API library.
