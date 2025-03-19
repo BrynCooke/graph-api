@@ -1,7 +1,6 @@
 use graph_api_lib::Graph;
 use graph_api_lib::{VertexReference, VertexSearch};
-use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Vertex, populate_graph};
+use graph_api_test::Vertex;
 
 /* ANCHOR: all */
 pub fn into_iter_example<G>(graph: G)
@@ -46,12 +45,10 @@ where
     let vertex_names = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .map(|vertex, _ctx| {
-            match vertex.weight() {
-                Vertex::Person { name, .. } => name.clone(),
-                Vertex::Project(project) => project.name.clone(),
-                _ => "Unknown".to_string(),
-            }
+        .map(|vertex, _ctx| match vertex.weight() {
+            Vertex::Person { name, .. } => name.clone(),
+            Vertex::Project(project) => project.name.clone(),
+            _ => "Unknown".to_string(),
         })
         .collect::<Vec<_>>();
 

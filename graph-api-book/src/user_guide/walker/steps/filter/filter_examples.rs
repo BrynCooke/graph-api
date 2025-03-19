@@ -1,4 +1,4 @@
-use graph_api_lib::{Graph, VertexReference, VertexSearch};
+use graph_api_lib::{Graph, VertexReference};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{Vertex, VertexExt, VertexIndex, populate_graph};
 

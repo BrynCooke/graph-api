@@ -16,10 +16,39 @@ For each of these, you'll define a Rust enum that represents all possible types.
 
 ## Model Definition
 
+```bob
+                                                                         .───────────────────.
+                                                                         │      "Person"     │
+                                               .───────"Follows"────────►│    "name: Eve"    │
+                                               │                         │    "age: 31"      │
+                                               │                         '─────────┬─────────'
+                                               │                                   │
+                                               │                                "Follows"
+                                               │                                   │
+                                               │                                   │
+                                               ▼                                   ▼
+                                      .────────────────────.             .───────────────────.
+      .──────────────────.            │      "Person"      │             │      "Person"     │
+      │    "Project"     │◄─"Created"─┤     "name: Alice"  │◄──"Follows"─┤     "name: Bob"   │
+      │ "name: GraphApi" │            │     "age: 28"      │             │     "age: 34"     │
+      '──────────────────'            '──────────┬─────────'             '─────────┬─────────'
+                                                 │                                 │
+                                                 │                                 │
+                                              "Liked"                          "Created"
+                                             "Commented"                           │
+                                                 │                                 │
+                                                 ▼                                 │
+                                         .────────────────.                        │
+                                         │    "Project"   │◄───────────────────────'
+                                         │ "name: Alpaca" │
+                                         '────────────────'
+
+```
+
 Here's a simple example of a social media model:
 
 ```rust,noplayground
-{{#include defining_a_model/social_media_model.rs:model_definition}}
+{{#include ../standard_model.rs:model_definition}}
 ```
 
 This model defines vertex types for people, projects, and comments, along with edge types for the relationships between
@@ -30,7 +59,7 @@ them.
 Once you've defined your model, you can create instances of vertices and edges:
 
 ```rust,noplayground
-{{#include defining_a_model/social_media_model.rs:usage}}
+{{#include ../standard_model.rs:setup}}
 ```
 
 ## Using Derive Macros

@@ -7,7 +7,8 @@ where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
     // Find friends of friends who are over 30
-    let friends_of_friends = graph.walk()
+    let friends_of_friends = graph
+        .walk()
         .vertices(VertexSearch::index(Person::by_name_index(), "Alice"))
         .edges(EdgeSearch::scan().with_label(Edge::knows_label()))
         .tail() // Now at Alice's friends

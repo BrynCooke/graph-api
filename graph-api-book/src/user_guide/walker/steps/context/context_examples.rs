@@ -3,12 +3,10 @@ use graph_api_lib::EdgeSearch;
 use graph_api_lib::Graph;
 use graph_api_lib::Supported;
 use graph_api_lib::VertexReference;
-use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
 use graph_api_test::EdgeExt;
 use graph_api_test::Person;
 use graph_api_test::Vertex;
-use graph_api_test::populate_graph;
 
 /* ANCHOR: all */
 // ANCHOR: vertex_context

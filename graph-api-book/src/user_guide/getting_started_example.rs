@@ -1,6 +1,6 @@
-use graph_api_derive::{VertexExt, EdgeExt};
-use graph_api_simplegraph::SimpleGraph;
+use graph_api_derive::{EdgeExt, VertexExt};
 use graph_api_lib::{Graph, VertexSearch};
+use graph_api_simplegraph::SimpleGraph;
 
 /* ANCHOR: all */
 // Example function showing basic graph creation and usage
@@ -53,7 +53,8 @@ pub fn first_graph_example() {
 
     // ANCHOR: query
     // Find all vertices
-    let vertex_count = graph.walk()
+    let vertex_count = graph
+        .walk()
         .vertices(VertexSearch::scan())
         .count::<Vec<_>>();
 

@@ -7,7 +7,8 @@ where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
     // Find all projects created by Alice
-    let alice_projects = graph.walk()
+    let alice_projects = graph
+        .walk()
         .vertices(VertexSearch::index(Person::by_name_index(), "Alice"))
         .edges(EdgeSearch::scan().with_label(Edge::created_label()))
         .tail()

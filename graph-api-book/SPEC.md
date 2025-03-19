@@ -27,12 +27,20 @@ with [mdBook](https://rust-lang.github.io/mdBook/).
 - Do not place more than one example in a single rust markdown block. For instance, when describing efficient vs
   inefficient traversals sections must be used to break each traversal into it's own rust markdown block.
 
+In addition, we will help the user by defining one graph model that is used over and over in the examples.
+We will NOT create a new model for each example, instead we will use
+the [standard model](src/standard_model.rs)
+This model can be imported by all other examples.
+In the case where the model diagram does not show the necessary information, e.g. biography for full text indexes,
+a minimal portion of the model can be restated just to illustrate the feature
+
 ### Example Structure
 
 - Create a dedicated file for each example with shared files for graph models as appropriate
 - Function name should clearly describe what the example demonstrates
 - Include enough context for the example to be understood in isolation
 - Keep examples concise but complete
+- Use the standard model where possible.
 - Models should not be included inline in the example fn, but instead separated out.
 
 Example an external rust file (file.rs):
@@ -91,6 +99,26 @@ And then traverse it:
 ```
 ````
 
+### Diagrams
+
+Diagrams are rendered using svgbob. This is a nice way to provide illustrations via ascii art.
+
+For instance here is a diagram:
+
+```bob
+    0       3
+     *-------*      +y
+  1 /|    2 /|       ^
+   *-------* |       |
+   | |4    | |7      | ◄╮
+   | *-----|-*     ⤹ +-----> +x
+   |/      |/       / ⤴
+   *-------*       v
+  5       6      +z
+```
+
+See the [svgbob](https://github.com/ivanceras/svgbob) repo for more details.
+
 ### Documentation Organization
 
 - Each major concept should have its own page
@@ -105,14 +133,9 @@ And then traverse it:
 
 ### Walker Step Documentation
 
-Walker steps should be documented with a consistent format:
+Walker steps should be documented with a consistent format.
 
-1. **Title and Description**: Brief explanation of what the step does
-2. **Syntax**: Shows how to call the step
-3. **Parameters**: Description of all parameters
-4. **Return Value**: What the step returns
-5. **Example**: A clear, practical example
-6. **Notes**: Additional information, edge cases, and common patterns
+See [SPEC.md](src/user_guide/walker/steps/SPEC.md) for more details
 
 ## Building the Book
 

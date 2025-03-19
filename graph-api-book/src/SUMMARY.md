@@ -5,7 +5,7 @@
 # User Guide
 
 - [Getting Started](./user_guide/getting_started.md)
-- [Defining a Model](****./user_guide/defining_a_model.md)
+- [Defining a Model](./user_guide/defining_a_model.md)
 - [Property Graphs](./user_guide/property_graphs.md)
     - [Exploring Without Indexes](./user_guide/property_graphs/no_index.md)
     - [Standard Indexes](./user_guide/property_graphs/standard_index.md)

@@ -7,7 +7,7 @@ pub fn mutate_example() {
     // Create a new graph
     let mut graph = SimpleGraph::new();
     // Populate the graph with test data
-    let refs = populate_graph(&mut graph);
+    let _refs = populate_graph(&mut graph);
 
     // ANCHOR: update_vertices
     // Update all people to increment their age by 1

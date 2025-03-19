@@ -43,3 +43,13 @@ Before step:
 After step:
   [A] --- knows --->* [B] --- created ---> [C]
 ```
+
+## Examples
+
+Make sure that examples are:
+
+1. Concise - The should demonstrate one thing only.
+2. Use the standard model - We don't need to create a new model for every step.
+3. Commented - To the user knows what is happening in the example.
+4. Externalized - No inline code, we want to ensure that example code always compiles.
+5. Compiled without errors or warnings - Examples must be clean

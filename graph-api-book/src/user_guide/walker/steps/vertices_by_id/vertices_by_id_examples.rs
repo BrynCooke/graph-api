@@ -1,6 +1,6 @@
 use graph_api_lib::Graph;
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Vertex, populate_graph};
+use graph_api_test::populate_graph;
 
 /* ANCHOR: all */
 // Function demonstrating the vertices_by_id step
