@@ -4,7 +4,7 @@ use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
 use include_doc::function_body;
 use std::marker::PhantomData;
-use std::ops::Deref;
+use std::ops::{Deref, DerefMut};
 
 // ================ CONTEXT IMPLEMENTATION ================
 
@@ -24,6 +24,12 @@ impl<Current, Parent> Deref for ContextRef<Current, Parent> {
 
     fn deref(&self) -> &Self::Target {
         &self.inner.delegate
+    }
+}
+
+impl<Current, Parent> DerefMut for ContextRef<Current, Parent> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.inner.delegate
     }
 }
 

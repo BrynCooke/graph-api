@@ -9,6 +9,7 @@ pub mod first;
 pub mod fold;
 pub mod limit;
 pub mod mutation;
+pub mod mutate_context;
 pub mod probe;
 pub mod reduce;
 pub mod vertices;

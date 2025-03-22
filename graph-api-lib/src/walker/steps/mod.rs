@@ -8,6 +8,7 @@ pub use self::empty::Empty;
 pub use self::endpoints::{End, Endpoints};
 pub use self::filter::{EdgeFilter, VertexFilter};
 pub use self::limit::{EdgeLimit, VertexLimit};
+// No need to re-export the mutate_context types as they're not used externally
 pub use self::probe::{EdgeProbe, VertexProbe};
 pub use self::vertices::Vertices;
 pub use self::vertices_by_id::VertexIter;
@@ -30,6 +31,7 @@ mod into_iter;
 mod limit;
 mod map;
 mod mutate;
+mod mutate_context;
 mod probe;
 pub(crate) mod reduce;
 mod tail;

@@ -281,6 +281,8 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, vertices_test_limit, $crate::steps::vertices::test_limit}
         $crate::general_test!{$setup, vertices_test_head, $crate::steps::vertices::test_head}
         $crate::general_test!{$setup, vertices_test_tail, $crate::steps::vertices::test_tail}
+        $crate::general_test!{$setup, mutate_context_vertex, $crate::steps::mutate_context::test_vertex_mutate_context}
+        $crate::general_test!{$setup, mutate_context_edge, $crate::steps::mutate_context::test_edge_mutate_context}
         $crate::general_test!{$setup, mutation_test_mutation, $crate::steps::mutation::test_mutation}
         $crate::general_test!{$setup, mutation_test_edge_mutation, $crate::steps::mutation::test_edge_mutation}
         $crate::general_test!{$setup, count_test_vertices_count, $crate::steps::count::test_vertices_count}
