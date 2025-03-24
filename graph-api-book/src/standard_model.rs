@@ -11,13 +11,13 @@ pub enum Vertex {
     Person {
         name: String, // Not indexed
 
-        #[index] // Standard index for exact lookups
+        #[index(hash)] // Standard index for exact lookups
         username: String,
 
         #[index(full_text)] // Full-text index for text search
         biography: String,
 
-        #[index(ordered)] // Ordered index for range queries
+        #[index(range)] // Range index for range queries
         age: u8,
     },
 

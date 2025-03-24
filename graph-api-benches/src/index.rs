@@ -1,7 +1,7 @@
 use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
 use crate::{
-    SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexIndex,
-    SupportsVertexLabelIndex, SupportsVertexOrderedIndex,
+    SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexHashIndex,
+    SupportsVertexLabelIndex, SupportsVertexRangeIndex,
 };
 
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
@@ -17,9 +17,9 @@ pub fn run_benchmarks<G>(
             Vertex = Vertex,
             Edge = Edge,
             SupportsVertexLabelIndex = SupportsVertexLabelIndex,
-            SupportsVertexIndex = SupportsVertexIndex,
+            SupportsVertexHashIndex = SupportsVertexHashIndex,
             SupportsVertexFullTextIndex = SupportsVertexFullTextIndex,
-            SupportsVertexOrderedIndex = SupportsVertexOrderedIndex,
+            SupportsVertexRangeIndex = SupportsVertexRangeIndex,
             SupportsEdgeLabelIndex = SupportsEdgeLabelIndex,
         >,
 {
@@ -29,8 +29,8 @@ pub fn run_benchmarks<G>(
     bench_index_vertex_property(group, setup.clone());
     #[cfg(feature = "vertex-full-text-index")]
     bench_index_vertex_fulltext(group, setup.clone());
-    #[cfg(feature = "vertex-ordered-index")]
-    bench_index_vertex_ordered_range(group, setup.clone());
+    #[cfg(feature = "vertex-range-index")]
+    bench_index_vertex_range_range(group, setup.clone());
     #[cfg(feature = "edge-label-index")]
     bench_index_edge_label(group, setup.clone());
 }
@@ -62,7 +62,7 @@ fn bench_index_vertex_label<
 /// Benchmark vertex property index lookup
 #[allow(dead_code)]
 fn bench_index_vertex_property<
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexHashIndex = Supported>,
 >(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
@@ -105,16 +105,16 @@ fn bench_index_vertex_fulltext<
     });
 }
 
-/// Benchmark vertex ordered index range queries
+/// Benchmark vertex range index range queries
 #[allow(dead_code)]
-fn bench_index_vertex_ordered_range<
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexOrderedIndex = Supported>,
+fn bench_index_vertex_range_range<
+    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexRangeIndex = Supported>,
 >(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) {
     group.throughput(Throughput::Elements(1));
-    group.bench_function("index_vertex_ordered_range", |b| {
+    group.bench_function("index_vertex_range_range", |b| {
         // Setup: Create graph with random data
         let mut graph = setup();
         generate_random_graph(&mut graph, GraphSize::Small, 42);

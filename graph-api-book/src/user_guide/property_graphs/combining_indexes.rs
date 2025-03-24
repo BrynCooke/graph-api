@@ -13,7 +13,7 @@ pub fn define_combined_indexes() {
     // 2. Person::biography - Full-text index for text search
     //    - Used for searching content by keywords
     //
-    // 3. Person::age - Ordered index for range queries
+    // 3. Person::age - Range index for range queries
     //    - Used for finding people in specific age ranges
     //
     // By combining these different index types, we can create powerful
@@ -42,7 +42,7 @@ pub fn multi_step_traversal() {
 
     println!("Bryn follows {} people", people_followed_by_bryn.len());
 
-    // Start with people in a specific age range (using ordered index)
+    // Start with people in a specific age range (using range index)
     // Find the projects they created (using edge label index)
     let projects_by_people_in_30s = graph
         .walk()
@@ -68,7 +68,7 @@ pub fn compound_queries() {
     // Use the standard graph defined in standard_model.rs
     let graph = standard_populated_graph();
 
-    // Find developers (full-text index) who are in their 30s (ordered index)
+    // Find developers (full-text index) who are in their 30s (range index)
     let developers_in_30s = graph
         .walk()
         .vertices(VertexIndex::person_by_biography_containing("developer")) // Full-text index
@@ -89,7 +89,7 @@ pub fn compound_queries() {
         .walk()
         // Start with people interested in graphs (full-text index)
         .vertices(VertexIndex::person_by_biography_containing("graph"))
-        // Filter for those under 30 (could use ordered index directly)
+        // Filter for those under 30 (could use range index directly)
         .filter(|vertex, _| {
             if let Vertex::Person { age, .. } = vertex.weight() {
                 age < &30

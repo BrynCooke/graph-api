@@ -1,5 +1,5 @@
 use crate::VertexId;
-use graph_api_lib::{Index, Value};
+use graph_api_lib::{Index, IndexType, Value};
 use paste::paste;
 use smallbox::SmallBox;
 use smallbox::space::S8;
@@ -9,40 +9,41 @@ use std::ops::Range;
 use uuid::Uuid;
 
 mod full_text;
-mod ordered;
-mod unordered;
+mod hash;
+mod range;
 use std::ops::Bound;
 
+#[derive(Debug)]
 pub(crate) enum VertexIndexStorage {
     FullTextString(full_text::FullTextIndex<u32>),
-    UnorderedUuid(unordered::UnorderedIndex<Uuid, u32>),
-    UnorderedString(unordered::UnorderedIndex<String, u32>),
-    UnorderedUSize(unordered::UnorderedIndex<usize, u32>),
-    UnorderedU128(unordered::UnorderedIndex<u128, u32>),
-    UnorderedU64(unordered::UnorderedIndex<u64, u32>),
-    UnorderedU32(unordered::UnorderedIndex<u32, u32>),
-    UnorderedU16(unordered::UnorderedIndex<u16, u32>),
-    UnorderedU8(unordered::UnorderedIndex<u8, u32>),
-    UnorderedI128(unordered::UnorderedIndex<i128, u32>),
-    UnorderedI64(unordered::UnorderedIndex<i64, u32>),
-    UnorderedI32(unordered::UnorderedIndex<i32, u32>),
-    UnorderedI16(unordered::UnorderedIndex<i16, u32>),
-    UnorderedI8(unordered::UnorderedIndex<i8, u32>),
-    UnorderedBool(unordered::UnorderedIndex<bool, u32>),
-    OrderedUuid(ordered::OrderedIndex<Uuid, u32>),
-    OrderedString(ordered::OrderedIndex<String, u32>),
-    OrderedUSize(ordered::OrderedIndex<usize, u32>),
-    OrderedU128(ordered::OrderedIndex<u128, u32>),
-    OrderedU64(ordered::OrderedIndex<u64, u32>),
-    OrderedU32(ordered::OrderedIndex<u32, u32>),
-    OrderedU16(ordered::OrderedIndex<u16, u32>),
-    OrderedU8(ordered::OrderedIndex<u8, u32>),
-    OrderedI128(ordered::OrderedIndex<i128, u32>),
-    OrderedI64(ordered::OrderedIndex<i64, u32>),
-    OrderedI32(ordered::OrderedIndex<i32, u32>),
-    OrderedI16(ordered::OrderedIndex<i16, u32>),
-    OrderedI8(ordered::OrderedIndex<i8, u32>),
-    OrderedBool(ordered::OrderedIndex<bool, u32>),
+    HashUuid(hash::HashIndex<Uuid, u32>),
+    HashString(hash::HashIndex<String, u32>),
+    HashUSize(hash::HashIndex<usize, u32>),
+    HashU128(hash::HashIndex<u128, u32>),
+    HashU64(hash::HashIndex<u64, u32>),
+    HashU32(hash::HashIndex<u32, u32>),
+    HashU16(hash::HashIndex<u16, u32>),
+    HashU8(hash::HashIndex<u8, u32>),
+    HashI128(hash::HashIndex<i128, u32>),
+    HashI64(hash::HashIndex<i64, u32>),
+    HashI32(hash::HashIndex<i32, u32>),
+    HashI16(hash::HashIndex<i16, u32>),
+    HashI8(hash::HashIndex<i8, u32>),
+    HashBool(hash::HashIndex<bool, u32>),
+    RangeUuid(range::RangeIndex<Uuid, u32>),
+    RangeString(range::RangeIndex<String, u32>),
+    RangeUSize(range::RangeIndex<usize, u32>),
+    RangeU128(range::RangeIndex<u128, u32>),
+    RangeU64(range::RangeIndex<u64, u32>),
+    RangeU32(range::RangeIndex<u32, u32>),
+    RangeU16(range::RangeIndex<u16, u32>),
+    RangeU8(range::RangeIndex<u8, u32>),
+    RangeI128(range::RangeIndex<i128, u32>),
+    RangeI64(range::RangeIndex<i64, u32>),
+    RangeI32(range::RangeIndex<i32, u32>),
+    RangeI16(range::RangeIndex<i16, u32>),
+    RangeI8(range::RangeIndex<i8, u32>),
+    RangeBool(range::RangeIndex<bool, u32>),
 }
 
 impl<T: Index> From<&T> for VertexIndexStorage {
@@ -51,13 +52,17 @@ impl<T: Index> From<&T> for VertexIndexStorage {
             ($ty:ty, $ident: ident) => {
                 paste! {
                     if index.ty() == TypeId::of::<$ty>() {
-                        if index.full_text() {
-                            return VertexIndexStorage::FullTextString(Default::default())
-                        }
-                        if index.ordered() {
-                            return VertexIndexStorage::[<Ordered $ident>](Default::default())
-                        } else {
-                            return VertexIndexStorage::[<Unordered $ident>](Default::default())
+                        match index.index_type() {
+                            IndexType::FullText => {
+                                return VertexIndexStorage::FullTextString(Default::default());
+                            }
+                            IndexType::Range => {
+                                return VertexIndexStorage::[<Range $ident>](Default::default());
+                            }
+                            IndexType::Hash => {
+                                return VertexIndexStorage::[<Hash $ident>](Default::default());
+                            },
+                            _=>{}
                         }
                     }
                 }
@@ -88,28 +93,28 @@ impl VertexIndexStorage {
             ($ty: ident) => {
                 insert!($ty, $ty, into)
             };
-            ($ty: ident, $ident: ident, $conversion: expr) => {
+            ($ty: ident, $index: ident, $conversion: expr) => {
                 paste! {
-                    if let Value::Str(key) = key {
-                        if index.full_text() {
+                    match (&key, index.index_type()) {
+                        (Value::Str(key), IndexType::FullText) => {
                             if let VertexIndexStorage::FullTextString(index) = self {
-                                // full text indexes are inverted
                                 index.insert(value, key);
+                                return
                             }
-                        }
-                    }
-                    if let Value::$ty(key) = key {
-                        if index.ordered() {
-                                if let VertexIndexStorage::[<Ordered $ident>](index) = self {
-                                    index.insert(key.$conversion(), value);
-                                }
-                        } else {
-                                if let VertexIndexStorage::[<Unordered $ident>](index) = self {
-                                    index.insert(key.$conversion(), value);
-                                }
-
-                        }
-                        return;
+                        },
+                        (Value::$ty(key), IndexType::Range) => {
+                            if let VertexIndexStorage::[<Range $index>](index) = self {
+                                index.insert((*key).$conversion(), value);
+                                return
+                            }
+                        },
+                        (Value::$ty(key), IndexType::Hash) => {
+                            if let VertexIndexStorage::[<Hash $index>](index) = self {
+                                index.insert((*key).$conversion(), value);
+                                return
+                            }
+                        },
+                        _=>{}
                     }
                 }
             };
@@ -128,30 +133,34 @@ impl VertexIndexStorage {
         insert!(I8);
         insert!(Bool);
         insert!(Uuid);
-        panic!("unsupported index type {:?}", index)
+        panic!("unsupported index type {:?}({})", index, index.index_type())
     }
     pub(crate) fn remove<I: Index>(&mut self, key: &Value, value: u32, index: &I) {
         macro_rules! remove {
             ($ty: ident) => {
                 remove!($ty, $ty)
             };
-            ($ty: ident, $ident: ident) => {
+            ($ty: ident, $index: ident) => {
                 paste! {
                     if let Value::$ty(key) = key {
                         let key = key.deref();
-                        if index.full_text() {
-                            if let VertexIndexStorage::FullTextString(index) = self {
-                                index.remove(&value);
+                        match index.index_type() {
+                            IndexType::FullText => {
+                                if let VertexIndexStorage::FullTextString(index) = self {
+                                    index.remove(&value);
+                                }
+                            },
+                            IndexType::Range => {
+                                if let VertexIndexStorage::[<Range $index>](index) = self {
+                                    index.remove(key, &value);
+                                }
+                            },
+                            IndexType::Hash => {
+                                if let VertexIndexStorage::[<Hash $index>](index) = self {
+                                    index.remove(key, &value);
+                                }
                             }
-                        }
-                        else if index.ordered() {
-                            if let VertexIndexStorage::[<Ordered $ident>](index) = self {
-                                index.remove(key, &value);
-                            }
-                        } else {
-                            if let VertexIndexStorage::[<Unordered $ident>](index) = self {
-                                index.remove(key, &value);
-                            }
+                            _=>{}
                         }
                         return;
                     }
@@ -186,26 +195,28 @@ impl VertexIndexStorage {
             ($ident: ident) => {
                 search!($ident, $ident);
             };
-            ($ident: ident, $index: ident) => {
+            ($ty: ident, $index: ident) => {
                 paste! {
-                    if let Value::Str(key) = key {
-                        if index.full_text() {
+                    match (key, index.index_type()) {
+                        (Value::Str(key), IndexType::FullText) => {
+                            let key = key.deref();
                             if let VertexIndexStorage::FullTextString(index) = self {
                                 return smallbox::smallbox!(index.search(key).map(move |id| VertexId::new(label, id)));
                             }
-                        }
-                    }
-                    if let Value::$ident(key) = key {
-                        let key = key.deref();
-                        if index.ordered() {
-                            if let VertexIndexStorage::[<Ordered $index>](index) = self {
+                        },
+                        (Value::$ty(key), IndexType::Range) => {
+                            let key = key.deref();
+                            if let VertexIndexStorage::[<Range $index>](index) = self {
                                 return smallbox::smallbox!(index.get(key).map(move |id| VertexId::new(label, id)));
                             }
-                        } else {
-                            if let VertexIndexStorage::[<Unordered $index>](index) = self {
+                        },
+                        (Value::$ty(key), IndexType::Hash) => {
+                            let key = key.deref();
+                            if let VertexIndexStorage::[<Hash $index>](index) = self {
                                 return smallbox::smallbox!(index.get(key).map(move |id| VertexId::new(label, id)));
                             }
-                        }
+                        },
+                        _=>{}
                     }
                 }
             };
@@ -245,12 +256,8 @@ impl VertexIndexStorage {
             ($ident: ident, $ty: ty, $index: ident) => {
                 paste! {
                     if let (Value::$ident(start), Value::$ident(end)) = (&range.start, &range.end) {
-                        if index.ordered() {
-                            if let VertexIndexStorage::[<Ordered $index>](index) = self {
-                                return smallbox::smallbox!(index.range::<$ty,_ >((Bound::Included(*start), Bound::Excluded(*end))).map(move |id| VertexId::new(label, id)));
-                            }
-                        } else {
-                            panic!("unordered index does not support range search");
+                        if let VertexIndexStorage::[<Range $index>](index) = self {
+                            return smallbox::smallbox!(index.range::<$ty,_ >((Bound::Included(*start), Bound::Excluded(*end))).map(move |id| VertexId::new(label, id)));
                         }
                     }
                 }

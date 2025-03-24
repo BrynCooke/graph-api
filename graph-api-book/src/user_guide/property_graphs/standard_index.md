@@ -65,5 +65,5 @@ Standard indexes have some limitations:
 2. **Memory overhead**: Each index increases memory usage
 3. **Update cost**: Indexes must be maintained when data changes
 
-For range queries or partial text matching, consider [ordered indexes](./ordered_index.md)
+For range queries or partial text matching, consider [range indexes](./range_index.md)
 or [full-text indexes](./full_text_index.md) respectively.

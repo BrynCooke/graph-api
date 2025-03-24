@@ -20,7 +20,7 @@ pub(crate) struct VertexStorage<Vertex> {
 }
 
 /// An adjacency represents a unidirectional edge.
-/// The fields are ordered to minimize the number of distinct ranges that
+/// The fields are range to minimize the number of distinct ranges that
 /// need to be covered for the most common traversal.
 /// To do this direction is first as it has the lowest cardinality.
 /// Then edge label, as users will likely only have a single edge type that they want to traverse.

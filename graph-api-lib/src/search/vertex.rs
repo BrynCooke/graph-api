@@ -52,7 +52,7 @@ where
     pub fn get<V>(index: <<Graph::Vertex as Element>::Label as Label>::Index, value: V) -> Self
     where
         V: Into<Value<'search>>,
-        Graph: crate::Graph<SupportsVertexIndex = Supported>,
+        Graph: crate::Graph<SupportsVertexHashIndex = Supported>,
     {
         Self::Index {
             index,
@@ -64,7 +64,7 @@ where
     pub fn range<R>(index: <<Graph::Vertex as Element>::Label as Label>::Index, range: R) -> Self
     where
         R: Into<ValueRange<'search>>,
-        Graph: crate::Graph<SupportsVertexOrderedIndex = Supported>,
+        Graph: crate::Graph<SupportsVertexRangeIndex = Supported>,
     {
         Self::Range {
             index,

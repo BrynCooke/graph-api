@@ -11,7 +11,7 @@ pub fn define_standard_index() {
     // In the Vertex enum from standard_model.rs:
     // - Person::username has a standard index for exact username lookups
     // - Biography uses a full-text index for fuzzy text search
-    // - Age uses an ordered index for range queries
+    // - Age uses an range index for range queries
 
     // Properties without the #[index] attribute (e.g., Person::name, unique_id)
     // can only be searched via full scan
@@ -35,7 +35,7 @@ pub fn standard_index_queries() {
         .vertices(VertexIndex::person_by_username("bryn123"))
         .first();
 
-    // Also efficient: Find a person by age (using ordered index)
+    // Also efficient: Find a person by age (using range index)
     let _people_34 = graph
         .walk()
         // Use the index

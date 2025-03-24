@@ -154,7 +154,7 @@ where
     ///
     /// - The `limit` step is generally applied after filtering operations but before terminal operations
     /// - It does not guarantee which vertices will be returned, just how many
-    /// - For predictable results, combine with sorting operations or ordered indexes
+    /// - For predictable results, combine with sorting operations or range indexes
     /// - Can significantly improve performance by avoiding unnecessary traversal
     /// - Particularly useful for large graphs where full traversal would be expensive
     /// - If the traversal contains fewer vertices than the limit, all vertices are returned

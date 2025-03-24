@@ -1,6 +1,28 @@
 use std::any::TypeId;
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 use std::hash::Hash;
+
+/// The type of index
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
+pub enum IndexType {
+    /// A hash index that supports lookup by value.
+    Hash,
+    /// A range index that supports range search
+    Range,
+    /// A full text index
+    FullText,
+}
+
+impl Display for IndexType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            IndexType::Hash => write!(f, "hash"),
+            IndexType::Range => write!(f, "range"),
+            IndexType::FullText => write!(f, "full text"),
+        }
+    }
+}
 
 /// An Index is a fast lookup to an element. This is
 pub trait Index
@@ -14,11 +36,8 @@ where
     /// The index ordinal
     fn ordinal(&self) -> usize;
 
-    /// If the index is ordered
-    fn ordered(&self) -> bool;
-
-    /// If the index is full text
-    fn full_text(&self) -> bool;
+    /// The type of index
+    fn index_type(&self) -> IndexType;
 }
 
 impl Index for () {
@@ -30,11 +49,7 @@ impl Index for () {
         unimplemented!("index not implemented")
     }
 
-    fn ordered(&self) -> bool {
-        false
-    }
-
-    fn full_text(&self) -> bool {
-        false
+    fn index_type(&self) -> IndexType {
+        unimplemented!("index not implemented")
     }
 }

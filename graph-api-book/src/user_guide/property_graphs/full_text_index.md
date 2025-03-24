@@ -71,5 +71,5 @@ Full-text indexes have some limitations:
 3. **Tokenization limitations**: Basic word splitting may not handle all languages equally
 4. **Update complexity**: Maintaining the index adds overhead during updates
 
-For range-based queries, see [ordered indexes](./ordered_index.md), and for combining different index types,
+For range-based queries, see [range indexes](./range_index.md), and for combining different index types,
 see [combining indexes](./combining_indexes.md).

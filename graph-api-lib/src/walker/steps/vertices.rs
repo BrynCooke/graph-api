@@ -137,7 +137,7 @@ where
     /// - For more complex criteria, you can chain the `filter` step after this one
     /// - When working with large graphs, consider using indexed properties for better performance
     /// - This step supports all vertex search mechanisms, including label-based, index-based, and full scans
-    /// - The traversal order is not guaranteed unless you specifically use an ordered index
+    /// - The traversal order is not guaranteed unless you specifically use an range index
     pub fn vertices<'a, T: Into<VertexSearch<'a, Graph>>>(
         self,
         vertex_search: T,

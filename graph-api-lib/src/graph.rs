@@ -71,13 +71,13 @@ pub trait Graph: Sized + Debug {
     /// Supports indexing of edges by label.
     type SupportsEdgeLabelIndex: Support;
     /// Supports indexing of vertices by field.
-    type SupportsVertexIndex: Support;
+    type SupportsVertexHashIndex: Support;
     /// Supports indexing of edges by field.
-    type SupportsEdgeIndex: Support;
+    type SupportsEdgeHashIndex: Support;
     /// Supports indexing of vertices by field with range support.
-    type SupportsVertexOrderedIndex: Support;
+    type SupportsVertexRangeIndex: Support;
     /// Supports indexing of edges by field with range support.
-    type SupportsEdgeOrderedIndex: Support;
+    type SupportsEdgeRangeIndex: Support;
     /// Supports indexing of vertices by field using an inverted full text index.
     type SupportsVertexFullTextIndex: Support;
     /// Supports indexing of edges by adjacent vertex label.

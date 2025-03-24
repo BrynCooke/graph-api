@@ -1,5 +1,5 @@
 use crate::standard_model::{
-    Edge, EdgeIndex, Person, PersonMut, Vertex, VertexExt, VertexIndex, standard_populated_graph,
+    Edge, Person, PersonMut, Vertex, VertexIndex, standard_populated_graph,
 };
 use graph_api_lib::{Graph, VertexReference, VertexReferenceMut};
 

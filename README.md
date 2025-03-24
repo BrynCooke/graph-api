@@ -37,11 +37,11 @@ pub enum Vertex {
     Person {
         #[index]
         name: String,
-        #[index(ordered)]
+        #[index(range)]
         age: u64,
         #[index]
         unique_id: Uuid,
-        #[index(ordered)]
+        #[index(range)]
         username: String,
         #[index(full_text)]
         biography: String,

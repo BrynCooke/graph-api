@@ -12,7 +12,7 @@ use std::hash::Hash;
 ///
 /// # Type Parameters
 /// - `V`: The type of values/keys to associate with indexed text. Must be `Eq`, `Hash` and `Copy`
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct FullTextIndex<V>
 where
     V: Eq + Hash + Copy,

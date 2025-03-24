@@ -62,9 +62,9 @@ You can collect into a `HashSet` to get unique values:
 {{#include collect/collect_example.rs:collect_hashset}}
 ```
 
-### Collecting into an Ordered Set
+### Collecting into an Range Set
 
-Use a `BTreeSet` when you need ordered unique values:
+Use a `BTreeSet` when you need range unique values:
 
 ```rust,noplayground
 {{#include collect/collect_example.rs:collect_btreeset}}

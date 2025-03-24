@@ -37,7 +37,8 @@ pub(crate) struct Field {
     pub(crate) index_ident: Ident,
     pub(crate) index_variant: Ident,
     pub(crate) indexed: bool,
-    pub(crate) ordered: bool,
+    pub(crate) hash: bool,
+    pub(crate) range: bool,
     pub(crate) full_text: bool,
 }
 
@@ -152,7 +153,8 @@ impl TryFrom<DeriveType<'_>> for Model {
                                             .expect("named field has ident")
                                             .clone(),
                                         ty: field.ty.clone(),
-                                        ordered: false,
+                                        hash: false,
+                                        range: false,
                                         full_text: false,
                                         indexed: false,
                                         index_ident: model.index_ident.clone(),
@@ -165,9 +167,13 @@ impl TryFrom<DeriveType<'_>> for Model {
                                     {
                                         field_model.indexed = true;
                                         let _ = attr.parse_nested_meta(|m| {
-                                            if m.path.is_ident("ordered") {
-                                                field_model.ordered = true;
-                                            } else if m.path.is_ident("full_text") {
+                                            if m.path.is_ident("hash") {
+                                                field_model.hash = true;
+                                            }
+                                            else if m.path.is_ident("range") {
+                                                field_model.range = true;
+                                            }
+                                            else if m.path.is_ident("full_text") {
                                                 if field.ty != parse_quote!(String) {
                                                     errors.push(syn::Error::new_spanned(
                                                         m.path,
@@ -184,6 +190,13 @@ impl TryFrom<DeriveType<'_>> for Model {
                                             }
                                             Ok(())
                                         });
+                                        if !field_model.full_text && !field_model.hash && !field_model.range {
+                                            let ident = field.ident.clone().unwrap_or_else(||format_ident!("<unknown>"));
+                                            errors.push(syn::Error::new_spanned(
+                                                attr,
+                                                format!("index type not specified on {}, Specify hash, range or full_text", ident)),
+                                            );
+                                        }
                                     }
                                     field_model
                                 })

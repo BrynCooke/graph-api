@@ -40,7 +40,7 @@ pub enum Vertex {
         #[index]
         name: String,
 
-        #[index(ordered)]
+        #[index(range)]
         age: u64,
 
         #[index(full_text)]
@@ -115,7 +115,7 @@ VertexIndex::person_by_age(value: u64) -> VertexSearch<'_, Graph>
 
 #### Range-based Querying
 
-For fields with the `#[index(ordered)]` attribute:
+For fields with the `#[index(range)]` attribute:
 
 ```rust,noplayground
 // Query for Person vertices with age in a range
@@ -359,7 +359,7 @@ where
 You can use these attributes on struct fields:
 
 - `#[index]` - Basic indexing for efficient lookups
-- `#[index(ordered)]` - Enables range queries
+- `#[index(range)]` - Enables range queries
 - `#[index(full_text)]` - Enables text search (String fields only)
 
 ## Best Practices

@@ -15,7 +15,7 @@ where
     Graph: graph_api_lib::Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexIndex = Supported,
+            SupportsVertexHashIndex = Supported,
             SupportsVertexLabelIndex = Supported,
             SupportsEdgeLabelIndex = Supported,
         >,

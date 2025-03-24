@@ -19,13 +19,13 @@ use uuid::Uuid;
 #[derive(Debug, Clone, VertexExt)]
 pub enum Vertex {
     Person {
-        #[index]
+        #[index(hash)]
         name: String,
-        #[index(ordered)]
+        #[index(range)]
         age: u64,
-        #[index]
+        #[index(hash)]
         unique_id: Uuid,
-        #[index(ordered)]
+        #[index(range)]
         username: String,
         #[index(full_text)]
         biography: String,
@@ -193,9 +193,9 @@ macro_rules! vertex_index_label_test {
     };
 }
 
-#[cfg(feature = "vertex-index")]
+#[cfg(feature = "vertex-hash-index")]
 #[macro_export]
-macro_rules! vertex_index_default_test {
+macro_rules! vertex_index_hash_test {
     ($setup:expr, $name:ident, $path:path) => {
         #[test]
         fn $name() {
@@ -204,11 +204,11 @@ macro_rules! vertex_index_default_test {
         }
     };
 }
-#[cfg(not(feature = "vertex-index"))]
+#[cfg(not(feature = "vertex-hash-index"))]
 #[macro_export]
-macro_rules! vertex_index_default_test {
+macro_rules! vertex_index_hash_test {
     ($setup:expr, $name:ident, $path:path) => {
-        $crate::check_unsupported!($setup, $name, SupportsVertexIndex);
+        $crate::check_unsupported!($setup, $name, SupportsVertexHashIndex);
     };
 }
 
@@ -231,9 +231,9 @@ macro_rules! vertex_index_full_text_test {
     };
 }
 
-#[cfg(feature = "vertex-ordered-index")]
+#[cfg(feature = "vertex-range-index")]
 #[macro_export]
-macro_rules! vertex_index_ordered_test {
+macro_rules! vertex_index_range_test {
     ($setup:expr, $name:ident, $path:path) => {
         #[test]
         fn $name() {
@@ -243,11 +243,11 @@ macro_rules! vertex_index_ordered_test {
     };
 }
 
-#[cfg(not(feature = "vertex-ordered-index"))]
+#[cfg(not(feature = "vertex-range-index"))]
 #[macro_export]
-macro_rules! vertex_index_ordered_test {
+macro_rules! vertex_index_range_test {
     ($setup:expr, $name:ident, $path:path) => {
-        $crate::check_unsupported!($setup, $name, SupportsVertexOrderedIndex);
+        $crate::check_unsupported!($setup, $name, SupportsVertexRangeIndex);
     };
 }
 
@@ -306,15 +306,15 @@ macro_rules! test_suite {
         $crate::edge_index_label_test!{$setup, index_edge_label_test_index_limit, $crate::index::edge_label::test_index_limit}
         $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index, $crate::index::vertex_label::test_index}
         $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index_limit, $crate::index::vertex_label::test_index_limit}
-        $crate::vertex_index_default_test!{$setup, index_vertex_default_test_index, $crate::index::vertex_default::test_index}
-        $crate::vertex_index_default_test!{$setup, index_vertex_default_test_index_remove, $crate::index::vertex_default::test_index_remove}
-        $crate::vertex_index_default_test!{$setup, index_vertex_default_test_index_update, $crate::index::vertex_default::test_index_update}
+        $crate::vertex_index_hash_test!{$setup, index_vertex_hash_test_index, $crate::index::vertex_hash::test_index}
+        $crate::vertex_index_hash_test!{$setup, index_vertex_hash_test_index_remove, $crate::index::vertex_hash::test_index_remove}
+        $crate::vertex_index_hash_test!{$setup, index_vertex_hash_test_index_update, $crate::index::vertex_hash::test_index_update}
         $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index, $crate::index::vertex_full_text::test_index}
         $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index_remove, $crate::index::vertex_full_text::test_index_remove}
         $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index_update, $crate::index::vertex_full_text::test_index_update}
-        $crate::vertex_index_ordered_test!{$setup, index_vertex_ordered_test_index, $crate::index::vertex_ordered::test_index}
-        $crate::vertex_index_ordered_test!{$setup, index_vertex_ordered_test_index_remove, $crate::index::vertex_ordered::test_index_remove}
-        $crate::vertex_index_ordered_test!{$setup, index_vertex_ordered_test_index_update, $crate::index::vertex_ordered::test_index_update}
+        $crate::vertex_index_range_test!{$setup, index_vertex_range_test_index, $crate::index::vertex_range::test_index}
+        $crate::vertex_index_range_test!{$setup, index_vertex_range_test_index_remove, $crate::index::vertex_range::test_index_remove}
+        $crate::vertex_index_range_test!{$setup, index_vertex_range_test_index_update, $crate::index::vertex_range::test_index_update}
 
         $crate::proptest! {
             #[test]

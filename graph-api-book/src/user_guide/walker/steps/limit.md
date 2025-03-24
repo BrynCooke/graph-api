@@ -54,7 +54,7 @@ Returns a new walker that will yield at most `n` elements.
 ## Notes
 
 - The limit step doesn't guarantee which elements will be returned, just how many
-- For ordered or predictable results, combine with sorted indexes or other ordering steps
+- For range or predictable results, combine with sorted indexes or other ordering steps
 - Applying limit can significantly improve performance by avoiding unnecessary traversal work
 - Useful patterns:
     - `limit(1)` to get a single element (though `first()` is more idiomatic)

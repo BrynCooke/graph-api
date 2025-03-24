@@ -9,7 +9,7 @@ use graph_api_lib::{Graph, Supported, VertexReferenceMut};
 /// expected result.
 pub fn test_index<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexHashIndex = Supported>,
 {
     let refs = populate_graph(graph);
     let collected = graph
@@ -28,7 +28,7 @@ where
 /// returns an empty result.
 pub fn test_index_remove<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexHashIndex = Supported>,
 {
     let refs = populate_graph(graph);
     graph.remove_vertex(refs.bryn);
@@ -43,7 +43,7 @@ where
 
 pub fn test_index_update<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexHashIndex = Supported>,
 {
     let refs = populate_graph(graph);
     graph

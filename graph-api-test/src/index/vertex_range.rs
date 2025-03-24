@@ -6,8 +6,8 @@ where
     T: Graph<
             Vertex = Vertex,
             Edge = Edge,
-            SupportsVertexOrderedIndex = Supported,
-            SupportsVertexIndex = Supported,
+            SupportsVertexRangeIndex = Supported,
+            SupportsVertexHashIndex = Supported,
         >,
 {
     let refs = populate_graph(graph);
@@ -27,7 +27,7 @@ where
 
 pub fn test_index_remove<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexOrderedIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexRangeIndex = Supported>,
 {
     let refs = populate_graph(graph);
     // Remove a vertex
@@ -45,7 +45,7 @@ where
 
 pub fn test_index_update<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexOrderedIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexRangeIndex = Supported>,
 {
     let refs = populate_graph(graph);
     graph

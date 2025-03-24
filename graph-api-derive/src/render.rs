@@ -136,7 +136,7 @@ impl Model {
         let index_types: Vec<TokenStream> = self
             .variants
             .iter()
-            .flat_map(Variant::index_types)
+            .flat_map(Variant::index_ty)
             .collect::<Vec<_>>();
 
         let index_ordinals: Vec<TokenStream> = self
@@ -145,16 +145,10 @@ impl Model {
             .flat_map(Variant::index_ordinals)
             .collect::<Vec<_>>();
 
-        let full_text: Vec<TokenStream> = self
+        let index_index_types: Vec<TokenStream> = self
             .variants
             .iter()
-            .flat_map(Variant::index_full_text)
-            .collect::<Vec<_>>();
-
-        let index_ordered: Vec<TokenStream> = self
-            .variants
-            .iter()
-            .flat_map(Variant::index_ordered)
+            .flat_map(Variant::index_type)
             .collect::<Vec<_>>();
 
         if index_count == 0 {
@@ -168,12 +162,8 @@ impl Model {
                         unreachable!("this index enum has no variants")
                     }
 
-                    fn full_text(&self) -> bool {
-                        false
-                    }
-
-                    fn ordered(&self) -> bool {
-                        false
+                    fn index_type(&self) -> graph_api_lib::IndexType {
+                        unreachable!("this index enum has no variants")
                     }
                 }
             }
@@ -192,15 +182,9 @@ impl Model {
                         }
                     }
 
-                    fn full_text(&self) -> bool {
-                        match self {
-                            #(#index_ident::#all_indexes => #full_text),*
-                        }
-                    }
-
-                    fn ordered(&self) -> bool {
-                        match self {
-                            #(#index_ident::#all_indexes => #index_ordered),*
+                    fn index_type(&self) -> graph_api_lib::IndexType {
+                         match self {
+                            #(#index_ident::#all_indexes => #index_index_types),*
                         }
                     }
                 }
@@ -691,7 +675,7 @@ impl Variant {
                     format_ident!("Supports{}FullTextIndex", element_type)
                 }
                 else {
-                    format_ident!("Supports{}Index", element_type)
+                    format_ident!("Supports{}HashIndex", element_type)
                 };
                 let index_variant =
                     format_ident!("{}{}", self.ident, f.ident.to_string().to_camel());
@@ -720,10 +704,10 @@ impl Variant {
         let index_ident = &self.index_ident;
         let element_type = &self.element_type;
         let search_ident = &self.search_ident;
-        let feature = format_ident!("Supports{}OrderedIndex", element_type);
+        let feature = format_ident!("Supports{}RangeIndex", element_type);
 
         self.indexed_fields()
-            .filter(|f| f.ordered)
+            .filter(|f| f.range)
             .map(|f| {
                 let index_variant =
                     format_ident!("{}{}", self.ident, f.ident.to_string().to_camel());
@@ -754,7 +738,7 @@ impl Variant {
             .collect()
     }
 
-    fn index_types(&self) -> Vec<TokenStream> {
+    fn index_ty(&self) -> Vec<TokenStream> {
         self.fields
             .iter()
             .map(|f| {
@@ -777,20 +761,18 @@ impl Variant {
         self.fields.iter().filter(|f| f.indexed)
     }
 
-    fn index_ordered(&self) -> Vec<TokenStream> {
+    fn index_type(&self) -> Vec<TokenStream> {
         self.indexed_fields()
             .map(|idx| {
-                let ty = &idx.ordered;
-                quote! {#ty}
-            })
-            .collect()
-    }
-
-    fn index_full_text(&self) -> Vec<TokenStream> {
-        self.indexed_fields()
-            .map(|idx| {
-                let ty = &idx.full_text;
-                quote! {#ty}
+                if idx.hash {
+                    quote! {graph_api_lib::IndexType::Hash}
+                } else if idx.range {
+                    quote! {graph_api_lib::IndexType::Range}
+                } else if idx.full_text {
+                    quote! {graph_api_lib::IndexType::FullText}
+                } else {
+                    panic!("Invalid index type on field {}", idx.ident)
+                }
             })
             .collect()
     }
@@ -1022,13 +1004,13 @@ mod tests {
             #[derive(VertexExt)]
             pub enum Vertex {
                 Person {
-                    #[index]
+                    #[index(hash)]
                     name: String,
-                    #[index(ordered)]
+                    #[index(range)]
                     age: u64,
-                    #[index]
+                    #[index(hash)]
                     unique_id: Uuid,
-                    #[index(ordered)]
+                    #[index(range)]
                     username: String,
                     #[index(full_text)]
                     biography: String,

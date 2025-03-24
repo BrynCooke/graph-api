@@ -32,10 +32,9 @@ The full list of features are:
 * `SupportsEdgeLabelIndex`: `edge-label-index`
 * `SupportsVertexIndex`: `vertex-index`
 * `SupportsEdgeIndex`: `edge-index`
-* `SupportsVertexOrderedIndex`: `vertex-ordered-index`
-* `SupportsEdgeOrderedIndex`: `edge-ordered-index`
+* `SupportsVertexRangeIndex`: `vertex-range-index`
+* `SupportsEdgeRangeIndex`: `edge-range-index`
 * `SupportsVertexFullTextIndex`: `vertex-full-text-index`
-
 
 # Writing Tests for graph-api
 
@@ -43,21 +42,25 @@ This document explains how to write tests for the graph-api library using the te
 
 ## Test Graph Structure
 
-Most tests in this library use a standard test graph created by the `populate_graph` function. This function creates a small graph with the following elements:
+Most tests in this library use a standard test graph created by the `populate_graph` function. This function creates a
+small graph with the following elements:
 
 ### Vertices
+
 - **Bryn**: A Person vertex with age 45, username "bryn", and biography "Did some graph stuff"
 - **Julia**: A Person vertex with age 48, username "julia", and biography "Mastered the English language"
 - **GraphApi**: A Project vertex with name "GraphApi"
 - **Rust**: A Rust vertex (no properties)
 
 ### Edges
+
 - **bryn_knows_julia**: Bryn knows Julia (since 1999)
 - **julia_knows_bryn**: Julia knows Bryn (since 1999)
 - **bryn_created_graph_api**: Bryn created GraphApi
 - **graph_api_language_rust**: GraphApi is written in Rust
 
-The `populate_graph` function returns a `Refs` struct containing IDs for all these elements, which you can use in your tests.
+The `populate_graph` function returns a `Refs` struct containing IDs for all these elements, which you can use in your
+tests.
 
 ## Writing a Test
 
@@ -120,4 +123,5 @@ test_suite!{my_graph_setup_function()}
 The library provides helper functions for comparing collections of elements:
 
 - `assert_elements_eq!($graph, $actual, $expected)`: Assert that two collections contain the same elements
-- `assert_elements_one_of!($graph, $actual, $expected)`: Assert that a collection contains exactly one element from the expected collection
+- `assert_elements_one_of!($graph, $actual, $expected)`: Assert that a collection contains exactly one element from the
+  expected collection

@@ -9,8 +9,8 @@ SimpleGraph is the reference implementation of Graph-API and graph implementors 
 
 ### Indexing Support
 
-- **Unordered Index**: Perfect for label-based lookups and general key-value associations
-- **Ordered Index**: Supports range queries and ordered traversal of data
+- **Hash Index**: Perfect for label-based lookups and general key-value associations
+- **Range Index**: Supports range queries and range traversal of data
 - **Full Text Index**: Supports full text searches for vertices
 - **Vertex and Edge Labels**: Search all elements matching a label.
 
@@ -25,14 +25,14 @@ Vertices are stores in a stable Vec to provide stable indexing and reuse of empt
 
 ## Performance Characteristics
 
-### Unordered Index
+### Hash Index
 
 - Insert: O(1) average case
 - Lookup: O(1) average case
 - Remove: O(1) average case
 - Memory: O(n) where n is the total number of key-value pairs
 
-### Ordered Index
+### Range Index
 
 - Insert: O(log n) where n is the number of unique keys
 - Lookup: O(log n)
@@ -52,7 +52,7 @@ Vertices are stores in a stable Vec to provide stable indexing and reuse of empt
 - Graph databases requiring multiple indexing strategies
 - Label-based search systems
 - Range-based data queries
-- Applications requiring both ordered and unordered data access patterns
+- Applications requiring both range and hash data access patterns
 - Full text search
 
 ## Future development

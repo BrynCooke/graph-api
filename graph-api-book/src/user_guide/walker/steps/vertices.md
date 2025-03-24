@@ -84,4 +84,4 @@ Chain multiple conditions for complex queries:
     - Using a label index (e.g., `VertexIndex::person()`) is faster than a full scan
     - Property-based searches are efficient when properly indexed
     - Full scans with `VertexSearch::scan()` should be avoided for large graphs
-- The order of vertices in the traversal is not guaranteed unless using an ordered index
+- The order of vertices in the traversal is not guaranteed unless using an range index

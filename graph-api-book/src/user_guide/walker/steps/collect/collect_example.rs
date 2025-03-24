@@ -38,8 +38,8 @@ pub fn collect_example() {
     // ANCHOR_END: collect_hashset
 
     // ANCHOR: collect_btreeset
-    // Collect into a BTreeSet for ordered unique elements
-    let ordered_ages: BTreeSet<u8> = graph
+    // Collect into a BTreeSet for range unique elements
+    let range_ages: BTreeSet<u8> = graph
         .walk()
         .vertices(VertexIndex::person())
         // Use filter_person() to work exclusively with Person vertices (no closure needed)
@@ -55,7 +55,7 @@ pub fn collect_example() {
         .collect::<BTreeSet<u8>>();
 
     // Print ages in ascending order (BTreeSet maintains order)
-    println!("Person ages (ordered): {:?}", ordered_ages);
+    println!("Person ages (range): {:?}", range_ages);
     // ANCHOR_END: collect_btreeset
 }
 // ANCHOR_END: all

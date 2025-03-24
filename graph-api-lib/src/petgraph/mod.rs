@@ -22,10 +22,10 @@ where
 {
     type SupportsVertexLabelIndex = Unsupported;
     type SupportsEdgeLabelIndex = Unsupported;
-    type SupportsVertexIndex = Unsupported;
-    type SupportsEdgeIndex = Unsupported;
-    type SupportsVertexOrderedIndex = Unsupported;
-    type SupportsEdgeOrderedIndex = Unsupported;
+    type SupportsVertexHashIndex = Unsupported;
+    type SupportsEdgeHashIndex = Unsupported;
+    type SupportsVertexRangeIndex = Unsupported;
+    type SupportsEdgeRangeIndex = Unsupported;
     type SupportsVertexFullTextIndex = Unsupported;
     type SupportsEdgeAdjacentLabelIndex = Unsupported;
     type SupportsClear = Supported;

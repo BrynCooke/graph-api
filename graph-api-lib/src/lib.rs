@@ -24,6 +24,7 @@ pub use graph::Unsupported;
 pub use graph::VertexReference;
 pub use graph::VertexReferenceMut;
 pub use index::Index;
+pub use index::IndexType;
 pub use label::Label;
 pub use search::edge::EdgeSearch;
 pub use search::vertex::VertexSearch;

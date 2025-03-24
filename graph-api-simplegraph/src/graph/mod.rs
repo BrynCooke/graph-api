@@ -438,10 +438,10 @@ where
 {
     type SupportsVertexLabelIndex = Supported;
     type SupportsEdgeLabelIndex = Supported;
-    type SupportsVertexIndex = Supported;
-    type SupportsEdgeIndex = Supported;
-    type SupportsVertexOrderedIndex = Supported;
-    type SupportsEdgeOrderedIndex = Supported;
+    type SupportsVertexHashIndex = Supported;
+    type SupportsEdgeHashIndex = Supported;
+    type SupportsVertexRangeIndex = Supported;
+    type SupportsEdgeRangeIndex = Supported;
     type SupportsVertexFullTextIndex = Supported;
     type SupportsEdgeAdjacentLabelIndex = Supported;
     type SupportsClear = Supported;

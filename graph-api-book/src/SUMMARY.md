@@ -9,7 +9,7 @@
 - [Property Graphs](./user_guide/property_graphs.md)
     - [Exploring Without Indexes](./user_guide/property_graphs/no_index.md)
     - [Standard Indexes](./user_guide/property_graphs/standard_index.md)
-    - [Ordered Indexes](./user_guide/property_graphs/ordered_index.md)
+    - [Range Indexes](./user_guide/property_graphs/range_index.md)
     - [Full-text Indexes](./user_guide/property_graphs/full_text_index.md)
     - [Combining Indexes](./user_guide/property_graphs/combining_indexes.md)
 - [Derive Macros](./user_guide/derive_macros.md)

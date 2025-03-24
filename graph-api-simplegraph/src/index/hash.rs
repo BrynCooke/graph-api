@@ -4,15 +4,15 @@ use std::collections::HashSet;
 use std::fmt::Debug;
 use std::hash::Hash;
 
-/// Unordered index allows multiple values for a key
+/// Hash index allows multiple values for a key
 /// This is useful for things such as labels
 #[derive(Debug, Default)]
-pub(crate) struct UnorderedIndex<K, V> {
+pub(crate) struct HashIndex<K, V> {
     map: HashMap<K, HashSet<V>>,
     empty: HashSet<V>,
 }
 
-impl<K, V> UnorderedIndex<K, V>
+impl<K, V> HashIndex<K, V>
 where
     K: Eq + Hash + Clone + Debug,
     V: Eq + Hash + Clone + Copy + Debug,
@@ -48,7 +48,7 @@ mod tests {
 
     #[test]
     fn test_insert_maintains_uniqueness() {
-        let mut index = UnorderedIndex::default();
+        let mut index = HashIndex::default();
 
         // Insert same value multiple times
         index.insert("key1", 1);
@@ -63,7 +63,7 @@ mod tests {
 
     #[test]
     fn test_multiple_keys_uniqueness() {
-        let mut index = UnorderedIndex::default();
+        let mut index = HashIndex::default();
 
         // Insert same value under different keys
         index.insert("key1", 1);
@@ -84,7 +84,7 @@ mod tests {
 
     #[test]
     fn test_remove_maintains_uniqueness() {
-        let mut index = UnorderedIndex::default();
+        let mut index = HashIndex::default();
 
         // Setup
         index.insert("key1", 1);

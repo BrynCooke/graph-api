@@ -59,7 +59,7 @@ where
     /// - More efficient than using `collect` when you only need the first vertex
     /// - Can be combined with filtering to find the first vertex of a specific type
     /// - Order depends on the traversal steps and graph implementation
-    /// - For more deterministic results, consider using ordered indexes or sorting steps
+    /// - For more deterministic results, consider using range indexes or sorting steps
     pub fn first(mut self) -> Option<Graph::VertexId>
     where
         'graph: 'graph,

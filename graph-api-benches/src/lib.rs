@@ -23,19 +23,19 @@ pub(crate) type SupportsVertexLabelIndex = Supported;
 pub(crate) type SupportsVertexLabelIndex = Unsupported;
 
 #[cfg(feature = "vertex-index")]
-pub(crate) type SupportsVertexIndex = Supported;
+pub(crate) type SupportsVertexHashIndex = Supported;
 #[cfg(not(feature = "vertex-index"))]
-pub(crate) type SupportsVertexIndex = Unsupported;
+pub(crate) type SupportsVertexHashIndex = Unsupported;
 
 #[cfg(feature = "vertex-full-text-index")]
 pub(crate) type SupportsVertexFullTextIndex = Supported;
 #[cfg(not(feature = "vertex-full-text-index"))]
 pub(crate) type SupportsVertexFullTextIndex = Unsupported;
 
-#[cfg(feature = "vertex-ordered-index")]
-pub(crate) type SupportsVertexOrderedIndex = Supported;
-#[cfg(not(feature = "vertex-ordered-index"))]
-pub(crate) type SupportsVertexOrderedIndex = Unsupported;
+#[cfg(feature = "vertex-range-index")]
+pub(crate) type SupportsVertexRangeIndex = Supported;
+#[cfg(not(feature = "vertex-range-index"))]
+pub(crate) type SupportsVertexRangeIndex = Unsupported;
 
 #[cfg(feature = "edge-label-index")]
 pub(crate) type SupportsEdgeLabelIndex = Supported;
@@ -58,9 +58,9 @@ where
             Vertex = Vertex,
             Edge = Edge,
             SupportsVertexLabelIndex = SupportsVertexLabelIndex,
-            SupportsVertexIndex = SupportsVertexIndex,
+            SupportsVertexHashIndex = SupportsVertexHashIndex,
             SupportsVertexFullTextIndex = SupportsVertexFullTextIndex,
-            SupportsVertexOrderedIndex = SupportsVertexOrderedIndex,
+            SupportsVertexRangeIndex = SupportsVertexRangeIndex,
             SupportsEdgeLabelIndex = SupportsEdgeLabelIndex,
         >,
 {

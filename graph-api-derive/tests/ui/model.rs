@@ -2,7 +2,7 @@ use graph_api_derive::{EdgeExt, VertexExt};
 #[derive(Debug, Clone, VertexExt)]
 pub enum Vertex {
     Person {
-        #[index]
+        #[index(hash)]
         name: String,
         age: u64,
     },

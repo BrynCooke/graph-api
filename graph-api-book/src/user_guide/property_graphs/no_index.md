@@ -79,7 +79,7 @@ In the following sections, we'll explore how different types of indexes can dram
 by allowing you to:
 
 1. **Find vertices by exact property values** using standard indexes
-2. **Search for vertices within ranges** using ordered indexes
+2. **Search for vertices within ranges** using range indexes
 3. **Find vertices containing specific text** using full-text indexes
 
 Indexes provide the entry points for efficient graph traversal, turning potentially expensive operations into

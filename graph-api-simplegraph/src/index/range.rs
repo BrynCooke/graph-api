@@ -4,9 +4,9 @@ use std::fmt::Debug;
 use std::hash::Hash;
 use std::ops::RangeBounds;
 
-/// This ordered index allows range searches for keys.
+/// This range index allows range searches for keys.
 #[derive(Debug, Default)]
-pub(crate) struct OrderedIndex<K, V>
+pub(crate) struct RangeIndex<K, V>
 where
     K: Ord + Clone,
     V: Hash + Eq,
@@ -15,7 +15,7 @@ where
     empty: HashSet<V>,
 }
 
-impl<K, V> OrderedIndex<K, V>
+impl<K, V> RangeIndex<K, V>
 where
     K: Eq + Hash + Clone + Debug + Ord,
     V: Eq + Hash + Clone + Copy + Debug,
@@ -62,8 +62,8 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_ordered_index() {
-        let mut index = OrderedIndex::default();
+    fn test_range_index() {
+        let mut index = RangeIndex::default();
 
         // Test insertion
         assert!(index.insert(1, "a"));
@@ -89,7 +89,7 @@ mod tests {
 
     #[test]
     fn test_duplicate_prevention() {
-        let mut index = OrderedIndex::default();
+        let mut index = RangeIndex::default();
 
         // First insertion should succeed
         assert!(index.insert(1, "a"));

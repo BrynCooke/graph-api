@@ -266,7 +266,7 @@ if let Some(vertex_ref) = graph.vertex(vertex_id) {
 You can apply these attributes to fields to control indexing behavior:
 
 - `#[index]` - Standard index for exact match queries
-- `#[index(ordered)]` - Ordered index for range queries
+- `#[index(range)]` - Range index for range queries
 - `#[index(full_text)]` - Full-text index for text search (String fields only)
 
 ```rust,noplayground
@@ -276,7 +276,7 @@ enum User {
         #[index]  // Standard index
         username: String,
         
-        #[index(ordered)]  // Range queries possible
+        #[index(range)]  // Range queries possible
         age: u32,
         
         #[index(full_text)]  // Text search possible
@@ -294,7 +294,7 @@ enum User {
 
 2. **Choose Appropriate Index Types**:
     - Use `#[index]` for exact match lookups
-    - Use `#[index(ordered)]` for numeric fields that need range queries
+    - Use `#[index(range)]` for numeric fields that need range queries
     - Use `#[index(full_text)]` for text fields that need substring or keyword search
 
 3. **Use Type-Safe Methods**:

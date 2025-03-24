@@ -93,7 +93,7 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            SupportsVertexIndex = graph_api_lib::Supported,
+            SupportsVertexHashIndex = graph_api_lib::Supported,
         >,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonName, value)
@@ -104,7 +104,7 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            SupportsVertexIndex = graph_api_lib::Supported,
+            SupportsVertexHashIndex = graph_api_lib::Supported,
         >,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonAge, value)
@@ -115,7 +115,7 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            SupportsVertexIndex = graph_api_lib::Supported,
+            SupportsVertexHashIndex = graph_api_lib::Supported,
         >,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonUniqueId, value)
@@ -126,7 +126,7 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            SupportsVertexIndex = graph_api_lib::Supported,
+            SupportsVertexHashIndex = graph_api_lib::Supported,
         >,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonUsername, value)
@@ -148,7 +148,7 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            SupportsVertexOrderedIndex = graph_api_lib::Supported,
+            SupportsVertexRangeIndex = graph_api_lib::Supported,
         >,
     {
         graph_api_lib::VertexSearch::range(VertexIndex::PersonAge, range)
@@ -159,7 +159,7 @@ impl VertexIndex {
     where
         Graph: graph_api_lib::Graph<
             Vertex = Vertex,
-            SupportsVertexOrderedIndex = graph_api_lib::Supported,
+            SupportsVertexRangeIndex = graph_api_lib::Supported,
         >,
     {
         graph_api_lib::VertexSearch::range(VertexIndex::PersonUsername, range)
@@ -184,22 +184,13 @@ impl graph_api_lib::Index for VertexIndex {
             VertexIndex::PersonBiography => 4usize,
         }
     }
-    fn full_text(&self) -> bool {
+    fn index_type(&self) -> graph_api_lib::IndexType {
         match self {
-            VertexIndex::PersonName => false,
-            VertexIndex::PersonAge => false,
-            VertexIndex::PersonUniqueId => false,
-            VertexIndex::PersonUsername => false,
-            VertexIndex::PersonBiography => true,
-        }
-    }
-    fn ordered(&self) -> bool {
-        match self {
-            VertexIndex::PersonName => false,
-            VertexIndex::PersonAge => true,
-            VertexIndex::PersonUniqueId => false,
-            VertexIndex::PersonUsername => true,
-            VertexIndex::PersonBiography => false,
+            VertexIndex::PersonName => graph_api_lib::IndexType::Hash,
+            VertexIndex::PersonAge => graph_api_lib::IndexType::Range,
+            VertexIndex::PersonUniqueId => graph_api_lib::IndexType::Hash,
+            VertexIndex::PersonUsername => graph_api_lib::IndexType::Range,
+            VertexIndex::PersonBiography => graph_api_lib::IndexType::FullText,
         }
     }
 }
