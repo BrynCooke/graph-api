@@ -2,7 +2,7 @@ use graph_api_lib::{Graph, Supported, VertexReference};
 use graph_api_test::{Edge, EdgeIndex, Person, Vertex, VertexExt};
 use std::ops::Deref;
 
-/* ANCHOR: all */
+// ANCHOR: all
 // Context example showing how to calculate the total age of all friends
 pub fn context_traversal_example<G>(graph: &G, person_id: G::VertexId)
 where
@@ -25,4 +25,4 @@ where
         })
         .fold(0, |acc, _, age| acc + age.deref());
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

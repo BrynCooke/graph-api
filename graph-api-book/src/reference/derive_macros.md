@@ -299,7 +299,7 @@ let people = graph
 // Find people with a specific name
 let named_people = graph
 .walk()
-.vertices(VertexIndex::person_by_name("Alice"))
+.vertices(VertexIndex::person_by_name("Bryn"))
 .collect::<Vec<_ > > ();
 
 // Find people in an age range
@@ -321,12 +321,12 @@ let friends = graph
 Filter extensions can be combined with other walker steps:
 
 ```rust,noplayground
-// Find adults named "Alice" with a complex filter
+// Find adults named "Bryn" with a complex filter
 let result = graph
 .walk()
 .vertices(VertexIndex::person())
 .filter_by_person( | person, _ | {
-person.age() > = 18 & & person.name().contains("Alice")
+person.age() > = 18 & & person.name().contains("Bryn")
 })
 .collect::<Vec<_ > > ();
 

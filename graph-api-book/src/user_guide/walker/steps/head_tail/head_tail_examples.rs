@@ -2,7 +2,7 @@ use graph_api_lib::Graph;
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{EdgeIndex, VertexIndex, populate_graph};
 
-/* ANCHOR: all */
+// ANCHOR: all
 // Function demonstrating the head and tail steps
 pub fn head_tail_examples() {
     // Create a new graph
@@ -58,4 +58,4 @@ pub fn head_tail_examples() {
     );
     // ANCHOR_END: multi_step
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

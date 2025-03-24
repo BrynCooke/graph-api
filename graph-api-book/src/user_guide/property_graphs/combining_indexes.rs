@@ -1,7 +1,7 @@
 use crate::standard_model::{Edge, Vertex, standard_populated_graph};
 use graph_api_lib::{Graph, VertexSearch};
 
-/* ANCHOR: all */
+// ANCHOR: all
 // ANCHOR: define_combined_indexes
 // Function explaining combined indexes
 pub fn define_combined_indexes() {
@@ -29,9 +29,9 @@ pub fn multi_step_traversal() {
 
     // Find a person by username (using standard index)
     // Then traverse to people they follow (following edges)
-    let people_followed_by_alice = graph
+    let people_followed_by_bryn = graph
         .walk()
-        .vertices(VertexIndex::person_by_username("alice123")) // Start with indexed lookup
+        .vertices(VertexIndex::person_by_username("bryn123")) // Start with indexed lookup
         .edges(EdgeIndex::follows().outgoing()) // Follow "Follows" edges outward
         .vertices() // Get the vertices on the other end
         .filter(|vertex, _| {
@@ -40,7 +40,7 @@ pub fn multi_step_traversal() {
         })
         .collect::<Vec<_>>();
 
-    println!("Alice follows {} people", people_followed_by_alice.len());
+    println!("Bryn follows {} people", people_followed_by_bryn.len());
 
     // Start with people in a specific age range (using ordered index)
     // Find the projects they created (using edge label index)
@@ -140,7 +140,7 @@ pub fn hierarchical_navigation() {
     let projects_liked_by_bobs_followers = graph
         .walk()
         // Start with Bob
-        .vertices(VertexIndex::person_by_username("bob456"))
+        .vertices(VertexIndex::person_by_username("julia456"))
         // Find incoming "Follows" edges (people who follow Bob)
         .edges(EdgeIndex::follows().incoming())
         // Get Bob's followers
@@ -158,4 +158,4 @@ pub fn hierarchical_navigation() {
     );
 }
 // ANCHOR_END: hierarchical_navigation
-/* ANCHOR_END: all */
+// ANCHOR_END: all

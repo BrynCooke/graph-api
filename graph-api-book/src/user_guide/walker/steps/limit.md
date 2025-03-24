@@ -1,6 +1,35 @@
 # Limit Step
 
-The `limit` step restricts a traversal to return at most a specified number of elements.
+The `limit` step restricts a traversal to return at most a specified number of elements, helping to control result size
+and improve performance.
+
+```pikchr
+# Graph structure with all vertices active in traversal
+A: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
+B: box same at 1.5 right of A "B" fill lightgreen
+C: box same at 1.5 right of B "C" fill lightgreen
+D: box same at 1.5 right of C "D" fill lightgreen
+
+# Connect vertices with edges
+line from A.e to B.w
+MID: line from B.e to C.w
+line from C.e to D.w
+
+text at 0.4 below MID "Before limit(): All vertices in traversal (highlighted green)"
+
+# Second diagram - after limit(2) step
+Aprime: box rad 10px width 0.5 height 0.3 at 1 below A "A" fill lightgreen
+Bprime: box same at 1.5 right of Aprime "B" fill lightgreen
+Cprime: box same at 1.5 right of Bprime "C" fill white
+Dprime: box same at 1.5 right of Cprime "D" fill white
+
+# Connect vertices with edges
+line from Aprime.e to Bprime.w
+MID: line from Bprime.e to Cprime.w
+line from Cprime.e to Dprime.w
+
+text at 0.4 below MID "After limit(2): Only first 2 vertices remain (highlighted green)"
+```
 
 ## Syntax
 
@@ -15,18 +44,6 @@ walker.limit(n)
 ## Return Value
 
 Returns a new walker that will yield at most `n` elements.
-
-## Diagram
-
-```bob
-Before step:
-  [A]* --- [B]* --- [C]* --- [D]* --- [E]*
-  Position: All vertices in traversal
-
-After step (with limit 2):
-  [A]* --- [B]* --- [C] --- [D] --- [E]
-  Position: Only the first 2 vertices
-```
 
 ## Example
 

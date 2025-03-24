@@ -12,7 +12,7 @@ indexes, your only option is to scan the entire graph, examining each vertex to 
 Let's consider a simple social network model without any indexes:
 
 ```rust,noplayground
-{{#include ../standard_model.rs:model_definition}}
+{{#include ../../standard_model.rs:model_definition}}
 ```
 
 ## Scanning the Entire Graph

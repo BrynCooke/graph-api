@@ -1,6 +1,32 @@
 # Collect Step
 
 The `collect` step gathers all elements from a traversal into a collection, allowing you to materialize the results.
+This is a terminal operation that ends the traversal and returns the collected elements.
+
+```pikchr
+# Graph structure with all vertices active in traversal
+A: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
+B: box same at 1 right of A "B" fill lightgreen
+C: box same at 1 right of B "C" fill lightgreen
+D: box same at 1 right of C "D" fill lightgreen
+
+# Connect vertices with edges
+line from A.e to B.w
+line from B.e to C.w
+MID: line from C.e to D.w
+
+
+# Show counting operation
+CollectBox: box rad 10px at 0.5 below 1 right of D "Vec[A, B, C, D]" fit height 0.4 fill lightyellow
+
+# Show arrows indicating the count operation
+arrow from A.s down until even with CollectBox then to CollectBox.w rad 20px
+arrow from B.s down until even with CollectBox then to CollectBox.w rad 20px
+arrow from C.s down until even with CollectBox then to CollectBox.w rad 20px
+arrow from D.s down until even with CollectBox then to CollectBox.w rad 20px
+
+text at 0.4 below CollectBox "Returns collected elements (traversal terminates)"
+```
 
 ## Syntax
 
@@ -17,19 +43,6 @@ This step takes no parameters, but uses a type parameter to specify the collecti
 ## Return Value
 
 Returns a collection of type `C` where `C` implements `FromIterator`.
-
-## Diagram
-
-```bob
-Before step:
-  [A]* --- [B]* --- [C]* --- [D]*
-  Position: Traversal at multiple elements
-
-After step:
-  [A] --- [B] --- [C] --- [D]
-  Result: Collection[A,B,C,D]  (Collected elements)
-  Position: Traversal terminated
-```
 
 ## Examples
 

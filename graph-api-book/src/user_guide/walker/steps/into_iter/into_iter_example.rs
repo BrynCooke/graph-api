@@ -2,7 +2,7 @@ use graph_api_lib::Graph;
 use graph_api_lib::{VertexReference, VertexSearch};
 use graph_api_test::Vertex;
 
-/* ANCHOR: all */
+// ANCHOR: all
 pub fn into_iter_example<G>(graph: G)
 where
     G: Graph<Vertex = Vertex>,
@@ -58,4 +58,4 @@ where
     assert!(vertex_names.contains(&"Rust".to_string()));
     // ANCHOR_END: comparison
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

@@ -2,7 +2,7 @@ use graph_api_lib::{Graph, VertexReference};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{Vertex, VertexExt, VertexIndex, populate_graph};
 
-/* ANCHOR: all */
+// ANCHOR: all
 // Function demonstrating various ways to use the filter step
 pub fn filter_examples() {
     // Create a new graph
@@ -80,4 +80,4 @@ pub fn filter_examples() {
     );
     // ANCHOR_END: context_filter
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

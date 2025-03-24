@@ -1,8 +1,7 @@
 use graph_api_derive::{EdgeExt, VertexExt};
 use graph_api_lib::Graph;
 use graph_api_simplegraph::SimpleGraph;
-use uuid::Uuid;
-/* ANCHOR: all */
+// ANCHOR: all
 
 // ANCHOR: model_definition
 // Define vertex types for a social media application
@@ -10,7 +9,7 @@ use uuid::Uuid;
 pub enum Vertex {
     // Person vertex with various properties
     Person {
-        name: String,
+        name: String, // Not indexed
 
         #[index] // Standard index for exact lookups
         username: String,
@@ -20,8 +19,6 @@ pub enum Vertex {
 
         #[index(ordered)] // Ordered index for range queries
         age: u8,
-
-        unique_id: Uuid, // Not indexed
     },
 
     // Project vertex with minimal properties
@@ -64,7 +61,7 @@ pub enum Edge {
 ///                                            ▼                                ▼
 ///                                 .────────────────────.           .───────────────────.
 ///   .──────────────────.          │      "Person"      │           │      "Person"     │
-///   │    "Project"     │◄─Created─┤     "name: Alice"  │◄──Follows─┤     "name: Bob"   │
+///   │    "Project"     │◄─Created─┤     "name: Bryn"   │◄──Follows─┤    "name: Julia"  │
 ///   │  "name: GraphApi"│          │     "age: 28"      │           │     "age: 34"     │
 ///   '──────────────────'          '──────────┬─────────'           '─────────┬─────────'
 ///                                            │                               │
@@ -83,20 +80,18 @@ pub fn standard_populated_graph() -> SimpleGraph<Vertex, Edge> {
     let mut graph = SimpleGraph::new();
 
     // Create vertices
-    let alice = graph.add_vertex(Vertex::Person {
-        name: "Alice".to_string(),
-        username: "alice123".to_string(),
+    let bryn = graph.add_vertex(Vertex::Person {
+        name: "Bryn".to_string(),
+        username: "bryn123".to_string(),
         biography: "Graph enthusiast".to_string(),
         age: 28,
-        unique_id: Uuid::new_v4(),
     });
 
-    let bob = graph.add_vertex(Vertex::Person {
-        name: "Bob".to_string(),
-        username: "bob456".to_string(),
+    let julia = graph.add_vertex(Vertex::Person {
+        name: "Julia".to_string(),
+        username: "julia456".to_string(),
         biography: "Software developer".to_string(),
         age: 34,
-        unique_id: Uuid::new_v4(),
     });
 
     let eve = graph.add_vertex(Vertex::Person {
@@ -104,7 +99,6 @@ pub fn standard_populated_graph() -> SimpleGraph<Vertex, Edge> {
         username: "eve789".to_string(),
         biography: "Network specialist".to_string(),
         age: 31,
-        unique_id: Uuid::new_v4(),
     });
 
     let graph_api = graph.add_vertex(Vertex::Project {
@@ -116,28 +110,27 @@ pub fn standard_populated_graph() -> SimpleGraph<Vertex, Edge> {
     });
 
     // Create edges
-    graph.add_edge(alice, graph_api, Edge::Created);
-    graph.add_edge(bob, alpaca, Edge::Created);
-    graph.add_edge(bob, alice, Edge::Follows);
-    graph.add_edge(eve, bob, Edge::Follows);
-    graph.add_edge(alice, eve, Edge::Follows);
+    graph.add_edge(bryn, graph_api, Edge::Created);
+    graph.add_edge(julia, alpaca, Edge::Created);
+    graph.add_edge(julia, bryn, Edge::Follows);
+    graph.add_edge(eve, julia, Edge::Follows);
+    graph.add_edge(bryn, eve, Edge::Follows);
     graph.add_edge(
-        alice,
+        bryn,
         alpaca,
         Edge::Liked {
             timestamp: "2023-01-01".to_string(),
         },
     );
     graph.add_edge(
-        alice,
+        bryn,
         alpaca,
         Edge::Commented {
             timestamp: "2023-01-02".to_string(),
         },
     );
-
-    graph
     // ANCHOR_END: setup
+    graph
 }
 
-/* ANCHOR_END: all */
+// ANCHOR_END: all

@@ -3,7 +3,7 @@ use graph_api_lib::Graph;
 use graph_api_simplegraph::SimpleGraph;
 use uuid::Uuid;
 
-/* ANCHOR: all */
+// ANCHOR: all
 // ANCHOR: model
 #[derive(Debug, Clone, VertexExt)]
 pub enum SocialVertex {
@@ -37,16 +37,16 @@ pub fn create_graph_example() {
 
     // ANCHOR: add_vertices
     // Add vertices to the graph
-    let alice_id = graph.add_vertex(SocialVertex::Person {
-        name: "Alice".to_string(),
-        username: "alice123".to_string(),
+    let bryn_id = graph.add_vertex(SocialVertex::Person {
+        name: "Bryn".to_string(),
+        username: "bryn123".to_string(),
         age: 28,
         id: Uuid::new_v4(),
     });
 
-    let bob_id = graph.add_vertex(SocialVertex::Person {
-        name: "Bob".to_string(),
-        username: "bob456".to_string(),
+    let julia_id = graph.add_vertex(SocialVertex::Person {
+        name: "Julia".to_string(),
+        username: "julia456".to_string(),
         age: 32,
         id: Uuid::new_v4(),
     });
@@ -61,18 +61,18 @@ pub fn create_graph_example() {
     // ANCHOR: add_edges
     // Add edges to connect vertices
 
-    // Alice follows Bob
-    let _follows_edge = graph.add_edge(alice_id, bob_id, SocialEdge::Follows);
+    // Bryn follows Julia
+    let _follows_edge = graph.add_edge(bryn_id, julia_id, SocialEdge::Follows);
 
-    // Alice posted the article
-    let _posted_edge = graph.add_edge(alice_id, post_id, SocialEdge::Posted);
+    // Bryn posted the article
+    let _posted_edge = graph.add_edge(bryn_id, post_id, SocialEdge::Posted);
 
-    // Bob liked Alice's post
-    let _liked_edge = graph.add_edge(bob_id, post_id, SocialEdge::Liked);
+    // Julia liked Bryn's post
+    let _liked_edge = graph.add_edge(julia_id, post_id, SocialEdge::Liked);
 
-    // Bob commented on Alice's post
+    // Julia commented on Bryn's post
     let _comment_edge = graph.add_edge(
-        bob_id,
+        julia_id,
         post_id,
         SocialEdge::Commented {
             text: "Great overview of graph databases!".to_string(),
@@ -80,4 +80,4 @@ pub fn create_graph_example() {
     );
     // ANCHOR_END: add_edges
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

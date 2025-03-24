@@ -37,8 +37,8 @@ pub fn define_basic_model() {
     let mut graph = SimpleGraph::<SocialVertex, SocialEdge>::new();
 
     // Add vertices
-    let alice = graph.add_vertex(SocialVertex::Person {
-        name: "Alice".to_string(),
+    let bryn = graph.add_vertex(SocialVertex::Person {
+        name: "Bryn".to_string(),
         age: 30,
     });
 
@@ -52,7 +52,7 @@ pub fn define_basic_model() {
 
     // Add edges to connect vertices
     graph.add_edge(
-        alice,
+        bryn,
         post,
         SocialEdge::Posted {
             timestamp: "2023-06-15T10:30:00Z".to_string(),
@@ -62,5 +62,5 @@ pub fn define_basic_model() {
     graph.add_edge(post, tag, SocialEdge::Tagged("Technical".to_string()));
 
     // The graph now represents:
-    // Alice --Posted--> Post --Tagged--> Tag
+    // Bryn --Posted--> Post --Tagged--> Tag
 }

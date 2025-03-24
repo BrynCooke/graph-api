@@ -1,7 +1,7 @@
 use crate::standard_model::{VertexIndex, standard_populated_graph};
 use graph_api_lib::Graph;
 
-/* ANCHOR: all */
+// ANCHOR: all
 // ANCHOR: define_full_text_index
 // Function explaining full-text indexes
 pub fn define_full_text_index() {
@@ -19,12 +19,12 @@ pub fn define_full_text_index() {
 }
 // ANCHOR_END: define_full_text_index
 
-// ANCHOR: full_text_queries
 // Example demonstrating full-text search capabilities
 pub fn full_text_queries() {
     // Use the standard graph defined in standard_model.rs
     let graph = standard_populated_graph();
 
+    // ANCHOR: full_text_queries
     // Find people with "developer" in their biography
     let developers = graph
         .walk()
@@ -64,6 +64,6 @@ pub fn full_text_queries() {
         "Found {} people with 'develop' in their bio",
         develop_related.len()
     );
+    // ANCHOR_END: full_text_queries
 }
-// ANCHOR_END: full_text_queries
-/* ANCHOR_END: all */
+// ANCHOR_END: all

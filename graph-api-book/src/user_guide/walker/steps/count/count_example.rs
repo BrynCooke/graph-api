@@ -1,7 +1,7 @@
 use graph_api_lib::{Graph, Supported, VertexSearch};
 use graph_api_test::{Edge, EdgeIndex, Vertex, VertexExt, VertexIndex};
 
-/* ANCHOR: all */
+// ANCHOR: all
 // Function demonstrating the count step
 pub fn count_example<G>(graph: G)
 where
@@ -57,4 +57,4 @@ where
     }
     // ANCHOR_END: analytics
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

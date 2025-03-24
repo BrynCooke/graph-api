@@ -16,36 +16,22 @@ For each of these, you'll define a Rust enum that represents all possible types.
 
 ## Model Definition
 
-```bob
-                                                                         .───────────────────.
-                                                                         │      "Person"     │
-                                               .───────"Follows"────────►│    "name: Eve"    │
-                                               │                         │    "age: 31"      │
-                                               │                         '─────────┬─────────'
-                                               │                                   │
-                                               │                                "Follows"
-                                               │                                   │
-                                               │                                   │
-                                               ▼                                   ▼
-                                      .────────────────────.             .───────────────────.
-      .──────────────────.            │      "Person"      │             │      "Person"     │
-      │    "Project"     │◄─"Created"─┤     "name: Alice"  │◄──"Follows"─┤     "name: Bob"   │
-      │ "name: GraphApi" │            │     "age: 28"      │             │     "age: 34"     │
-      '──────────────────'            '──────────┬─────────'             '─────────┬─────────'
-                                                 │                                 │
-                                                 │                                 │
-                                              "Liked"                          "Created"
-                                             "Commented"                           │
-                                                 │                                 │
-                                                 ▼                                 │
-                                         .────────────────.                        │
-                                         │    "Project"   │◄───────────────────────'
-                                         │ "name: Alpaca" │
-                                         '────────────────'
+```pikchr
+Eve:    box rad 10px "Person" bold "name: Eve" "username: eve789" "age: 31" fit; move
+Julia:    box rad 10px at 1 below Eve.s "Person" bold "name: Julia" "username: julia456" "age: 34" "biography: An editor" fit
+Bryn:  box rad 10px at 1.5 left of Julia.w "Person" bold "name: Bryn" "username: bryn123" "age: 28" "biography: A programmer"  fit       
+GraphApi:  box rad 10px at 1.5 left of Bryn.w "Project" bold "name: GraphApi" fit         
+Alpaca:  box rad 10px at 1 below Bryn.s "Project" bold "name: Alpaca" fit
 
+arrow <-> from Bryn.n to Eve.w "Follows" above rjust rad 20px
+arrow from Eve.s to Julia.n " Follows" ljust 
+arrow from Julia.w to Bryn.e "Follows" above      
+arrow from Bryn.w to GraphApi.e "Created" above
+arrow from Bryn.s to Alpaca.n "Liked " rjust "Commented " rjust
+arrow from Julia.s to Alpaca.ne "Created" ljust below
 ```
 
-Here's a simple example of a social media model:
+The equivalent definition using Graph API is:
 
 ```rust,noplayground
 {{#include ../standard_model.rs:model_definition}}

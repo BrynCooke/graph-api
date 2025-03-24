@@ -2,7 +2,7 @@ use crate::standard_model::{Person, VertexExt, VertexIndex, standard_populated_g
 use graph_api_lib::{Graph, VertexReference};
 use std::collections::{BTreeSet, HashSet};
 
-/* ANCHOR: all */
+// ANCHOR: all
 // Function demonstrating how to use the collect step
 pub fn collect_example() {
     // Use the standard graph defined in standard_model.rs
@@ -58,4 +58,4 @@ pub fn collect_example() {
     println!("Person ages (ordered): {:?}", ordered_ages);
     // ANCHOR_END: collect_btreeset
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

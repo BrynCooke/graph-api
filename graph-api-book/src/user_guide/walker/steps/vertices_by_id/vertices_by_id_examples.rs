@@ -2,7 +2,7 @@ use graph_api_lib::Graph;
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::populate_graph;
 
-/* ANCHOR: all */
+// ANCHOR: all
 // Function demonstrating the vertices_by_id step
 pub fn vertices_by_id_example() {
     // Create a new graph
@@ -49,4 +49,4 @@ pub fn vertices_by_id_example() {
     println!("Found {} projects using vertices_by_id", projects.len());
     // ANCHOR_END: dynamic_ids
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

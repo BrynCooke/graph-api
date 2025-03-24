@@ -54,7 +54,7 @@ a minimal portion of the model can be restated just to illustrate the feature
 Example an external rust file (file.rs):
 
 ```rust,noplayground
-/* ANCHOR: all */
+// ANCHOR: all
 
 // ANCHOR: model
 use graph_api_derive::{EdgeExt, VertexExt};
@@ -81,12 +81,12 @@ pub fn main() {
 
     // Add vertices
     let v1 = graph.add_vertex(Vertex::Person { 
-        name: "Alice".to_string(),
-        username: "alice123".to_string(),
+        name: "Bryn".to_string(),
+        username: "bryn123".to_string(),
     });
     let v2 = graph.add_vertex(Vertex::Person { 
-        name: "Bob".to_string(),
-        username: "bob456".to_string(),
+        name: "Julia".to_string(),
+        username: "julia456".to_string(),
     });
 
     // Add edge
@@ -97,7 +97,7 @@ pub fn main() {
     // ANCHOR: traversal
     // Type-safe traversal using generated methods from the derive macros
     let friends = graph.walk()
-        .vertices(VertexIndex::person_by_username("alice123")) // Use indexed lookup
+        .vertices(VertexIndex::person_by_username("bryn123")) // Use indexed lookup
         .edges(EdgeIndex::knows()) // Use label-specific edge lookup
         .vertices() // Follow to the connected vertices
         .filter_person() // Type-safe filter by label (no closure needed)
@@ -132,23 +132,31 @@ And then traverse it:
 
 ### Diagrams
 
-Diagrams are rendered using svgbob. This is a nice way to provide illustrations via ascii art.
+Diagrams are rendered using pikchr.
 
-For instance here is a diagram:
+Pickchr diagrams use relative layouts. It's best to define the nodes first and then the edges.
+Each node is anchored based on a previous node. For instance Julia is 1 below Eve.s, where n, e, s, w are anchors on the
+node.
+Arrows are then attached to nodes anchors.
 
-```bob
-    0       3
-     *-------*      +y
-  1 /|    2 /|       ^
-   *-------* |       |
-   | |4    | |7      | ◄╮
-   | *-----|-*     ⤹ +-----> +x
-   |/      |/       / ⤴
-   *-------*       v
-  5       6      +z
+The model example is:
+
+```pikchr
+Eve:    box rad 10px "Person" "name: Eve" "username: eve789" "age: 31" fit; move
+Julia:    box rad 10px at 1 below Eve.s "Person" "name: Julia" "username: julia456" "age: 34" "biography: An editor" fit
+Bryn:  box rad 10px at 1.5 left of Julia.w "Person" "name: Bryn" "username: bryn123" "age: 28" "biography: A programmer"  fit       
+GraphApi:  box rad 10px at 1.5 left of Bryn.w "Project" "name: GraphApi" fit         
+Alpaca:  box rad 10px at 1 below Bryn.s "Project" "name: Alpaca" fit
+
+arrow <-> from Bryn.n to Eve.w "Follows" above rjust
+arrow from Eve.s to Julia.n " Follows" ljust
+arrow from Julia.w to Bryn.e "Follows" above      
+arrow from Bryn.w to GraphApi.e "Created" above
+arrow from Bryn.s to Alpaca.n "Liked " rjust "Commented " rjust
+arrow from Julia.s to Alpaca.ne "Created" ljust below
 ```
 
-See the [svgbob](https://github.com/ivanceras/svgbob) repo for more details.
+Remember to specify colors you have to use the css names, not hex.
 
 ### Documentation Organization
 

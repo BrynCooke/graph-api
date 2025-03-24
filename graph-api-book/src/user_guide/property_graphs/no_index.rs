@@ -1,7 +1,7 @@
 use crate::standard_model::{Vertex, VertexIndex, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference, VertexSearch};
 
-/* ANCHOR: all */
+// ANCHOR: all
 // ANCHOR: non_indexed_fields
 // Function explaining non-indexed fields
 pub fn non_indexed_fields() {
@@ -23,22 +23,22 @@ pub fn scan_example() {
     let graph = standard_populated_graph();
 
     // ANCHOR: scan_for_name
-    // INEFFICIENT: Find all people named "Alice" by scanning
+    // INEFFICIENT: Find all people named "Bryn" by scanning
     // Since name is not indexed, we must scan all vertices
-    let alice_vertices = graph
+    let bryn_vertices = graph
         .walk()
         .vertices(VertexSearch::scan()) // Must scan ALL vertices
         .filter(|vertex, _| {
             // Manual pattern matching and filtering
             if let Vertex::Person { name, .. } = vertex.weight() {
-                name == "Alice"
+                name == "Bryn"
             } else {
                 false
             }
         })
         .collect::<Vec<_>>();
 
-    println!("Found {} vertices for Alice", alice_vertices.len());
+    println!("Found {} vertices for Bryn", bryn_vertices.len());
     // ANCHOR_END: scan_for_name
 
     // ANCHOR: scan_for_project
@@ -64,12 +64,12 @@ pub fn scan_example() {
     // COMPARISON: Using an index vs. not using an index
     // 1. Inefficient: Find people with a specific username using a scan
     let start_scan = std::time::Instant::now();
-    let _bob_by_scan = graph
+    let _julia_by_scan = graph
         .walk()
         .vertices(VertexSearch::scan())
         .filter(|vertex, _| {
             if let Vertex::Person { username, .. } = vertex.weight() {
-                username == "bob456"
+                username == "julia456"
             } else {
                 false
             }
@@ -81,9 +81,9 @@ pub fn scan_example() {
     // ANCHOR: comparison_index
     // 2. Efficient: Find the same person using the username index
     let start_index = std::time::Instant::now();
-    let _bob_by_index = graph
+    let _julia_by_index = graph
         .walk()
-        .vertices(VertexIndex::person_by_username("bob456"))
+        .vertices(VertexIndex::person_by_username("julia456"))
         .collect::<Vec<_>>();
     let index_duration = start_index.elapsed();
 
@@ -95,4 +95,4 @@ pub fn scan_example() {
     );
     // ANCHOR_END: comparison_index
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

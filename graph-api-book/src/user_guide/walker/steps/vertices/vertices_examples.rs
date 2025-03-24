@@ -1,7 +1,7 @@
 use crate::standard_model::{VertexExt, VertexIndex, standard_populated_graph};
 use graph_api_lib::{Graph, VertexSearch};
 
-/* ANCHOR: all */
+// ANCHOR: all
 // Function demonstrating various ways to use the vertices step
 pub fn vertices_step_example() {
     // Use the standard graph defined in standard_model.rs
@@ -38,7 +38,7 @@ pub fn vertices_step_example() {
         .filter_person() // First filter by vertex type
         .filter_by_person(|person, _| {
             // Then use type-safe accessor methods
-            person.name() == "Bob"
+            person.name() == "Julia"
         })
         .collect::<Vec<_>>();
 
@@ -60,4 +60,4 @@ pub fn vertices_step_example() {
     println!("Found {} people under age 30", young_people.len());
     // ANCHOR_END: combined_filter
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

@@ -213,7 +213,7 @@ let people = graph
 // Find Person vertices with a specific username
 let user = graph
     .walk()
-    .vertices(VertexIndex::person_by_username("alice123"))
+    .vertices(VertexIndex::person_by_username("bryn123"))
     .first()
     .unwrap();
 

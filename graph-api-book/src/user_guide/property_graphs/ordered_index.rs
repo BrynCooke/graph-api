@@ -1,7 +1,7 @@
 use crate::standard_model::{Edge, Vertex, standard_populated_graph};
 use graph_api_lib::Graph;
 
-/* ANCHOR: all */
+// ANCHOR: all
 // ANCHOR: define_ordered_index
 // Function explaining ordered indexes
 pub fn define_ordered_index() {
@@ -67,4 +67,4 @@ pub fn ordered_index_queries() {
     println!("Found {} people who are exactly 31", exactly_31.len());
 }
 // ANCHOR_END: ordered_index_queries
-/* ANCHOR_END: all */
+// ANCHOR_END: all

@@ -1,7 +1,32 @@
 # Map Step
 
 The `map` step transforms vertices or edges in the traversal by applying a mapping function, returning an iterator over
-the transformed elements.
+the transformed elements. This is a terminal step that ends the traversal.
+
+```pikchr
+# Graph structure with all vertices active in traversal
+A: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
+B: box same at 1 right of A "B" fill lightgreen
+C: box same at 1 right of B "C" fill lightgreen
+
+# Connect vertices with edges
+line from A.e to B.w
+line from B.e to C.w
+
+# Show mapping transformation with arrows
+Transformation: box height 0.4 width 1.1 at 0.7 below B "Map Function" "|vertex, ctx| → name" fill lightyellow
+
+arrow from A.s down 0.1 then right until even with B then down to Transformation.n rad 10px
+arrow from B.s to Transformation.n
+arrow from C.s down 0.1 then left until even with B then down to Transformation.n rad 10px
+
+# Result of mapping as strings
+Result: box height 0.5 width 2.5 at 0.7 below Transformation "Iterator<String>" "\"Project A\", \"Person B\", \"Project C\"" fill lightyellow
+
+arrow from Transformation.s to Result.n
+
+text at 0.5 below Result "After map(): Traversal converts to iterator of transformed values"
+```
 
 ## Syntax
 
@@ -22,18 +47,6 @@ walker.map(|element, context| {
 
 Returns an iterator that yields the transformed elements. The type of the iterator items is determined by the return
 type of the mapping function.
-
-## Diagram
-
-```bob
-Before step:
-  [Project A]* --- [Person B]* --- [Project C]*
-  Position: All vertices in traversal
-
-After step (map vertex -> name):
-  Result: Iterator of "Project A", "Person B", "Project C"
-  Position: Traversal converted to iterator of transformed values
-```
 
 ## Example
 

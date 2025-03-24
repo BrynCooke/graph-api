@@ -2,6 +2,30 @@
 
 The `filter` step narrows a traversal by keeping only vertices or edges that match a specified predicate.
 
+```pikchr
+# Before filter - all vertices 
+A: box rad 10px "A" "age=35" fit
+B: box rad 10px at 1.5 right of A "B" "age=25" fit
+C: box rad 10px at 1.5 right of B "C" "age=40" fit
+
+# Connect vertices with edges
+line from A.e to B.w
+line from B.e to C.w
+
+text at 0.4 below B "Before step: All vertices in traversal"
+
+# After filter - highlight only those matching age > 30
+Aprime: box rad 10px at 1 below A "A" "age=35" fit fill lightgreen
+Bprime: box rad 10px at 1.5 right of Aprime "B" "age=25" fit color gray
+Cprime: box rad 10px at 1.5 right of Bprime "C" "age=40" fit fill lightgreen
+
+# Connect vertices with edges (grayed out for non-matching)
+line from Aprime.e to Bprime.w color gray
+line from Bprime.e to Cprime.w color gray
+
+text at 0.4 below Bprime "After step (filter where age > 30): Only A and C match"
+```
+
 ## Syntax
 
 ```rust,noplayground
@@ -17,18 +41,6 @@ walker.filter(|element, context| /* predicate logic */)
 ## Return Value
 
 Returns a new walker containing only the elements that match the predicate.
-
-## Diagram
-
-```bob
-Before step:
-  [A(age=35)]* --- [B(age=25)]* --- [C(age=40)]*
-  Position: All vertices in traversal
-
-After step (filter where age > 30):
-  [A(age=35)]* --- [B(age=25)] --- [C(age=40)]*
-  Position: Only vertices matching predicate
-```
 
 ## Examples
 

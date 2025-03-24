@@ -1,7 +1,7 @@
 use crate::standard_model::{VertexExt, VertexIndex, standard_populated_graph};
 use graph_api_lib::Graph;
 
-/* ANCHOR: all */
+// ANCHOR: all
 // Function demonstrating the first step
 pub fn first_example() {
     // Use the standard graph defined in standard_model.rs
@@ -19,18 +19,18 @@ pub fn first_example() {
 
     // ANCHOR: with_filter
     // Get the first person with a specific name
-    let first_alice = graph
+    let first_bryn = graph
         .walk()
         .vertices(VertexIndex::person()) // Get all Person vertices
         .filter_by_person(|person, _| {
             // Using the typed projection with accessor methods
-            person.name().contains("Alice")
+            person.name().contains("Bryn")
         })
         .first();
 
-    match first_alice {
-        Some(alice) => println!("Found Alice: {:?}", alice),
-        None => println!("No one named Alice in the graph"),
+    match first_bryn {
+        Some(bryn) => println!("Found Bryn: {:?}", bryn),
+        None => println!("No one named Bryn in the graph"),
     }
     // ANCHOR_END: with_filter
 
@@ -56,4 +56,4 @@ pub fn first_example() {
     );
     // ANCHOR_END: existence_check
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

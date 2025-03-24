@@ -5,7 +5,7 @@ use graph_api_test::EdgeExt;
 use graph_api_test::Person;
 use graph_api_test::Vertex;
 
-/* ANCHOR: all */
+// ANCHOR: all
 // ANCHOR: knows_example
 pub fn default_context_example<G>(graph: &G, bryn_id: G::VertexId, julia_id: G::VertexId)
 where
@@ -80,4 +80,4 @@ where
     }
 }
 // ANCHOR_END: edge_properties
-/* ANCHOR_END: all */
+// ANCHOR_END: all

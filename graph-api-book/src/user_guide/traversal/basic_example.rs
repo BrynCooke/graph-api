@@ -1,7 +1,7 @@
 use graph_api_lib::{Graph, Supported};
 use graph_api_test::{Edge, EdgeIndex, Vertex, VertexExt, VertexIndex};
 
-/* ANCHOR: all */
+// ANCHOR: all
 // Basic traversal example showing a complex path through the graph
 pub fn basic_traversal_example<G>(graph: &G)
 where
@@ -23,4 +23,4 @@ where
         .filter_project()
         .collect::<Vec<_>>(); // Collect results
 }
-/* ANCHOR_END: all */
+// ANCHOR_END: all

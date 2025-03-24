@@ -1,7 +1,7 @@
 use crate::standard_model::{Vertex, VertexIndex, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference, VertexSearch};
 
-/* ANCHOR: all */
+// ANCHOR: all
 // ANCHOR: define_standard_index
 // Function explaining standard indexes
 pub fn define_standard_index() {
@@ -18,21 +18,21 @@ pub fn define_standard_index() {
 }
 // ANCHOR_END: define_standard_index
 
-// ANCHOR: standard_index_queries
 // Example of querying with standard indexes
 pub fn standard_index_queries() {
     // Use the standard graph defined in standard_model.rs
     let graph = standard_populated_graph();
+    // ANCHOR: standard_index_queries
 
     // The VertexIndex enum is automatically generated from the Vertex enum
     // by the VertexExt derive macro. It provides methods for each indexed field.
 
     // EFFICIENT: Find a person by username (using standard index)
     // This uses the auto-generated index methods from the VertexExt derive macro
-    let _alice = graph
+    let _bryn = graph
         .walk()
         // Use the index
-        .vertices(VertexIndex::person_by_username("alice123"))
+        .vertices(VertexIndex::person_by_username("bryn123"))
         .first();
 
     // Also efficient: Find a person by age (using ordered index)
@@ -58,7 +58,7 @@ pub fn standard_index_queries() {
             // We need to manually check the type and fields
             // because there's no index for the name property
             if let Vertex::Person { name, .. } = vertex.weight() {
-                name == "Bob"
+                name == "Julia"
             } else {
                 false
             }
@@ -68,6 +68,6 @@ pub fn standard_index_queries() {
     // While the above scan works, it's much less efficient than using indexes
     // It will examine every vertex in the graph, rather than just
     // going directly to the relevant vertices
+    // ANCHOR_END: standard_index_queries
 }
-// ANCHOR_END: standard_index_queries
-/* ANCHOR_END: all */
+// ANCHOR_END: all

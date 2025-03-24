@@ -8,12 +8,13 @@ use graph_api_test::EdgeExt;
 use graph_api_test::Person;
 use graph_api_test::Vertex;
 
-/* ANCHOR: all */
-// ANCHOR: vertex_context
+// ANCHOR: all
+
 pub fn vertex_context_example<G>(graph: &G, bryn_id: G::VertexId, julia_id: G::VertexId)
 where
     G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
 {
+    // ANCHOR: vertex_context
     // Use push_default_context to make source vertex information available during traversal
     let knows: Vec<_> = graph
         .walk()
@@ -41,14 +42,14 @@ where
     for relationship in &knows {
         println!("- {}", relationship);
     }
+    // ANCHOR_END: vertex_context
 }
-// ANCHOR_END: vertex_context
 
-// ANCHOR: edge_context
 pub fn edge_context_example<G>(graph: &G, person_id: G::VertexId)
 where
     G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
 {
+    // ANCHOR: edge_context
     // Walk the graph starting from the person vertex
     let edge_types = graph
         .walk()
@@ -69,14 +70,14 @@ where
         .collect::<Vec<_>>();
 
     println!("{:?}", edge_types);
+    // ANCHOR_END: edge_context
 }
-// ANCHOR_END: edge_context
 
-// ANCHOR: path_tracking
 pub fn path_tracking_example<G>(graph: &G, start_id: G::VertexId)
 where
     G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
 {
+    // ANCHOR: path_tracking
     // Track the path while traversing
     let paths = graph
         .walk()
@@ -109,6 +110,7 @@ where
     for path in paths {
         println!("- {}", path);
     }
+    // ANCHOR_END: path_tracking
 }
-// ANCHOR_END: path_tracking
-/* ANCHOR_END: all */
+
+// ANCHOR_END: all

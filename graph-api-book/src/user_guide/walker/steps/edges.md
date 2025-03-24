@@ -1,7 +1,28 @@
 # Edges Step
 
 The `edges` step traverses from vertices to their connecting edges, allowing navigation along relationships in the
-graph.
+graph. This step shifts the walker's position from vertices to their adjacent edges.
+
+```pikchr
+# Graph structure - vertices
+A: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
+B: box same at 1.5 right of A "B" fill white
+
+
+# Connect vertices with labeled edges
+LIKES: arrow from A.e to B.w "likes" above
+
+text at 0.4 below LIKES "Before edges(): Position at vertex A (highlighted green)"
+
+# Second diagram - after edges step
+Aprime: box rad 10px width 0.5 height 0.3 at 1 below A "A" fill white
+Bprime: box same at 1.5 right of Aprime "B" fill white
+
+# Connect vertices with labeled edges, highlight the edge
+LIKES: arrow thick color green from Aprime.e to Bprime.w  "likes" above 
+
+text at 0.4 below LIKES "After edges(): Position changes to 'likes' edge (highlighted green)"
+```
 
 ## Syntax
 
@@ -21,18 +42,6 @@ Where `search_criteria` is an `EdgeSearch` object or a predefined search from an
 ## Return Value
 
 Returns a new walker positioned at the edges matching the search criteria.
-
-## Diagram
-
-```bob
-Before step:
-  [A]* --- likes ---> [B] --- created ---> [C]
-  Position: At vertex A
-
-After step (with outgoing edges):
-  [A] --- likes* ---> [B] --- created ---> [C]
-  Position: At edge 'likes'
-```
 
 ## Examples
 

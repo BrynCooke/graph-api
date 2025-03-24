@@ -1,7 +1,30 @@
 # Debug Step
 
 The `dbg` step prints detailed information about the current traversal state, making it easier to debug complex graph
-operations.
+operations. Like a checkpoint in your traversal, it lets you see what's happening without changing the traversal flow.
+
+```pikchr
+# Graph structure with all vertices active in traversal
+A: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
+B: box same at 1 right of A "B" fill lightgreen
+C: box same at 1 right of B "C" fill lightgreen
+
+# Connect vertices with edges
+line from A.e to B.w
+line from B.e to C.w
+
+# Show mapping transformation with arrows
+Debug: box height 0.4 width 1.1 at 0.7 below B   "- Vertex { id: 1, label: Person { name: \"A\" } }" italic \
+  "- Vertex { id: 2, label: Person { name: \"B\" } }" italic \
+  "- Vertex { id: 3, label: Person { name: \"C\" } }" italic fit fill lightyellow
+
+arrow from A.s down 0.1 then right until even with B then down to Debug.n rad 10px
+arrow from B.s to Debug.n
+arrow from C.s down 0.1 then left until even with B then down to Debug.n rad 10px
+
+
+text at 0.5 below Debug "After dbg(): Traversal prints to console"
+```
 
 ## Syntax
 
@@ -16,25 +39,6 @@ walker.dbg("Custom label")
 ## Return Value
 
 Returns the same traversal unchanged, allowing you to continue chaining steps.
-
-## Diagram
-
-```bob
-Before step:
-  [A]* --- [B]* --- [C]*
-  Position: All vertices in traversal
-
-During dbg execution:
-  Console output:
-  [dbg "After filter"] Traversal contains 3 elements:
-  - Vertex { id: 1, label: Person { name: "A", age: 32 } }
-  - Vertex { id: 2, label: Person { name: "B", age: 28 } }
-  - Vertex { id: 3, label: Person { name: "C", age: 45 } }
-
-After step:
-  [A]* --- [B]* --- [C]*
-  Position: All vertices (unchanged)
-```
 
 ## Example
 

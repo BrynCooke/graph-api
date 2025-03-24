@@ -93,7 +93,7 @@ Take advantage of indexes when available:
 # let refs = populate_graph(&mut graph);
 // Using an index (more efficient)
 graph.walk()
-    .vertices(VertexSearch::index(Person::by_name_index(), "Alice"))
+    .vertices(VertexSearch::index(Person::by_name_index(), "Bryn"))
     // ... rest of traversal
 
 // Full scan (less efficient)
@@ -101,7 +101,7 @@ graph.walk()
     .vertices(VertexSearch::scan())
     .filter(|v, _| {
         if let Ok(person) = v.project::<Person<_>>() {
-            person.name() == "Alice"
+            person.name() == "Bryn"
         } else {
             false
         }
@@ -203,9 +203,9 @@ graph.walk()
 # let mut graph = SimpleGraph::new();
 # // Populate the graph with test data
 # let refs = populate_graph(&mut graph);
-// Find all friends of Alice
+// Find all friends of Bryn
 let friends = graph.walk()
-    .vertices(VertexSearch::index(Person::by_name_index(), "Alice"))
+    .vertices(VertexSearch::index(Person::by_name_index(), "Bryn"))
     .edges(EdgeSearch::scan().with_label(Edge::knows_label()))
     .tail()
     .collect::<Vec<_>>();
