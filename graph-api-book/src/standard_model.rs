@@ -11,7 +11,7 @@ pub enum Vertex {
     Person {
         name: String, // Not indexed
 
-        #[index(hash)] // Standard index for exact lookups
+        #[index(hash)] // Hash index for exact lookups
         username: String,
 
         #[index(full_text)] // Full-text index for text search

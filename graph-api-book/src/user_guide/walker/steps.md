@@ -36,7 +36,7 @@ traversal, such as:
 
 ### Context and Data Handling
 
-- [context](context.md) - Associate custom data with traversal elements
+- [context](context_system) - Associate custom data with traversal elements
 - [default_context](default_context.md) - Use predefined context for common patterns
 - [map](map.md) - Transform elements during traversal
 

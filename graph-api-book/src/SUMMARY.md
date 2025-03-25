@@ -8,7 +8,7 @@
 - [Defining a Model](./user_guide/defining_a_model.md)
 - [Property Graphs](./user_guide/property_graphs.md)
     - [Exploring Without Indexes](./user_guide/property_graphs/no_index.md)
-    - [Standard Indexes](./user_guide/property_graphs/standard_index.md)
+    - [Hash Indexes](./user_guide/property_graphs/hash_index.md)
     - [Range Indexes](./user_guide/property_graphs/range_index.md)
     - [Full-text Indexes](./user_guide/property_graphs/full_text_index.md)
     - [Combining Indexes](./user_guide/property_graphs/combining_indexes.md)
@@ -35,7 +35,7 @@
         - [probe](./user_guide/walker/steps/probe.md)
         - [mutate](./user_guide/walker/steps/mutate.md)
         - [dbg](./user_guide/walker/steps/dbg.md)
-    - [Context System](./user_guide/walker/context.md)
+    - [Context System](./user_guide/walker/context_system.md)
     - [Best Practices](./user_guide/walker/best_practices.md)
 
 # Implementation Guide

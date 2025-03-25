@@ -103,7 +103,7 @@ The context system is particularly useful for:
 3. Tracking traversal history
 4. Performing calculations based on visited elements
 
-See the [Context System](./walker/context.md) page for more details.
+See the [Context System](./walker/context_system) page for more details.
 
 ## Best Practices
 

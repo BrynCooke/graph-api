@@ -77,8 +77,8 @@ This macro provides:
 
 You can define indexes for efficient lookups using attributes:
 
-- `#[index]`: Creates a standard index for exact match lookups
-- `#[index(range)]`: Creates an range index for range queries
+- `#[index(hash)]`: Creates a hash index for exact match lookups
+- `#[index(range)]`: Creates a range index for range queries
 - `#[index(full_text)]`: Creates a full-text index for text search
 
 For more details on indexes and examples, see the [Property Graphs](./property_graphs.md) section.

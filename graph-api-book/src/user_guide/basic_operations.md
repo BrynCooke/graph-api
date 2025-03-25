@@ -108,5 +108,5 @@ After modification, you can verify the changes:
 Now that you understand the basic operations, you can:
 
 1. Learn about [Advanced Traversals](./traversal.md) using the Walker API
-2. Explore [Context and State](./walker/context.md) in graph traversals
+2. Explore [Context and State](./walker/context_system) in graph traversals
 3. See [Examples of Walker Steps](./walker/steps.md) to build more complex queries

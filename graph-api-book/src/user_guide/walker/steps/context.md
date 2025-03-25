@@ -1,8 +1,6 @@
 # Context
 
-The `context` system in graph traversals allows you to carry information along the traversal path, making it possible to
-reference data from previous steps while working with the current element. Context travels with the traversal without
-changing its position.
+The `context` step allows you to carry information along a graph traversal, making it possible to access data from previous steps while working with the current element. Context creates a typed value that travels with the traversal without changing its position.
 
 ```pikchr
 # Graph structure - starting at vertex A
@@ -15,7 +13,7 @@ arrow from A.e to B.w "Follows" above
 arrow from B.e to C.w "Created" above
 
 # Initial state with no context
-text at 0.4 below B "Before push_context: At A with no context"
+text at 0.4 below B "Before context: At A with no context"
 
 # After push_context - position unchanged but context added
 Aprime: box rad 10px width 0.5 height 0.3 at 1.4 below A "A" fill lightgreen
@@ -52,7 +50,7 @@ arrow <-> from Bprime2.s to ContextBox2.n color black
 text at 0.7 below Bprime2 "Later in traversal: Context moves with the traversal to B"
 ```
 
-## Syntax
+## Methods for Adding Context
 
 ```rust,noplayground
 // Adding context to a traversal
@@ -60,22 +58,36 @@ walker.push_context(|element, current_context| {
     // Create and return new context value
 })
 
-// Accessing context later in the traversal
-walker.map(|element, context| {
-    // Use the context value
-})
+// Adding current vertex/edge as context
+walker.push_default_context()
 ```
 
 ## Parameters
 
 - `context_fn`: A function that takes:
-    - A reference to the current element (vertex or edge)
-    - The current context (if any)
-    - Returns a new context value to be carried along the traversal
+  - A reference to the current element (vertex or edge)
+  - The current context (if any)
+  - Returns a new context value to be carried along the traversal
 
 ## Return Value
 
 Returns a new walker with the context added, preserving the current traversal position.
+
+## Accessing Context
+
+Any step that accepts a function with context (like `map`, `filter`, etc.) will receive:
+- The current element as the first parameter
+- The context as the second parameter
+
+```rust,noplayground
+// Using context in a map step
+walker
+    .push_context(|v, _| v.id())  // Store vertex ID
+    .map(|current, context| {
+        // Use the stored vertex ID from context
+        format!("Current: {}, Source: {}", current.id(), context)
+    })
+```
 
 ## Examples
 
@@ -103,14 +115,24 @@ Build a representation of the path taken during traversal:
 {{#include context/context_examples.rs:path_tracking}}
 ```
 
-## Notes
+## Type Safety
 
-- Contexts are values carried along with each traversal element
-- Each step in the traversal can access the latest context value
-- You can push multiple contexts in sequence to build up a stack of information
-- Context works with any type that can be stored in the traversal
-- Common uses include:
-    - Tracking the path taken during traversal
-    - Carrying properties from earlier vertices/edges
-    - Building up compound data structures during traversal
-    - Storing metadata about the traversal process
+The context system is fully type-safe:
+
+- Each context value has a concrete type
+- Context transformation functions must return the correct type
+- Closures that receive context are provided with the correctly typed context
+
+## Common Use Cases
+
+- **Path tracking**: Store the sequence of vertices or edges traversed
+- **Metadata collection**: Gather information from different parts of the graph
+- **Aggregation**: Build up composite results during traversal
+- **Decision making**: Use information from earlier steps to influence later decisions
+
+## Best Practices
+
+- Keep contexts immutable - create new contexts rather than modifying existing ones
+- Use `push_default_context()` when you simply need to track the current vertex/edge
+- Chain multiple context operations to build complex data structures
+- Consider type-safety when designing context pipelines

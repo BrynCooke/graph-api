@@ -114,6 +114,8 @@ pub fn main() {
 }
 ```
 
+Remember that the user will only be interested in the traversal in most cases, do not include the containing function.
+
 Use the mdbook include mechanism to pull in portions of the file:
 
 ````markdown
