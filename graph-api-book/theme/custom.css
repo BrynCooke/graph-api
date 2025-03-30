@@ -129,6 +129,12 @@ svg {
     paint-order: stroke; /* Crucial: Draw stroke UNDER the fill */
 }
 
+/* Style for the 'X' mark on filtered out elements */
+.filtered-out-mark {
+    stroke: var(--accent-secondary); /* Use secondary accent color (orange) */
+    stroke-width: var(--stroke-width-normal);
+}
+
 /* Halo effect for primary text elements in SVGs */
 .halo {
     stroke: var(--graph-bg); /* Use the page background color */
