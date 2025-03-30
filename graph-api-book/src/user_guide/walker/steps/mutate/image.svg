@@ -15,15 +15,15 @@
     <text x="150" y="60" class="text-color-muted" text-anchor="middle">Before Mutate</text>
     <g class="node active" transform="translate(50, 100)">
         <circle r="15"></circle><text class="node-label">V1</text>
-        <text class="property-text" y="20">(status: A)</text>
+        <text class="property-text" y="25">(status: A)</text> <!-- Adjusted Y -->
     </g>
     <g class="node active" transform="translate(150, 100)">
         <circle r="15"></circle><text class="node-label">V2</text>
-        <text class="property-text" y="20">(status: A)</text>
+        <text class="property-text" y="25">(status: A)</text> <!-- Adjusted Y -->
     </g>
     <g class="node active" transform="translate(250, 100)">
         <circle r="15"></circle><text class="node-label">V3</text>
-        <text class="property-text" y="20">(status: A)</text>
+        <text class="property-text" y="25">(status: A)</text> <!-- Adjusted Y -->
     </g>
 
     <!-- Step Arrow -->
@@ -34,15 +34,15 @@
     <text x="150" y="200" class="text-color-muted" text-anchor="middle">After Mutate</text>
     <g class="node active" transform="translate(50, 240)">
         <circle r="15"></circle><text class="node-label">V1</text>
-        <text class="property-text" y="20">(status: <tspan fill="var(--accent-secondary)">B</tspan>)</text>
+        <text class="property-text" y="25">(status: <tspan fill="var(--accent-secondary)">B</tspan>)</text> <!-- Adjusted Y -->
     </g>
     <g class="node active" transform="translate(150, 240)">
         <circle r="15"></circle><text class="node-label">V2</text>
-        <text class="property-text" y="20">(status: <tspan fill="var(--accent-secondary)">B</tspan>)</text>
+        <text class="property-text" y="25">(status: <tspan fill="var(--accent-secondary)">B</tspan>)</text> <!-- Adjusted Y -->
     </g>
     <g class="node active" transform="translate(250, 240)">
         <circle r="15"></circle><text class="node-label">V3</text>
-        <text class="property-text" y="20">(status: <tspan fill="var(--accent-secondary)">B</tspan>)</text>
+        <text class="property-text" y="25">(status: <tspan fill="var(--accent-secondary)">B</tspan>)</text> <!-- Adjusted Y -->
     </g>
     <text x="350" y="160" class="text-color-muted" font-size="12px">Traversal continues</text>
     <text x="350" y="175" class="text-color-muted" font-size="12px">with mutated elements</text>

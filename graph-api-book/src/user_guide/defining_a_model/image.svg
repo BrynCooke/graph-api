@@ -11,50 +11,50 @@
     <text x="10" y="25" class="step-label halo">Graph Model Example</text>
 
     <!-- Vertices -->
-    <g class="node" transform="translate(400, 50)">
+    <g class="node" transform="translate(400, 60)"> <!-- Adjusted Y -->
         <rect x="-100" y="-30" width="200" height="60" class="node-box"/>
         <text class="node-label" y="-15">Person (Eve)</text>
         <text class="property-text" y="10">name: Eve, user: eve789, age: 31</text>
     </g>
-    <g class="node" transform="translate(400, 150)">
+    <g class="node" transform="translate(400, 170)"> <!-- Adjusted Y -->
         <rect x="-110" y="-30" width="220" height="60" class="node-box"/>
         <text class="node-label" y="-15">Person (Julia)</text>
         <text class="property-text" y="10">name: Julia, user: julia456, age: 34</text>
     </g>
-    <g class="node" transform="translate(150, 150)">
+    <g class="node" transform="translate(150, 170)"> <!-- Adjusted Y -->
         <rect x="-120" y="-30" width="240" height="60" class="node-box"/>
         <text class="node-label" y="-15">Person (Bryn)</text>
         <text class="property-text" y="10">name: Bryn, user: bryn123, age: 28</text>
     </g>
-    <g class="node" transform="translate(150, 50)">
+    <g class="node" transform="translate(150, 60)"> <!-- Adjusted Y -->
         <rect x="-70" y="-25" width="140" height="50" class="node-box"/>
         <text class="node-label" y="-10">Project</text>
         <text class="property-text" y="10">name: GraphApi</text>
     </g>
-    <g class="node" transform="translate(150, 250)">
+    <g class="node" transform="translate(150, 280)"> <!-- Adjusted Y -->
         <rect x="-70" y="-25" width="140" height="50" class="node-box"/>
         <text class="node-label" y="-10">Project</text>
         <text class="property-text" y="10">name: Alpaca</text>
     </g>
 
     <!-- Edges -->
-    <path id="bryn-eve" class="edge directed" d="M 200 120 q 50 -50 150 -70" marker-start="url(#arrowhead-bidir)" marker-end="url(#arrowhead-bidir)" fill="none"/>
+    <path id="bryn-eve" class="edge directed" d="M 200 140 q 50 -60 150 -80" marker-start="url(#arrowhead-bidir)" marker-end="url(#arrowhead-bidir)" fill="none"/> <!-- Adjusted path -->
     <text class="edge-label"><textPath href="#bryn-eve" startOffset="50%">Follows</textPath></text>
 
-    <line id="eve-julia" class="edge directed" x1="400" y1="80" x2="400" y2="120" />
-    <text class="edge-label" x="410" y="100">Follows</text>
+    <line id="eve-julia" class="edge directed" x1="400" y1="90" x2="400" y2="140" /> <!-- Adjusted Y -->
+    <text class="edge-label" x="410" y="115">Follows</text> <!-- Adjusted Y -->
 
-    <path id="julia-bryn" class="edge directed" d="M 290 150 L 270 150" fill="none"/>
-    <text class="edge-label" x="280" y="140">Follows</text>
+    <path id="julia-bryn" class="edge directed" d="M 290 170 L 270 170" fill="none"/> <!-- Adjusted Y -->
+    <text class="edge-label" x="280" y="160">Follows</text> <!-- Adjusted Y -->
 
-    <line id="bryn-graphapi" class="edge directed" x1="150" y1="120" x2="150" y2="80" />
-    <text class="edge-label" x="160" y="100">Created</text>
+    <line id="bryn-graphapi" class="edge directed" x1="150" y1="140" x2="150" y2="90" /> <!-- Adjusted Y -->
+    <text class="edge-label" x="160" y="115">Created</text> <!-- Adjusted Y -->
 
-    <path id="bryn-alpaca1" class="edge directed" d="M 150 180 L 150 220" fill="none"/>
-    <text class="edge-label" x="160" y="195">Liked</text>
-    <text class="edge-label" x="160" y="210">Commented</text>
+    <path id="bryn-alpaca1" class="edge directed" d="M 150 200 L 150 250" fill="none"/> <!-- Adjusted Y -->
+    <text class="edge-label" x="160" y="220">Liked</text> <!-- Adjusted Y -->
+    <text class="edge-label" x="160" y="235">Commented</text> <!-- Adjusted Y -->
 
-    <path id="julia-alpaca" class="edge directed" d="M 350 180 q -75 50 -150 70" fill="none"/>
-    <text class="edge-label" transform="translate(275, 210) rotate(-20)">Created</text>
+    <path id="julia-alpaca" class="edge directed" d="M 350 200 q -75 60 -150 80" fill="none"/> <!-- Adjusted path -->
+    <text class="edge-label" transform="translate(275, 240) rotate(-25)">Created</text> <!-- Adjusted transform -->
 
 </svg>

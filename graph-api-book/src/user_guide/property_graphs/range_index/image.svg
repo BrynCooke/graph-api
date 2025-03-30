@@ -73,22 +73,22 @@
         <g class="node" id="node-A" transform="translate(100, 50)"> <!-- Center abs (380, 90) -->
             <circle r="20"></circle>
             <text class="node-label">A</text>
-            <text class="property-text" y="28">{age: 25, ...}</text>
+            <text class="property-text" y="30">{age: 25, ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node highlighted" id="node-B" transform="translate(280, 50)"> <!-- Center abs (560, 90) -->
             <circle r="20"></circle>
             <text class="node-label">B</text>
-            <text class="property-text" y="28">{age: 35, ...}</text>
+            <text class="property-text" y="30">{age: 35, ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node highlighted" id="node-C" transform="translate(100, 200)"> <!-- Center abs (380, 240) -->
             <circle r="20"></circle>
             <text class="node-label">C</text>
-            <text class="property-text" y="28">{age: 42, ...}</text>
+            <text class="property-text" y="30">{age: 42, ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node highlighted" id="node-D" transform="translate(280, 200)"> <!-- Center abs (560, 240) -->
             <circle r="20"></circle>
             <text class="node-label">D</text>
-            <text class="property-text" y="28">{age: 35, ...}</text>
+            <text class="property-text" y="30">{age: 35, ...}</text> <!-- Adjusted Y -->
         </g>
 
         <!-- Edges - Added directed class -->

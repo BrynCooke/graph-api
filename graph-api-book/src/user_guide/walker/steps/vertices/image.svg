@@ -73,22 +73,22 @@
         <g class="node highlighted" id="node-A" transform="translate(80, 50)">
             <circle r="20"></circle>
             <text class="node-label">A</text>
-            <text class="property-text" y="28">{label: "Person"}</text>
+            <text class="property-text" y="30">{label: "Person"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-B" transform="translate(240, 50)">
             <circle r="20"></circle>
             <text class="node-label">B</text>
-            <text class="property-text" y="28">{label: "Product"}</text>
+            <text class="property-text" y="30">{label: "Product"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node highlighted" id="node-C" transform="translate(80, 180)">
             <circle r="20"></circle>
             <text class="node-label">C</text>
-            <text class="property-text" y="28">{label: "Person"}</text>
+            <text class="property-text" y="30">{label: "Person"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-D" transform="translate(240, 180)">
             <circle r="20"></circle>
             <text class="node-label">D</text>
-            <text class="property-text" y="28">{label: "Review"}</text>
+            <text class="property-text" y="30">{label: "Review"}</text> <!-- Adjusted Y -->
         </g>
 
     </g> <!-- End of graph group -->

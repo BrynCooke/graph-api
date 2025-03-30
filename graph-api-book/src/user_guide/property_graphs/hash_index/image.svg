@@ -68,22 +68,22 @@
         <g class="node highlighted" id="node-A" transform="translate(100, 50)"> <!-- Center at abs (380, 90) -->
             <circle r="20"></circle>
             <text class="node-label">A</text>
-            <text class="property-text" y="28">{name: "Alice", ...}</text>
+            <text class="property-text" y="30">{name: "Alice", ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-B" transform="translate(250, 50)"> <!-- Center at abs (530, 90) -->
             <circle r="20"></circle>
             <text class="node-label">B</text>
-            <text class="property-text" y="28">{name: "Bob", ...}</text>
+            <text class="property-text" y="30">{name: "Bob", ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node highlighted" id="node-C" transform="translate(100, 180)"> <!-- Center at abs (380, 220) -->
             <circle r="20"></circle>
             <text class="node-label">C</text>
-            <text class="property-text" y="28">{name: "Alice", ...}</text>
+            <text class="property-text" y="30">{name: "Alice", ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-D" transform="translate(250, 180)"> <!-- Center at abs (530, 220) -->
             <circle r="20"></circle>
             <text class="node-label">D</text>
-            <text class="property-text" y="28">{name: "Charlie", ...}</text>
+            <text class="property-text" y="30">{name: "Charlie", ...}</text> <!-- Adjusted Y -->
         </g>
 
         <!-- Edges -->

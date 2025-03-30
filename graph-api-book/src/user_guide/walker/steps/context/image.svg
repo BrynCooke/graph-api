@@ -15,7 +15,7 @@
     </text>
 
     <!-- Initial State -->
-    <text x="100" y="60" class="text-color-muted" text-anchor="middle">Before Context</text>
+    <text x="100" y="50" class="text-color-muted" text-anchor="middle">Before Context</text> <!-- Adjusted Y -->
     <g class="node active" transform="translate(100, 100)">
         <circle r="20"></circle>
         <text class="node-label">V1</text>
@@ -27,30 +27,30 @@
     <line class="edge directed" x1="120" y1="100" x2="180" y2="100"/>
 
     <!-- Step Arrow -->
-    <line class="step-arrow" x1="100" y1="130" x2="100" y2="170"/>
-    <text x="115" y="155" class="text-color-muted" font-size="12px">push_context(|v| v.id)</text>
+    <line class="step-arrow" x1="100" y1="130" x2="100" y2="190"/> <!-- Adjusted Y2 -->
+    <text x="115" y="165" class="text-color-muted" font-size="12px">push_context(|v| v.id)</text> <!-- Adjusted Y -->
 
     <!-- After State -->
-    <text x="100" y="210" class="text-color-muted" text-anchor="middle">After Context</text> <!-- Adjusted Y -->
-    <g class="node active" transform="translate(100, 250)"> <!-- Adjusted Y -->
+    <text x="100" y="220" class="text-color-muted" text-anchor="middle">After Context</text> <!-- Adjusted Y -->
+    <g class="node active" transform="translate(100, 260)"> <!-- Adjusted Y -->
         <circle r="20"></circle>
         <text class="node-label">V1</text>
     </g>
-    <g class="node" transform="translate(200, 250)"> <!-- Adjusted Y -->
+    <g class="node" transform="translate(200, 260)"> <!-- Adjusted Y -->
         <circle r="20"></circle>
         <text class="node-label">V2</text>
     </g>
-    <line class="edge directed" x1="120" y1="250" x2="180" y2="250"/> <!-- Adjusted Y -->
+    <line class="edge directed" x1="120" y1="260" x2="180" y2="260"/> <!-- Adjusted Y -->
 
     <!-- Context Box -->
-    <g transform="translate(350, 160)"> <!-- Adjusted Y -->
+    <g transform="translate(350, 170)"> <!-- Adjusted Y -->
         <rect class="index-box" x="-75" y="-25" width="150" height="50"/>
         <text class="index-title" y="-5">Context</text>
         <text class="index-value range" y="20">"V1_ID"</text>
     </g>
     <!-- Link Context to State -->
-    <path class="index-pointer" d="M 100 170 q 125 -40 250 0"/> <!-- Adjusted curve -->
-    <text x="225" y="140" class="text-color-muted" font-size="12px">Context travels with walker</text> <!-- Adjusted Y -->
-    <text x="225" y="155" class="text-color-muted" font-size="12px">(Position unchanged)</text> <!-- Adjusted Y -->
+    <path class="index-pointer" d="M 100 190 q 125 -50 250 0"/> <!-- Adjusted curve and Y -->
+    <text x="225" y="150" class="text-color-muted" font-size="12px">Context travels with walker</text> <!-- Adjusted Y -->
+    <text x="225" y="165" class="text-color-muted" font-size="12px">(Position unchanged)</text> <!-- Adjusted Y -->
 
 </svg>

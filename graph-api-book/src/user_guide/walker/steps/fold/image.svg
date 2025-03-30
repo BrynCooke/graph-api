@@ -11,18 +11,18 @@
     <text x="10" y="25" class="step-label halo">Walker Step: <tspan class="code">fold()</tspan></text>
 
     <!-- Walker State (Vertices) -->
-    <text x="150" y="60" class="text-color-muted" text-anchor="middle">Traversal Elements</text>
+    <text x="150" y="50" class="text-color-muted" text-anchor="middle">Traversal Elements</text> <!-- Adjusted Y -->
     <g class="node active" transform="translate(50, 100)">
         <circle r="15"></circle><text class="node-label">V1</text>
-        <text class="property-text" y="20">(age: 30)</text>
+        <text class="property-text" y="25">(age: 30)</text> <!-- Adjusted Y -->
     </g>
     <g class="node active" transform="translate(150, 100)">
         <circle r="15"></circle><text class="node-label">V2</text>
-        <text class="property-text" y="20">(age: 25)</text>
+        <text class="property-text" y="25">(age: 25)</text> <!-- Adjusted Y -->
     </g>
     <g class="node active" transform="translate(250, 100)">
         <circle r="15"></circle><text class="node-label">V3</text>
-        <text class="property-text" y="20">(age: 40)</text>
+        <text class="property-text" y="25">(age: 40)</text> <!-- Adjusted Y -->
     </g>
 
     <!-- Accumulator Box -->
