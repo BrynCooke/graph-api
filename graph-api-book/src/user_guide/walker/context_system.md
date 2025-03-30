@@ -4,41 +4,9 @@ The context system is a powerful feature of the Graph API that enriches your tra
 
 ## What is Context?
 
-```pikchr
-# After push_context - position unchanged but context added
-Aprime: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
-Bprime: box same at 1.5 right of Aprime "B" fill white
-Cprime: box same at 1.5 right of Bprime "C" fill white
-
-# Connect vertices with labeled edges
-arrow from Aprime.e to Bprime.w "Follows" above
-arrow from Bprime.e to Cprime.w "Created" above
-
-# Show the context carried with the traversal
-ContextBox: box rad 10px height 0.2 width 1.0 fill lightyellow at 0.4 below Aprime "username: alice"
-
-# Connect context to current position
-arrow <-> from Aprime.s to ContextBox.n color black
-
-text at 0.7 below Bprime "After push_context: Still at A, but with user data in context"
-
-# Show how context follows the traversal to new positions
-Aprime2: box rad 10px width 0.5 height 0.3 at 1.4 below Aprime "A" fill white
-Bprime2: box same at 1.5 right of Aprime2 "B" fill lightgreen
-Cprime2: box same at 1.5 right of Bprime2 "C" fill white
-
-# Connect vertices with labeled edges
-arrow from Aprime2.e to Bprime2.w "Follows" above
-arrow from Bprime2.e to Cprime2.w "Created" above
-
-# Show the context still carried with the traversal at new position
-ContextBox2: box rad 10px height 0.2 width 1.0 fill lightyellow at 0.4 below Bprime2  "username: alice" 
-
-# Connect context to new position
-arrow <-> from Bprime2.s to ContextBox2.n color black
-
-text at 0.7 below Bprime2 "Later in traversal: Context moves with the traversal to B"
-```
+<object type="image/svg+xml" data="context_system/image.svg" width="500" height="350">
+Diagram illustrating how context travels with the walker
+</object>
 
 Context allows you to:
 

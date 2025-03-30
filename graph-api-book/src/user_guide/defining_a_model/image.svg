@@ -1,0 +1,60 @@
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+    <defs>
+        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <marker id="arrowhead-bidir" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+    <text x="10" y="25" class="step-label halo">Graph Model Example</text>
+
+    <!-- Vertices -->
+    <g class="node" transform="translate(400, 50)">
+        <rect x="-100" y="-30" width="200" height="60" class="node-box"/>
+        <text class="node-label" y="-15">Person (Eve)</text>
+        <text class="property-text" y="10">name: Eve, user: eve789, age: 31</text>
+    </g>
+    <g class="node" transform="translate(400, 150)">
+        <rect x="-110" y="-30" width="220" height="60" class="node-box"/>
+        <text class="node-label" y="-15">Person (Julia)</text>
+        <text class="property-text" y="10">name: Julia, user: julia456, age: 34</text>
+    </g>
+    <g class="node" transform="translate(150, 150)">
+        <rect x="-120" y="-30" width="240" height="60" class="node-box"/>
+        <text class="node-label" y="-15">Person (Bryn)</text>
+        <text class="property-text" y="10">name: Bryn, user: bryn123, age: 28</text>
+    </g>
+    <g class="node" transform="translate(150, 50)">
+        <rect x="-70" y="-25" width="140" height="50" class="node-box"/>
+        <text class="node-label" y="-10">Project</text>
+        <text class="property-text" y="10">name: GraphApi</text>
+    </g>
+    <g class="node" transform="translate(150, 250)">
+        <rect x="-70" y="-25" width="140" height="50" class="node-box"/>
+        <text class="node-label" y="-10">Project</text>
+        <text class="property-text" y="10">name: Alpaca</text>
+    </g>
+
+    <!-- Edges -->
+    <path id="bryn-eve" class="edge directed" d="M 200 120 q 50 -50 150 -70" marker-start="url(#arrowhead-bidir)" marker-end="url(#arrowhead-bidir)" fill="none"/>
+    <text class="edge-label"><textPath href="#bryn-eve" startOffset="50%">Follows</textPath></text>
+
+    <line id="eve-julia" class="edge directed" x1="400" y1="80" x2="400" y2="120" />
+    <text class="edge-label" x="410" y="100">Follows</text>
+
+    <path id="julia-bryn" class="edge directed" d="M 290 150 L 270 150" fill="none"/>
+    <text class="edge-label" x="280" y="140">Follows</text>
+
+    <line id="bryn-graphapi" class="edge directed" x1="150" y1="120" x2="150" y2="80" />
+    <text class="edge-label" x="160" y="100">Created</text>
+
+    <path id="bryn-alpaca1" class="edge directed" d="M 150 180 L 150 220" fill="none"/>
+    <text class="edge-label" x="160" y="195">Liked</text>
+    <text class="edge-label" x="160" y="210">Commented</text>
+
+    <path id="julia-alpaca" class="edge directed" d="M 350 180 q -75 50 -150 70" fill="none"/>
+    <text class="edge-label" transform="translate(275, 210) rotate(-20)">Created</text>
+
+</svg>
