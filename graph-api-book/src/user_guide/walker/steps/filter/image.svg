@@ -1,0 +1,91 @@
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
+<svg width="650" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Filter Step Diagram</title>
+    <desc>Diagram illustrating the 'filter' step that keeps only vertices matching a specified condition.</desc>
+
+    <defs>
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+    </defs>
+
+    <!-- === Before filter() step === -->
+    <g id="before-step" transform="translate(40, 80)">
+        <text class="step-label" x="260" y="-30">Before filter() step:</text>
+
+        <!-- Vertex A -->
+        <g class="node" id="node-A-before" transform="translate(100, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+            <text class="property-text" y="28">age=35</text>
+        </g>
+
+        <!-- Vertex B -->
+        <g class="node" id="node-B-before" transform="translate(260, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
+            <text class="property-text" y="28">age=25</text>
+        </g>
+
+        <!-- Vertex C -->
+        <g class="node" id="node-C-before" transform="translate(420, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
+            <text class="property-text" y="28">age=40</text>
+        </g>
+
+        <!-- Edges -->
+        <g class="edge" id="edge-A-B-before">
+            <line x1="120" y1="50" x2="240" y2="50"></line>
+        </g>
+        <g class="edge" id="edge-B-C-before">
+            <line x1="280" y1="50" x2="400" y2="50"></line>
+        </g>
+    </g>
+
+    <!-- Step Representation -->
+    <g id="step-representation" class="step-label" transform="translate(30, 150)">
+        <text class="code" x="260" y="0">.filter(|v, _| v.age > 30)</text>
+        <line class="step-arrow" x1="420" y1="0" x2="520" y2="0" transform="translate(0, -5)"/>
+    </g>
+
+    <!-- === After filter() step === -->
+    <g id="after-step" transform="translate(40, 220)">
+        <text class="step-label" x="260" y="-30">After filter() step (where age > 30):</text>
+
+        <!-- Vertex A (highlighted, matches) -->
+        <g class="node highlighted" id="node-A-after" transform="translate(100, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+            <text class="property-text" y="28">age=35</text>
+        </g>
+
+        <!-- Vertex B (faded, doesn't match) -->
+        <g class="node visited" id="node-B-after" transform="translate(260, 50)">
+            <circle r="20"></circle>
+            <text class="node-label" style="fill: var(--text-color-muted);">B</text>
+            <text class="property-text" y="28">age=25</text>
+        </g>
+
+        <!-- Vertex C (highlighted, matches) -->
+        <g class="node highlighted" id="node-C-after" transform="translate(420, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
+            <text class="property-text" y="28">age=40</text>
+        </g>
+
+        <!-- Edges (faded) -->
+        <g class="edge visited" id="edge-A-B-after">
+            <line x1="120" y1="50" x2="240" y2="50"></line>
+        </g>
+        <g class="edge visited" id="edge-B-C-after">
+            <line x1="280" y1="50" x2="400" y2="50"></line>
+        </g>
+    </g>
+</svg>
