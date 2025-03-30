@@ -1,5 +1,5 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg width="650" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg viewBox="0 0 650 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
     <title>Edges Step Diagram</title>
     <desc>Diagram illustrating the 'edges' step traversal from vertices to their connecting edges.</desc>
 

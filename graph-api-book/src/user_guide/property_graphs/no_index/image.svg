@@ -1,5 +1,5 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg width="600" height="350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
     <title>Graph Scan Without Index</title>
     <desc>Diagram illustrating that finding nodes (e.g., name='Alice') without an index requires scanning every node (A,
         B, C, D, E). Matching nodes A and C are highlighted.

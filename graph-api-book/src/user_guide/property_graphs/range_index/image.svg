@@ -1,5 +1,5 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg width="650" height="350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg viewBox="0 0 650 350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
     <title>Range Vertex Index Example with Query</title>
     <desc>Diagram showing a range index on 'age', highlighting the query for age >= 35 resulting in nodes B, C, and D.
     </desc>

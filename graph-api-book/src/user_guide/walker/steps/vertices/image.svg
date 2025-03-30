@@ -1,5 +1,5 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg width="650" height="350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg viewBox="0 0 650 350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
     <title>Vertices Step Diagram (using Index)</title>
     <desc>Diagram illustrating the 'vertices' step selecting nodes using an index (VertexIndex::person()), highlighting
         the selected 'Person' nodes (A, C).
