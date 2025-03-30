@@ -2,7 +2,9 @@
 
 The `filter` step narrows a traversal by keeping only vertices or edges that match a specified predicate.
 
-{{#include images/filter.svg}}
+<object type="image/svg+xml" data="filter/image.svg" width="500" height="250">
+Filter step diagram showing elements being kept or discarded based on a predicate
+</object>
 
 ## Syntax
 

@@ -3,7 +3,9 @@
 The `collect` step gathers all elements from a traversal into a collection, allowing you to materialize the results.
 This is a terminal operation that ends the traversal and returns the collected elements.
 
-{{#include images/collect.svg}}
+<object type="image/svg+xml" data="collect/image.svg" width="450" height="200">
+Collect step diagram showing walker state transforming into a collection
+</object>
 
 ## Syntax
 

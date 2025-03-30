@@ -3,7 +3,9 @@
 The `vertices` step starts a traversal by selecting a set of vertices from the graph based on specified criteria. This
 is typically the first step in a traversal chain.
 
-{{#include images/vertices.svg}}
+<object type="image/svg+xml" data="vertices/image.svg" width="650" height="350">
+Vertices step diagram showing initial selection of vertices based on criteria
+</object>
 
 ## Syntax
 

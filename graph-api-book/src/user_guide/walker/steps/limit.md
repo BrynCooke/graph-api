@@ -3,7 +3,9 @@
 The `limit` step restricts a traversal to return at most a specified number of elements, helping to control result size
 and improve performance.
 
-{{#include images/limit.svg}}
+<object type="image/svg+xml" data="limit/image.svg" width="500" height="250">
+Limit step diagram showing traversal stopping after a specified number of elements
+</object>
 
 ## Syntax
 

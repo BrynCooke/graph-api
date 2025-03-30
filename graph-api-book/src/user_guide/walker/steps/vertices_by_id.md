@@ -3,7 +3,9 @@
 The `vertices_by_id` step starts a traversal from a specific set of vertices identified by their IDs. This is typically
 the most efficient way to start a traversal when you know exactly which vertices you want.
 
-{{#include images/vertices_by_id.svg}}
+<object type="image/svg+xml" data="vertices_by_id/image.svg" width="500" height="250">
+Vertices By ID step diagram showing selection of vertices based on specific IDs
+</object>
 
 ## Syntax
 

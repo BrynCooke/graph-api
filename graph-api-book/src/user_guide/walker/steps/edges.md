@@ -3,7 +3,9 @@
 The `edges` step traverses from vertices to their connecting edges, allowing navigation along relationships in the
 graph. This step shifts the walker's position from vertices to their adjacent edges.
 
-{{#include images/edges.svg}}
+<object type="image/svg+xml" data="edges/image.svg" width="500" height="250">
+Edges step diagram showing traversal from a vertex to its outgoing edges
+</object>
 
 ## Syntax
 
