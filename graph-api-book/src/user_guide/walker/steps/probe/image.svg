@@ -1,0 +1,50 @@
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="250" viewBox="0 0 500 250">
+    <defs>
+        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" viewBox="0 0 10 10" refX="5"
+                refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
+        </marker>
+    </defs>
+    <!-- Stylesheet is linked via processing instruction -->
+    <text x="10" y="25" class="step-label halo">Walker Step:
+        <tspan class="code">probe()</tspan>
+    </text>
+
+    <!-- Walker State -->
+    <text x="150" y="60" class="text-color-muted" text-anchor="middle">Walker Traversal</text>
+    <g class="node active" transform="translate(50, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">V1</text>
+    </g>
+    <g class="node active" transform="translate(150, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">V2</text>
+    </g>
+    <g class="node active" transform="translate(250, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">V3</text>
+    </g>
+    <line class="edge directed" x1="65" y1="100" x2="135" y2="100"/>
+    <line class="edge directed" x1="165" y1="100" x2="235" y2="100"/>
+
+    <!-- Probe Side Effect -->
+    <g transform="translate(150, 200)">
+        <rect class="index-box" x="-100" y="-25" width="200" height="50" stroke-dasharray="3 3"/>
+        <text class="index-title" y="-5">Side Effect (e.g., Log)</text>
+        <text class="index-value range" y="20">"Processing V1..."</text>
+    </g>
+
+    <!-- Arrow to Side Effect -->
+    <line class="scan-pointer" x1="50" y1="115" x2="50" y2="175" marker-end="none"/>
+    <line class="scan-pointer" x1="50" y1="175" x2="100" y2="175" marker-end="none"/>
+    <line class="scan-pointer" x1="150" y1="115" x2="150" y2="175" marker-end="none"/>
+    <line class="scan-pointer" x1="250" y1="115" x2="250" y2="175" marker-end="none"/>
+    <line class="scan-pointer" x1="200" y1="175" x2="250" y2="175" marker-end="none"/>
+
+    <text x="300" y="105" class="text-color-muted" font-size="12px">Traversal continues unaffected</text>
+</svg>
