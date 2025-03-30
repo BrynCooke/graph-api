@@ -4,7 +4,7 @@ The context system is a powerful feature of the Graph API that enriches your tra
 
 ## What is Context?
 
-<object type="image/svg+xml" data="context_system/image.svg" width="500" height="350">
+<object type="image/svg+xml" data="context_system/image.svg">
 Diagram illustrating how context travels with the walker
 </object>
 

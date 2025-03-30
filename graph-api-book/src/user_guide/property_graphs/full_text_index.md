@@ -10,7 +10,7 @@ Unlike standard indexes that require exact matches, full-text indexes allow you 
 words, regardless of their position within the text.
 
 Consider an index on a `description` property:
-<object data="./full_text_index/image.svg" title="Diagram showing a full-text index mapping words to graph vertices, highlighting a search for 'traversal'"></object>
+<object type="image/svg+xml" data="./full_text_index/image.svg" title="Diagram showing a full-text index mapping words to graph vertices, highlighting a search for 'traversal'"></object>
 
 In this diagram:
 

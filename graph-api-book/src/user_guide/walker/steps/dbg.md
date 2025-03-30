@@ -3,7 +3,7 @@
 The `dbg` step prints detailed information about the current traversal state, making it easier to debug complex graph
 operations. Like a checkpoint in your traversal, it lets you see what's happening without changing the traversal flow.
 
-<object type="image/svg+xml" data="dbg/image.svg" width="500" height="250">
+<object type="image/svg+xml" data="dbg/image.svg">
 Debug step diagram showing traversal state being printed to console
 </object>
 

@@ -4,7 +4,7 @@ The `context` step allows you to carry information along a graph traversal, maki
 previous steps while working with the current element. Context creates a typed value that travels with the traversal
 without changing its position.
 
-<object type="image/svg+xml" data="context/image.svg" width="500" height="250">
+<object type="image/svg+xml" data="context/image.svg">
 Context step diagram showing context value traveling with the walker
 </object>
 

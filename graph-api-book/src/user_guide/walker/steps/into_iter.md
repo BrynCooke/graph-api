@@ -4,7 +4,7 @@ The `into_iter` step converts a traversal into a standard Rust iterator, allowin
 methods directly with graph traversals. This bridges the gap between the Graph API's Walker and Rust's standard
 iterators.
 
-<object type="image/svg+xml" data="into_iter/image.svg" width="450" height="200">
+<object type="image/svg+xml" data="into_iter/image.svg">
 Into Iterator step diagram showing walker state converting to a Rust iterator
 </object>
 

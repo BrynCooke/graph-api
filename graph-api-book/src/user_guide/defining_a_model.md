@@ -16,7 +16,7 @@ For each of these, you'll define a Rust enum that represents all possible types.
 
 ## Model Definition
 
-<object type="image/svg+xml" data="defining_a_model/image.svg" width="600" height="400">
+<object type="image/svg+xml" data="defining_a_model/image.svg">
 Diagram showing graph elements (Person, Project vertices) and relationships (Follows, Created edges)
 </object>
 

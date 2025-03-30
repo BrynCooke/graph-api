@@ -3,7 +3,7 @@
 The `first` step retrieves only the first element from a traversal and immediately terminates. This is a terminal
 operation that short-circuits the traversal for efficiency.
 
-<object type="image/svg+xml" data="first/image.svg" width="650" height="380">
+<object type="image/svg+xml" data="first/image.svg">
 First step diagram showing retrieval of only the first element from a traversal
 </object>
 

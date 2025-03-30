@@ -4,7 +4,7 @@ The `default_context` step provides a simplified way to track vertex and edge in
 having to define custom context types. It automatically captures the current vertex or edge to make it available in
 downstream steps.
 
-<object type="image/svg+xml" data="default_context/image.svg" width="500" height="350">
+<object type="image/svg+xml" data="default_context/image.svg">
 Default Context step diagram showing the current element being stored in context
 </object>
 

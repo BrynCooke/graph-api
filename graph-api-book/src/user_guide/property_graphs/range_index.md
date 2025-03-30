@@ -10,7 +10,7 @@ allows for efficient "greater than," "less than," and "between" queries.
 
 Consider an index on an `age` property:
 
-<object data="./range_index/image.svg" title="Diagram showing a range index on age, highlighting nodes with age >= 35"></object>
+<object type="image/svg+xml" data="./range_index/image.svg" title="Diagram showing a range index on age, highlighting nodes with age >= 35"></object>
 
 In this diagram:
 

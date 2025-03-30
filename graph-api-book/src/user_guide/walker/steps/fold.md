@@ -2,7 +2,7 @@
 
 The `fold` step accumulates a result by processing each element in a traversal, operating like the standard Rust `fold` operation but specifically for graph traversals. It's a powerful terminal operation that builds a single value from all elements.
 
-<object type="image/svg+xml" data="fold/image.svg" width="500" height="300">
+<object type="image/svg+xml" data="fold/image.svg">
 Fold step diagram showing accumulation of values from traversal elements
 </object>
 

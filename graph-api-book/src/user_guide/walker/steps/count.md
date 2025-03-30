@@ -3,7 +3,7 @@
 The `count` step counts the number of elements in a traversal without collecting them. This is a terminal operation that
 consumes the walker and returns a single numeric value.
 
-<object type="image/svg+xml" data="count/image.svg" width="450" height="200">
+<object type="image/svg+xml" data="count/image.svg">
 Count step diagram showing walker state reducing to a single count value
 </object>
 

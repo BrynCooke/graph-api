@@ -3,7 +3,7 @@
 The `mutate` step allows you to modify vertices or edges during a traversal, enabling batch updates to graph elements.
 Unlike most other steps, this requires a mutable traversal started with `walk_mut()`.
 
-<object type="image/svg+xml" data="mutate/image.svg" width="500" height="250">
+<object type="image/svg+xml" data="mutate/image.svg">
 Mutate step diagram showing element properties being modified in-place
 </object>
 

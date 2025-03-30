@@ -3,7 +3,7 @@
 The `head` step navigates from edges to their source (origin) vertices, allowing traversal back to where the edges start
 from.
 
-<object type="image/svg+xml" data="head_tail/image_head.svg" width="650" height="300">
+<object type="image/svg+xml" data="head_tail/image_head.svg">
 Head step diagram showing traversal from edge to source vertex
 </object>
 

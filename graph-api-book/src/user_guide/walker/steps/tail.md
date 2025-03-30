@@ -3,7 +3,7 @@
 The `tail` step navigates from edges to their target (destination) vertices, allowing traversal to where the edges point
 to.
 
-<object type="image/svg+xml" data="head_tail/image_tail.svg" width="650" height="300">
+<object type="image/svg+xml" data="head_tail/image_tail.svg">
 Tail step diagram showing traversal from edge to target vertex
 </object>
 
