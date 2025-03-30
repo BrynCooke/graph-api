@@ -129,6 +129,13 @@ svg {
     paint-order: stroke; /* Crucial: Draw stroke UNDER the fill */
 }
 
+/* Halo effect for primary text elements in SVGs */
+.halo {
+    stroke: var(--graph-bg); /* Use the page background color */
+    stroke-width: 4px; /* Adjust thickness as needed */
+    paint-order: stroke; /* Ensure stroke is drawn behind the text fill */
+}
+
 .property-text tspan {
     text-anchor: middle;
     x: 0;
