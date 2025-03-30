@@ -8,7 +8,7 @@ property values, dramatically improving query performance.
 A hash index maps property values to vertices, allowing you to quickly find all vertices with a specific property
 value without scanning the entire graph. It uses a hash table data structure for O(1) lookups.
 
-<object data="./hash_inex/image.svg" title="Diagram showing a hash index mapping names to graph vertice"></object>
+<object type="image/svg+xml" data="./hash_index/image.svg" title="Diagram showing a hash index mapping names to graph vertice"></object>
 
 In this diagram:
 
