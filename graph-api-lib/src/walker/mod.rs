@@ -7,7 +7,6 @@ use crate::walker::steps::{
     VertexIter, VertexLimit, Vertices, Waypoint,
 };
 use crate::{EdgeSearch, ElementId};
-use std::ops::ControlFlow;
 use steps::reduce::EdgeReduce;
 
 pub mod builder;
@@ -117,26 +116,16 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
         Edges::new(self, search)
     }
 
-    fn reduce<Init, Reducer, Context>(
-        self,
-        init: Init,
-        reducer: Reducer,
-    ) -> VertexReduce<'graph, Self, Init, Reducer, Context>
+    fn reduce<Reducer>(self, reducer: Reducer) -> VertexReduce<'graph, Self, Reducer>
     where
-        Init: Fn(&<Self::Graph as Graph>::VertexReference<'graph>, &Self::Context) -> Context,
         Reducer: for<'a> Fn(
             &'a <Self::Graph as Graph>::VertexReference<'graph>,
-            &mut Context,
             &'a <Self::Graph as Graph>::VertexReference<'graph>,
             &Self::Context,
-        ) -> ControlFlow<
-            &'a <Self::Graph as Graph>::VertexReference<'graph>,
-            &'a <Self::Graph as Graph>::VertexReference<'graph>,
-        >,
-        Context: Clone + 'static,
+        ) -> &'a <Self::Graph as Graph>::VertexReference<'graph>,
         <Self as Walker<'graph>>::Graph: 'graph,
     {
-        VertexReduce::new(self, init, reducer)
+        VertexReduce::new(self, reducer)
     }
 
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId>;
@@ -181,26 +170,16 @@ pub trait EdgeWalker<'graph>: Walker<'graph> {
         EdgeLimit::new(self, limit)
     }
 
-    fn reduce<Init, Reducer, Context>(
-        self,
-        init: Init,
-        reducer: Reducer,
-    ) -> EdgeReduce<'graph, Self, Init, Reducer, Context>
+    fn reduce<Reducer>(self, reducer: Reducer) -> EdgeReduce<'graph, Self, Reducer>
     where
-        Init: Fn(&<Self::Graph as Graph>::EdgeReference<'graph>, &Self::Context) -> Context,
         Reducer: for<'a> Fn(
             &'a <Self::Graph as Graph>::EdgeReference<'graph>,
-            &mut Context,
             &'a <Self::Graph as Graph>::EdgeReference<'graph>,
             &Self::Context,
-        ) -> ControlFlow<
-            &'a <Self::Graph as Graph>::EdgeReference<'graph>,
-            &'a <Self::Graph as Graph>::EdgeReference<'graph>,
-        >,
-        Context: Clone + 'static,
+        ) -> &'a <Self::Graph as Graph>::EdgeReference<'graph>,
         <Self as Walker<'graph>>::Graph: 'graph,
     {
-        EdgeReduce::new(self, init, reducer)
+        EdgeReduce::new(self, reducer)
     }
 
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId>;

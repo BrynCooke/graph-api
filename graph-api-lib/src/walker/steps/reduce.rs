@@ -6,113 +6,81 @@ use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
 use include_doc::function_body;
 use std::marker::PhantomData;
-use std::ops::ControlFlow;
 // ================ REDUCE IMPLEMENTATION ================
 
-pub struct VertexReduce<'graph, Parent, Init, Reducer, Context>
+pub struct VertexReduce<'graph, Parent, Reducer>
 where
     Parent: Walker<'graph>,
 {
     _phantom_data: PhantomData<&'graph ()>,
     parent: Parent,
-    init: Init,
     reducer: Reducer,
-    context: Option<Context>,
 }
 
-impl<'graph, Parent, Init, Reducer, Context> VertexReduce<'graph, Parent, Init, Reducer, Context>
+impl<'graph, Parent, Reducer> VertexReduce<'graph, Parent, Reducer>
 where
     Parent: Walker<'graph>,
 {
-    pub(crate) fn new(parent: Parent, init: Init, reducer: Reducer) -> Self {
+    pub(crate) fn new(parent: Parent, reducer: Reducer) -> Self {
         VertexReduce {
             _phantom_data: Default::default(),
             parent,
-            init,
             reducer,
-            context: None,
         }
     }
 }
 
-impl<'graph, Parent, Init, Reducer, Context> Walker<'graph>
-    for VertexReduce<'graph, Parent, Init, Reducer, Context>
+impl<'graph, Parent, Reducer> Walker<'graph> for VertexReduce<'graph, Parent, Reducer>
 where
     Parent: VertexWalker<'graph>,
     Parent::Graph: 'graph,
-    Init: Fn(&<Parent::Graph as Graph>::VertexReference<'graph>, &Parent::Context) -> Context,
     Reducer: for<'a> Fn(
         &'a <Parent::Graph as Graph>::VertexReference<'graph>,
-        &mut Context,
         &'a <Parent::Graph as Graph>::VertexReference<'graph>,
         &Parent::Context,
-    ) -> ControlFlow<
-        &'a <Parent::Graph as Graph>::VertexReference<'graph>,
-        &'a <Parent::Graph as Graph>::VertexReference<'graph>,
-    >,
-    Context: Clone + 'static,
+    ) -> &'a <Parent::Graph as Graph>::VertexReference<'graph>,
 {
     type Graph = Parent::Graph;
-    type Context = Context;
+    type Context = Parent::Context;
 
     fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
 
     fn ctx(&self) -> &Self::Context {
-        self.context
-            .as_ref()
-            .expect("next must be called before calling ctx")
+        self.parent.ctx()
     }
+
     fn ctx_mut(&mut self) -> &mut Self::Context {
-        self.context
-            .as_mut()
-            .expect("next must be called before calling ctx")
+        self.parent.ctx_mut()
     }
 }
 
-impl<'graph, Parent, Init, Reducer, Context> VertexWalker<'graph>
-    for VertexReduce<'graph, Parent, Init, Reducer, Context>
+impl<'graph, Parent, Reducer> VertexWalker<'graph> for VertexReduce<'graph, Parent, Reducer>
 where
     Parent: VertexWalker<'graph>,
     Parent::Graph: 'graph,
-    Init: Fn(&<Parent::Graph as Graph>::VertexReference<'graph>, &Parent::Context) -> Context,
     Reducer: for<'a> Fn(
         &'a <Parent::Graph as Graph>::VertexReference<'graph>,
-        &mut Context,
         &'a <Parent::Graph as Graph>::VertexReference<'graph>,
         &Parent::Context,
-    ) -> ControlFlow<
-        &'a <Parent::Graph as Graph>::VertexReference<'graph>,
-        &'a <Parent::Graph as Graph>::VertexReference<'graph>,
-    >,
-    Context: Clone + 'static,
+    ) -> &'a <Parent::Graph as Graph>::VertexReference<'graph>,
+    Parent::Context: Clone,
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
         let mut acc_vertex = None;
         loop {
             if let Some(next) = self.parent.next(graph) {
                 let vertex_reference = graph.vertex(next).expect("vertex must exist");
-                if let Some(acc_vertex) = &mut acc_vertex {
-                    match (self.reducer)(
-                        acc_vertex,
-                        self.context
-                            .as_mut()
-                            .expect("context must have been initialized"),
-                        &vertex_reference,
-                        self.parent.ctx(),
-                    ) {
-                        ControlFlow::Continue(e) => {
-                            if std::ptr::eq(e, &vertex_reference) {
-                                *acc_vertex = vertex_reference;
-                            }
-                        }
-                        ControlFlow::Break(e) => {
-                            return Some(e.id());
-                        }
+                if let Some(acc_vertex_ref) = &acc_vertex {
+                    let result =
+                        (self.reducer)(acc_vertex_ref, &vertex_reference, self.parent.ctx());
+
+                    if std::ptr::eq(result, &vertex_reference) {
+                        acc_vertex = Some(vertex_reference);
                     }
                 } else {
-                    self.context = Some((self.init)(&vertex_reference, self.parent.ctx()));
+                    // For the first element, we don't apply the reducer, just set it as the accumulator
                     acc_vertex = Some(vertex_reference);
                 }
             } else {
@@ -122,110 +90,78 @@ where
     }
 }
 
-pub struct EdgeReduce<'graph, Parent, Init, Reducer, Context>
+pub struct EdgeReduce<'graph, Parent, Reducer>
 where
     Parent: Walker<'graph>,
 {
     _phantom_data: PhantomData<&'graph ()>,
     parent: Parent,
-    init: Init,
     reducer: Reducer,
-    context: Option<Context>,
 }
 
-impl<'graph, Parent, Init, Reducer, Context> EdgeReduce<'graph, Parent, Init, Reducer, Context>
+impl<'graph, Parent, Reducer> EdgeReduce<'graph, Parent, Reducer>
 where
     Parent: Walker<'graph>,
 {
-    pub(crate) fn new(parent: Parent, init: Init, reducer: Reducer) -> Self {
+    pub(crate) fn new(parent: Parent, reducer: Reducer) -> Self {
         EdgeReduce {
             _phantom_data: Default::default(),
             parent,
-            init,
             reducer,
-            context: None,
         }
     }
 }
 
-impl<'graph, Parent, Init, Reducer, Context> Walker<'graph>
-    for EdgeReduce<'graph, Parent, Init, Reducer, Context>
+impl<'graph, Parent, Reducer> Walker<'graph> for EdgeReduce<'graph, Parent, Reducer>
 where
     Parent: EdgeWalker<'graph>,
     Parent::Graph: 'graph,
-    Init: Fn(&<Parent::Graph as Graph>::EdgeReference<'graph>, &Parent::Context) -> Context,
     Reducer: for<'a> Fn(
         &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
-        &mut Context,
         &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
         &Parent::Context,
-    ) -> ControlFlow<
-        &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
-        &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
-    >,
-    Context: Clone + 'static,
+    ) -> &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
 {
     type Graph = Parent::Graph;
-    type Context = Context;
+    type Context = Parent::Context;
 
     fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Edge)
     }
 
     fn ctx(&self) -> &Self::Context {
-        self.context
-            .as_ref()
-            .expect("Context should be initialized after first next() call")
+        self.parent.ctx()
     }
+
     fn ctx_mut(&mut self) -> &mut Self::Context {
-        self.context
-            .as_mut()
-            .expect("Context should be initialized after first next() call")
+        self.parent.ctx_mut()
     }
 }
 
-impl<'graph, Parent, Init, Reducer, Context> EdgeWalker<'graph>
-    for EdgeReduce<'graph, Parent, Init, Reducer, Context>
+impl<'graph, Parent, Reducer> EdgeWalker<'graph> for EdgeReduce<'graph, Parent, Reducer>
 where
     Parent: EdgeWalker<'graph>,
     Parent::Graph: 'graph,
-    Init: Fn(&<Parent::Graph as Graph>::EdgeReference<'graph>, &Parent::Context) -> Context,
     Reducer: for<'a> Fn(
         &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
-        &mut Context,
         &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
         &Parent::Context,
-    ) -> ControlFlow<
-        &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
-        &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
-    >,
-    Context: Clone + 'static,
+    ) -> &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
+    Parent::Context: Clone,
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId> {
         let mut acc_edge = None;
         loop {
             if let Some(next) = self.parent.next(graph) {
                 let edge_reference = graph.edge(next).expect("edge must exist");
-                if let Some(acc_edge) = &mut acc_edge {
-                    match (self.reducer)(
-                        acc_edge,
-                        self.context
-                            .as_mut()
-                            .expect("context must have been initialized"),
-                        &edge_reference,
-                        self.parent.ctx(),
-                    ) {
-                        ControlFlow::Continue(e) => {
-                            if std::ptr::eq(e, &edge_reference) {
-                                *acc_edge = edge_reference;
-                            }
-                        }
-                        ControlFlow::Break(e) => {
-                            return Some(e.id());
-                        }
+                if let Some(acc_edge_ref) = &acc_edge {
+                    let result = (self.reducer)(acc_edge_ref, &edge_reference, self.parent.ctx());
+
+                    if std::ptr::eq(result, &edge_reference) {
+                        acc_edge = Some(edge_reference);
                     }
                 } else {
-                    self.context = Some((self.init)(&edge_reference, self.parent.ctx()));
+                    // For the first element, we don't apply the reducer, just set it as the accumulator
                     acc_edge = Some(edge_reference);
                 }
             } else {
@@ -265,13 +201,11 @@ where
     /// ```
     ///
     /// ## Parameters
-    /// - `init`: A function that initializes the context from the first element
     /// - `reducer`: A closure that takes:
-    ///   - The current accumulated element
-    ///   - The current element's context (mutable)
-    ///   - The next element to combine
-    ///   - The next element's context
-    ///   - Returns a `ControlFlow` that determines whether to continue or break the reduction
+    ///   - The current accumulated element (left)
+    ///   - The next element to combine (right)
+    ///   - The parent walker's context (passed through)
+    ///   - Returns either the left or right element to continue the reduction
     ///
     /// ## Return Value
     ///
@@ -292,36 +226,23 @@ where
     /// - The first element serves as the initial accumulator value
     /// - Useful for finding maximum/minimum values or combining elements in a custom way
     /// - Unlike `fold`, reduce doesn't require an initial value and can still participate in further traversal
-    /// - The reducer function must return a `ControlFlow` with the same element type as the traversal
-    /// - Use `ControlFlow::Continue` to continue the reduction with the given element
-    /// - Use `ControlFlow::Break` to halt the reduction and return the given element immediately
-    /// - The reducer function also updates the context that is used for subsequent operations
-    pub fn reduce<Init, Reducer, Context>(
+    /// - The reducer function must return a reference to one of the two input elements
+    /// - The returned element becomes the new accumulator for the next reduction step
+    /// - The reducer function operates on the elements only, the context remains unchanged
+    pub fn reduce<Reducer>(
         self,
-        init: Init,
         reducer: Reducer,
-    ) -> VertexWalkerBuilder<
-        'graph,
-        Mutability,
-        Graph,
-        VertexReduce<'graph, Walker, Init, Reducer, Context>,
-    >
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexReduce<'graph, Walker, Reducer>>
     where
-        Init: Fn(&Graph::VertexReference<'graph>, &Walker::Context) -> Context,
         Reducer: for<'a> Fn(
             &'a Graph::VertexReference<'graph>,
-            &mut Context,
             &'a Graph::VertexReference<'graph>,
             &Walker::Context,
-        ) -> ControlFlow<
-            &'a Graph::VertexReference<'graph>,
-            &'a Graph::VertexReference<'graph>,
-        >,
-        Context: Clone + 'static,
+        ) -> &'a Graph::VertexReference<'graph>,
     {
         VertexWalkerBuilder {
             _phantom: Default::default(),
-            walker: self.walker.reduce(init, reducer),
+            walker: self.walker.reduce(reducer),
             graph: self.graph,
         }
     }
@@ -354,13 +275,11 @@ where
     /// ```
     ///
     /// ## Parameters
-    /// - `init`: A function that initializes the context from the first edge
     /// - `reducer`: A closure that takes:
-    ///   - The current accumulated edge
-    ///   - The current edge's context (mutable)
-    ///   - The next edge to combine
-    ///   - The next edge's context
-    ///   - Returns a `ControlFlow` that determines whether to continue or break the reduction
+    ///   - The current accumulated edge (left)
+    ///   - The next edge to combine (right)
+    ///   - The parent walker's context (passed through)
+    ///   - Returns either the left or right edge to continue the reduction
     ///
     /// ## Return Value
     ///
@@ -379,35 +298,23 @@ where
     /// - The walker will yield a single edge - the final result of combining all input edges
     /// - If the traversal is empty, the walker will yield nothing
     /// - The first element serves as the initial accumulator value
-    /// - The reducer function must return a `ControlFlow` with the same element type as the traversal
-    /// - Use `ControlFlow::Continue` to continue the reduction with the given element
-    /// - Use `ControlFlow::Break` to halt the reduction and return the given element immediately
-    pub fn reduce<Init, Reducer, Context>(
+    /// - The reducer function must return a reference to one of the two input elements
+    /// - The returned element becomes the new accumulator for the next reduction step
+    /// - The reducer function operates on the elements only, the context remains unchanged
+    pub fn reduce<Reducer>(
         self,
-        init: Init,
         reducer: Reducer,
-    ) -> EdgeWalkerBuilder<
-        'graph,
-        Mutability,
-        Graph,
-        EdgeReduce<'graph, Walker, Init, Reducer, Context>,
-    >
+    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeReduce<'graph, Walker, Reducer>>
     where
-        Init: Fn(&Graph::EdgeReference<'graph>, &Walker::Context) -> Context,
         Reducer: for<'a> Fn(
             &'a Graph::EdgeReference<'graph>,
-            &mut Context,
             &'a Graph::EdgeReference<'graph>,
             &Walker::Context,
-        ) -> ControlFlow<
-            &'a Graph::EdgeReference<'graph>,
-            &'a Graph::EdgeReference<'graph>,
-        >,
-        Context: Clone + 'static,
+        ) -> &'a Graph::EdgeReference<'graph>,
     {
         EdgeWalkerBuilder {
             _phantom: Default::default(),
-            walker: self.walker.reduce(init, reducer),
+            walker: self.walker.reduce(reducer),
             graph: self.graph,
         }
     }

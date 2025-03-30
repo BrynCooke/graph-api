@@ -54,12 +54,7 @@ where
     pub fn mutate_context<Callback>(
         self,
         callback: Callback,
-    ) -> VertexWalkerBuilder<
-        'graph,
-        Mutability,
-        Graph,
-        VertexMutateContext<'graph, Walker, Callback>,
-    >
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexMutateContext<'graph, Walker, Callback>>
     where
         Callback: Fn(&Graph::VertexReference<'_>, &mut Walker::Context) + 'graph,
     {
@@ -116,12 +111,7 @@ where
     pub fn mutate_context<Callback>(
         self,
         callback: Callback,
-    ) -> EdgeWalkerBuilder<
-        'graph,
-        Mutability,
-        Graph,
-        EdgeMutateContext<'graph, Walker, Callback>,
-    >
+    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeMutateContext<'graph, Walker, Callback>>
     where
         Callback: Fn(&Graph::EdgeReference<'_>, &mut Walker::Context) + 'graph,
     {
@@ -136,7 +126,8 @@ where
 pub struct VertexMutateContext<'graph, Parent, Callback>
 where
     Parent: VertexWalker<'graph>,
-    Callback: Fn(&<Parent::Graph as crate::graph::Graph>::VertexReference<'_>, &mut Parent::Context),
+    Callback:
+        Fn(&<Parent::Graph as crate::graph::Graph>::VertexReference<'_>, &mut Parent::Context),
 {
     _phantom_data: PhantomData<&'graph ()>,
     parent: Parent,
@@ -146,7 +137,8 @@ where
 impl<'graph, Parent, Callback> VertexMutateContext<'graph, Parent, Callback>
 where
     Parent: VertexWalker<'graph>,
-    Callback: Fn(&<Parent::Graph as crate::graph::Graph>::VertexReference<'_>, &mut Parent::Context),
+    Callback:
+        Fn(&<Parent::Graph as crate::graph::Graph>::VertexReference<'_>, &mut Parent::Context),
 {
     pub fn new(parent: Parent, callback: Callback) -> Self {
         VertexMutateContext {
@@ -160,12 +152,16 @@ where
 impl<'graph, Parent, Callback> Walker<'graph> for VertexMutateContext<'graph, Parent, Callback>
 where
     Parent: VertexWalker<'graph>,
-    Callback: Fn(&<Parent::Graph as crate::graph::Graph>::VertexReference<'_>, &mut Parent::Context),
+    Callback:
+        Fn(&<Parent::Graph as crate::graph::Graph>::VertexReference<'_>, &mut Parent::Context),
 {
     type Graph = Parent::Graph;
     type Context = Parent::Context;
 
-    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<crate::ElementId<Self::Graph>> {
+    fn next_element(
+        &mut self,
+        graph: &'graph Self::Graph,
+    ) -> Option<crate::ElementId<Self::Graph>> {
         self.next(graph).map(crate::ElementId::Vertex)
     }
 
@@ -178,12 +174,17 @@ where
     }
 }
 
-impl<'graph, Parent, Callback> VertexWalker<'graph> for VertexMutateContext<'graph, Parent, Callback>
+impl<'graph, Parent, Callback> VertexWalker<'graph>
+    for VertexMutateContext<'graph, Parent, Callback>
 where
     Parent: VertexWalker<'graph>,
-    Callback: Fn(&<Parent::Graph as crate::graph::Graph>::VertexReference<'_>, &mut Parent::Context),
+    Callback:
+        Fn(&<Parent::Graph as crate::graph::Graph>::VertexReference<'_>, &mut Parent::Context),
 {
-    fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as crate::graph::Graph>::VertexId> {
+    fn next(
+        &mut self,
+        graph: &'graph Self::Graph,
+    ) -> Option<<Self::Graph as crate::graph::Graph>::VertexId> {
         if let Some(next) = self.parent.next(graph) {
             if let Some(vertex) = graph.vertex(next) {
                 (self.callback)(&vertex, self.parent.ctx_mut());
@@ -226,7 +227,10 @@ where
     type Graph = Parent::Graph;
     type Context = Parent::Context;
 
-    fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<crate::ElementId<Self::Graph>> {
+    fn next_element(
+        &mut self,
+        graph: &'graph Self::Graph,
+    ) -> Option<crate::ElementId<Self::Graph>> {
         self.next(graph).map(crate::ElementId::Edge)
     }
 
@@ -244,7 +248,10 @@ where
     Parent: EdgeWalker<'graph>,
     Callback: Fn(&<Parent::Graph as crate::graph::Graph>::EdgeReference<'_>, &mut Parent::Context),
 {
-    fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as crate::graph::Graph>::EdgeId> {
+    fn next(
+        &mut self,
+        graph: &'graph Self::Graph,
+    ) -> Option<<Self::Graph as crate::graph::Graph>::EdgeId> {
         if let Some(next) = self.parent.next(graph) {
             if let Some(edge) = graph.edge(next) {
                 (self.callback)(&edge, self.parent.ctx_mut());

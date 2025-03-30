@@ -6,7 +6,6 @@ use graph_api_test::Vertex;
 use graph_api_test::{Edge, Knows};
 use graph_api_test::{EdgeExt, VertexExt};
 use graph_api_test::{Person, populate_graph};
-use std::ops::ControlFlow;
 
 fn main() {
     // Create a new graph
@@ -16,7 +15,6 @@ fn main() {
 
     vertex_example(&graph);
     edge_example(&graph);
-    vertex_early_break_example(&graph);
 }
 
 fn vertex_example<G>(graph: &G)
@@ -28,20 +26,15 @@ where
         .walk()
         .vertices(VertexSearch::scan())
         .filter_person()
-        .reduce(
-            |vertex, _| vertex.project::<Person<_>>().unwrap().age(),
-            |acc, ctx, vertex, _vertex_ctx| {
-                let acc_age = acc.project::<Person<_>>().unwrap().age();
-                let vertex_age = vertex.project::<Person<_>>().unwrap().age();
-                if vertex_age > acc_age {
-                    *ctx = vertex_age;
-                    ControlFlow::Continue(vertex)
-                } else {
-                    ControlFlow::Continue(acc)
-                }
-            },
-        )
-        .map(|vertex, ctx| format!("The oldest person is {:?}, age {}", vertex.id(), ctx))
+        .reduce(|acc, vertex, _ctx| {
+            let acc_age = acc.project::<Person<_>>().unwrap().age();
+            let vertex_age = vertex.project::<Person<_>>().unwrap().age();
+            if vertex_age > acc_age { vertex } else { acc }
+        })
+        .map(|vertex, _ctx| {
+            let age = vertex.project::<Person<_>>().unwrap().age();
+            format!("The oldest person is {:?}, age {}", vertex.id(), age)
+        })
         .next()
         .expect("should have got a result");
 
@@ -64,58 +57,21 @@ where
         .filter_person()
         .edges(EdgeSearch::scan())
         .filter_knows()
-        .reduce(
-            |edge, _| edge.project::<Knows<_>>().unwrap().since(),
-            |acc, ctx, edge, _edge_ctx| {
-                let acc_since = acc.project::<Knows<_>>().unwrap().since();
-                let edge_since = edge.project::<Knows<_>>().unwrap().since();
-                if edge_since > acc_since {
-                    *ctx = edge_since;
-                    ControlFlow::Continue(edge)
-                } else {
-                    ControlFlow::Continue(acc)
-                }
-            },
-        )
-        .map(|edge, ctx| {
+        .reduce(|acc, edge, _ctx| {
+            let acc_since = acc.project::<Knows<_>>().unwrap().since();
+            let edge_since = edge.project::<Knows<_>>().unwrap().since();
+            if edge_since > acc_since { edge } else { acc }
+        })
+        .map(|edge, _ctx| {
+            let since = edge.project::<Knows<_>>().unwrap().since();
             format!(
                 "The edge with latest 'since' value is {:?}, since {}",
                 edge.id(),
-                ctx
+                since
             )
         })
         .next()
         .expect("should have got a result");
 
     println!("{}", oldest_edge);
-}
-
-fn vertex_early_break_example<G>(graph: &G)
-where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexLabelIndex = Supported>,
-{
-    // Find the first person over age 30, then break out of the reduction
-    let over_30 = graph
-        .walk()
-        .vertices(VertexSearch::scan())
-        .filter_person()
-        .reduce(
-            |vertex, _| vertex.project::<Person<_>>().unwrap().age(),
-            |acc, ctx, vertex, _vertex_ctx| {
-                let vertex_age = vertex.project::<Person<_>>().unwrap().age();
-                // As soon as we find someone over 30, break and return them
-                if vertex_age > 30 {
-                    *ctx = vertex_age;
-                    ControlFlow::Break(vertex)
-                } else {
-                    *ctx = vertex_age;
-                    ControlFlow::Continue(acc)
-                }
-            },
-        )
-        .map(|vertex, ctx| format!("Found person over 30: {:?}, age {}", vertex.id(), ctx))
-        .next()
-        .expect("should have got a result");
-
-    println!("{}", over_30);
 }
