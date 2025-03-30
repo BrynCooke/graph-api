@@ -1,5 +1,5 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="500" height="250" viewBox="0 0 500 250">
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="280" viewBox="0 0 500 280"> <!-- Increased height -->
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5"
                 markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -31,26 +31,26 @@
     <text x="115" y="155" class="text-color-muted" font-size="12px">push_context(|v| v.id)</text>
 
     <!-- After State -->
-    <text x="100" y="200" class="text-color-muted" text-anchor="middle">After Context</text>
-    <g class="node active" transform="translate(100, 240)">
+    <text x="100" y="210" class="text-color-muted" text-anchor="middle">After Context</text> <!-- Adjusted Y -->
+    <g class="node active" transform="translate(100, 250)"> <!-- Adjusted Y -->
         <circle r="20"></circle>
         <text class="node-label">V1</text>
     </g>
-    <g class="node" transform="translate(200, 240)">
+    <g class="node" transform="translate(200, 250)"> <!-- Adjusted Y -->
         <circle r="20"></circle>
         <text class="node-label">V2</text>
     </g>
-    <line class="edge directed" x1="120" y1="240" x2="180" y2="240"/>
+    <line class="edge directed" x1="120" y1="250" x2="180" y2="250"/> <!-- Adjusted Y -->
 
     <!-- Context Box -->
-    <g transform="translate(350, 150)">
+    <g transform="translate(350, 160)"> <!-- Adjusted Y -->
         <rect class="index-box" x="-75" y="-25" width="150" height="50"/>
         <text class="index-title" y="-5">Context</text>
         <text class="index-value range" y="20">"V1_ID"</text>
     </g>
     <!-- Link Context to State -->
-    <path class="index-pointer" d="M 100 170 q 125 -50 250 0"/>
-    <text x="225" y="130" class="text-color-muted" font-size="12px">Context travels with walker</text>
-    <text x="225" y="145" class="text-color-muted" font-size="12px">(Position unchanged)</text>
+    <path class="index-pointer" d="M 100 170 q 125 -40 250 0"/> <!-- Adjusted curve -->
+    <text x="225" y="140" class="text-color-muted" font-size="12px">Context travels with walker</text> <!-- Adjusted Y -->
+    <text x="225" y="155" class="text-color-muted" font-size="12px">(Position unchanged)</text> <!-- Adjusted Y -->
 
 </svg>

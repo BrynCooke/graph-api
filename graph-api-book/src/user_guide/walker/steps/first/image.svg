@@ -1,5 +1,5 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg width="650" height="380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="550" height="380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Adjusted width -->
     <title>First Step Diagram</title>
     <desc>Diagram illustrating the 'first' step retrieving only the first element from a traversal.</desc>
 
@@ -21,93 +21,93 @@
 
     <!-- === Before first() step === -->
     <g id="before-step" transform="translate(40, 80)">
-        <text class="step-label" x="260" y="-30">Before first() step:</text>
+        <text class="step-label" x="220" y="-30">Before first() step:</text> <!-- Adjusted X -->
 
         <!-- All vertices highlighted in traversal -->
-        <g class="node highlighted" id="node-A-before" transform="translate(80, 50)">
+        <g class="node highlighted" id="node-A-before" transform="translate(40, 50)"> <!-- Adjusted X -->
             <circle r="20"></circle>
             <text class="node-label">A</text>
         </g>
 
-        <g class="node highlighted" id="node-B-before" transform="translate(200, 50)">
+        <g class="node highlighted" id="node-B-before" transform="translate(160, 50)"> <!-- Adjusted X -->
             <circle r="20"></circle>
             <text class="node-label">B</text>
         </g>
 
-        <g class="node highlighted" id="node-C-before" transform="translate(320, 50)">
+        <g class="node highlighted" id="node-C-before" transform="translate(280, 50)"> <!-- Adjusted X -->
             <circle r="20"></circle>
             <text class="node-label">C</text>
         </g>
 
-        <g class="node highlighted" id="node-D-before" transform="translate(440, 50)">
+        <g class="node highlighted" id="node-D-before" transform="translate(400, 50)"> <!-- Adjusted X -->
             <circle r="20"></circle>
             <text class="node-label">D</text>
         </g>
 
         <!-- Edges -->
         <g class="edge" id="edge-A-B-before">
-            <line x1="100" y1="50" x2="180" y2="50"></line>
+            <line x1="60" y1="50" x2="140" y2="50"></line> <!-- Adjusted X -->
         </g>
         <g class="edge" id="edge-B-C-before">
-            <line x1="220" y1="50" x2="300" y2="50"></line>
+            <line x1="180" y1="50" x2="260" y2="50"></line> <!-- Adjusted X -->
         </g>
         <g class="edge" id="edge-C-D-before">
-            <line x1="340" y1="50" x2="420" y2="50"></line>
+            <line x1="300" y1="50" x2="380" y2="50"></line> <!-- Adjusted X -->
         </g>
     </g>
 
     <!-- Step Representation -->
     <g id="step-representation" class="step-label" transform="translate(30, 155)">
-        <text class="code" x="260" y="0">.first()</text>
-        <line class="step-arrow" x1="310" y1="0" x2="520" y2="0" transform="translate(0, -5)"/>
+        <text class="code" x="220" y="0">.first()</text> <!-- Adjusted X -->
+        <line class="step-arrow" x1="270" y1="0" x2="480" y2="0" transform="translate(0, -5)"/> <!-- Adjusted X -->
     </g>
 
     <!-- === After first() step === -->
     <g id="after-step" transform="translate(40, 220)">
-        <text class="step-label" x="260" y="-30">After first() step:</text>
+        <text class="step-label" x="220" y="-30">After first() step:</text> <!-- Adjusted X -->
 
         <!-- Only first vertex highlighted -->
-        <g class="node highlighted" id="node-A-after" transform="translate(80, 50)">
+        <g class="node highlighted" id="node-A-after" transform="translate(40, 50)"> <!-- Adjusted X -->
             <circle r="20"></circle>
             <text class="node-label">A</text>
         </g>
 
         <!-- Other vertices are not part of result -->
-        <g class="node visited" id="node-B-after" transform="translate(200, 50)">
+        <g class="node visited" id="node-B-after" transform="translate(160, 50)"> <!-- Adjusted X -->
             <circle r="20"></circle>
             <text class="node-label">B</text>
         </g>
 
-        <g class="node visited" id="node-C-after" transform="translate(320, 50)">
+        <g class="node visited" id="node-C-after" transform="translate(280, 50)"> <!-- Adjusted X -->
             <circle r="20"></circle>
             <text class="node-label">C</text>
         </g>
 
-        <g class="node visited" id="node-D-after" transform="translate(440, 50)">
+        <g class="node visited" id="node-D-after" transform="translate(400, 50)"> <!-- Adjusted X -->
             <circle r="20"></circle>
             <text class="node-label">D</text>
         </g>
 
         <!-- Edges -->
         <g class="edge visited" id="edge-A-B-after">
-            <line x1="100" y1="50" x2="180" y2="50"></line>
+            <line x1="60" y1="50" x2="140" y2="50"></line> <!-- Adjusted X -->
         </g>
         <g class="edge visited" id="edge-B-C-after">
-            <line x1="220" y1="50" x2="300" y2="50"></line>
+            <line x1="180" y1="50" x2="260" y2="50"></line> <!-- Adjusted X -->
         </g>
         <g class="edge visited" id="edge-C-D-after">
-            <line x1="340" y1="50" x2="420" y2="50"></line>
+            <line x1="300" y1="50" x2="380" y2="50"></line> <!-- Adjusted X -->
         </g>
     </g>
 
     <!-- Option Box Result -->
-    <g id="option-result" transform="translate(175, 330)">
+    <g id="option-result" transform="translate(155, 330)"> <!-- Adjusted X -->
         <rect x="0" y="0" width="240" height="40" rx="8" ry="8"
               fill="var(--accent-secondary)" fill-opacity="0.15"
               stroke="var(--accent-secondary)" stroke-width="1.5"/>
         <text class="code" x="120" y="25" text-anchor="middle" font-weight="bold">Some(A)</text>
 
         <!-- Arrow from first vertex to Option result -->
-        <path d="M -55 -60 L -55 20 L 0 20" class="step-arrow" marker-end="url(#arrowhead-pointer)"/>
+        <path d="M -75 -60 L -75 20 L 0 20" class="step-arrow" marker-end="url(#arrowhead-pointer)"/> <!-- Adjusted path -->
     </g>
 </svg>
