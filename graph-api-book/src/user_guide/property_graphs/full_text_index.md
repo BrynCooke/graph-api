@@ -9,12 +9,31 @@ A full-text index is a specialized index that processes text fields to enable ef
 Unlike standard indexes that require exact matches, full-text indexes allow you to find vertices that contain specific
 words, regardless of their position within the text.
 
+Consider an index on a `description` property:
+<object data="./full_text_index/image.svg" title="Diagram showing a full-text index mapping words to graph vertices, highlighting a search for 'traversal'"></object>
+
+In this diagram:
+
+- The **graph** on the right has vertices with text `description` properties.
+- The **full-text index** on the left is an inverted index:
+    - It lists processed **tokens** (like 'fast', 'graph', 'traversal').
+    - For each token, it points to the **vertices** (`A`, `B`, `C`) whose `description` contains that token after
+      processing. Note how 'graph' points to both `A` and `B`.
+- When a **query** like `description CONTAINS 'traversal'` is performed:
+    1. The index is used to look up the token 'traversal'.
+    2. The index directly provides the list of matching vertices: `[ B, C ]`.
+- The **orange highlighting** shows the index entry for 'traversal' being used and the resulting vertices (`B`, `C`)
+  identified in the graph.
+
+This approach is fundamental to searching documentation, product descriptions, user comments, or any unstructured text
+associated with graph elements.
+
 ## Defining Full-text Indexes
 
 In Graph API, you define a full-text index by using the `#[index(full_text)]` attribute on string fields:
 
 ```rust,noplayground
-{{#include full_text_index.rs:define_full_text_index}}
+{{#include full_text_index/full_text_index_example.rs:define_full_text_index}}
 ```
 
 ## How Full-text Indexes Work
@@ -31,7 +50,7 @@ Behind the scenes, full-text indexes:
 Full-text indexes dramatically simplify text search operations:
 
 ```rust,noplayground
-{{#include full_text_index.rs:full_text_queries}}
+{{#include full_text_index/full_text_index_example.rs:full_text_queries}}
 ```
 
 ## Performance Benefits

@@ -3,26 +3,9 @@
 The `edges` step traverses from vertices to their connecting edges, allowing navigation along relationships in the
 graph. This step shifts the walker's position from vertices to their adjacent edges.
 
-```pikchr
-# Graph structure - vertices
-A: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
-B: box same at 1.5 right of A "B" fill white
-
-
-# Connect vertices with labeled edges
-LIKES: arrow from A.e to B.w "likes" above
-
-text at 0.4 below LIKES "Before edges(): Position at vertex A (highlighted green)"
-
-# Second diagram - after edges step
-Aprime: box rad 10px width 0.5 height 0.3 at 1 below A "A" fill white
-Bprime: box same at 1.5 right of Aprime "B" fill white
-
-# Connect vertices with labeled edges, highlight the edge
-LIKES: arrow thick color green from Aprime.e to Bprime.w  "likes" above 
-
-text at 0.4 below LIKES "After edges(): Position changes to 'likes' edge (highlighted green)"
-```
+<object type="image/svg+xml" data="edges/image.svg" width="650" height="300">
+Edges step diagram showing traversal from vertex to edge
+</object>
 
 ## Syntax
 
@@ -77,13 +60,16 @@ Combine direction and label filtering:
 {{#include edges/edges_examples.rs:combined_filter}}
 ```
 
-## Notes
+## Best Practices
 
-- The `edges` step changes the traversal position from vertices to edges
-- Use `head()` or `tail()` steps afterward to navigate back to vertices
-- Direction matters:
-    - `.outgoing()`: Edges where the current vertex is the source
-    - `.incoming()`: Edges where the current vertex is the target
-    - Default (no direction specified): Both incoming and outgoing edges
-- Using label-based indexes (e.g., `EdgeIndex::created()`) is much more efficient than scanning
-- Filtering by edge properties is possible but requires those properties to be indexed
+- Specify the direction when possible to limit the search space
+- Use label-based indexes to avoid scanning all edges
+- Follow edges step with head() or tail() to continue vertex-based traversals
+- Consider the naming of relationships to match conceptual understanding
+
+## Common Use Cases
+
+- **Relationship navigation**: Moving from vertices to their connections
+- **Filtered relationships**: Finding specific types of connections between vertices
+- **Direction-specific queries**: Finding incoming or outgoing relationships
+- **Relationship property examination**: Inspecting metadata on connections

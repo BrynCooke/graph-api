@@ -46,13 +46,16 @@ Returns the same traversal unchanged, allowing you to continue chaining steps.
 {{#include dbg/dbg_example.rs:all}}
 ```
 
-## Notes
+## Best Practices
 
-- The debug step is non-terminal - it allows the traversal to continue unchanged
-- Provides more comprehensive output than `probe` - shows complete traversal state
-- Perfect for troubleshooting traversals that don't behave as expected
-- You can add multiple debug steps at different points in a traversal
-- The output format depends on the graph implementation's Debug trait
-- Adding labels helps identify where in the traversal the debug output comes from
-- For production code, consider using `probe` instead for custom logging
-- Has no effect on the actual traversal logic - purely for developer insight
+- Use meaningful labels to identify each debug checkpoint in complex traversals
+- Remove or comment out debug steps before deploying to production
+- Add debug steps before and after steps that might be causing issues
+- For production logging, replace with `probe` steps that have custom formatting
+
+## Common Use Cases
+
+- **Traversal troubleshooting**: Understanding why a traversal isn't returning expected results
+- **Learning**: Exploring how traversals work by seeing each element's detailed state
+- **Development checkpoints**: Verifying the state of a traversal at key points
+- **Context inspection**: Examining the full context structure during traversal

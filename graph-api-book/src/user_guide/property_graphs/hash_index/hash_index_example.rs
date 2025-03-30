@@ -69,7 +69,7 @@ fn main() {
 
     // ANCHOR: standard_index_queries
     // Find a person by username (using hash index)
-    let alice_results = graph
+    let _alice_results = graph
         .walk()
         .vertices(VertexSearch::scan())
         .filter_by_person(|p, _| p.username() == "alice123")
@@ -85,7 +85,7 @@ fn main() {
     // Find who purchased a specific product (combining index lookup with traversal)
     // For real code, we would get the ID from the vertex
     // For this documentation example, we'll simplify
-    if let Some(_) = headphones {
+    if headphones.is_some() {
         // Get product by SKU instead of by ID
         let purchasers = graph
             .walk()

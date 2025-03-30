@@ -1,0 +1,429 @@
+/* ==========================================
+   SVG Graph Diagram Stylesheet (External)
+   ========================================== */
+
+:root {
+    /* --- Color Palette (Light Mode) --- */
+    --graph-bg: #ffffff;
+    --text-color: #212529;
+    --text-color-light: #f8f9fa;
+    --text-color-muted: #6c757d;
+
+    --node-fill: #495057;
+    --node-stroke: #343a40;
+    --node-fill-visited: #dee2e6;
+    --node-stroke-visited: #adb5bd;
+
+    --edge-stroke: #6c757d;
+    --edge-stroke-visited: #adb5bd;
+
+    --accent-primary: #007bff;
+    --accent-secondary: #fd7e14;
+    --accent-highlight-stroke: #ffc107;
+
+    --index-bg: #e9ecef;
+    --index-border: #adb5bd;
+    --index-pointer-stroke: var(--accent-primary);
+    --highlight-fill: rgba(253, 126, 20, 0.2);
+    --highlight-stroke: var(--accent-secondary);
+
+    /* --- Sizes & Typography --- */
+    --stroke-width-thin: 1px;
+    --stroke-width-normal: 1.5px;
+    --stroke-width-thick: 2.5px;
+    --stroke-width-extra-thick: 4px;
+
+    --node-radius: 20px;
+    --node-padding: 10px;
+    --node-corner-radius: 5px;
+
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --font-size-normal: 14px;
+    --font-size-small: 12px;
+    --font-size-large: 16px;
+    --font-weight-normal: 400;
+    --font-weight-bold: 600;
+}
+
+/* --- Dark Mode Overrides --- */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --graph-bg: #212529;
+        --text-color: #dee2e6;
+        --text-color-light: #212529; /* Text on light elements */
+        --text-color-muted: #adb5bd;
+
+        --node-fill: #adb5bd; /* Lighter nodes in dark mode */
+        --node-stroke: #f8f9fa;
+        --node-fill-visited: #495057; /* Darker visited nodes */
+        --node-stroke-visited: #6c757d;
+
+        --edge-stroke: #6c757d;
+        --edge-stroke-visited: #495057;
+
+        --accent-primary: #4dabf7; /* Lighter blue */
+        --accent-secondary: #ff922b; /* Lighter orange */
+        --accent-highlight-stroke: #ffe066; /* Lighter yellow */
+
+        --index-bg: #343a40;
+        --index-border: #6c757d;
+        --index-pointer-stroke: var(--accent-primary); /* Already updated light blue */
+        --highlight-fill: rgba(255, 146, 43, 0.25); /* Adjusted alpha for dark */
+        --highlight-stroke: var(--accent-secondary);
+    }
+}
+
+/* --- Base SVG Styles --- */
+svg {
+    font-family: var(--font-family);
+    font-size: var(--font-size-normal);
+    font-weight: var(--font-weight-normal);
+    background-color: var(--graph-bg); /* Optional, often transparent */
+}
+
+/* --- Node Styles --- */
+.node {
+    cursor: default;
+}
+
+.node circle,
+.node ellipse,
+.node rect {
+    fill: var(--node-fill);
+    stroke: var(--node-stroke);
+    stroke-width: var(--stroke-width-normal);
+}
+
+.node rect {
+    rx: var(--node-corner-radius);
+    ry: var(--node-corner-radius);
+}
+
+.node text.node-label {
+    fill: var(--text-color-light);
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-size: var(--font-size-normal);
+    font-weight: var(--font-weight-bold);
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Explicit dark mode for node labels if node fill changes significantly */
+@media (prefers-color-scheme: dark) {
+    .node text.node-label {
+        fill: var(--text-color-light);
+    }
+}
+
+.property-text {
+    font-size: var(--font-size-small);
+    fill: var(--text-color-muted);
+    text-anchor: middle;
+    dominant-baseline: hanging;
+    user-select: none;
+    /* Background/Halo effect using stroke */
+    stroke: var(--graph-bg); /* Stroke color matches background */
+    stroke-width: 10px; /* Adjust thickness as needed (try 3-5px) */
+    stroke-linejoin: round; /* Smoother corners for the background */
+    paint-order: stroke; /* Crucial: Draw stroke UNDER the fill */
+}
+
+.property-text tspan {
+    text-anchor: middle;
+    x: 0;
+}
+
+/* --- Edge Styles --- */
+.edge {
+    fill: none;
+}
+
+.edge line,
+.edge path {
+    stroke: var(--edge-stroke);
+    stroke-width: var(--stroke-width-normal);
+}
+
+.edge-label text {
+    fill: var(--text-color-muted);
+    font-size: var(--font-size-small);
+    text-anchor: middle;
+    stroke: var(--graph-bg);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+    paint-order: stroke;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* --- State & Highlight Styles --- */
+.node.active circle, .node.active ellipse, .node.active rect {
+    stroke: var(--accent-primary);
+    stroke-width: var(--stroke-width-thick);
+}
+
+.edge.active line, .edge.active path {
+    stroke: var(--accent-primary);
+    stroke-width: var(--stroke-width-thick);
+}
+
+.edge.active {
+    marker-start: url(#arrowhead-active);
+    marker-end: url(#arrowhead-active);
+}
+
+.node.visited circle, .node.visited ellipse, .node.visited rect {
+    fill: var(--node-fill-visited);
+    stroke: var(--node-stroke-visited);
+    stroke-width: var(--stroke-width-normal);
+}
+
+@media (prefers-color-scheme: dark) {
+    .node.visited circle, .node.visited ellipse, .node.visited rect {
+        fill: var(--node-fill-visited);
+        stroke: var(--node-stroke-visited);
+    }
+}
+
+.edge.visited line, .edge.visited path {
+    stroke: var(--edge-stroke-visited);
+    stroke-width: var(--stroke-width-normal);
+}
+
+.edge.visited {
+    marker-start: url(#arrowhead-visited);
+    marker-end: url(#arrowhead-visited);
+}
+
+.node.path circle, .node.path ellipse, .node.path rect {
+    stroke: var(--accent-secondary);
+    stroke-width: var(--stroke-width-thick);
+}
+
+.edge.path line, .edge.path path {
+    stroke: var(--accent-secondary);
+    stroke-width: var(--stroke-width-thick);
+}
+
+.edge.path {
+    marker-start: url(#arrowhead-path);
+    marker-end: url(#arrowhead-path);
+}
+
+/* Specific Node Types */
+.node.start circle, .node.start ellipse, .node.start rect {
+    fill: var(--accent-primary);
+    stroke: color-mix(in srgb, var(--accent-primary) 70%, black 30%);
+}
+
+.node.start text {
+    fill: var(--text-color-light);
+}
+
+.node.end circle, .node.end ellipse, .node.end rect {
+    fill: var(--accent-secondary);
+    stroke: color-mix(in srgb, var(--accent-secondary) 70%, black 30%);
+}
+
+.node.end text {
+    fill: var(--text-color-light);
+}
+
+
+/* --- Index Styles --- */
+.index-container {
+    font-size: var(--font-size-small);
+}
+
+.index-box {
+    fill: var(--index-bg);
+    stroke: var(--index-border);
+    stroke-width: var(--stroke-width-thin);
+    rx: var(--node-corner-radius);
+    ry: var(--node-corner-radius);
+}
+
+.index-title {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-normal);
+    text-anchor: middle;
+    fill: var(--text-color);
+}
+
+.index-entry text {
+    fill: var(--text-color);
+    dominant-baseline: middle;
+}
+
+/* Hash Index Specific */
+.index-key {
+    font-weight: var(--font-weight-bold);
+}
+
+.index-key.hash {
+    text-anchor: end;
+}
+
+.index-value.hash {
+    text-anchor: start;
+    font-family: monospace;
+}
+
+.index-divider.hash {
+    stroke-dasharray: none;
+}
+
+/* Range Index Specific */
+.index-key.range {
+    text-anchor: middle;
+}
+
+.index-value.range {
+    text-anchor: start;
+    font-family: monospace;
+    fill: var(--text-color-muted);
+}
+
+.index-divider.range {
+    stroke-dasharray: 2 2;
+}
+
+/* Full-Text Index Specific */
+.index-token { /* The indexed word */
+    font-weight: var(--font-weight-bold);
+    font-family: monospace;
+    text-anchor: end;
+}
+
+.index-value.fulltext { /* List of vertex IDs */
+    text-anchor: start;
+    font-family: monospace;
+    fill: var(--text-color-muted);
+}
+
+.index-divider.fulltext {
+    stroke-dasharray: none;
+}
+
+
+/* --- Index Pointer Styles --- */
+.index-pointer {
+    fill: none;
+    stroke: var(--index-pointer-stroke);
+    stroke-width: var(--stroke-width-normal);
+    stroke-dasharray: 4 2;
+    marker-end: url(#arrowhead-pointer); /* Assume one pointer arrowhead type for simplicity */
+}
+
+/* --- Query Highlight Styles --- */
+.query-highlight-box {
+    fill: var(--highlight-fill);
+    stroke: var(--highlight-stroke);
+    stroke-width: var(--stroke-width-thin);
+    stroke-dasharray: 3 3;
+    rx: 3px;
+    ry: 3px;
+}
+
+.query-text {
+    font-size: var(--font-size-normal);
+    font-weight: var(--font-weight-bold);
+    fill: var(--accent-secondary);
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+.node.highlighted circle,
+.node.highlighted ellipse,
+.node.highlighted rect {
+    stroke: var(--highlight-stroke);
+    stroke-width: var(--stroke-width-thick);
+}
+
+/* Highlight variations for different index types */
+.index-entry.highlighted text.range, /* Range text */
+.index-entry.highlighted text.index-token /* Full-text token */
+{
+    fill: var(--highlight-stroke);
+    font-weight: var(--font-weight-bold);
+}
+
+.index-entry.highlighted text.index-value /* All value lists */
+{
+    fill: color-mix(in srgb, var(--text-color-muted) 70%, var(--highlight-stroke) 30%);
+}
+
+
+/* --- Marker Styles (Arrowheads) --- */
+/* Base marker styling - apply fill via specific class */
+.marker-base path {
+    /* fill defined by specific classes below */
+}
+
+/* Default Arrowhead */
+.marker-arrowhead path {
+    fill: var(--edge-stroke);
+}
+
+/* Active Arrowhead */
+.marker-arrowhead-active path {
+    fill: var(--accent-primary);
+}
+
+/* Visited Arrowhead */
+.marker-arrowhead-visited path {
+    fill: var(--edge-stroke-visited);
+}
+
+/* Path Arrowhead */
+.marker-arrowhead-path path {
+    fill: var(--accent-secondary);
+}
+
+/* Index Pointer Arrowhead */
+.marker-arrowhead-pointer path {
+    fill: var(--index-pointer-stroke);
+}
+
+
+/* Apply default marker to directed edges */
+.edge.directed line,
+.edge.directed path {
+    marker-end: url(#arrowhead); /* Or marker-start */
+}
+
+/* --- Scan Pointer Styles (No Index) --- */
+.scan-pointer {
+    fill: none;
+    stroke: var(--text-color-muted); /* Use muted color */
+    stroke-width: var(--stroke-width-thin); /* Thinner line */
+    stroke-dasharray: 3 3; /* Dashed line */
+    marker-end: url(#arrowhead-scan); /* Use a specific arrowhead */
+    opacity: 0.8; /* Slightly faded */
+}
+
+/* Arrowhead for scan pointers */
+.marker-arrowhead-scan path {
+    fill: var(--text-color-muted); /* Match line color */
+}
+
+/* --- Step Representation Styles --- */
+.step-label text {
+    font-size: var(--font-size-large); /* Slightly larger text for the step */
+    font-weight: var(--font-weight-bold);
+    fill: var(--text-color);
+    text-anchor: start; /* Align text to the start */
+    dominant-baseline: middle;
+}
+
+.step-label text.code {
+    font-family: monospace;
+    fill: var(--accent-primary); /* Use accent for the step name/code */
+}
+
+.step-arrow {
+    stroke: var(--accent-primary);
+    stroke-width: var(--stroke-width-thick);
+    marker-end: url(#arrowhead-pointer); /* Use the blue pointer arrowhead */
+}

@@ -64,15 +64,16 @@ Walker methods vs standard iterator methods:
 {{#include into_iter/into_iter_example.rs:comparison}}
 ```
 
-## Notes
+## Best Practices
 
-- The `into_iter` step is terminal - it consumes the walker and returns a standard Rust iterator
-- The iterator yields vertex or edge IDs, not references to graph elements
-- You can use all standard Rust iterator methods (filter, map, fold, etc.) on the resulting iterator
-- Unlike walker steps like `map` and `filter`, standard iterator methods don't have access to graph context
-- To access full vertex or edge data, you need to look up the elements by ID using the graph methods
-- Useful when you:
-    - Need to integrate with code that expects standard iterators
-    - Want to use iterator adaptors that aren't available as walker steps
-    - Prefer working with IDs rather than references for efficiency
-    - Need to collect or transform graph elements using Rust's extensive iterator ecosystem
+- Use `into_iter` only when you need to leverage standard Rust iterators 
+- Remember that standard iterator methods lose access to graph context
+- Consider extracting essential data into context before converting to an iterator
+- When working with large graphs, use the Graph API's lazy evaluation before converting to an iterator
+
+## Common Use Cases
+
+- **Integration with existing code**: Bridging Graph API traversals with existing iterator-based systems
+- **Complex iterator chains**: Using specialized iterator adaptors not available as walker steps
+- **ID-based operations**: Working with element IDs directly for memory efficiency
+- **Ecosystem integration**: Connecting graph traversals with Rust's extensive iterator ecosystem

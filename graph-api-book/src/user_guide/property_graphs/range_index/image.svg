@@ -1,0 +1,131 @@
+<?xml-stylesheet type="text/css" href="../../../css/images.css"?>
+<svg width="650" height="350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Range Vertex Index Example with Query</title>
+    <desc>Diagram showing a range index on 'age', highlighting the query for age >= 35 resulting in nodes B, C, and D.
+    </desc>
+
+    <defs>
+        <!-- Styles are now external -->
+
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Include other standard markers -->
+        <marker id="arrowhead-active" class="marker-arrowhead-active marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-visited" class="marker-arrowhead-visited marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
+                refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+    </defs>
+
+    <!-- === Index Structure === -->
+    <g id="index" class="index-container" transform="translate(20, 40)">
+        <rect class="index-box" x="0" y="0" width="180" height="240"/>
+        <text class="index-title" x="90" y="25">Range Index (on 'age')</text>
+        <line class="index-divider range" x1="0" y1="45" x2="180" y2="45"
+              stroke-dasharray="none"/> <!-- Solid top line -->
+
+        <!-- Index Entries (Sorted by Age) - Added 'range' class -->
+        <g class="index-entry" id="idx-25" transform="translate(0, 70)">
+            <text class="index-key range" x="50" y="0">25</text>
+            <text class="index-value range" x="90" y="0">-> A</text>
+        </g>
+        <line class="index-divider range" x1="10" y1="90" x2="170" y2="90"/>
+
+        <g class="index-entry highlighted" id="idx-35a" transform="translate(0, 110)">
+            <text class="index-key range" x="50" y="0">35</text>
+            <text class="index-value range" x="90" y="0">-> B</text>
+        </g>
+        <g class="index-entry highlighted" id="idx-35b" transform="translate(0, 130)">
+            <!-- No key shown for duplicate, value directly below -->
+            <text class="index-value range" x="90" y="0">-> D</text>
+        </g>
+        <line class="index-divider range" x1="10" y1="150" x2="170" y2="150"/>
+
+        <g class="index-entry highlighted" id="idx-42" transform="translate(0, 170)">
+            <text class="index-key range" x="50" y="0">42</text>
+            <text class="index-value range" x="90" y="0">-> C</text>
+        </g>
+        <line class="index-divider range" x1="10" y1="190" x2="170" y2="190"/>
+
+        <!-- Range Query Highlight -->
+        <rect class="query-highlight-box" x="10" y="95" width="160" height="90"/>
+        <!-- Query Text moved below -->
+
+    </g> <!-- End of index group -->
+
+    <!-- === Graph Structure === -->
+    <g id="graph" transform="translate(280, 40)">
+        <!-- Nodes - Added highlight, single property text -->
+        <g class="node" id="node-A" transform="translate(100, 50)"> <!-- Center abs (380, 90) -->
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+            <text class="property-text" y="28">{age: 25, ...}</text>
+        </g>
+        <g class="node highlighted" id="node-B" transform="translate(280, 50)"> <!-- Center abs (560, 90) -->
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
+            <text class="property-text" y="28">{age: 35, ...}</text>
+        </g>
+        <g class="node highlighted" id="node-C" transform="translate(100, 200)"> <!-- Center abs (380, 240) -->
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
+            <text class="property-text" y="28">{age: 42, ...}</text>
+        </g>
+        <g class="node highlighted" id="node-D" transform="translate(280, 200)"> <!-- Center abs (560, 240) -->
+            <circle r="20"></circle>
+            <text class="node-label">D</text>
+            <text class="property-text" y="28">{age: 35, ...}</text>
+        </g>
+
+        <!-- Edges - Added directed class -->
+        <g class="edge directed" id="edge-A-B">
+            <line x1="120" y1="50" x2="260" y2="50"></line>
+        </g>
+        <g class="edge directed" id="edge-A-C">
+            <path d="M 100 70 Q 50 125 100 180"/>
+        </g>
+        <g class="edge directed" id="edge-B-D">
+            <line x1="280" y1="70" x2="280" y2="180"></line>
+        </g>
+        <g class="edge directed" id="edge-C-D">
+            <line x1="120" y1="200" x2="260" y2="200"></line>
+        </g>
+
+    </g> <!-- End of graph group -->
+
+    <!-- === Index Pointers (REFINED COORDINATES) === -->
+    <g id="index-pointers">
+        <!-- Start points x=140 (absolute 160) to clear index text -->
+        <!-- End points targeting ~10 o'clock on nodes -->
+
+        <!-- Age 25 pointer -> A -->
+        <line class="index-pointer" x1="140" y1="110" x2="363" y2="78"/> <!-- y=110 from index group (40+70) -->
+
+        <!-- Age 35 -> B pointer -->
+        <line class="index-pointer" x1="140" y1="150" x2="543" y2="78"/> <!-- y=150 from index group (40+110) -->
+        <!-- Age 35 -> D pointer -->
+        <line class="index-pointer" x1="140" y1="170" x2="543" y2="228"/> <!-- y=170 from index group (40+130) -->
+
+        <!-- Age 42 -> C pointer -->
+        <line class="index-pointer" x1="140" y1="210" x2="363" y2="228"/> <!-- y=210 from index group (40+170) -->
+    </g>
+
+    <!-- === Query Text === -->
+    <!-- Centered below index box (ends at y=280), x=110 (20+90) -->
+    <text class="query-text" x="110" y="305">Query: age >= 35</text>
+
+</svg>

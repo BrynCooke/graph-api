@@ -70,13 +70,17 @@ Use a `BTreeSet` when you need range unique values:
 {{#include collect/collect_example.rs:collect_btreeset}}
 ```
 
-## Notes
+## Best Practices
 
-- Collection is a terminal operation that consumes the walker
-- The collection type must implement `FromIterator`
-- For large graphs, consider using `limit` before `collect` to avoid memory issues
-- Different collection types offer different properties:
-    - `Vec`: Maintains traversal order, allows duplicates
-    - `HashSet`: Removes duplicates, no guaranteed order
-    - `BTreeSet`: Removes duplicates, orders elements
-    - Custom collections are also supported
+- Use `limit` before `collect` when working with large graphs to control memory usage
+- Choose the right collection type for your needs:
+  - `Vec`: When order matters and duplicates are acceptable
+  - `HashSet`: When you need unique elements and don't care about order
+  - `BTreeSet`: When you need unique elements in a specific order
+
+## Common Use Cases
+
+- **Result accumulation**: Collecting all vertices meeting specific criteria
+- **Set operations**: Gathering unique elements via `HashSet` for later processing
+- **Ordered results**: Using `BTreeSet` when elements need to be in a specific order
+- **Custom collections**: Feeding traversal results into specialized data structures

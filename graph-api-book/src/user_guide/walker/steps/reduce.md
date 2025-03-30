@@ -5,17 +5,18 @@ The `reduce` step combines all elements in a traversal using a binary operation,
 ## Syntax
 
 ```rust,noplayground
-walker.reduce(|element1, element2, context1, context2| {
-    // combine elements and return one of them
+walker.reduce(|accumulated, next_element, context| {
+    // combine elements and return either accumulated or next_element
 })
 ```
 
 ## Parameters
 
 - `reducer`: A function that takes:
-    - Two elements from the traversal
-    - The contexts for each element
-    - Returns one of the elements as the accumulated result
+    - The accumulated element from previous reduction steps
+    - The next element to be considered
+    - The parent walker's context (immutable)
+    - Returns a ControlFlow with either the accumulated or next element
 
 ## Return Value
 
@@ -29,14 +30,15 @@ Before step:
   Position: All vertices in traversal
 
 During reduce execution:
-  [A] + [B] = [A]
-  [A] + [C] = [C]
-  [C] + [D] = [C]
+  acc = [A] (initial accumulator)
+  reducer([A], [B], ctx) → ControlFlow::Continue([A])
+  reducer([A], [C], ctx) → ControlFlow::Continue([C])
+  reducer([C], [D], ctx) → ControlFlow::Continue([C])
 
 After step:
-  [A] --- [B] --- [C] --- [D]
-  Result: Some([C]) (single reduced vertex)
-  Position: Traversal terminated
+  [C]* --- ... ---> [More Traversal Steps]
+  Result: [C] (single reduced vertex)
+  Position: Ready for next step in the walker chain
 ```
 
 ## Example
@@ -45,12 +47,18 @@ After step:
 {{#include reduce/reduce_example.rs:all}}
 ```
 
-## Notes
+## Best Practices
 
-- The reduce step is a terminal operation - it consumes the traversal and returns a result
-- Similar to fold, but works with the traversal elements themselves rather than an external accumulator
-- Ideal for finding extreme values (max/min) within a traversal
-- The reducer must return one of the input elements, not a new element
-- Returns None if the traversal is empty
-- If the traversal contains only one element, that element is returned without calling the reducer
-- Unlike standard Rust reduce, graph-api-reduce provides the contexts of both elements
+- Design reducers that follow associative properties when possible
+- Handle empty traversals by checking for None in the result
+- The reducer can only select one of the elements, not create new ones
+- Use `ControlFlow::Continue` to keep reducing, and `ControlFlow::Break` to halt early
+- Consider fold instead when you need to build a new value rather than select among elements
+- Remember that unlike the old API, the context is immutable in the reducer function
+
+## Common Use Cases
+
+- **Extrema finding**: Selecting maximum or minimum elements by some property
+- **Best match selection**: Choosing the most relevant element from a set of results
+- **Representative selection**: Picking a single representative element from similar options
+- **Priority determination**: Finding highest/lowest priority elements in a graph

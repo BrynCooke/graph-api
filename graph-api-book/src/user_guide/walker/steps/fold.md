@@ -62,12 +62,16 @@ Returns the final accumulated value after processing all elements in the travers
 {{#include fold/fold_example.rs:all}}
 ```
 
-## Notes
+## Best Practices
 
-- The fold step is a terminal operation - it consumes the traversal and returns a value
-- Unlike map, fold doesn't yield a stream of values but a single accumulated result
-- The closure is called once for each element with the accumulator and element
-- Can be used for many common operations like counting, summing, finding min/max, etc.
-- More flexible than specialized steps like count when you need to calculate custom aggregates
-- The accumulator can be any type that matches your needs
-- Context is available if you need it for your calculations
+- Choose an appropriate initial value that handles edge cases (empty traversals)
+- Design fold closures to be commutative when possible for predictable results
+- Use type annotations for complex accumulator types to improve readability
+- Consider specialized steps like `count()` when their behavior matches your needs
+
+## Common Use Cases
+
+- **Aggregation**: Calculating sums, averages, or other numerical aggregates
+- **Collection building**: Creating custom collections or data structures from traversal results
+- **State tracking**: Building a final state that incorporates data from all elements
+- **Custom reductions**: Implementing specialized reduction operations not covered by built-in steps

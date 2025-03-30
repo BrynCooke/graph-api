@@ -28,21 +28,8 @@ Each walker step documentation follows a consistent format:
 
 ## Visual Diagrams
 
-All walker step documentation includes ASCII diagrams that show:
-
-- The graph structure
-- The traversal position (marked with *)
-- How the step affects the traversal
-
-Example diagram:
-
-```bob
-Before step:
-  [A]* --- knows ---> [B] --- created ---> [C]
-
-After step:
-  [A] --- knows --->* [B] --- created ---> [C]
-```
+All walker step documentation includes pikchr diagrams that illustrate what the step is doing.
+Some example pikchr diagrams are included in the pikchr directory.
 
 ## Examples
 

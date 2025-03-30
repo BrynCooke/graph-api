@@ -8,12 +8,25 @@ property values, dramatically improving query performance.
 A hash index maps property values to vertices, allowing you to quickly find all vertices with a specific property
 value without scanning the entire graph. It uses a hash table data structure for O(1) lookups.
 
+<object data="./hash_inex/image.svg" title="Diagram showing a hash index mapping names to graph vertice"></object>
+
+In this diagram:
+
+- The **graph** on the right contains vertices (A, B, C, D) with properties.
+- The **index** on the left is specifically for the `name` property.
+- The **dashed arrows** show the mapping:
+    - Looking up `"Alice"` in the index quickly leads to vertices `A` and `C`.
+    - Looking up `"Bob"` leads to vertex `B`.
+
+This allows a query like "find all vertices where name is 'Alice'" to directly access nodes A and C via the index,
+instead of checking every vertex in the graph.
+
 ## Defining Hash Indexes
 
 In Graph API, you define a hash index by adding the `#[index(hash)]` attribute to a field in your vertex enum:
 
 ```rust,noplayground
-{{#include hash_index/hash_index.rs:define_standard_index}}
+{{#include hash_index/hash_index_example.rs:define_standard_index}}
 ```
 
 ## How Hash Indexes Work
@@ -29,7 +42,7 @@ When you apply the `#[index(hash)]` attribute to a field:
 The real power of hash indexes becomes apparent when querying the graph:
 
 ```rust,noplayground
-{{#include hash_index/hash_index.rs:standard_index_queries}}
+{{#include hash_index/hash_index_example.rs:standard_index_queries}}
 ```
 
 ## Performance Benefits

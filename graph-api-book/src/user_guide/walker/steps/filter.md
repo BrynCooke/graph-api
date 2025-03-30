@@ -2,29 +2,9 @@
 
 The `filter` step narrows a traversal by keeping only vertices or edges that match a specified predicate.
 
-```pikchr
-# Before filter - all vertices 
-A: box rad 10px "A" "age=35" fit
-B: box rad 10px at 1.5 right of A "B" "age=25" fit
-C: box rad 10px at 1.5 right of B "C" "age=40" fit
-
-# Connect vertices with edges
-line from A.e to B.w
-line from B.e to C.w
-
-text at 0.4 below B "Before step: All vertices in traversal"
-
-# After filter - highlight only those matching age > 30
-Aprime: box rad 10px at 1 below A "A" "age=35" fit fill lightgreen
-Bprime: box rad 10px at 1.5 right of Aprime "B" "age=25" fit color gray
-Cprime: box rad 10px at 1.5 right of Bprime "C" "age=40" fit fill lightgreen
-
-# Connect vertices with edges (grayed out for non-matching)
-line from Aprime.e to Bprime.w color gray
-line from Bprime.e to Cprime.w color gray
-
-text at 0.4 below Bprime "After step (filter where age > 30): Only A and C match"
-```
+<object type="image/svg+xml" data="filter/image.svg" width="650" height="300">
+Filter step diagram showing how vertices are filtered based on a condition
+</object>
 
 ## Syntax
 
@@ -76,14 +56,16 @@ Filter based on context information:
 {{#include filter/filter_examples.rs:context_filter}}
 ```
 
-## Notes
+## Best Practices
 
-- The filter step does not modify the graph, only the traversal
-- Filtering is lazy - predicates are only evaluated when traversal elements are accessed
-- For complex filtering conditions:
-    - Chain multiple filter steps for better readability
-    - Use pattern matching for different vertex/edge types
-- The filter predicate has access to the current element and context
-- When possible, consider using indexed searches (like `VertexSearch` with properties) instead of filtering after
-  retrieval
-- Type-specific filter methods (like `filter_by_person`) provide better type safety and code completion
+- Prefer indexed searches over filter steps when querying by property values
+- Break complex filtering logic into multiple chained filters for readability
+- Use pattern matching to handle different vertex or edge types correctly
+- Leverage generated filter methods from derive macros for stronger type safety
+
+## Common Use Cases
+
+- **Post-retrieval refinement**: Filtering elements after initial selection when indexes don't fully cover criteria
+- **Dynamic filtering**: Applying runtime conditions that can't be encoded in initial searches
+- **Complex conditions**: Implementing filtering logic that combines multiple properties or calculations
+- **Context-aware filtering**: Using information from previous traversal steps to inform filtering decisions

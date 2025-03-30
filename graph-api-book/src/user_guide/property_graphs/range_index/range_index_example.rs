@@ -123,7 +123,7 @@ fn main() {
         .filter_by_person(|person, _| {
             // Range query on age property
             let age = person.age();
-            age >= 30 && age <= 45
+            (30..=45).contains(&age)
         })
         .map(|v, _| {
             // Use type-safe projection
@@ -139,7 +139,7 @@ fn main() {
         .filter_by_product(|product, _| {
             // Range query on price property
             let price = product.price();
-            price >= 100.0 && price <= 500.0
+            (100.0..=500.0).contains(&price)
         })
         .map(|v, _| {
             // Use type-safe projection
@@ -155,7 +155,7 @@ fn main() {
         .filter_by_product(|product, _| {
             // Range query on release_date property
             let date = product.release_date();
-            date >= "2023-01-01" && date <= "2023-03-31"
+            ("2023-01-01"..="2023-03-31").contains(&date)
         })
         .map(|v, _| {
             // Use type-safe projection
@@ -172,7 +172,7 @@ fn main() {
         .filter_by_purchased(|edge, _| {
             // Range query on timestamp property
             let timestamp = edge.timestamp();
-            timestamp >= "2023-01-01" && timestamp <= "2023-03-31"
+            ("2023-01-01"..="2023-03-31").contains(&timestamp)
         })
         .head()
         .filter_person() // Type-safe filter using generated helper
@@ -185,35 +185,27 @@ fn main() {
 
     // ANCHOR: range_sort
     // Find people in a specific age range (21-50), sorted by age descending
-    let people_by_age = graph
+    let _people_by_age = graph
         .walk()
         .vertices(VertexSearch::scan())
         .filter_by_person(|person, _| {
             // Range query on age property
             let age = person.age();
-            age >= 21 && age <= 50
+            (21..=50).contains(&age)
         })
         .collect::<Vec<_>>();
 
     // For sorting, we would extract the data from vertices
     // For this documentation example, we'll use simplified data
-    let mut person_data = vec![
-        ("Alice", 28),
-        ("Bob", 35),
-        ("Carol", 42)
-    ];
-    
+    let mut person_data = [("Alice", 28), ("Bob", 35), ("Carol", 42)];
+
     // Sort by age in descending order
-    person_data.sort_by(|(_, age_a), (_, age_b)| {
-        age_b.cmp(age_a)
-    });
-    
+    person_data.sort_by(|(_, age_a), (_, age_b)| age_b.cmp(age_a));
+
     // Map the sorted results to names with ages
     let people_sorted = person_data
         .iter()
-        .map(|(name, age)| {
-            format!("{} ({})", name, age)
-        })
+        .map(|(name, age)| format!("{} ({})", name, age))
         .collect::<Vec<_>>();
     // ANCHOR_END: range_sort
 

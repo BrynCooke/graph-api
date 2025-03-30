@@ -3,25 +3,9 @@
 The `tail` step navigates from edges to their target (destination) vertices, allowing traversal to where the edges point
 to.
 
-```pikchr
-# Graph structure - vertices with edge highlighted
-A: box rad 10px width 0.5 height 0.3 "A" fill white
-B: box same at 1.5 right of A "B" fill white
-
-# Connect vertices with labeled edges, highlight follows edge
-FOLLOWS: arrow thick color green from A.e to B.w "follows" above
-
-text at 0.4 below FOLLOWS "Before tail(): Position at 'follows' edge (highlighted green)"
-
-# Second diagram - after tail step, highlight target vertex
-Aprime: box rad 10px width 0.5 height 0.3 at 1 below A "A" fill white
-Bprime: box same at 1.5 right of Aprime "B" fill lightgreen
-
-# Connect vertices with labeled edges
-FOLLOWS: arrow from Aprime.e to Bprime.w "follows" above
-
-text at 0.4 below FOLLOWS "After tail(): Position at target vertex B (highlighted green)"
-```
+<object type="image/svg+xml" data="head_tail/image_tail.svg" width="650" height="300">
+Tail step diagram showing traversal from edge to target vertex
+</object>
 
 ## Syntax
 
@@ -55,12 +39,16 @@ Traverse multiple relationships to find indirect connections:
 {{#include head_tail/head_tail_examples.rs:multi_step}}
 ```
 
-## Notes
+## Best Practices
 
-- The `tail` step can only be used after an edge traversal step
-- For directed edges, the "tail" is the target or destination vertex
-- This step is essential for following relationships in the graph
-- Common patterns:
-    - `vertices(...).edges(...).tail()` follows relationships to find connected vertices
-    - Chaining multiple sequences (`edges().tail().edges().tail()`) to traverse multiple hops
-- In social graphs, a typical "friends of friends" query uses two edge-tail sequences
+- Use tail() to follow relationships in their natural direction
+- Chain edge-tail sequences for multi-hop traversals
+- Maintain context information when necessary to preserve edge properties
+- Consider traversal depth carefully in highly connected graphs
+
+## Common Use Cases
+
+- **Following relationships**: Finding what vertices are connected to your starting points
+- **Multi-hop traversals**: Discovering indirect connections through multiple relationships
+- **Graph exploration**: Navigating through the graph in a directed manner
+- **Social network queries**: Implementing patterns like "friends of friends" or "recommendations"

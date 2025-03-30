@@ -3,29 +3,7 @@
 The `vertices` step starts a traversal by selecting a set of vertices from the graph based on specified criteria. This
 is typically the first step in a traversal chain.
 
-```pikchr
-# Graph structure - vertices and edges with no highlighting
-A: box rad 10px width 0.5 height 0.3 "A" fill white
-B: box same at 1 right of A "B" fill white
-C: box same at 1 right of B "C" fill white
-
-# Connect vertices with edges
-line from A.e to B.w
-line from B.e to C.w
-
-text at 0.4 below B "Before vertices(): No traversal position (not started)"
-
-# Second diagram - after vertices step with A and C selected
-Aprime: box rad 10px width 0.5 height 0.3 at 1 below A "A" fill lightgreen
-Bprime: box same at 1 right of Aprime "B" fill white
-Cprime: box same at 1 right of Bprime "C" fill lightgreen
-
-# Connect vertices with edges
-line from Aprime.e to Bprime.w
-line from Bprime.e to Cprime.w
-
-text at 0.4 below Bprime "After vertices(criteria): Position at matching vertices (highlighted green)"
-```
+<object data="./vertices/image.svg" title="Diagram the vertices step"></object>
 
 ## Syntax
 
@@ -77,11 +55,16 @@ Chain multiple conditions for complex queries:
 {{#include vertices/vertices_examples.rs:combined_filter}}
 ```
 
-## Notes
+## Best Practices
 
-- The `vertices` step is typically the first step in a traversal
-- Performance varies based on the search criteria:
-    - Using a label index (e.g., `VertexIndex::person()`) is faster than a full scan
-    - Property-based searches are efficient when properly indexed
-    - Full scans with `VertexSearch::scan()` should be avoided for large graphs
-- The order of vertices in the traversal is not guaranteed unless using an range index
+- Start with the most specific index when possible instead of scanning all vertices
+- Use specialized indexes for frequently queried properties to improve performance
+- Combine multiple search criteria to narrow results early in the traversal
+- For ordered results, rely on range indexes rather than sorting later
+
+## Common Use Cases
+
+- **Entity retrieval**: Finding vertices of a specific type (e.g., all users, products, etc.)
+- **Initial selection**: Starting traversals by selecting entry points based on criteria
+- **Filtered starting sets**: Beginning with a targeted subset that matches complex conditions
+- **Index-driven queries**: Leveraging custom indexes for specialized lookups based on specific properties

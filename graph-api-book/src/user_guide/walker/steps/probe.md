@@ -72,12 +72,16 @@ This example demonstrates using the `probe` step to examine relationships betwee
 {{#include probe/probe_example.rs:probe_edges}}
 ```
 
-## Notes
+## Best Practices
 
-- The probe step is non-terminal - it allows the traversal to continue unchanged
-- Perfect for debugging, logging, or statistics collection during traversal
-- Can be inserted at any point in a step chain without affecting the traversal
-- The inspector function isn't expected to return anything
-- Unlike map or filter, probe doesn't transform elements or filter the traversal
-- You can use multiple probe steps at different points in a complex traversal
-- Particularly useful for understanding traversal flow in complex graph operations
+- Insert probe steps at key points in complex traversals to verify correct behavior
+- Use descriptive logging within probes to make debugging output meaningful
+- Add counters or statistics collection to understand traversal performance
+- Keep probe functions simple and side-effect only; don't try to affect the traversal flow
+
+## Common Use Cases
+
+- **Debugging**: Inserting temporary probe steps to understand traversal behavior
+- **Logging**: Recording traversal information during development or in production
+- **Metrics collection**: Gathering statistics about traversal performance and results
+- **Inspection**: Examining element properties at specific points in the traversal

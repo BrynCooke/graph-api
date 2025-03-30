@@ -8,32 +8,29 @@ range or products within a price bracket.
 A range index organizes data in a way that optimizes searches for values within ranges rather than exact matches. This
 allows for efficient "greater than," "less than," and "between" queries.
 
-```pikchr
-box width 4 height 1 fill lightblue "Graph Database" bold
-line down from last.s
-box width 5 height 0.6 fill lightyellow "Range Index (age property)" italic
-line down from last.s
-box width 5 height 2.5 fill lightgray
+Consider an index on an `age` property:
 
-# Age index entries
-Person1: box width 2 height 0.3 at 0.2, 0.3 from last.nw "Age: 21 → [Person ids]" fill white
-Person2: box width 2 height 0.3 at 0.2,0.7 from Person1.sw "Age: 28 → [Person ids]" fill white
-Person3: box width 2 height 0.3 at 0.2,0.7 from Person2.sw "Age: 35 → [Person ids]" fill white
-Person4: box width 2 height 0.3 at 0.2,0.7 from Person3.sw "Age: 42 → [Person ids]" fill white
-Person5: box width 2 height 0.3 at 0.2,0.7 from Person4.sw "Age: 50 → [Person ids]" fill white
+<object data="./range_index/image.svg" title="Diagram showing a range index on age, highlighting nodes with age >= 35"></object>
 
-# Range query visualization
-arrow from 3,0.5 to Person2.e "Range Query:" "age ≥ 28 AND age ≤ 42" ljust color green
-arrow from 3,1.2 to Person3.e color green
-arrow from 3,1.9 to Person4.e color green
-```
+In this diagram:
+
+- The **graph** on the right contains vertices with an `age` property.
+- The **range index** on the left stores `(age, vertex)` pairs, crucially **sorted by age**. Notice how `age: 35`
+  appears twice, pointing to both `B` and `D`.
+- When a **range query** like `age >= 35` is executed:
+    1. The index efficiently locates the starting point for the value `35`.
+    2. It then scans forward through the sorted index entries (35, 35, 42) until the condition is no longer met.
+    3. The vertices associated with these index entries (`B`, `D`, `C`) are identified as the result.
+- The **orange highlighting** shows the portion of the index scanned and the resulting vertices in the graph.
+
+This is much faster than checking the `age` property of every single vertex in the graph for large datasets.
 
 ## Defining Range Indexes
 
 In Graph API, you define a range index by adding the `#[index(range)]` attribute to a field in your vertex or edge enum:
 
 ```rust,noplayground
-{{#include range_index/range_index.rs:define_range_index}}
+{{#include range_index/range_index_example.rs:define_range_index}}
 ```
 
 ## How Range Indexes Work
@@ -51,7 +48,7 @@ Range indexes typically use ordered data structures like B-trees or skip lists t
 The primary benefit of range indexes is the ability to perform efficient range queries:
 
 ```rust,noplayground
-{{#include range_index/range_index.rs:range_queries}}
+{{#include range_index/range_index_example.rs:range_queries}}
 ```
 
 ## Sorting and Pagination
@@ -59,7 +56,7 @@ The primary benefit of range indexes is the ability to perform efficient range q
 While Graph API doesn't directly support sorted indexes, you can use range indexes to optimize sorted query results:
 
 ```rust,noplayground
-{{#include range_index/range_index.rs:range_sort}}
+{{#include range_index/range_index_example.rs:range_sort}}
 ```
 
 ## Performance Benefits

@@ -71,13 +71,16 @@ This example demonstrates using the mutate step to add new connections to the gr
 {{#include mutate/mutate_example.rs:add_edges}}
 ```
 
-## Notes
+## Best Practices
 
-- The mutate step requires a mutable graph traversal started with `walk_mut()`
-- It allows for in-place modification of graph elements without rebuilding the graph
-- Perfect for batch updates or incremental changes to graph properties
-- Each element is processed independently - changes to one element don't affect traversal of others
+- Always start with `walk_mut()` when planning to use the mutate step
 - Use pattern matching to handle different vertex/edge types appropriately
-- Can be combined with filter steps to selectively modify elements matching specific criteria
-- Changes are immediately visible to subsequent steps in the traversal
-- Mutations that affect graph structure (adding/removing edges) should generally be done separately
+- Combine with filter steps to selectively apply mutations to elements matching specific criteria
+- Keep structural changes (adding/removing edges) separate from property updates when possible
+
+## Common Use Cases
+
+- **Batch updates**: Applying the same change to multiple elements matching criteria
+- **Property maintenance**: Updating attributes based on computations or external data
+- **Status changes**: Modifying state properties across a subset of graph elements
+- **Relationship enhancement**: Adding metadata to edges based on vertex properties

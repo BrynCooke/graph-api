@@ -108,15 +108,16 @@ walker
     })
 ```
 
-## Notes
+## Best Practices
 
-- Default context is the simplest way to track graph elements during traversal
-- No need to define custom context types or write context creation functions
-- Especially useful for traversals where you need to reference the previous vertex
-- Common use cases:
-    - Building relationship descriptions (e.g., "Person A knows Person B")
-    - Tracking traversal paths
-    - Comparing current elements with previous elements
-    - Accumulating data from multiple traversal steps
-- Automatically updates as the traversal moves through the graph
-- More efficient than manually tracking elements in custom contexts
+- Use default context for simple element tracking rather than creating custom context types
+- Chain default contexts in multi-step traversals to maintain element history
+- Access context values using the appropriate type-safe methods (e.g., `ctx.vertex()`, `ctx.edge()`)
+- Consider default context before writing complex custom context functions for basic traversals
+
+## Common Use Cases
+
+- **Relationship description**: Building natural language descriptions (e.g., "Person A knows Person B")
+- **Path tracking**: Recording the sequence of vertices and edges in a traversal
+- **Element comparison**: Comparing properties between current and previous elements
+- **Data collection**: Gathering information from connected elements in the graph

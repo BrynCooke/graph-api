@@ -76,12 +76,16 @@ Use IDs collected from a previous traversal:
 {{#include vertices_by_id/vertices_by_id_examples.rs:dynamic_ids}}
 ```
 
-## Notes
+## Best Practices
 
-- This step is the most efficient way to start a traversal when you already know the exact vertex IDs
-- The traversal will contain vertices in the same order as the IDs in the input iterator
-- If an ID doesn't correspond to any vertex in the graph, it is simply skipped (no error is thrown)
-- Commonly used for:
-    - Following up on previous traversal results
-    - Starting from known entry points (e.g., a user's profile vertex)
-    - Building multi-hop traversals from a specific starting point
+- Prefer `vertices_by_id` over other methods when you already have the exact IDs
+- Be aware that invalid IDs are silently skipped rather than causing errors
+- Keep track of the original ID order if the order of results matters
+- Consider batching large ID collections for better performance in extensive traversals
+
+## Common Use Cases
+
+- **Known entry points**: Starting traversals from specific, known vertices
+- **Multi-stage traversals**: Using the results of one traversal as the starting point for another
+- **External ID mapping**: Starting from IDs provided by external systems or caches
+- **Selective subgraph processing**: Working with a specific subset of vertices identified by ID

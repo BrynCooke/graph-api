@@ -1,0 +1,106 @@
+Â<?xml-stylesheet type="text/css" href="../../../css/images.css"?>
+<svg width="600" height="350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Graph Scan Without Index</title>
+    <desc>Diagram illustrating that finding nodes (e.g., name='Alice') without an index requires scanning every node (A,
+        B, C, D, E). Matching nodes A and C are highlighted.
+    </desc>
+
+    <defs>
+        <!-- Styles are now external -->
+
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Arrowhead for scan pointers (smaller, matches muted color via CSS) -->
+        <marker id="arrowhead-scan" class="marker-arrowhead-scan marker-base" markerWidth="6" markerHeight="4"
+                refX="5" refY="2" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L6,2 L0,4 Z"/>
+        </marker>
+        <!-- Include other standard markers -->
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-active" class="marker-arrowhead-active marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-visited" class="marker-arrowhead-visited marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
+                refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+    </defs>
+
+    <!-- === Query Text === -->
+    <!-- Positioned top-left -->
+    <text class="query-text" x="100" y="50">Query: name = "Alice"</text>
+    <!-- Origin point for scan arrows -->
+    <circle cx="100" cy="70" r="3" fill="var(--accent-secondary)" id="query-origin"/>
+
+
+    <!-- === Graph Structure === -->
+    <g id="graph" transform="translate(150, 100)"> <!-- Shifted graph down/right -->
+        <!-- Nodes - A and C highlighted as matches -->
+        <g class="node highlighted" id="node-A" transform="translate(100, 50)"> <!-- Center abs (250, 150) -->
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+            <text class="property-text" y="28">{name: "Alice"}</text>
+        </g>
+        <g class="node" id="node-B" transform="translate(300, 50)"> <!-- Center abs (450, 150) -->
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
+            <text class="property-text" y="28">{name: "Bob"}</text>
+        </g>
+        <g class="node highlighted" id="node-C" transform="translate(50, 180)"> <!-- Center abs (200, 280) -->
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
+            <text class="property-text" y="28">{name: "Alice"}</text>
+        </g>
+        <g class="node" id="node-D" transform="translate(250, 180)"> <!-- Center abs (400, 280) -->
+            <circle r="20"></circle>
+            <text class="node-label">D</text>
+            <text class="property-text" y="28">{name: "Charlie"}</text>
+        </g>
+        <g class="node" id="node-E" transform="translate(400, 180)"> <!-- Center abs (550, 280) -->
+            <circle r="20"></circle>
+            <text class="node-label">E</text>
+            <text class="property-text" y="28">{name: "Bob"}</text>
+        </g>
+
+        <!-- Edges - Added directed class -->
+        <g class="edge directed" id="edge-A-B">
+            <line x1="120" y1="50" x2="280" y2="50"></line>
+        </g>
+        <g class="edge directed" id="edge-A-C">
+            <path d="M 95 70 Q 70 120 65 160"/>
+        </g>
+        <g class="edge directed" id="edge-B-D">
+            <path d="M 295 70 Q 275 120 265 160"/>
+        </g>
+        <g class="edge directed" id="edge-C-D">
+            <line x1="70" y1="180" x2="230" y2="180"></line>
+        </g>
+        <g class="edge directed" id="edge-D-E">
+            <line x1="270" y1="180" x2="380" y2="180"></line>
+        </g>
+
+    </g> <!-- End of graph group -->
+
+    <!-- === Scan Pointers (From Query to ALL Nodes) === -->
+    <g id="scan-pointers">
+        <!-- Originating near Query text (abs x=100, y=70) -->
+        <!-- Pointing towards center of each node -->
+        <line class="scan-pointer" x1="100" y1="70" x2="250" y2="150"/> <!-- -> A -->
+        <line class="scan-pointer" x1="100" y1="70" x2="450" y2="150"/> <!-- -> B -->
+        <line class="scan-pointer" x1="100" y1="70" x2="200" y2="280"/> <!-- -> C -->
+        <line class="scan-pointer" x1="100" y1="70" x2="400" y2="280"/> <!-- -> D -->
+        <line class="scan-pointer" x1="100" y1="70" x2="550" y2="280"/> <!-- -> E -->
+    </g>
+
+</svg>

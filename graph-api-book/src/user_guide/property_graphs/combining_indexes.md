@@ -8,6 +8,10 @@ This approach enables complex, efficient queries across your graph.
 By applying different index types to various properties, you can create a rich query interface that supports diverse
 search patterns:
 
+```pikchr
+{{#include ../../pikchr-diagrams/combining_indexes.pikchr}}
+```
+
 ```rust,noplayground
 {{#include combining_indexes.rs:define_combined_indexes}}
 ```

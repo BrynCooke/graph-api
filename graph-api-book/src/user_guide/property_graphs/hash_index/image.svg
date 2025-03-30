@@ -1,0 +1,117 @@
+<?xml-stylesheet type="text/css" href="../../../css/images.css"?>
+<svg width="600" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Hash Vertex Index Example with Query</title>
+    <desc>Diagram showing a hash index on 'name', highlighting the lookup for name = "Alice" resulting in nodes A and
+        C.
+    </desc>
+
+    <defs>
+        <!-- Styles are now external -->
+
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Include other standard markers -->
+        <marker id="arrowhead-active" class="marker-arrowhead-active marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-visited" class="marker-arrowhead-visited marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
+                refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+    </defs>
+
+    <!-- === Index Structure === -->
+    <g id="index" class="index-container" transform="translate(20, 40)">
+        <rect class="index-box" x="0" y="0" width="200" height="190"/>
+        <text class="index-title" x="100" y="25">Vertex Index (on 'name')</text>
+
+        <!-- Divider Lines -->
+        <line class="index-divider hash" x1="0" y1="45" x2="200" y2="45"/>
+        <line class="index-divider hash" x1="85" y1="45" x2="85" y2="190"/>
+
+        <!-- Index Entries - Added highlight to "Alice" -->
+        <g class="index-entry highlighted" transform="translate(0, 70)">
+            <text class="index-key hash" x="75" y="0">"Alice"</text>
+            <text class="index-value hash" x="95" y="0">[ A, C ]</text>
+        </g>
+        <g class="index-entry" transform="translate(0, 110)">
+            <text class="index-key hash" x="75" y="0">"Bob"</text>
+            <text class="index-value hash" x="95" y="0">[ B ]</text>
+        </g>
+        <g class="index-entry" transform="translate(0, 150)">
+            <text class="index-key hash" x="75" y="0">"Charlie"</text>
+            <text class="index-value hash" x="95" y="0">[ D ]</text>
+        </g>
+
+        <!-- Query Highlight Box for "Alice" -->
+        <!-- Positioned around the "Alice" entry (y=70 +/- 12) -->
+        <rect class="query-highlight-box" x="10" y="58" width="180" height="24"/>
+
+    </g> <!-- End of index group -->
+
+
+    <!-- === Graph Structure === -->
+    <g id="graph" transform="translate(280, 40)">
+        <!-- Nodes - Added highlight to A and C -->
+        <g class="node highlighted" id="node-A" transform="translate(100, 50)"> <!-- Center at abs (380, 90) -->
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+            <text class="property-text" y="28">{name: "Alice", ...}</text>
+        </g>
+        <g class="node" id="node-B" transform="translate(250, 50)"> <!-- Center at abs (530, 90) -->
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
+            <text class="property-text" y="28">{name: "Bob", ...}</text>
+        </g>
+        <g class="node highlighted" id="node-C" transform="translate(100, 180)"> <!-- Center at abs (380, 220) -->
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
+            <text class="property-text" y="28">{name: "Alice", ...}</text>
+        </g>
+        <g class="node" id="node-D" transform="translate(250, 180)"> <!-- Center at abs (530, 220) -->
+            <circle r="20"></circle>
+            <text class="node-label">D</text>
+            <text class="property-text" y="28">{name: "Charlie", ...}</text>
+        </g>
+
+        <!-- Edges -->
+        <g class="edge directed" id="edge-A-B">
+            <line x1="120" y1="50" x2="230" y2="50"></line>
+        </g>
+        <g class="edge directed" id="edge-A-C">
+            <line x1="100" y1="70" x2="100" y2="160"></line>
+        </g>
+        <g class="edge directed" id="edge-B-D">
+            <line x1="250" y1="70" x2="250" y2="160"></line>
+        </g>
+        <g class="edge directed" id="edge-D-C">
+            <path d="M 230 180 Q 175 210 120 180"/>
+        </g>
+    </g> <!-- End of graph group -->
+
+    <!-- === Index Pointers === -->
+    <g id="index-pointers">
+        <!-- Pointers remain the same -->
+        <line class="index-pointer" x1="170" y1="110" x2="363" y2="78"/>
+        <line class="index-pointer" x1="170" y1="110" x2="363" y2="208"/>
+        <line class="index-pointer" x1="170" y1="150" x2="513" y2="78"/>
+        <line class="index-pointer" x1="170" y1="190" x2="513" y2="208"/>
+    </g>
+
+    <!-- === Query Text === -->
+    <!-- Positioned below index box (ends at y=230), centered at x=120 (20+100) -->
+    <text class="query-text" x="120" y="260">Query: name = "Alice"</text>
+
+</svg>

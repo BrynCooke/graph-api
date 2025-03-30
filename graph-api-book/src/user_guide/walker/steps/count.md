@@ -77,14 +77,16 @@ Use counts to calculate graph analytics:
 {{#include count/count_example.rs:analytics}}
 ```
 
-## Notes
+## Best Practices
 
-- The count step is a terminal operation that consumes the walker
-- It's more efficient than collecting to a vector just to get the length
-- Count can be used to:
-    - Check if a traversal contains any elements (if count > 0)
-    - Get statistics about a graph (e.g., average connections per node)
-    - Validate expected sizes during testing
-- For very large graphs, counting might still require a full traversal
-    - Some graph implementations might optimize this for better performance
-    - Consider using indexed counts when available
+- Use count directly rather than collecting results just to count them
+- Consider indexed counts for large graphs when available in your implementation
+- Combine with filter steps for specific counting queries
+- Use count to validate expectations in tests and assertions
+
+## Common Use Cases
+
+- **Existence checking**: Determining if any elements match criteria (count > 0)
+- **Graph analytics**: Calculating statistics like average connections per node
+- **Validation**: Ensuring expected numbers of elements exist in certain conditions
+- **Performance metrics**: Measuring graph size and density characteristics

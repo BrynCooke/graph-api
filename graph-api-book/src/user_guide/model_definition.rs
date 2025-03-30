@@ -77,15 +77,15 @@ fn usage_example() {
 
             // Return formatted string with person information
             format!(
-                "Person: {} (@{})\n  Bio: {}\n  Age: {}", 
-                person.name(), 
+                "Person: {} (@{})\n  Bio: {}\n  Age: {}",
+                person.name(),
                 person.username(),
                 person.biography(),
                 person.age()
             )
         })
         .collect::<Vec<_>>();
-        
+
     // Print the collected information
     for info in person_info {
         println!("{}", info);

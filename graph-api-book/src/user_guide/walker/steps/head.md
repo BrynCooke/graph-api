@@ -3,25 +3,9 @@
 The `head` step navigates from edges to their source (origin) vertices, allowing traversal back to where the edges start
 from.
 
-```pikchr
-# Graph structure - vertices with edge highlighted
-A: box rad 10px width 0.5 height 0.3 "A" fill white
-B: box same at 1.5 right of A "B" fill white
-
-# Connect vertices with labeled edges, highlight follows edge
-FOLLOWS: arrow thick color green from A.e to B.w "follows" above
-
-text at 0.4 below FOLLOWS "Before head(): Position at 'follows' edge (highlighted green)"
-
-# Second diagram - after head step, highlight source vertex
-Aprime: box rad 10px width 0.5 height 0.3 at 1 below A "A" fill lightgreen
-Bprime: box same at 1.5 right of Aprime "B" fill white
-
-# Connect vertices with labeled edges
-FOLLOWS: arrow from Aprime.e to Bprime.w "follows" above
-
-text at 0.4 below FOLLOWS "After head(): Position at source vertex A (highlighted green)"
-```
+<object type="image/svg+xml" data="head_tail/image_head.svg" width="650" height="300">
+Head step diagram showing traversal from edge to source vertex
+</object>
 
 ## Syntax
 
@@ -45,12 +29,16 @@ Find people who created projects by getting back to the source vertex:
 {{#include head_tail/head_tail_examples.rs:head_example}}
 ```
 
-## Notes
+## Best Practices
 
-- The `head` step can only be used after an edge traversal step
-- For directed edges, the "head" is the source or origin vertex
-- This step is useful for finding:
-    - Who created something (when traversing incoming "created" edges)
-    - The starting point of a relationship
-    - The author of an action
-- Common pattern: `vertices(...).edges(...).head()` finds vertices with specific outgoing edges
+- Always follow edge traversals with either head() or tail() to return to vertices
+- Use contexts to retain information about the edge when moving to vertices
+- Remember that head() returns the source vertex (where the edge starts)
+- For retrieving both endpoints, consider using context to store one while visiting the other
+
+## Common Use Cases
+
+- **Author identification**: Finding who created something by looking at edge sources
+- **Relationship sources**: Identifying the initiators of connections
+- **Backtracking**: Returning to source vertices after examining edges
+- **Edge-based filtering**: Finding vertices that have specific outgoing edges

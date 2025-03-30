@@ -7,6 +7,21 @@ Before we dive into indexes, let's understand why they're necessary by exploring
 In a property graph, one of the biggest challenges is finding the right starting points for your traversal. Without
 indexes, your only option is to scan the entire graph, examining each vertex to find matches.
 
+<object data="./no_index/image****.svg" title="Diagram a full scan of graph vertice"></object>
+
+In this diagram:
+
+- The **graph** contains several vertices (A-E), some of which have the property `name: "Alice"`.
+- The **query** at the top left indicates the desired starting condition: find vertices where `name = "Alice"`.
+- The **gray dashed arrows** illustrate the process *without an index*: To satisfy the query, the traversal mechanism
+  must conceptually examine **every single vertex** (A, B, C, D, E) to check if its `name` property matches "Alice".
+  This represents a full graph scan.
+- The **orange highlighting** on vertices `A` and `C` shows the *result* of this scan – these are the only vertices
+  found that satisfy the query condition.
+
+This full scan becomes computationally expensive and slow, especially in large graphs, highlighting the need for indexes
+to quickly locate starting vertices.
+
 ## Example: Graph Without Indexes
 
 Let's consider a simple social network model without any indexes:
