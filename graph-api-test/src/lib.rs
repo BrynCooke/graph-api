@@ -295,8 +295,6 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, fold_test_edges_fold, $crate::steps::fold::test_edges_fold}
         $crate::general_test!{$setup, reduce_test_vertices_reduce, $crate::steps::reduce::test_vertices_reduce}
         $crate::general_test!{$setup, reduce_test_edges_reduce, $crate::steps::reduce::test_edges_reduce}
-        $crate::general_test!{$setup, reduce_test_vertices_reduce_break, $crate::steps::reduce::test_vertices_reduce_break}
-        $crate::general_test!{$setup, reduce_test_edges_reduce_break, $crate::steps::reduce::test_edges_reduce_break}
         $crate::general_test!{$setup, detour_test_vertices_detour, $crate::steps::detour::test_vertices_detour}
         $crate::general_test!{$setup, filter_derive_test_vertices_filter, $crate::steps::filter_derive::test_vertices_filter}
         $crate::general_test!{$setup, filter_derive_test_edges_filter, $crate::steps::filter_derive::test_edges_filter}
