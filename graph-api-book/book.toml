@@ -5,6 +5,9 @@ multilingual = false
 src = "src"
 title = "graph-api"
 
+[output.html]
+additional-css = ["theme/custom.css"]
+
 [preprocessor.pikchr]
 [preprocessor.svgbob]
 [preprocessor.mermaid]
