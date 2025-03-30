@@ -1,3 +1,4 @@
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg width="650" height="380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>First Step Diagram</title>
     <desc>Diagram illustrating the 'first' step retrieving only the first element from a traversal.</desc>

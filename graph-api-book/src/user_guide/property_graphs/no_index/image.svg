@@ -1,4 +1,4 @@
-Â<?xml-stylesheet type="text/css" href="../../../css/images.css"?>
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg width="600" height="350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>Graph Scan Without Index</title>
     <desc>Diagram illustrating that finding nodes (e.g., name='Alice') without an index requires scanning every node (A,

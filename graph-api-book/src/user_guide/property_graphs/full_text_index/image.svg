@@ -1,4 +1,4 @@
-<?xml-stylesheet type="text/css" href="../../../css/images.css"?>
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg width="700" height="350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>Full-Text Index Example</title>
     <desc>Diagram showing a full-text index on the 'description' property. It maps processed words (tokens) like 'fast',

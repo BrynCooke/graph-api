@@ -1,4 +1,4 @@
-<?xml-stylesheet type="text/css" href="../../../../css/images.css"?>
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg width="650" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>Edges Step Diagram</title>
     <desc>Diagram illustrating the 'edges' step traversal from vertices to their connecting edges.</desc>
