@@ -4,25 +4,9 @@ The `into_iter` step converts a traversal into a standard Rust iterator, allowin
 methods directly with graph traversals. This bridges the gap between the Graph API's Walker and Rust's standard
 iterators.
 
-```pikchr
-# Graph structure with all vertices active in traversal
-A: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
-B: box same at 1 right of A "B" fill lightgreen
-C: box same at 1 right of B "C" fill lightgreen
-
-# Connect vertices with edges
-line from A.e to B.w
-line from B.e to C.w
-
-# Show mapping transformation with arrows
-Iter: box height 0.4 at 0.7 below B "Iterator<(Element, Ctx)>" fit fill lightyellow
-
-arrow from A.s down 0.15 then right until even with B then down to Iter.n rad 10px
-arrow from B.s to Iter.n
-arrow from C.s down 0.15 then left until even with B then down to Iter.n rad 10px
-
-text at 0.4 below Iter "After map(): Traversal converts to iterator of transformed values"
-```
+<object data="images/into_iter.svg" type="image/svg+xml">
+    <img src="images/into_iter.svg" alt="Into Iterator Step Diagram" />
+</object>
 
 ## Syntax
 
