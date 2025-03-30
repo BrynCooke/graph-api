@@ -4,7 +4,7 @@ The `into_iter` step converts a traversal into a standard Rust iterator, allowin
 methods directly with graph traversals. This bridges the gap between the Graph API's Walker and Rust's standard
 iterators.
 
-![Into Iterator Step Diagram](images/into_iter.svg)
+{{#include images/into_iter.svg}}
 
 ## Syntax
 

@@ -3,7 +3,7 @@
 The `map` step transforms vertices or edges in the traversal by applying a mapping function, returning an iterator over
 the transformed elements. This is a terminal step that ends the traversal.
 
-![Map Step Diagram](images/map.svg)
+{{#include images/map.svg}}
 
 ## Syntax
 

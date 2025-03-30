@@ -2,7 +2,7 @@
 
 The `filter` step narrows a traversal by keeping only vertices or edges that match a specified predicate.
 
-![Filter Step Diagram](images/filter.svg)
+{{#include images/filter.svg}}
 
 ## Syntax
 

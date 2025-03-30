@@ -3,7 +3,7 @@
 The `probe` step allows you to inspect or log vertices or edges during a traversal without affecting the traversal flow.
 It's perfect for debugging or monitoring what's happening in your traversal.
 
-![Probe Step Diagram](images/probe.svg)
+{{#include images/probe.svg}}
 
 ## Syntax
 

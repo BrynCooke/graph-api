@@ -2,7 +2,7 @@
 
 The `context` step allows you to carry information along a graph traversal, making it possible to access data from previous steps while working with the current element. Context creates a typed value that travels with the traversal without changing its position.
 
-![Context Step Diagram](images/context.svg)
+{{#include images/context.svg}}
 
 ## Methods for Adding Context
 
