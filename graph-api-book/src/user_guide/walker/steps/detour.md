@@ -4,37 +4,9 @@ The `detour` step allows you to temporarily branch off from the main traversal t
 continue with the results. It's like taking a side trip during your graph journey to explore or evaluate conditions
 before proceeding on your main path.
 
-```pikchr
-# Before filter - all vertices 
-A: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
-B: box same at 1.5 right of A "B" fill white
-C: box same at 1.5 right of B "C" fill white
-D: box same at 0.5 s of B "D" fill lightgreen
-
-
-# Connect vertices with edges
-line from A.e to B.w
-line from B.e to C.w
-line from A.e to D.w
-
-text at 0.4 below D "Detour to D"
-
-
-# Before filter - all vertices 
-APrime: box same at 1.5 below A "A" 
-BPrime: box same at 1.5 right of APrime "B" 
-CPrime: box same at 1.5 right of BPrime "C"
-DPrime: box same at 0.5 s of BPrime "D" color gray fill white
-
-
-# Connect vertices with edges
-line from APrime.e to BPrime.w
-line from BPrime.e to CPrime.w
-line from APrime.e to DPrime.w
-
-
-text at 0.4 below DPrime "Continue from A"
-```
+<object data="images/detour.svg" type="image/svg+xml">
+    <img src="images/detour.svg" alt="Detour Step Diagram" />
+</object>
 
 ## Syntax
 

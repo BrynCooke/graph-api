@@ -3,8 +3,8 @@
 The `map` step transforms vertices or edges in the traversal by applying a mapping function, returning an iterator over
 the transformed elements. This is a terminal step that ends the traversal.
 
-<object type="image/svg+xml" data="map/image.svg" width="650" height="400">
-Map step diagram showing transformation of graph elements into an iterator of values
+<object data="images/map.svg" type="image/svg+xml">
+    <img src="images/map.svg" alt="Map Step Diagram" />
 </object>
 
 ## Syntax

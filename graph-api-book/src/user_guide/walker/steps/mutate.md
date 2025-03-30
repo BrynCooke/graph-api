@@ -3,34 +3,9 @@
 The `mutate` step allows you to modify vertices or edges during a traversal, enabling batch updates to graph elements.
 Unlike most other steps, this requires a mutable traversal started with `walk_mut()`.
 
-```pikchr
-# Graph structure with all vertices active in traversal
-A: box rad 10px width 0.5 height 0.3 "A" fill lightgreen
-B: box same at 1 right of A "B" fill lightgreen
-C: box same at 1 right of B "C" fill lightgreen
-D: box same at 1 right of C "D" fill lightgreen
-
-# Connect vertices with edges
-line from A.e to B.w
-line from B.e to C.w
-MID: line from C.e to D.w
-
-# Show mutating operation
-CollectionBox: box rad 10px at 0.5 below 1.0 right of D "Collect" bold "Vec[A,B,C,D]" fit fill lightyellow
-
-# Show mutating operation
-MutationBox: box rad 10px at 0.8 below CollectionBox "Mutate" bold "|&mut Graph, element, ctx|" "{ <Mutate elements> }" fit fill lightyellow
-
-# Show arrows indicating the mutation operation
-arrow from A.s down until even with CollectionBox then to CollectionBox.w rad 20px
-arrow from B.s down until even with CollectionBox then to CollectionBox.w rad 20px
-arrow from C.s down until even with CollectionBox then to CollectionBox.w rad 20px
-arrow from D.s down until even with CollectionBox then to CollectionBox.w rad 20px
-
-arrow from CollectionBox.s to MutationBox.n 
-
-text at 0.4 below MutationBox "Use the Graph API for mutations (traversal terminates)"
-```
+<object data="images/mutate.svg" type="image/svg+xml">
+    <img src="images/mutate.svg" alt="Mutate Step Diagram" />
+</object>
 
 ## Syntax
 

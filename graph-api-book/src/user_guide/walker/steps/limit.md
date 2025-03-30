@@ -3,8 +3,8 @@
 The `limit` step restricts a traversal to return at most a specified number of elements, helping to control result size
 and improve performance.
 
-<object type="image/svg+xml" data="limit/image.svg" width="650" height="300">
-Limit step diagram showing restriction to first N elements in a traversal
+<object data="images/limit.svg" type="image/svg+xml">
+    <img src="images/limit.svg" alt="Limit Step Diagram" />
 </object>
 
 ## Syntax

@@ -2,8 +2,8 @@
 
 The `filter` step narrows a traversal by keeping only vertices or edges that match a specified predicate.
 
-<object type="image/svg+xml" data="filter/image.svg" width="650" height="300">
-Filter step diagram showing how vertices are filtered based on a condition
+<object data="images/filter.svg" type="image/svg+xml">
+    <img src="images/filter.svg" alt="Filter Step Diagram" />
 </object>
 
 ## Syntax
