@@ -4,9 +4,7 @@ The `detour` step allows you to temporarily branch off from the main traversal t
 continue with the results. It's like taking a side trip during your graph journey to explore or evaluate conditions
 before proceeding on your main path.
 
-<object data="images/detour.svg" type="image/svg+xml">
-    <img src="images/detour.svg" alt="Detour Step Diagram" />
-</object>
+![Detour Step Diagram](images/detour.svg)
 
 ## Syntax
 

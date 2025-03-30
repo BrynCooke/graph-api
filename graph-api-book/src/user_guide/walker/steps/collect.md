@@ -3,9 +3,7 @@
 The `collect` step gathers all elements from a traversal into a collection, allowing you to materialize the results.
 This is a terminal operation that ends the traversal and returns the collected elements.
 
-<object data="images/collect.svg" type="image/svg+xml">
-    <img src="images/collect.svg" alt="Collect Step Diagram" />
-</object>
+![Collect Step Diagram](images/collect.svg)
 
 ## Syntax
 

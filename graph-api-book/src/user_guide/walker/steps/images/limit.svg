@@ -1,13 +1,56 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150">
-    <style>
-        text {
-            font-family: sans-serif;
-            font-size: 14px;
-        }
-        /* .halo class is now defined in theme/custom.css */
-    </style>
-    <text x="10" y="20" class="halo">Limit Step</text>
-    <!-- Placeholder: Add visual representation of limit step -->
-    <rect x="50" y="50" width="200" height="80" fill="none" stroke="grey" stroke-dasharray="5,5"/>
-    <text x="60" y="95" fill="grey">Diagram Placeholder</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="250" viewBox="0 0 500 250">
+    <defs>
+        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+    <style>/* Styles loaded externally */</style>
+    <text x="10" y="25" class="step-label halo">Walker Step: <tspan class="code">limit()</tspan></text>
+
+    <!-- Initial State -->
+    <text x="150" y="60" class="text-color-muted" text-anchor="middle">Before Limit</text>
+    <g class="node active" transform="translate(50, 100)">
+        <circle r="15"></circle><text class="node-label">V1</text>
+    </g>
+    <g class="node active" transform="translate(110, 100)">
+        <circle r="15"></circle><text class="node-label">V2</text>
+    </g>
+    <g class="node active" transform="translate(170, 100)">
+        <circle r="15"></circle><text class="node-label">V3</text>
+    </g>
+    <g class="node active" transform="translate(230, 100)">
+        <circle r="15"></circle><text class="node-label">V4</text>
+    </g>
+     <g class="node active" transform="translate(290, 100)">
+        <circle r="15"></circle><text class="node-label">V5</text>
+    </g>
+
+    <!-- Step Arrow -->
+    <line class="step-arrow" x1="150" y1="125" x2="150" y2="165" />
+    <text x="165" y="150" class="text-color-muted" font-size="12px">limit(3)</text>
+
+    <!-- After State -->
+    <text x="150" y="190" class="text-color-muted" text-anchor="middle">After Limit</text>
+    <g class="node active" transform="translate(50, 220)">
+        <circle r="15"></circle><text class="node-label">V1</text>
+    </g>
+    <g class="node active" transform="translate(110, 220)">
+        <circle r="15"></circle><text class="node-label">V2</text>
+    </g>
+    <g class="node active" transform="translate(170, 220)">
+        <circle r="15"></circle><text class="node-label">V3</text>
+    </g>
+    <g class="node visited" transform="translate(230, 220)" opacity="0.5"> <!-- Limited out -->
+        <circle r="15"></circle><text class="node-label">V4</text>
+        <line x1="-10" y1="-10" x2="10" y2="10" stroke="grey" stroke-width="2"/>
+        <line x1="-10" y1="10" x2="10" y2="-10" stroke="grey" stroke-width="2"/>
+    </g>
+     <g class="node visited" transform="translate(290, 220)" opacity="0.5"> <!-- Limited out -->
+        <circle r="15"></circle><text class="node-label">V5</text>
+        <line x1="-10" y1="-10" x2="10" y2="10" stroke="grey" stroke-width="2"/>
+        <line x1="-10" y1="10" x2="10" y2="-10" stroke="grey" stroke-width="2"/>
+    </g>
 </svg>

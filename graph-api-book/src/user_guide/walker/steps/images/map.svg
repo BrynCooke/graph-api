@@ -1,13 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150" viewBox="0 0 300 150">
-    <style>
-        text {
-            font-family: sans-serif;
-            font-size: 14px;
-        }
-        /* .halo class is now defined in theme/custom.css */
-    </style>
-    <text x="10" y="20" class="halo">Map Step</text>
-    <!-- Placeholder: Add visual representation of map step -->
-    <rect x="50" y="50" width="200" height="80" fill="none" stroke="grey" stroke-dasharray="5,5"/>
-    <text x="60" y="95" fill="grey">Diagram Placeholder</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="450" height="200" viewBox="0 0 450 200">
+    <defs>
+        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+    </defs>
+    <style>/* Styles loaded externally */</style>
+    <text x="10" y="25" class="step-label halo">Walker Step: <tspan class="code">map()</tspan></text>
+
+    <!-- Walker State (Vertices) -->
+    <g class="node active" transform="translate(50, 80)">
+        <circle r="15"></circle><text class="node-label">V1</text>
+        <text class="property-text" y="20">(name: A)</text>
+    </g>
+    <g class="node active" transform="translate(110, 80)">
+        <circle r="15"></circle><text class="node-label">V2</text>
+        <text class="property-text" y="20">(name: B)</text>
+    </g>
+    <g class="node active" transform="translate(170, 80)">
+        <circle r="15"></circle><text class="node-label">V3</text>
+        <text class="property-text" y="20">(name: C)</text>
+    </g>
+
+    <!-- Step Arrow -->
+    <line class="step-arrow" x1="170" y1="80" x2="250" y2="80" />
+    <text x="180" y="65" class="text-color-muted" font-size="12px">map(|v| v.name)</text>
+
+    <!-- Resulting Iterator -->
+    <g transform="translate(330, 80)">
+        <rect class="index-box" x="-70" y="-30" width="140" height="60" />
+        <text class="index-title" y="-10">Rust Iterator</text>
+        <text class="index-value range" y="15">["A", "B", "C"]</text>
+    </g>
+     <text x="210" y="110" class="text-color-muted" font-size="12px">Terminates Walker</text>
 </svg>
