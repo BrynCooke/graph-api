@@ -1,8 +1,12 @@
 # Context
 
-The `context` step allows you to carry information along a graph traversal, making it possible to access data from previous steps while working with the current element. Context creates a typed value that travels with the traversal without changing its position.
+The `context` step allows you to carry information along a graph traversal, making it possible to access data from
+previous steps while working with the current element. Context creates a typed value that travels with the traversal
+without changing its position.
 
-{{#include images/context.svg}}
+<object type="image/svg+xml" data="images/context.svg" width="650" height="300">
+Head step diagram showing traversal from edge to source vertex
+</object>
 
 ## Methods for Adding Context
 
@@ -19,9 +23,9 @@ walker.push_default_context()
 ## Parameters
 
 - `context_fn`: A function that takes:
-  - A reference to the current element (vertex or edge)
-  - The current context (if any)
-  - Returns a new context value to be carried along the traversal
+    - A reference to the current element (vertex or edge)
+    - The current context (if any)
+    - Returns a new context value to be carried along the traversal
 
 ## Return Value
 
@@ -30,6 +34,7 @@ Returns a new walker with the context added, preserving the current traversal po
 ## Accessing Context
 
 Any step that accepts a function with context (like `map`, `filter`, etc.) will receive:
+
 - The current element as the first parameter
 - The context as the second parameter
 
