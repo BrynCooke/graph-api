@@ -1,0 +1,85 @@
+<?xml-stylesheet type="text/css" href="../../../../css/images.css"?>
+<svg width="650" height="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Tail Step Diagram</title>
+    <desc>Diagram illustrating the 'tail' step traversal from edges to their target vertices.</desc>
+
+    <defs>
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-active" class="marker-arrowhead-active marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-visited" class="marker-arrowhead-visited marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
+                refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+    </defs>
+
+    <!-- === Before tail() step === -->
+    <g id="before-step" transform="translate(40, 80)">
+        <text class="step-label" x="125" y="-30">Before tail() step:</text>
+        
+        <!-- Vertex A -->
+        <g class="node" id="node-A-before" transform="translate(80, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+        </g>
+        
+        <!-- Vertex B -->
+        <g class="node" id="node-B-before" transform="translate(240, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
+        </g>
+        
+        <!-- Edge A->B (highlighted, current position) -->
+        <g class="edge directed highlighted" id="edge-A-B-before">
+            <line x1="100" y1="50" x2="220" y2="50" class="highlighted"></line>
+        </g>
+        
+        <!-- Edge label (highlighted) -->
+        <text x="160" y="40" class="edge-label" style="fill: var(--highlight-stroke); font-weight: var(--font-weight-bold);">follows</text>
+    </g>
+
+    <!-- Step Representation -->
+    <g id="step-representation" class="step-label" transform="translate(30, 155)">
+        <text class="code" x="125" y="0">.tail()</text>
+        <line class="step-arrow" x1="175" y1="0" x2="540" y2="0" transform="translate(0, -5)"/>
+    </g>
+
+    <!-- === After tail() step === -->
+    <g id="after-step" transform="translate(40, 230)">
+        <text class="step-label" x="125" y="-30">After tail() step:</text>
+        
+        <!-- Vertex A -->
+        <g class="node" id="node-A-after" transform="translate(80, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+        </g>
+        
+        <!-- Vertex B (highlighted, current position) -->
+        <g class="node highlighted" id="node-B-after" transform="translate(240, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
+        </g>
+        
+        <!-- Edge A->B -->
+        <g class="edge directed" id="edge-A-B-after">
+            <line x1="100" y1="50" x2="220" y2="50"></line>
+        </g>
+        
+        <!-- Edge label -->
+        <text x="160" y="40" class="edge-label">follows</text>
+    </g>
+</svg>

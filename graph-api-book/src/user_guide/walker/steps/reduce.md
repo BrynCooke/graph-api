@@ -22,25 +22,6 @@ walker.reduce(|accumulated, next_element, context| {
 
 Returns an `Option` containing the result element if the traversal is not empty, or `None` if the traversal is empty.
 
-## Diagram
-
-```bob
-Before step:
-  [A]* --- [B]* --- [C]* --- [D]*
-  Position: All vertices in traversal
-
-During reduce execution:
-  acc = [A] (initial accumulator)
-  reducer([A], [B], ctx) → ControlFlow::Continue([A])
-  reducer([A], [C], ctx) → ControlFlow::Continue([C])
-  reducer([C], [D], ctx) → ControlFlow::Continue([C])
-
-After step:
-  [C]* --- ... ---> [More Traversal Steps]
-  Result: [C] (single reduced vertex)
-  Position: Ready for next step in the walker chain
-```
-
 ## Example
 
 ```rust,noplayground

@@ -1,0 +1,112 @@
+<svg width="650" height="380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>First Step Diagram</title>
+    <desc>Diagram illustrating the 'first' step retrieving only the first element from a traversal.</desc>
+
+    <defs>
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
+                refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+    </defs>
+
+    <!-- === Before first() step === -->
+    <g id="before-step" transform="translate(40, 80)">
+        <text class="step-label" x="260" y="-30">Before first() step:</text>
+
+        <!-- All vertices highlighted in traversal -->
+        <g class="node highlighted" id="node-A-before" transform="translate(80, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+        </g>
+
+        <g class="node highlighted" id="node-B-before" transform="translate(200, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
+        </g>
+
+        <g class="node highlighted" id="node-C-before" transform="translate(320, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
+        </g>
+
+        <g class="node highlighted" id="node-D-before" transform="translate(440, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">D</text>
+        </g>
+
+        <!-- Edges -->
+        <g class="edge" id="edge-A-B-before">
+            <line x1="100" y1="50" x2="180" y2="50"></line>
+        </g>
+        <g class="edge" id="edge-B-C-before">
+            <line x1="220" y1="50" x2="300" y2="50"></line>
+        </g>
+        <g class="edge" id="edge-C-D-before">
+            <line x1="340" y1="50" x2="420" y2="50"></line>
+        </g>
+    </g>
+
+    <!-- Step Representation -->
+    <g id="step-representation" class="step-label" transform="translate(30, 155)">
+        <text class="code" x="260" y="0">.first()</text>
+        <line class="step-arrow" x1="310" y1="0" x2="520" y2="0" transform="translate(0, -5)"/>
+    </g>
+
+    <!-- === After first() step === -->
+    <g id="after-step" transform="translate(40, 220)">
+        <text class="step-label" x="260" y="-30">After first() step:</text>
+
+        <!-- Only first vertex highlighted -->
+        <g class="node highlighted" id="node-A-after" transform="translate(80, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+        </g>
+
+        <!-- Other vertices are not part of result -->
+        <g class="node visited" id="node-B-after" transform="translate(200, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
+        </g>
+
+        <g class="node visited" id="node-C-after" transform="translate(320, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
+        </g>
+
+        <g class="node visited" id="node-D-after" transform="translate(440, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">D</text>
+        </g>
+
+        <!-- Edges -->
+        <g class="edge visited" id="edge-A-B-after">
+            <line x1="100" y1="50" x2="180" y2="50"></line>
+        </g>
+        <g class="edge visited" id="edge-B-C-after">
+            <line x1="220" y1="50" x2="300" y2="50"></line>
+        </g>
+        <g class="edge visited" id="edge-C-D-after">
+            <line x1="340" y1="50" x2="420" y2="50"></line>
+        </g>
+    </g>
+
+    <!-- Option Box Result -->
+    <g id="option-result" transform="translate(175, 330)">
+        <rect x="0" y="0" width="240" height="40" rx="8" ry="8"
+              fill="var(--accent-secondary)" fill-opacity="0.15"
+              stroke="var(--accent-secondary)" stroke-width="1.5"/>
+        <text class="code" x="120" y="25" text-anchor="middle" font-weight="bold">Some(A)</text>
+
+        <!-- Arrow from first vertex to Option result -->
+        <path d="M -55 -60 L -55 20 L 0 20" class="step-arrow" marker-end="url(#arrowhead-pointer)"/>
+    </g>
+</svg>

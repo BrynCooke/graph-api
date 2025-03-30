@@ -1,0 +1,1 @@
+mod full_text_index_example;

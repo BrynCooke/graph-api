@@ -7,7 +7,7 @@ Before we dive into indexes, let's understand why they're necessary by exploring
 In a property graph, one of the biggest challenges is finding the right starting points for your traversal. Without
 indexes, your only option is to scan the entire graph, examining each vertex to find matches.
 
-<object data="./no_index/image****.svg" title="Diagram a full scan of graph vertice"></object>
+<object data="./no_index/image.svg" title="Diagram a full scan of graph vertice"></object>
 
 In this diagram:
 
@@ -35,7 +35,7 @@ Let's consider a simple social network model without any indexes:
 Without indexes, the only way to find vertices matching specific criteria is to scan the entire graph:
 
 ```rust,noplayground
-{{#include no_index.rs:non_indexed_fields}}
+{{#include no_index/no_index_example.rs:non_indexed_fields}}
 ```
 
 ### Finding by Name (Without Index)
@@ -43,7 +43,7 @@ Without indexes, the only way to find vertices matching specific criteria is to 
 When a field isn't indexed (like `name` in the `Person` vertex), we have to scan all vertices to find matches:
 
 ```rust,noplayground
-{{#include no_index.rs:scan_for_name}}
+{{#include no_index/no_index_example.rs:scan_for_name}}
 ```
 
 ### Finding Projects (Without Index)
@@ -51,7 +51,7 @@ When a field isn't indexed (like `name` in the `Person` vertex), we have to scan
 Similarly, to find a project by name, we need to scan the entire graph:
 
 ```rust,noplayground
-{{#include no_index.rs:scan_for_project}}
+{{#include no_index/no_index_example.rs:scan_for_project}}
 ```
 
 ### Performance Comparison
@@ -61,13 +61,13 @@ Let's compare the performance of a full scan versus using an index:
 1. **Inefficient approach** - scanning all vertices:
 
 ```rust,noplayground
-{{#include no_index.rs:comparison_scan}}
+{{#include no_index/no_index_example.rs:comparison_scan}}
 ```
 
 2. **Efficient approach** - using the index:
 
 ```rust,noplayground
-{{#include no_index.rs:comparison_index}}
+{{#include no_index/no_index_example.rs:comparison_index}}
 ```
 
 ## Performance Implications
