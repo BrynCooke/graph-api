@@ -137,11 +137,12 @@ Diagrams should use semantic class names that correspond to the styles in `custo
       overlap lines or complex backgrounds to ensure readability. This adds a background stroke matching the diagram
       background.
         * **Apply `halo` to:** Edge labels (`.edge-label text`), index text (`.index-entry text`, `.index-title`),
-          query text (`.query-text`), step labels (`.step-label text`).
-        * **Do NOT typically apply `halo` to:** Node labels (`.node-label`) and property text (`.property-text`), as
-          these are usually positioned over solid node backgrounds where a halo is unnecessary and can sometimes
-          detract visually.
-      Example usage: `<text class="edge-label halo">...`, `<text class="query-text halo">...`.
+          query text (`.query-text`), step labels (`.step-label text`), property text (`.property-text`).
+        * **Do NOT typically apply `halo` to:** Node labels (`.node-label`), as these are usually positioned over solid
+          node backgrounds where a halo is unnecessary.
+      Example usage: `<text class="edge-label halo">...`, `<text class="property-text halo">...`.
+* **Rendering Order:** Ensure text elements are rendered *after* potentially overlapping graphical elements (lines,
+  shapes) within the SVG structure or their respective groups. This prevents lines from being drawn over text halos.
 * **Symmetry and Balance:** Strive for a balanced composition. Arrange elements symmetrically where it makes sense for
   the structure being depicted (e.g., in simple tree layouts). Avoid lopsided or visually jarring arrangements. Use
   grid-like alignments for index entries or lists.
@@ -190,8 +191,9 @@ Diagrams should use semantic class names that correspond to the styles in `custo
 *   [ ] Does it use the defined CSS classes for elements (nodes, edges, indexes, etc.)?
 *   [ ] Are states (active, visited, highlighted) applied correctly using classes?
 *   [ ] Is text legible and contrast sufficient in both light and dark modes?
-*   [ ] Does text that might overlap lines (edge labels, index text, query text, etc.) use the `halo` class?
-*   [ ] Is the `halo` class *not* used on node labels and property text unless specifically needed?
+*   [ ] Does text that might overlap lines or other elements (edge labels, index text, query text, property text, etc.) use the `halo` class?
+*   [ ] Is the `halo` class *not* used on node labels unless specifically needed?
+*   [ ] Are text elements rendered *after* potentially overlapping shapes/lines in the SVG structure?
 *   [ ] Has the SVG been optimized (e.g., using `svgo`)?
 *
 

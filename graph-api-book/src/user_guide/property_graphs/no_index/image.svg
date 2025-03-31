@@ -37,39 +37,34 @@
         </marker>
     </defs>
 
-    <!-- === Query Text === -->
-    <!-- Positioned top-left -->
-    <text class="query-text halo" x="100" y="50">Query: name = "Alice"</text>
-    <!-- Scan arrows originate conceptually from near the query text -->
-
-
     <!-- === Graph Structure === -->
     <g id="graph" transform="translate(150, 100)"> <!-- Shifted graph down/right -->
         <!-- Nodes - A and C highlighted as matches -->
+        <!-- Node elements ordered: shape, label, properties -->
         <g class="node highlighted" id="node-A" transform="translate(100, 50)"> <!-- Center abs (250, 150) -->
             <circle r="20"></circle>
             <text class="node-label">A</text>
-            <text class="property-text" y="25">{name: "Alice"}</text> <!-- Adjusted Y -->
+            <text class="property-text halo" y="25">{name: "Alice"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-B" transform="translate(300, 50)"> <!-- Center abs (450, 150) -->
             <circle r="20"></circle>
             <text class="node-label">B</text>
-            <text class="property-text" y="25">{name: "Bob"}</text> <!-- Adjusted Y -->
+            <text class="property-text halo" y="25">{name: "Bob"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node highlighted" id="node-C" transform="translate(50, 180)"> <!-- Center abs (200, 280) -->
             <circle r="20"></circle>
             <text class="node-label">C</text>
-            <text class="property-text" y="25">{name: "Alice"}</text> <!-- Adjusted Y -->
+            <text class="property-text halo" y="25">{name: "Alice"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-D" transform="translate(250, 180)"> <!-- Center abs (400, 280) -->
             <circle r="20"></circle>
             <text class="node-label">D</text>
-            <text class="property-text" y="25">{name: "Charlie"}</text> <!-- Adjusted Y -->
+            <text class="property-text halo" y="25">{name: "Charlie"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-E" transform="translate(400, 180)"> <!-- Center abs (550, 280) -->
             <circle r="20"></circle>
             <text class="node-label">E</text>
-            <text class="property-text" y="25">{name: "Bob"}</text> <!-- Adjusted Y -->
+            <text class="property-text halo" y="25">{name: "Bob"}</text> <!-- Adjusted Y -->
         </g>
 
         <!-- Edges - Added directed class and marker-end attribute -->
@@ -101,5 +96,9 @@
         <line class="scan-pointer" x1="100" y1="70" x2="400" y2="280" marker-end="url(#arrowhead-scan)"/> <!-- -> D -->
         <line class="scan-pointer" x1="100" y1="70" x2="550" y2="280" marker-end="url(#arrowhead-scan)"/> <!-- -> E -->
     </g>
+
+    <!-- === Query Text (Rendered Last) === -->
+    <!-- Positioned top-left -->
+    <text class="query-text halo" x="100" y="50">Query: name = "Alice"</text>
 
 </svg>

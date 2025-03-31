@@ -122,11 +122,6 @@ svg {
     text-anchor: middle;
     dominant-baseline: hanging;
     user-select: none;
-    /* Background/Halo effect using stroke */
-    stroke: var(--graph-bg); /* Stroke color matches background */
-    stroke-width: 4px; /* Reduced halo thickness */
-    stroke-linejoin: round; /* Smoother corners for the background */
-    paint-order: stroke; /* Crucial: Draw stroke UNDER the fill */
 }
 
 /* Style for the 'X' mark on filtered out elements */
@@ -140,6 +135,14 @@ svg {
     stroke: var(--graph-bg); /* Use the page background color */
     stroke-width: 4px; /* Adjust thickness as needed */
     paint-order: stroke; /* Ensure stroke is drawn behind the text fill */
+}
+
+/* Apply halo to property text */
+.property-text.halo {
+    stroke: var(--graph-bg);
+    stroke-width: 4px;
+    stroke-linejoin: round;
+    paint-order: stroke;
 }
 
 .property-text tspan {
