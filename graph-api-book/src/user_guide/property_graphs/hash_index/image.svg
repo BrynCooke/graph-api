@@ -66,16 +66,20 @@
         <!-- Pointers from index value list to corresponding node -->
         <!-- From "Alice" entry (y=70) to Node A (center 380, 90) and C (center 380, 220) -->
         <!-- Originating near "[ A, C ]" text (approx x=170, y=70) -->
-        <path class="index-pointer" d="M 170 70 L 360 90" marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
-        <path class="index-pointer" d="M 170 70 L 360 220" marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
+        <!-- Curved path to Node A (target edge approx 360, 90) -->
+        <path class="index-pointer" d="M 170 70 Q 265 60 360 90" marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
+        <!-- Curved path to Node C (target edge approx 360, 220) -->
+        <path class="index-pointer" d="M 170 70 Q 265 145 360 220" marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
 
         <!-- From "Bob" entry (y=110) to Node B (center 530, 90) -->
         <!-- Originating near "[ B ]" text (approx x=170, y=110) -->
-        <path class="index-pointer" d="M 170 110 L 510 90" marker-end="url(#arrowhead-pointer)"/> <!-- To B (edge) -->
+        <!-- Curved path to Node B (target edge approx 510, 90) -->
+        <path class="index-pointer" d="M 170 110 Q 340 100 510 90" marker-end="url(#arrowhead-pointer)"/> <!-- To B (edge) -->
 
         <!-- From "Charlie" entry (y=150) to Node D (center 530, 220) -->
         <!-- Originating near "[ D ]" text (approx x=170, y=150) -->
-        <path class="index-pointer" d="M 170 150 L 510 220" marker-end="url(#arrowhead-pointer)"/> <!-- To D (edge) -->
+        <!-- Curved path to Node D (target edge approx 510, 220) -->
+        <path class="index-pointer" d="M 170 150 Q 340 185 510 220" marker-end="url(#arrowhead-pointer)"/> <!-- To D (edge) -->
     </g>
 
     <!-- === Graph Structure (Rendered After Pointers) === -->
