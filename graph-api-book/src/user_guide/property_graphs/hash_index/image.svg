@@ -68,22 +68,22 @@
         <g class="node highlighted" id="node-A" transform="translate(100, 50)"> <!-- Center at abs (380, 90) -->
             <circle r="20"></circle>
             <text class="node-label">A</text>
-            <text class="property-text" y="30">{name: "Alice", ...}</text> <!-- Adjusted Y -->
+            <text class="property-text" y="25">{name: "Alice", ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-B" transform="translate(250, 50)"> <!-- Center at abs (530, 90) -->
             <circle r="20"></circle>
             <text class="node-label">B</text>
-            <text class="property-text" y="30">{name: "Bob", ...}</text> <!-- Adjusted Y -->
+            <text class="property-text" y="25">{name: "Bob", ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node highlighted" id="node-C" transform="translate(100, 180)"> <!-- Center at abs (380, 220) -->
             <circle r="20"></circle>
             <text class="node-label">C</text>
-            <text class="property-text" y="30">{name: "Alice", ...}</text> <!-- Adjusted Y -->
+            <text class="property-text" y="25">{name: "Alice", ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-D" transform="translate(250, 180)"> <!-- Center at abs (530, 220) -->
             <circle r="20"></circle>
             <text class="node-label">D</text>
-            <text class="property-text" y="30">{name: "Charlie", ...}</text> <!-- Adjusted Y -->
+            <text class="property-text" y="25">{name: "Charlie", ...}</text> <!-- Adjusted Y -->
         </g>
 
         <!-- Edges -->
@@ -103,11 +103,19 @@
 
     <!-- === Index Pointers === -->
     <g id="index-pointers">
-        <!-- Pointers remain the same -->
-        <line class="index-pointer" x1="170" y1="110" x2="363" y2="78"/>
-        <line class="index-pointer" x1="170" y1="110" x2="363" y2="208"/>
-        <line class="index-pointer" x1="170" y1="150" x2="513" y2="78"/>
-        <line class="index-pointer" x1="170" y1="190" x2="513" y2="208"/>
+        <!-- Pointers from index value list to corresponding node -->
+        <!-- From "Alice" entry (y=70) to Node A (center 380, 90) and C (center 380, 220) -->
+        <!-- Originating near "[ A, C ]" text (approx x=170, y=70) -->
+        <path class="index-pointer" d="M 170 70 L 360 90"/> <!-- To A (edge) -->
+        <path class="index-pointer" d="M 170 70 L 360 220"/> <!-- To C (edge) -->
+
+        <!-- From "Bob" entry (y=110) to Node B (center 530, 90) -->
+        <!-- Originating near "[ B ]" text (approx x=170, y=110) -->
+        <path class="index-pointer" d="M 170 110 L 510 90"/> <!-- To B (edge) -->
+
+        <!-- From "Charlie" entry (y=150) to Node D (center 530, 220) -->
+        <!-- Originating near "[ D ]" text (approx x=170, y=150) -->
+        <path class="index-pointer" d="M 170 150 L 510 220"/> <!-- To D (edge) -->
     </g>
 
     <!-- === Query Text === -->

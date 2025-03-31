@@ -124,7 +124,7 @@ svg {
     user-select: none;
     /* Background/Halo effect using stroke */
     stroke: var(--graph-bg); /* Stroke color matches background */
-    stroke-width: 10px; /* Adjust thickness as needed (try 3-5px) */
+    stroke-width: 4px; /* Reduced halo thickness */
     stroke-linejoin: round; /* Smoother corners for the background */
     paint-order: stroke; /* Crucial: Draw stroke UNDER the fill */
 }
@@ -354,17 +354,20 @@ svg {
     stroke-width: var(--stroke-width-thick);
 }
 
-/* Highlight variations for different index types */
+/* Highlight variations for different index types and general highlighted entries */
+.index-entry.highlighted text.index-key, /* Hash key */
 .index-entry.highlighted text.range, /* Range text */
 .index-entry.highlighted text.index-token /* Full-text token */
 {
-    fill: var(--highlight-stroke);
+    fill: var(--accent-secondary); /* Use secondary accent (orange) for highlighted key/token */
     font-weight: var(--font-weight-bold);
 }
 
-.index-entry.highlighted text.index-value /* All value lists */
+.index-entry.highlighted text.index-value /* All value lists in highlighted entries */
 {
-    fill: color-mix(in srgb, var(--text-color-muted) 70%, var(--highlight-stroke) 30%);
+    /* Keep muted color but make slightly bolder or use primary accent */
+    fill: var(--accent-primary); /* Use primary accent (blue) for associated value */
+    font-weight: var(--font-weight-bold); /* Make value bold as well */
 }
 
 
