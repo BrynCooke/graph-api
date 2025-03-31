@@ -103,16 +103,17 @@ Diagrams should use semantic class names that correspond to the styles in `custo
 
 ### Layout and Spatial Arrangement
 
+*   **SVG Canvas (`viewBox`):** All SVG diagrams **MUST** use a `viewBox` attribute with a fixed width of 600 units. The height should be adjusted as needed for the content. Example: `viewBox="0 0 600 350"`. Do not use `width` or `height` attributes on the root `<svg>` element; rely on the `viewBox` for scaling.
 *   **Margins:** Ensure adequate empty space (padding) around the entire diagram content within the SVG canvas. Avoid elements touching the edges of the SVG viewbox unless intentional (e.g., for background elements). A margin of at least 10-20px is recommended.
 *   **Spacing:** Maintain consistent visual spacing *between* elements (nodes, edges, labels, index boxes). Use node dimensions and padding variables (`--node-padding`, `--node-radius`) as guides for minimum spacing. Avoid overcrowding.
 *   **Alignment & Justification:**
     *   Align related elements logically (e.g., center text within nodes, left-align lists of properties, align index entries vertically).
     *   Use `text-anchor` (middle, start, end) and `dominant-baseline` (central, middle, hanging, text-before-edge) attributes correctly for precise text positioning relative to its coordinates.
     *   Center diagrams horizontally within their container where possible.
-*   **Text Placement:**
+*   **Text Placement & Readability:**
     *   Position labels close to the element they describe without overlapping other elements or lines.
     *   For text associated with arrows (like `.step-label` or `.index-pointer`), place the text clearly offset from the arrow's path and arrowhead to avoid collision. Consider placing text *above* or *beside* the arrow shaft.
-    *   Use the `.halo` class or background strokes (`paint-order: stroke; stroke: var(--graph-bg); stroke-width: 4px;`) for text that might cross lines or complex backgrounds to improve readability.
+    *   **All `<text>` elements MUST use the `halo` class** (defined in `custom.css`) to ensure readability. This adds a background stroke matching the diagram background, preventing lines from obscuring the text. Example: `<text class="node-label halo">...`. If the text element already has other classes, add `halo` to the list: `<text class="index-key hash halo">...`.
 *   **Symmetry and Balance:** Strive for a balanced composition. Arrange elements symmetrically where it makes sense for the structure being depicted (e.g., in simple tree layouts). Avoid lopsided or visually jarring arrangements. Use grid-like alignments for index entries or lists.
 *   **Flow:** Arrange elements to guide the reader's eye naturally, typically left-to-right or top-to-bottom, following the logical flow of the process being illustrated (e.g., traversal steps).
 
@@ -146,9 +147,11 @@ Diagrams should use semantic class names that correspond to the styles in `custo
 *   [ ] Does it use the standard colour palette via CSS variables?
 *   [ ] Is the font usage consistent (family, size, weight)?
 *   [ ] Are shapes, lines, and spacing consistent with other diagrams?
+*   [ ] Does the SVG use the required `viewBox="0 0 600 Y"`?
 *   [ ] Does it use the defined CSS classes for elements (nodes, edges, indexes, etc.)?
 *   [ ] Are states (active, visited, highlighted) applied correctly using classes?
 *   [ ] Is text legible and contrast sufficient in both light and dark modes?
+*   [ ] Does **all** text use the `halo` class for readability?
 *   [ ] Has the SVG been optimized (e.g., using `svgo`)?
 *   [ ] Does the diagram render correctly with `mdbook build`?
 
