@@ -48,28 +48,28 @@
         <!-- Nodes - A and C highlighted as matches -->
         <g class="node highlighted" id="node-A" transform="translate(100, 50)"> <!-- Center abs (250, 150) -->
             <circle r="20"></circle>
-            <text class="node-label halo">A</text>
-            <text class="property-text halo" y="25">{name: "Alice"}</text> <!-- Adjusted Y -->
+            <text class="node-label">A</text>
+            <text class="property-text" y="25">{name: "Alice"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-B" transform="translate(300, 50)"> <!-- Center abs (450, 150) -->
             <circle r="20"></circle>
-            <text class="node-label halo">B</text>
-            <text class="property-text halo" y="25">{name: "Bob"}</text> <!-- Adjusted Y -->
+            <text class="node-label">B</text>
+            <text class="property-text" y="25">{name: "Bob"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node highlighted" id="node-C" transform="translate(50, 180)"> <!-- Center abs (200, 280) -->
             <circle r="20"></circle>
-            <text class="node-label halo">C</text>
-            <text class="property-text halo" y="25">{name: "Alice"}</text> <!-- Adjusted Y -->
+            <text class="node-label">C</text>
+            <text class="property-text" y="25">{name: "Alice"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-D" transform="translate(250, 180)"> <!-- Center abs (400, 280) -->
             <circle r="20"></circle>
-            <text class="node-label halo">D</text>
-            <text class="property-text halo" y="25">{name: "Charlie"}</text> <!-- Adjusted Y -->
+            <text class="node-label">D</text>
+            <text class="property-text" y="25">{name: "Charlie"}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-E" transform="translate(400, 180)"> <!-- Center abs (550, 280) -->
             <circle r="20"></circle>
-            <text class="node-label halo">E</text>
-            <text class="property-text halo" y="25">{name: "Bob"}</text> <!-- Adjusted Y -->
+            <text class="node-label">E</text>
+            <text class="property-text" y="25">{name: "Bob"}</text> <!-- Adjusted Y -->
         </g>
 
         <!-- Edges - Added directed class and marker-end attribute -->
