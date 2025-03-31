@@ -72,21 +72,21 @@
             <text class="property-text" y="25">{name: "Bob"}</text> <!-- Adjusted Y -->
         </g>
 
-        <!-- Edges - Added directed class -->
+        <!-- Edges - Added directed class and marker-end attribute -->
         <g class="edge directed" id="edge-A-B">
-            <line x1="120" y1="50" x2="280" y2="50"></line>
+            <line x1="120" y1="50" x2="280" y2="50" marker-end="url(#arrowhead)"></line>
         </g>
         <g class="edge directed" id="edge-A-C">
-            <path d="M 95 70 Q 70 120 65 160"/>
+            <path d="M 95 70 Q 70 120 65 160" marker-end="url(#arrowhead)"/>
         </g>
         <g class="edge directed" id="edge-B-D">
-            <path d="M 295 70 Q 275 120 265 160"/>
+            <path d="M 295 70 Q 275 120 265 160" marker-end="url(#arrowhead)"/>
         </g>
         <g class="edge directed" id="edge-C-D">
-            <line x1="70" y1="180" x2="230" y2="180"></line>
+            <line x1="70" y1="180" x2="230" y2="180" marker-end="url(#arrowhead)"></line>
         </g>
         <g class="edge directed" id="edge-D-E">
-            <line x1="270" y1="180" x2="380" y2="180"></line>
+            <line x1="270" y1="180" x2="380" y2="180" marker-end="url(#arrowhead)"></line>
         </g>
 
     </g> <!-- End of graph group -->
@@ -95,11 +95,11 @@
     <g id="scan-pointers">
         <!-- Originating near Query text (abs x=100, y=70) -->
         <!-- Pointing towards center of each node -->
-        <line class="scan-pointer" x1="100" y1="70" x2="250" y2="150"/> <!-- -> A -->
-        <line class="scan-pointer" x1="100" y1="70" x2="450" y2="150"/> <!-- -> B -->
-        <line class="scan-pointer" x1="100" y1="70" x2="200" y2="280"/> <!-- -> C -->
-        <line class="scan-pointer" x1="100" y1="70" x2="400" y2="280"/> <!-- -> D -->
-        <line class="scan-pointer" x1="100" y1="70" x2="550" y2="280"/> <!-- -> E -->
+        <line class="scan-pointer" x1="100" y1="70" x2="250" y2="150" marker-end="url(#arrowhead-scan)"/> <!-- -> A -->
+        <line class="scan-pointer" x1="100" y1="70" x2="450" y2="150" marker-end="url(#arrowhead-scan)"/> <!-- -> B -->
+        <line class="scan-pointer" x1="100" y1="70" x2="200" y2="280" marker-end="url(#arrowhead-scan)"/> <!-- -> C -->
+        <line class="scan-pointer" x1="100" y1="70" x2="400" y2="280" marker-end="url(#arrowhead-scan)"/> <!-- -> D -->
+        <line class="scan-pointer" x1="100" y1="70" x2="550" y2="280" marker-end="url(#arrowhead-scan)"/> <!-- -> E -->
     </g>
 
 </svg>

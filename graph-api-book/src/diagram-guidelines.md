@@ -81,8 +81,8 @@ Diagrams should use semantic class names that correspond to the styles in `custo
     *   Direction: Add `class="directed"` to the `<g class="edge">` for arrowheads.
 *   **Arrowheads (Markers):**
     *   Define `<marker>` elements with IDs (e.g., `id="arrowhead"`, `id="arrowhead-active"`).
-    *   Use `class="marker-base"` and specific classes like `.marker-arrowhead`, `.marker-arrowhead-active`, `.marker-arrowhead-visited`, `.marker-arrowhead-path`, `.marker-arrowhead-pointer`, `.marker-arrowhead-scan` on the `<path>` inside the marker.
-    *   Apply markers using `marker-start` or `marker-end` attributes on edge lines/paths (e.g., `marker-end="url(#arrowhead)"`).
+    *   Use `class="marker-base"` and specific classes like `.marker-arrowhead`, `.marker-arrowhead-active`, etc. on the `<path>` inside the marker to control the arrowhead's fill color via CSS.
+    *   **Apply markers using `marker-start` or `marker-end` *attributes* directly on the target `<line>`, `<path>`, `<polyline>`, or `<polygon>` elements in the SVG markup (e.g., `<line ... marker-end="url(#arrowhead)">`). Do not rely on applying markers via CSS rules, as browser support is inconsistent.**
 *   **Indexes:**
     *   Container: `<g class="index-container">`
     *   Box: `<rect class="index-box">`
@@ -91,15 +91,15 @@ Diagrams should use semantic class names that correspond to the styles in `custo
         *   Highlight entry with `class="highlighted"` on the `<g>`.
     *   Keys/Values/Tokens: Use classes like `.index-key`, `.index-value`, `.index-token` combined with type `.hash`, `.range`, `.fulltext` on `<text>` elements.
     *   Dividers: `<line class="index-divider">` with `.hash`, `.range`, or `.fulltext`.
-    *   Pointers: `<path class="index-pointer">` (uses `marker-end="url(#arrowhead-pointer)"`).
+    *   Pointers: `<path class="index-pointer" marker-end="url(#arrowhead-pointer)">` (apply marker attribute directly).
 *   **Query Highlights:**
     *   Box: `<rect class="query-highlight-box">`
     *   Text: `<text class="query-text">`
 *   **Scan Pointers (No Index):**
-    *   Line: `<path class="scan-pointer">` (uses `marker-end="url(#arrowhead-scan)"`).
+    *   Line: `<line class="scan-pointer" marker-end="url(#arrowhead-scan)">` or `<path class="scan-pointer" marker-end="url(#arrowhead-scan)">` (apply marker attribute directly).
 *   **Step Indicators:**
     *   Label: `<g class="step-label"><text>Step <tspan class="code">N</tspan>: ...</text></g>`
-    *   Arrow: `<path class="step-arrow">` (uses `marker-end="url(#arrowhead-pointer)"`).
+    *   Arrow: `<path class="step-arrow" marker-end="url(#arrowhead-pointer)">` (apply marker attribute directly).
 
 ### Layout and Spatial Arrangement
 

@@ -181,10 +181,7 @@ svg {
     stroke-width: var(--stroke-width-thick);
 }
 
-.edge.active {
-    marker-start: url(#arrowhead-active);
-    marker-end: url(#arrowhead-active);
-}
+/* Markers for .active edges should be applied directly in SVG via attributes */
 
 .node.visited circle, .node.visited ellipse, .node.visited rect {
     fill: var(--node-fill-visited);
@@ -204,10 +201,7 @@ svg {
     stroke-width: var(--stroke-width-normal);
 }
 
-.edge.visited {
-    marker-start: url(#arrowhead-visited);
-    marker-end: url(#arrowhead-visited);
-}
+/* Markers for .visited edges should be applied directly in SVG via attributes */
 
 .node.path circle, .node.path ellipse, .node.path rect {
     stroke: var(--accent-secondary);
@@ -219,10 +213,7 @@ svg {
     stroke-width: var(--stroke-width-thick);
 }
 
-.edge.path {
-    marker-start: url(#arrowhead-path);
-    marker-end: url(#arrowhead-path);
-}
+/* Markers for .path edges should be applied directly in SVG via attributes */
 
 /* Specific Node Types */
 .node.start circle, .node.start ellipse, .node.start rect {
@@ -326,7 +317,7 @@ svg {
     stroke: var(--index-pointer-stroke);
     stroke-width: var(--stroke-width-normal);
     stroke-dasharray: 4 2;
-    marker-end: url(#arrowhead-pointer); /* Assume one pointer arrowhead type for simplicity */
+    /* marker-end should be applied directly in SVG via attribute */
 }
 
 /* --- Query Highlight Styles --- */
@@ -406,7 +397,7 @@ svg {
 /* Apply default marker to directed edges */
 .edge.directed line,
 .edge.directed path {
-    marker-end: url(#arrowhead); /* Or marker-start */
+    /* marker-end should be applied directly in SVG via attribute */
 }
 
 /* --- Scan Pointer Styles (No Index) --- */
@@ -415,7 +406,7 @@ svg {
     stroke: var(--text-color-muted); /* Use muted color */
     stroke-width: var(--stroke-width-thin); /* Thinner line */
     stroke-dasharray: 3 3; /* Dashed line */
-    marker-end: url(#arrowhead-scan); /* Use a specific arrowhead */
+    /* marker-end should be applied directly in SVG via attribute */
     opacity: 0.8; /* Slightly faded */
 }
 
@@ -441,5 +432,5 @@ svg {
 .step-arrow {
     stroke: var(--accent-primary);
     stroke-width: var(--stroke-width-thick);
-    marker-end: url(#arrowhead-pointer); /* Use the blue pointer arrowhead */
+    /* marker-end should be applied directly in SVG via attribute */
 }
