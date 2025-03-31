@@ -35,7 +35,7 @@
     <!-- === Index Structure === -->
     <g id="index" class="index-container" transform="translate(20, 40)">
         <rect class="index-box" x="0" y="0" width="200" height="190"/>
-        <text class="index-title" x="100" y="25">Vertex Index (on 'name')</text>
+        <text class="index-title halo" x="100" y="25">Vertex Index (on 'name')</text>
 
         <!-- Divider Lines -->
         <line class="index-divider hash" x1="0" y1="45" x2="200" y2="45"/>
@@ -43,16 +43,16 @@
 
         <!-- Index Entries - Added highlight to "Alice" -->
         <g class="index-entry highlighted" transform="translate(0, 70)">
-            <text class="index-key hash" x="75" y="0">"Alice"</text>
-            <text class="index-value hash" x="95" y="0">[ A, C ]</text>
+            <text class="index-key hash halo" x="75" y="0">"Alice"</text>
+            <text class="index-value hash halo" x="95" y="0">[ A, C ]</text>
         </g>
         <g class="index-entry" transform="translate(0, 110)">
-            <text class="index-key hash" x="75" y="0">"Bob"</text>
-            <text class="index-value hash" x="95" y="0">[ B ]</text>
+            <text class="index-key hash halo" x="75" y="0">"Bob"</text>
+            <text class="index-value hash halo" x="95" y="0">[ B ]</text>
         </g>
         <g class="index-entry" transform="translate(0, 150)">
-            <text class="index-key hash" x="75" y="0">"Charlie"</text>
-            <text class="index-value hash" x="95" y="0">[ D ]</text>
+            <text class="index-key hash halo" x="75" y="0">"Charlie"</text>
+            <text class="index-value hash halo" x="95" y="0">[ D ]</text>
         </g>
 
         <!-- Query Highlight Box for "Alice" -->
@@ -67,23 +67,23 @@
         <!-- Nodes - Added highlight to A and C -->
         <g class="node highlighted" id="node-A" transform="translate(100, 50)"> <!-- Center at abs (380, 90) -->
             <circle r="20"></circle>
-            <text class="node-label">A</text>
-            <text class="property-text" y="25">{name: "Alice", ...}</text> <!-- Adjusted Y -->
+            <text class="node-label halo">A</text>
+            <text class="property-text halo" y="25">{name: "Alice", ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-B" transform="translate(250, 50)"> <!-- Center at abs (530, 90) -->
             <circle r="20"></circle>
-            <text class="node-label">B</text>
-            <text class="property-text" y="25">{name: "Bob", ...}</text> <!-- Adjusted Y -->
+            <text class="node-label halo">B</text>
+            <text class="property-text halo" y="25">{name: "Bob", ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node highlighted" id="node-C" transform="translate(100, 180)"> <!-- Center at abs (380, 220) -->
             <circle r="20"></circle>
-            <text class="node-label">C</text>
-            <text class="property-text" y="25">{name: "Alice", ...}</text> <!-- Adjusted Y -->
+            <text class="node-label halo">C</text>
+            <text class="property-text halo" y="25">{name: "Alice", ...}</text> <!-- Adjusted Y -->
         </g>
         <g class="node" id="node-D" transform="translate(250, 180)"> <!-- Center at abs (530, 220) -->
             <circle r="20"></circle>
-            <text class="node-label">D</text>
-            <text class="property-text" y="25">{name: "Charlie", ...}</text> <!-- Adjusted Y -->
+            <text class="node-label halo">D</text>
+            <text class="property-text halo" y="25">{name: "Charlie", ...}</text> <!-- Adjusted Y -->
         </g>
 
         <!-- Edges - Added marker-end attribute -->
@@ -120,6 +120,6 @@
 
     <!-- === Query Text === -->
     <!-- Positioned below index box (ends at y=230), centered at x=120 (20+100) -->
-    <text class="query-text" x="120" y="260">Query: name = "Alice"</text>
+    <text class="query-text halo" x="120" y="260">Query: name = "Alice"</text>
 
 </svg>
