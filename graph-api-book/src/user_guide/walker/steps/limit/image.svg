@@ -55,7 +55,8 @@
     <!-- Step Representation -->
     <g id="step-representation" class="step-label" transform="translate(30, 155)">
         <text class="code" x="260" y="0">.limit(2)</text>
-        <line class="step-arrow" x1="320" y1="0" x2="520" y2="0" transform="translate(0, -5)"/>
+        <!-- Shortened arrow, moved below text -->
+        <line class="step-arrow" x1="320" y1="0" x2="400" y2="0" transform="translate(0, 10)"/>
     </g>
 
     <!-- === After limit() step === -->

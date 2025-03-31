@@ -59,7 +59,8 @@
     <!-- Step Representation -->
     <g id="step-representation" class="step-label" transform="translate(30, 155)">
         <text class="code" x="220" y="0">.first()</text> <!-- Adjusted X -->
-        <line class="step-arrow" x1="270" y1="0" x2="480" y2="0" transform="translate(0, -5)"/> <!-- Adjusted X -->
+        <!-- Shortened arrow, moved below text -->
+        <line class="step-arrow" x1="270" y1="0" x2="350" y2="0" transform="translate(0, 10)"/>
     </g>
 
     <!-- === After first() step === -->
