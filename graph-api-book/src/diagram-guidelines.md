@@ -133,10 +133,15 @@ Diagrams should use semantic class names that correspond to the styles in `custo
       horizontal.
     * For text associated with arrows (like `.step-label` or `.index-pointer`), place the text clearly offset from the
       arrow's path and arrowhead to avoid collision. Consider placing text *above* or *beside* the arrow shaft.
-    * **All `<text>` elements MUST use the `halo` class** (defined in `custom.css`) to ensure readability. This adds a
-      background stroke matching the diagram background, preventing lines from obscuring the text. Example:
-      `<text class="node-label halo">...`. If the text element already has other classes, add `halo` to the list:
-      `<text class="index-key hash halo">...`.
+    * **Text Readability (`halo` class):** Use the `halo` class (defined in `custom.css`) on text elements that might
+      overlap lines or complex backgrounds to ensure readability. This adds a background stroke matching the diagram
+      background.
+        * **Apply `halo` to:** Edge labels (`.edge-label text`), index text (`.index-entry text`, `.index-title`),
+          query text (`.query-text`), step labels (`.step-label text`).
+        * **Do NOT typically apply `halo` to:** Node labels (`.node-label`) and property text (`.property-text`), as
+          these are usually positioned over solid node backgrounds where a halo is unnecessary and can sometimes
+          detract visually.
+      Example usage: `<text class="edge-label halo">...`, `<text class="query-text halo">...`.
 * **Symmetry and Balance:** Strive for a balanced composition. Arrange elements symmetrically where it makes sense for
   the structure being depicted (e.g., in simple tree layouts). Avoid lopsided or visually jarring arrangements. Use
   grid-like alignments for index entries or lists.
@@ -185,7 +190,8 @@ Diagrams should use semantic class names that correspond to the styles in `custo
 *   [ ] Does it use the defined CSS classes for elements (nodes, edges, indexes, etc.)?
 *   [ ] Are states (active, visited, highlighted) applied correctly using classes?
 *   [ ] Is text legible and contrast sufficient in both light and dark modes?
-*   [ ] Does **all** the text associated with arrows text use the `halo` class for readability?
+*   [ ] Does text that might overlap lines (edge labels, index text, query text, etc.) use the `halo` class?
+*   [ ] Is the `halo` class *not* used on node labels and property text unless specifically needed?
 *   [ ] Has the SVG been optimized (e.g., using `svgo`)?
 *
 
