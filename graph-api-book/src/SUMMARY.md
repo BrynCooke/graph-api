@@ -64,4 +64,5 @@
 - [Glossary](./appendix/glossary.md)
 - [Contributing](./appendix/contributing.md)
 - [Design Principles](./appendix/design_principles.md)
+- [SVG Diagram Guidelines](./diagram-guidelines.md)
 - [Performance Specifications](./appendix/performance_specs.md)
