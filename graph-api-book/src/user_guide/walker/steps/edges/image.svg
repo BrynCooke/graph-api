@@ -29,7 +29,7 @@
 
     <!-- === Before edges() step === -->
     <g id="before-step" transform="translate(40, 80)">
-        <text class="step-label" x="125" y="-30">Before edges() step:</text>
+        <text class="step-label" x="125" y="-10">Before edges() step:</text> <!-- Adjusted Y -->
         
         <!-- Vertex A (highlighted, current position) -->
         <g class="node highlighted" id="node-A-before" transform="translate(80, 50)">
@@ -53,14 +53,14 @@
     </g>
 
     <!-- Step Representation -->
-    <g id="step-representation" class="step-label" transform="translate(30, 155)">
-        <text class="code" x="125" y="0">.edges()</text>
-        <line class="step-arrow" x1="175" y1="0" x2="540" y2="0" transform="translate(0, -5)"/>
+    <g id="step-representation" class="step-label" transform="translate(30, 175)"> <!-- Adjusted Y -->
+        <text class="code" x="125" y="15">.edges()</text> <!-- Adjusted Y -->
+        <line class="step-arrow" x1="175" y1="0" x2="250" y2="0" transform="translate(0, 5)"/> <!-- Shortened, moved below text -->
     </g>
 
     <!-- === After edges() step === -->
-    <g id="after-step" transform="translate(40, 230)">
-        <text class="step-label" x="125" y="-30">After edges() step:</text>
+    <g id="after-step" transform="translate(40, 250)"> <!-- Increased Y transform for more gap -->
+        <text class="step-label" x="125" y="-10">After edges() step:</text> <!-- Adjusted Y -->
         
         <!-- Vertex A -->
         <g class="node" id="node-A-after" transform="translate(80, 50)">
