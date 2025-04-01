@@ -8,12 +8,44 @@ In a property graph, one of the biggest challenges is finding the right starting
 indexes, your only option is to scan the entire graph, examining each vertex to find matches.
 
 ```svgdx
-<svg>
-  <rect wh="20 5"/>
-</svg>
-```
+diagram {
+  grid(10, 10);
 
-<object type="image/svg+xml" data="./no_index/image.svg" title="Diagram a full scan of graph vertice"></object>
+  // Query box
+  query = box("Query:\nname = 'Alice'", align="nw", margin=2);
+
+  // Graph area
+  graph_area = box("Graph", margin=5, padding=5, border_style="dashed", text_align="center") {
+    // Vertices
+    A = circle("A\nname: 'Alice'", fill="#ffcc99"); // Highlighted
+    B = circle("B\nname: 'Bob'");
+    C = circle("C\nname: 'Alice'", fill="#ffcc99"); // Highlighted
+    D = circle("D\nname: 'David'");
+    E = circle("E\nname: 'Eve'");
+
+    // Arrange vertices
+    grid(3, 2, margin=5) {
+      place(A); place(B);
+      place(C); place(D);
+      place(E);
+    }
+  }
+
+  // Arrows representing the scan
+  arrow(query.e -> graph_area.w, style="dashed", color="gray");
+  arrow(query.se -> A.nw, style="dashed", color="gray");
+  arrow(query.se -> B.nw, style="dashed", color="gray");
+  arrow(query.se -> C.w, style="dashed", color="gray");
+  arrow(query.se -> D.w, style="dashed", color="gray");
+  arrow(query.se -> E.sw, style="dashed", color="gray");
+
+  // Layout
+  grid(1, 2, margin=10) {
+    place(query);
+    place(graph_area);
+  }
+}
+```
 
 In this diagram:
 
