@@ -7,6 +7,12 @@ Before we dive into indexes, let's understand why they're necessary by exploring
 In a property graph, one of the biggest challenges is finding the right starting points for your traversal. Without
 indexes, your only option is to scan the entire graph, examining each vertex to find matches.
 
+```svgdx
+<svg>
+  <rect wh="20 5"/>
+</svg>
+```
+
 <object type="image/svg+xml" data="./no_index/image.svg" title="Diagram a full scan of graph vertice"></object>
 
 In this diagram:
