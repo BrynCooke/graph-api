@@ -8,43 +8,37 @@ In a property graph, one of the biggest challenges is finding the right starting
 indexes, your only option is to scan the entire graph, examining each vertex to find matches.
 
 ```svgdx
-diagram {
-  grid(10, 10);
+<svg>
+  <config grid="10 10"/>
 
-  // Query box
-  query = box("Query:\nname = 'Alice'", align="nw", margin=2);
+  <!-- Query box -->
+  <rect id="query" wh="auto" text="Query:\nname = 'Alice'" align="nw" margin="2"/>
 
-  // Graph area
-  graph_area = box("Graph", margin=5, padding=5, border_style="dashed", text_align="center") {
-    // Vertices
-    A = circle("A\nname: 'Alice'", fill="#ffcc99"); // Highlighted
-    B = circle("B\nname: 'Bob'");
-    C = circle("C\nname: 'Alice'", fill="#ffcc99"); // Highlighted
-    D = circle("D\nname: 'David'");
-    E = circle("E\nname: 'Eve'");
+  <!-- Graph area -->
+  <g id="graph_area" margin="5" padding="5" border_style="dashed" text_align="center">
+    <rect wh="100% 100%" fill="none" stroke="context-stroke" stroke-dasharray="2 2"/>
+    <text xy="50% 0" dy="1em">Graph</text>
 
-    // Arrange vertices
-    grid(3, 2, margin=5) {
-      place(A); place(B);
-      place(C); place(D);
-      place(E);
-    }
-  }
+    <!-- Vertices -->
+    <circle id="A" r="15" xy="25% 25%" text="A\nname: 'Alice'" fill="#ffcc99"/>
+    <circle id="B" r="15" xy="75% 25%" text="B\nname: 'Bob'"/>
+    <circle id="C" r="15" xy="25% 50%" text="C\nname: 'Alice'" fill="#ffcc99"/>
+    <circle id="D" r="15" xy="75% 50%" text="D\nname: 'David'"/>
+    <circle id="E" r="15" xy="25% 75%" text="E\nname: 'Eve'"/>
+  </g>
 
-  // Arrows representing the scan
-  arrow(query.e -> graph_area.w, style="dashed", color="gray");
-  arrow(query.se -> A.nw, style="dashed", color="gray");
-  arrow(query.se -> B.nw, style="dashed", color="gray");
-  arrow(query.se -> C.w, style="dashed", color="gray");
-  arrow(query.se -> D.w, style="dashed", color="gray");
-  arrow(query.se -> E.sw, style="dashed", color="gray");
+  <!-- Layout: Place query and graph area side-by-side -->
+  <use xlink:href="#query" xy="0 0" wh="30% 100%"/>
+  <use xlink:href="#graph_area" xy="#query | w 10" wh="65% 100%"/>
 
-  // Layout
-  grid(1, 2, margin=10) {
-    place(query);
-    place(graph_area);
-  }
-}
+  <!-- Arrows representing the scan -->
+  <line start="#query.e" end="#graph_area.w" style="dashed" color="gray" class="d-arrow"/>
+  <line start="#query.se" end="#A.nw" style="dashed" color="gray" class="d-arrow"/>
+  <line start="#query.se" end="#B.nw" style="dashed" color="gray" class="d-arrow"/>
+  <line start="#query.se" end="#C.w" style="dashed" color="gray" class="d-arrow"/>
+  <line start="#query.se" end="#D.w" style="dashed" color="gray" class="d-arrow"/>
+  <line start="#query.se" end="#E.sw" style="dashed" color="gray" class="d-arrow"/>
+</svg>
 ```
 
 In this diagram:
