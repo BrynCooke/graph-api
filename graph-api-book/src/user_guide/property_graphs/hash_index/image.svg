@@ -1,138 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
     <title>Hash Vertex Index Example with Query</title>
-    <desc>Diagram showing a hash index on 'name', highlighting the lookup for name = "Alice" resulting in nodes A and
-        C.
-    </desc>
+    <desc>Diagram showing a hash index on the 'name' property. The index maps names to vertex IDs. A query for 'name = "Alice"' is highlighted, showing the index lookup returning nodes A and C.</desc>
 
     <defs>
-        <!-- Styles are now external -->
-
-        <!-- Marker Definitions -->
-        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
-                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <!-- Standard arrowhead marker -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
-                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <!-- Pointer arrowhead marker (often styled differently, e.g., accent color) -->
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-        <!-- Include other standard markers -->
-        <marker id="arrowhead-active" class="marker-arrowhead-active marker-base" markerWidth="10" markerHeight="7"
-                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L10,3.5 L0,7 Z"/>
-        </marker>
-        <marker id="arrowhead-visited" class="marker-arrowhead-visited marker-base" markerWidth="10" markerHeight="7"
-                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L10,3.5 L0,7 Z"/>
-        </marker>
-        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
-                refY="3.5" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L10,3.5 L0,7 Z"/>
-        </marker>
+        <!-- Add other standard markers if needed (.active, .visited, .path) -->
     </defs>
 
     <!-- === Index Structure === -->
-    <g id="index" class="index-container" transform="translate(20, 40)">
-        <rect class="index-box" x="0" y="0" width="200" height="190"/>
-        <text class="index-title halo" x="100" y="25">Vertex Index (on 'name')</text>
+    <g id="index-group" class="index-container" transform="translate(20, 40)">
+        <rect class="index-box" x="0" y="0" width="220" height="190"/>
+        <text class="index-title halo" x="110" y="25">Vertex Index (on 'name')</text>
 
         <!-- Divider Lines -->
-        <line class="index-divider hash" x1="0" y1="45" x2="200" y2="45"/>
-        <line class="index-divider hash" x1="85" y1="45" x2="85" y2="190"/>
+        <line class="index-divider hash" x1="0" y1="45" x2="220" y2="45"/>
+        <line class="index-divider hash" x1="95" y1="45" x2="95" y2="190"/> <!-- Vertical divider -->
 
-        <!-- Index Entries - Added highlight to "Alice" -->
-        <g class="index-entry highlighted" transform="translate(0, 70)">
-            <text class="index-key hash halo" x="75" y="0">"Alice"</text>
-            <text class="index-value hash halo" x="95" y="0">[ A, C ]</text>
+        <!-- Index Entries -->
+        <!-- Entry for "Alice" - Highlighted due to query -->
+        <g class="index-entry highlighted" transform="translate(10, 70)"> <!-- Adjusted x for padding -->
+            <text class="index-key hash halo" x="80" y="0">"Alice"</text> <!-- Centered in key column -->
+            <text class="index-value hash halo" x="110" y="0">[ A, C ]</text> <!-- Start of value column -->
         </g>
-        <g class="index-entry" transform="translate(0, 110)">
-            <text class="index-key hash halo" x="75" y="0">"Bob"</text>
-            <text class="index-value hash halo" x="95" y="0">[ B ]</text>
+        <!-- Entry for "Bob" -->
+        <g class="index-entry" transform="translate(10, 110)">
+            <text class="index-key hash halo" x="80" y="0">"Bob"</text>
+            <text class="index-value hash halo" x="110" y="0">[ B ]</text>
         </g>
-        <g class="index-entry" transform="translate(0, 150)">
-            <text class="index-key hash halo" x="75" y="0">"Charlie"</text>
-            <text class="index-value hash halo" x="95" y="0">[ D ]</text>
+        <!-- Entry for "Charlie" -->
+        <g class="index-entry" transform="translate(10, 150)">
+            <text class="index-key hash halo" x="80" y="0">"Charlie"</text>
+            <text class="index-value hash halo" x="110" y="0">[ D ]</text>
         </g>
 
-        <!-- Query Highlight Box for "Alice" -->
-        <!-- Positioned around the "Alice" entry (y=70 +/- 12) -->
-        <rect class="query-highlight-box" x="10" y="58" width="180" height="24"/>
+        <!-- Query Highlight Box around "Alice" entry -->
+        <rect class="query-highlight-box" x="5" y="58" width="210" height="24"/> <!-- Adjusted to fit entry -->
 
-    </g> <!-- End of index group -->
+    </g> <!-- End of index-group -->
 
-    <!-- === Index Pointers (Rendered After Index, Before Graph) === -->
-    <g id="index-pointers">
-        <!-- Pointers from index value list to corresponding node -->
-        <!-- From "Alice" entry (y=70) to Node A (center 380, 90) and C (center 380, 220) -->
-        <!-- Adjusting vertical position to align with text baseline -->
-        <!-- Index entry is at y=70, but text baseline is approximately 4px lower -->
-        <path class="index-pointer" d="M 145 74 Q 265 64 360 90"
-              marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
-        <path class="index-pointer" d="M 145 74 Q 265 147 360 220"
-              marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
+    <!-- === Index Pointers === -->
+    <g id="index-pointers-group">
+        <!-- Pointers from index value list to corresponding nodes -->
+        <!-- From "Alice" [A, C] (y=70 + baseline offset ~4 = 74) -->
+        <path class="index-pointer" d="M 160 74 Q 260 64 360 90" marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
+        <path class="index-pointer" d="M 160 74 Q 260 147 360 220" marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
 
-        <!-- From "Bob" entry (y=110) to Node B (center 530, 90) -->
-        <!-- Adjusting vertical position to align with text baseline -->
-        <path class="index-pointer" d="M 135 114 Q 340 104 510 90"
-              marker-end="url(#arrowhead-pointer)"/> <!-- To B (edge) -->
+        <!-- From "Bob" [B] (y=110 + baseline offset ~4 = 114) -->
+        <path class="index-pointer" d="M 140 114 Q 340 104 510 90" marker-end="url(#arrowhead-pointer)"/> <!-- To B (edge) -->
 
-        <!-- From "Charlie" entry (y=150) to Node D (center 530, 220) -->
-        <!-- Adjusting vertical position to align with text baseline -->
-        <path class="index-pointer" d="M 135 154 Q 340 187 510 220"
-              marker-end="url(#arrowhead-pointer)"/> <!-- To D (edge) -->
+        <!-- From "Charlie" [D] (y=150 + baseline offset ~4 = 154) -->
+        <path class="index-pointer" d="M 140 154 Q 340 187 510 220" marker-end="url(#arrowhead-pointer)"/> <!-- To D (edge) -->
     </g>
 
-    <!-- === Graph Structure (Rendered After Pointers) === -->
-    <g id="graph" transform="translate(280, 40)">
+    <!-- === Graph Structure === -->
+    <g id="graph-group" transform="translate(300, 40)"> <!-- Shifted right for more space -->
 
-        <!-- === Edges (Rendered Before Nodes) === -->
+        <!-- Edges (Rendered Before Nodes) -->
         <g class="edge directed" id="edge-A-B">
-            <line x1="120" y1="50" x2="230" y2="50" marker-end="url(#arrowhead)"></line>
+            <line x1="100" y1="50" x2="210" y2="50" marker-end="url(#arrowhead)"/> <!-- Adjusted coordinates -->
         </g>
         <g class="edge directed" id="edge-A-C">
-            <line x1="100" y1="70" x2="100" y2="160" marker-end="url(#arrowhead)"></line>
+            <line x1="80" y1="70" x2="80" y2="160" marker-end="url(#arrowhead)"/> <!-- Adjusted coordinates -->
         </g>
         <g class="edge directed" id="edge-B-D">
-            <line x1="250" y1="70" x2="250" y2="160" marker-end="url(#arrowhead)"></line>
+            <line x1="230" y1="70" x2="230" y2="160" marker-end="url(#arrowhead)"/> <!-- Adjusted coordinates -->
         </g>
         <g class="edge directed" id="edge-D-C">
-            <path d="M 230 180 Q 175 210 120 180" marker-end="url(#arrowhead)"/>
+            <!-- Using path for curved edge -->
+            <path d="M 210 180 Q 155 210 100 180" marker-end="url(#arrowhead)"/> <!-- Adjusted coordinates -->
         </g>
 
-        <!-- === Nodes (Rendered After Edges) === -->
-        <g class="node highlighted" id="node-A" transform="translate(100, 50)"> <!-- Center at abs (380, 90) -->
-            <circle r="20"></circle>
+        <!-- Nodes (Rendered After Edges) -->
+        <!-- Node A - Highlighted -->
+        <g class="node highlighted" id="node-A" transform="translate(80, 50)"> <!-- Center at abs (380, 90) -->
+            <circle r="20"/>
             <text class="node-label">A</text>
         </g>
-        <g class="node" id="node-B" transform="translate(250, 50)"> <!-- Center at abs (530, 90) -->
-            <circle r="20"></circle>
+        <!-- Node B -->
+        <g class="node" id="node-B" transform="translate(230, 50)"> <!-- Center at abs (530, 90) -->
+            <circle r="20"/>
             <text class="node-label">B</text>
         </g>
-        <g class="node highlighted" id="node-C" transform="translate(100, 180)"> <!-- Center at abs (380, 220) -->
-            <circle r="20"></circle>
+        <!-- Node C - Highlighted -->
+        <g class="node highlighted" id="node-C" transform="translate(80, 180)"> <!-- Center at abs (380, 220) -->
+            <circle r="20"/>
             <text class="node-label">C</text>
         </g>
-        <g class="node" id="node-D" transform="translate(250, 180)"> <!-- Center at abs (530, 220) -->
-            <circle r="20"></circle>
+        <!-- Node D -->
+        <g class="node" id="node-D" transform="translate(230, 180)"> <!-- Center at abs (530, 220) -->
+            <circle r="20"/>
             <text class="node-label">D</text>
         </g>
 
-        <!-- === Property Text (Rendered Last within Graph Group) === -->
-        <g id="property-texts">
-            <!-- Coordinates are relative to graph group origin (280, 40) -->
-            <!-- Original node centers + y offset -->
-            <text class="property-text halo" x="100" y="75">{name: "Alice", ...}</text>  <!-- Node A: 100, 50+25 -->
-            <text class="property-text halo" x="250" y="75">{name: "Bob", ...}</text>    <!-- Node B: 250, 50+25 -->
-            <text class="property-text halo" x="100" y="205">{name: "Alice", ...}</text>  <!-- Node C: 100, 180+25 -->
-            <text class="property-text halo" x="250" y="205">{name: "Charlie", ...}</text><!-- Node D: 250, 180+25 -->
+        <!-- Property Text (Rendered Last within Graph Group) -->
+        <g id="property-texts-group">
+            <!-- Coordinates relative to graph-group origin (300, 40) -->
+            <!-- Positioned below nodes -->
+            <text class="property-text halo" x="80" y="80">{name: "Alice", ...}</text>  <!-- Node A: 80, 50+30 -->
+            <text class="property-text halo" x="230" y="80">{name: "Bob", ...}</text>    <!-- Node B: 230, 50+30 -->
+            <text class="property-text halo" x="80" y="210">{name: "Alice", ...}</text>  <!-- Node C: 80, 180+30 -->
+            <text class="property-text halo" x="230" y="210">{name: "Charlie", ...}</text><!-- Node D: 230, 180+30 -->
         </g>
 
-    </g> <!-- End of graph group -->
+    </g> <!-- End of graph-group -->
 
     <!-- === Query Text === -->
-    <!-- Positioned below index box (ends at y=230), centered at x=120 (20+100) -->
-    <text class="query-text halo" x="120" y="260">Query: name = "Alice"</text>
+    <!-- Positioned below index box (ends at y=230), centered at x=130 (20+110) -->
+    <text class="query-text halo" x="130" y="260">Query: name = "Alice"</text>
 
 </svg>
