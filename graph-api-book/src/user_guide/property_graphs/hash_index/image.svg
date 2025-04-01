@@ -1,5 +1,6 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
     <title>Hash Vertex Index Example with Query</title>
     <desc>Diagram showing a hash index on 'name', highlighting the lookup for name = "Alice" resulting in nodes A and
         C.
@@ -65,21 +66,22 @@
     <g id="index-pointers">
         <!-- Pointers from index value list to corresponding node -->
         <!-- From "Alice" entry (y=70) to Node A (center 380, 90) and C (center 380, 220) -->
-        <!-- Originating near "[ A, C ]" text (approx x=170, y=70) -->
-        <!-- Curved path to Node A (target edge approx 360, 90) -->
-        <path class="index-pointer" d="M 170 70 Q 265 60 360 90" marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
-        <!-- Curved path to Node C (target edge approx 360, 220) -->
-        <path class="index-pointer" d="M 170 70 Q 265 145 360 220" marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
+        <!-- Adjusting vertical position to align with text baseline -->
+        <!-- Index entry is at y=70, but text baseline is approximately 4px lower -->
+        <path class="index-pointer" d="M 145 74 Q 265 64 360 90"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
+        <path class="index-pointer" d="M 145 74 Q 265 147 360 220"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
 
         <!-- From "Bob" entry (y=110) to Node B (center 530, 90) -->
-        <!-- Originating near "[ B ]" text (approx x=170, y=110) -->
-        <!-- Curved path to Node B (target edge approx 510, 90) -->
-        <path class="index-pointer" d="M 170 110 Q 340 100 510 90" marker-end="url(#arrowhead-pointer)"/> <!-- To B (edge) -->
+        <!-- Adjusting vertical position to align with text baseline -->
+        <path class="index-pointer" d="M 135 114 Q 340 104 510 90"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To B (edge) -->
 
         <!-- From "Charlie" entry (y=150) to Node D (center 530, 220) -->
-        <!-- Originating near "[ D ]" text (approx x=170, y=150) -->
-        <!-- Curved path to Node D (target edge approx 510, 220) -->
-        <path class="index-pointer" d="M 170 150 Q 340 185 510 220" marker-end="url(#arrowhead-pointer)"/> <!-- To D (edge) -->
+        <!-- Adjusting vertical position to align with text baseline -->
+        <path class="index-pointer" d="M 135 154 Q 340 187 510 220"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To D (edge) -->
     </g>
 
     <!-- === Graph Structure (Rendered After Pointers) === -->
