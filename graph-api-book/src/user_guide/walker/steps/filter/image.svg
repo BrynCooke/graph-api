@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height -->
     <title>Filter Step Diagram</title>
     <desc>
         Diagram illustrating the 'filter' step:
@@ -34,18 +34,18 @@
             <circle r="20"></circle><text class="node-label">B</text>
             <text class="property-text halo" y="30">age=25</text>
         </g>
-        <g class="node highlighted" id="node-C-before" transform="translate(250, 50)">
+        <g class="node highlighted" id="node-C-before" transform="translate(150, 120)"> <!-- Moved C below B -->
             <circle r="20"></circle><text class="node-label">C</text>
             <text class="property-text halo" y="30">age=40</text>
         </g>
     </g>
 
      <!-- Step Arrow -->
-    <line class="step-arrow" x1="150" y1="110" x2="150" y2="150" marker-end="url(#arrowhead-pointer)"/>
-    <text x="165" y="135" class="text-color-muted" font-size="12px">.filter(|v| v.age > 30)</text>
+    <line class="step-arrow" x1="150" y1="160" x2="150" y2="200" marker-end="url(#arrowhead-pointer)"/> <!-- Adjusted Y -->
+    <text x="165" y="185" class="text-color-muted" font-size="12px">.filter(|v| v.age > 30)</text> <!-- Adjusted Y -->
 
     <!-- After filter() step -->
-    <g id="after-step" transform="translate(250, 50)">
+    <g id="after-step" transform="translate(250, 50)"> <!-- Adjusted transform for spacing -->
          <text class="step-label" x="150" y="0" text-anchor="middle">After filter()</text>
         <g class="node highlighted" id="node-A-after" transform="translate(50, 50)">
             <circle r="20"></circle><text class="node-label">A</text>
@@ -58,7 +58,7 @@
             <line class="filtered-out-mark" x1="-10" y1="-10" x2="10" y2="10"/>
             <line class="filtered-out-mark" x1="-10" y1="10" x2="10" y2="-10"/>
         </g>
-        <g class="node highlighted" id="node-C-after" transform="translate(250, 50)">
+        <g class="node highlighted" id="node-C-after" transform="translate(150, 120)"> <!-- Moved C below B -->
             <circle r="20"></circle><text class="node-label">C</text>
              <text class="property-text halo" y="30">age=40</text>
         </g>
