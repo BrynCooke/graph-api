@@ -228,6 +228,18 @@ svg {
 
 /* Markers for .path edges should be applied directly in SVG via attributes */
 
+/* Highlighted Edges */
+.edge.highlighted line, .edge.highlighted path {
+    stroke: var(--accent-secondary); /* Use secondary accent for highlighted edges */
+    stroke-width: var(--stroke-width-thick);
+}
+
+/* Highlighted Edge Labels */
+.edge-label.highlighted {
+    fill: var(--accent-secondary); /* Match edge color */
+    font-weight: var(--font-weight-bold);
+}
+
 /* Specific Node Types */
 .node.start circle, .node.start ellipse, .node.start rect {
     fill: var(--accent-primary);
@@ -420,6 +432,10 @@ svg {
     opacity: 0.3;
 }
 
+/* Highlighted Arrowhead */
+.marker-arrowhead-highlighted path {
+    fill: var(--accent-secondary); /* Match highlighted edge color */
+}
 
 /* Apply default marker to directed edges */
 .edge.directed line,
