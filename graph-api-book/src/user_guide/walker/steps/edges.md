@@ -3,9 +3,15 @@
 The `edges` step traverses from vertices to their connecting edges, allowing navigation along relationships in the
 graph. This step shifts the walker's position from vertices to their adjacent edges.
 
-<object type="image/svg+xml" data="edges/image.svg">
+<object type="image/svg+xml" data="edges/image.svg" title="Edges Step Diagram">
 Edges step diagram showing traversal from a vertex to its outgoing edges
 </object>
+
+In this diagram:
+
+- **Before `edges()`**: The walker is positioned at vertex **A**, which is highlighted. Vertex A has outgoing edges to B and C.
+- The **`.edges()` step** is applied.
+- **After `edges()`**: The walker is now positioned on the **edges** originating from A (A->B and A->C), which are highlighted. The vertices are no longer highlighted.
 
 ## Syntax
 

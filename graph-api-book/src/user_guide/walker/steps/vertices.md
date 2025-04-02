@@ -3,9 +3,16 @@
 The `vertices` step starts a traversal by selecting a set of vertices from the graph based on specified criteria. This
 is typically the first step in a traversal chain.
 
-<object type="image/svg+xml" data="vertices/image.svg">
+<object type="image/svg+xml" data="vertices/image.svg" title="Vertices Step Diagram">
 Vertices step diagram showing initial selection of vertices based on criteria
 </object>
+
+In this diagram:
+
+- The step shown is **`graph.walk().vertices(VertexIndex::person())`**.
+- The **Resulting Walker State** shows the graph structure.
+- Only vertices **A** and **C** (which are "Person" vertices) are **highlighted**, indicating they are the elements selected by the `vertices` step and are now in the walker's state.
+- Vertices B (Product) and D (Review) are not highlighted.
 
 ## Syntax
 

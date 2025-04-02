@@ -3,9 +3,17 @@
 The `map` step transforms vertices or edges in the traversal by applying a mapping function, returning an iterator over
 the transformed elements. This is a terminal step that ends the traversal.
 
-<object type="image/svg+xml" data="map/image.svg">
+<object type="image/svg+xml" data="map/image.svg" title="Map Step Diagram">
 Map step diagram showing elements being transformed into values in an iterator
 </object>
+
+In this diagram:
+
+- The **Walker State** shows highlighted elements **A, B, C**.
+- Arrows point from each element to the **Map Function** box, which contains the transformation logic (e.g., extracting the name).
+- An arrow points from the Map Function to the **Result** box.
+- The Result box represents a standard **Rust Iterator** yielding the transformed values (e.g., `"NameA"`, `"NameB"`, `"NameC"`).
+- This step consumes the walker and **terminates the Graph API traversal**.
 
 ## Syntax
 

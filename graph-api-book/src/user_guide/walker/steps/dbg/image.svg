@@ -1,31 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 250"> <!-- Removed width/height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+    <title>Dbg Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'dbg' step:
+        - Shows a walker traversing elements V1, V2, V3.
+        - The 'dbg()' step is inserted in the traversal chain.
+        - Dashed arrows point from each element to a "Console Output" box.
+        - The console box shows example debug output for each element.
+        - The traversal continues to the next step unaffected by the debug output.
+    </desc>
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
-    <text x="10" y="25" class="step-label halo">Walker Step: <tspan class="code">dbg()</tspan></text>
+
+    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">dbg()</tspan></text>
 
     <!-- Walker State -->
-    <text x="150" y="60" class="text-color-muted" text-anchor="middle">Walker Traversal</text>
-    <g class="node active" transform="translate(50, 100)">
-        <circle r="15"></circle><text class="node-label">V1</text>
+    <text x="180" y="60" class="text-color-muted" text-anchor="middle">Walker Traversal</text>
+    <g class="node highlighted" transform="translate(80, 100)">
+        <circle r="20"></circle><text class="node-label">V1</text>
     </g>
-    <g class="node active" transform="translate(150, 100)">
-        <circle r="15"></circle><text class="node-label">V2</text>
+    <g class="node highlighted" transform="translate(180, 100)">
+        <circle r="20"></circle><text class="node-label">V2</text>
     </g>
-    <g class="node active" transform="translate(250, 100)">
-        <circle r="15"></circle><text class="node-label">V3</text>
+    <g class="node highlighted" transform="translate(280, 100)">
+        <circle r="20"></circle><text class="node-label">V3</text>
     </g>
-    <line class="edge directed" x1="65" y1="100" x2="135" y2="100" />
-    <line class="edge directed" x1="165" y1="100" x2="235" y2="100" />
+    <line class="edge directed path" x1="100" y1="100" x2="160" y2="100" marker-end="url(#arrowhead)"/>
+    <line class="edge directed path" x1="200" y1="100" x2="260" y2="100" marker-end="url(#arrowhead)"/>
+    <line class="edge directed path" x1="300" y1="100" x2="360" y2="100" marker-end="url(#arrowhead)"/>
+    <text x="400" y="105" class="text-color-muted" font-size="12px">Traversal continues...</text>
 
-    <!-- Debug Output -->
-    <g transform="translate(150, 200)">
+
+    <!-- Debug Output Box -->
+    <g transform="translate(300, 220)">
         <rect class="index-box" x="-150" y="-35" width="300" height="70" stroke-dasharray="3 3"/>
         <text class="index-title" y="-20">Console Output (dbg)</text>
         <text class="index-value range" y="0" font-family="monospace">- Vertex { id: V1, ... }</text>
@@ -33,12 +49,9 @@
         <text class="index-value range" y="30" font-family="monospace">- Vertex { id: V3, ... }</text>
     </g>
 
-    <!-- Arrow to Debug Output -->
-    <line class="scan-pointer" x1="50" y1="115" x2="50" y2="165" marker-end="none"/>
-    <line class="scan-pointer" x1="50" y1="165" x2="100" y2="165" marker-end="none"/>
-    <line class="scan-pointer" x1="150" y1="115" x2="150" y2="165" marker-end="none"/>
-    <line class="scan-pointer" x1="250" y1="115" x2="250" y2="165" marker-end="none"/>
-    <line class="scan-pointer" x1="200" y1="165" x2="250" y2="165" marker-end="none"/>
+    <!-- Arrows to Debug Output -->
+    <path class="scan-pointer" d="M 80 120 q 0 50 70 85" marker-end="url(#arrowhead-pointer)" fill="none"/>
+    <path class="scan-pointer" d="M 180 120 q 0 65 0 85" marker-end="url(#arrowhead-pointer)" fill="none"/>
+    <path class="scan-pointer" d="M 280 120 q 0 50 -70 85" marker-end="url(#arrowhead-pointer)" fill="none"/>
 
-    <text x="300" y="105" class="text-color-muted" font-size="12px">Traversal continues unaffected</text>
 </svg>

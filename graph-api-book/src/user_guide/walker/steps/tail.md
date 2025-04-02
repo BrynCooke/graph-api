@@ -3,9 +3,15 @@
 The `tail` step navigates from edges to their target (destination) vertices, allowing traversal to where the edges point
 to.
 
-<object type="image/svg+xml" data="head_tail/image_tail.svg">
+<object type="image/svg+xml" data="head_tail/image_tail.svg" title="Tail Step Diagram">
 Tail step diagram showing traversal from edge to target vertex
 </object>
+
+In this diagram:
+
+- **Before `tail()`**: The walker is positioned on the highlighted edge **A -> B**.
+- The **`.tail()` step** is applied.
+- **After `tail()`**: The walker moves to the **target vertex** of the edge, so vertex **B** is now highlighted. The edge and vertex A are no longer highlighted.
 
 ## Syntax
 

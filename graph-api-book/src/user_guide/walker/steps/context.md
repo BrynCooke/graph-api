@@ -1,12 +1,20 @@
 # Context
 
-The `context` step allows you to carry information along a graph traversal, making it possible to access data from
+The `push_context` step allows you to carry information along a graph traversal, making it possible to access data from
 previous steps while working with the current element. Context creates a typed value that travels with the traversal
 without changing its position.
 
-<object type="image/svg+xml" data="context/image.svg">
+<object type="image/svg+xml" data="context/image.svg" title="Push Context Step Diagram">
 Context step diagram showing context value traveling with the walker
 </object>
+
+In this diagram:
+
+- The walker starts at **V1**.
+- The **`push_context(|v| v.id)`** step is applied.
+- A **Context box** containing `"V1_ID"` is created and linked to the walker (still at V1).
+- Later, the walker moves to **V2**.
+- The **Context box** (still containing `"V1_ID"`) remains linked to the walker, demonstrating that context travels with the traversal state.
 
 ## Methods for Adding Context
 

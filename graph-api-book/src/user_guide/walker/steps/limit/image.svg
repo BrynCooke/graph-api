@@ -1,8 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 650 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
     <title>Limit Step Diagram</title>
-    <desc>Diagram illustrating the 'limit' step restricting the number of elements in a traversal.</desc>
-
+    <desc>
+        Diagram illustrating the 'limit' step:
+        - Shows a walker state with highlighted vertices A, B, C, D.
+        - Represents the limit step with the code `.limit(2)`.
+        - Shows the traversal state after the step, where only the first two vertices (A, B) remain highlighted.
+        - Vertices C and D are shown faded, indicating they were discarded by the limit.
+    </desc>
     <defs>
         <!-- Marker Definitions -->
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
@@ -12,88 +18,49 @@
         <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
 
-    <!-- === Before limit() step === -->
-    <g id="before-step" transform="translate(40, 80)">
-        <text class="step-label" x="280" y="-30">Before limit() step:</text>
-        
-        <!-- All vertices highlighted in traversal -->
-        <g class="node highlighted" id="node-A-before" transform="translate(70, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">A</text>
+    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">limit()</tspan></text>
+
+    <!-- Before limit() step -->
+    <g id="before-step" transform="translate(50, 50)">
+        <text class="step-label" x="180" y="0" text-anchor="middle">Before limit()</text>
+        <g class="node highlighted" id="node-A-before" transform="translate(60, 50)">
+            <circle r="20"></circle><text class="node-label">A</text>
         </g>
-        
-        <g class="node highlighted" id="node-B-before" transform="translate(190, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">B</text>
+        <g class="node highlighted" id="node-B-before" transform="translate(140, 50)">
+            <circle r="20"></circle><text class="node-label">B</text>
         </g>
-        
-        <g class="node highlighted" id="node-C-before" transform="translate(310, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">C</text>
+        <g class="node highlighted" id="node-C-before" transform="translate(220, 50)">
+            <circle r="20"></circle><text class="node-label">C</text>
         </g>
-        
-        <g class="node highlighted" id="node-D-before" transform="translate(430, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">D</text>
-        </g>
-        
-        <!-- Edges -->
-        <g class="edge" id="edge-A-B-before">
-            <line x1="90" y1="50" x2="170" y2="50"></line>
-        </g>
-        <g class="edge" id="edge-B-C-before">
-            <line x1="210" y1="50" x2="290" y2="50"></line>
-        </g>
-        <g class="edge" id="edge-C-D-before">
-            <line x1="330" y1="50" x2="410" y2="50"></line>
+        <g class="node highlighted" id="node-D-before" transform="translate(300, 50)">
+            <circle r="20"></circle><text class="node-label">D</text>
         </g>
     </g>
 
-    <!-- Step Representation -->
-    <g id="step-representation" class="step-label" transform="translate(30, 155)">
-        <text class="code" x="260" y="0">.limit(2)</text>
-        <!-- Shortened arrow, moved below text -->
-        <line class="step-arrow" x1="320" y1="0" x2="400" y2="0" transform="translate(0, 10)"/>
-    </g>
+     <!-- Step Arrow -->
+    <line class="step-arrow" x1="180" y1="100" x2="180" y2="140" marker-end="url(#arrowhead-pointer)"/>
+    <text x="195" y="125" class="text-color-muted" font-size="12px">.limit(2)</text>
 
-    <!-- === After limit() step === -->
-    <g id="after-step" transform="translate(40, 220)">
-        <text class="step-label" x="280" y="-30">After limit(2) step:</text>
-        
-        <!-- Only first 2 vertices remain highlighted -->
-        <g class="node highlighted" id="node-A-after" transform="translate(70, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">A</text>
+    <!-- After limit() step -->
+    <g id="after-step" transform="translate(50, 150)">
+         <text class="step-label" x="180" y="0" text-anchor="middle">After limit(2)</text>
+        <g class="node highlighted" id="node-A-after" transform="translate(60, 50)">
+            <circle r="20"></circle><text class="node-label">A</text>
         </g>
-        
-        <g class="node highlighted" id="node-B-after" transform="translate(190, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">B</text>
+        <g class="node highlighted" id="node-B-after" transform="translate(140, 50)">
+            <circle r="20"></circle><text class="node-label">B</text>
         </g>
-        
-        <!-- C and D are no longer in traversal -->
-        <g class="node visited" id="node-C-after" transform="translate(310, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">C</text>
+        <g class="node visited" id="node-C-after" transform="translate(220, 50)"> <!-- Faded -->
+            <circle r="20"></circle><text class="node-label">C</text>
         </g>
-        
-        <g class="node visited" id="node-D-after" transform="translate(430, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">D</text>
-        </g>
-        
-        <!-- Edges -->
-        <g class="edge" id="edge-A-B-after">
-            <line x1="90" y1="50" x2="170" y2="50"></line>
-        </g>
-        <g class="edge visited" id="edge-B-C-after">
-            <line x1="210" y1="50" x2="290" y2="50"></line>
-        </g>
-        <g class="edge visited" id="edge-C-D-after">
-            <line x1="330" y1="50" x2="410" y2="50"></line>
+        <g class="node visited" id="node-D-after" transform="translate(300, 50)"> <!-- Faded -->
+            <circle r="20"></circle><text class="node-label">D</text>
         </g>
     </g>
 </svg>

@@ -3,9 +3,16 @@
 The `probe` step allows you to inspect or log vertices or edges during a traversal without affecting the traversal flow.
 It's perfect for debugging or monitoring what's happening in your traversal.
 
-<object type="image/svg+xml" data="probe/image.svg">
+<object type="image/svg+xml" data="probe/image.svg" title="Probe Step Diagram">
 Probe step diagram showing side effects being triggered without affecting traversal
 </object>
+
+In this diagram:
+
+- The **Walker Traversal** shows elements V1, V2, V3 being processed.
+- The **`probe()` step** is conceptually inserted between elements.
+- **Dashed arrows** point from each element to the **Side Effect (e.g., Log)** box, indicating that `probe()` executes a function (like logging) for each element.
+- The **traversal continues** to the next step, unaffected by the `probe()` call.
 
 ## Syntax
 

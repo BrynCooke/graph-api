@@ -2,9 +2,15 @@
 
 The `filter` step narrows a traversal by keeping only vertices or edges that match a specified predicate.
 
-<object type="image/svg+xml" data="filter/image.svg">
+<object type="image/svg+xml" data="filter/image.svg" title="Filter Step Diagram">
 Filter step diagram showing elements being kept or discarded based on a predicate
 </object>
+
+In this diagram:
+
+- **Before `filter()`**: The walker contains highlighted vertices **A** (age=35), **B** (age=25), and **C** (age=40).
+- The **`.filter(|v| v.age > 30)`** step is applied.
+- **After `filter()`**: Only vertices **A** and **C** remain highlighted, as their age is greater than 30. Vertex **B** is faded and marked with an 'X' to indicate it was removed by the filter.
 
 ## Syntax
 

@@ -3,9 +3,15 @@
 The `limit` step restricts a traversal to return at most a specified number of elements, helping to control result size
 and improve performance.
 
-<object type="image/svg+xml" data="limit/image.svg">
+<object type="image/svg+xml" data="limit/image.svg" title="Limit Step Diagram">
 Limit step diagram showing traversal stopping after a specified number of elements
 </object>
+
+In this diagram:
+
+- **Before `limit()`**: The walker contains highlighted elements **A, B, C, D**.
+- The **`.limit(2)` step** is applied.
+- **After `limit(2)`**: Only the first two elements, **A** and **B**, remain highlighted. Elements C and D are faded, indicating they were discarded by the limit.
 
 ## Syntax
 

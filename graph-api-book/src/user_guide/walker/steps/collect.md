@@ -3,9 +3,16 @@
 The `collect` step gathers all elements from a traversal into a collection, allowing you to materialize the results.
 This is a terminal operation that ends the traversal and returns the collected elements.
 
-<object type="image/svg+xml" data="collect/image.svg">
+<object type="image/svg+xml" data="collect/image.svg" title="Collect Step Diagram">
 Collect step diagram showing walker state transforming into a collection
 </object>
+
+In this diagram:
+
+- The **Walker State** shows the elements currently in the traversal (V1, V2, V3), highlighted.
+- The **`collect()` step** transforms these elements.
+- The **Result** is a standard Rust collection (like `Vec`, `HashSet`, etc.) containing the elements.
+- This step **terminates the traversal**.
 
 ## Syntax
 

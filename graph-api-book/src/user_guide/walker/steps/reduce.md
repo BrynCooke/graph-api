@@ -1,6 +1,19 @@
 # Reduce Step
 
-The `reduce` step combines all elements in a traversal using a binary operation, returning a single result element.
+The `reduce` step combines all elements in a traversal using a binary operation, returning a single result element. It repeatedly applies a function to pairs of elements until only one remains.
+
+<object type="image/svg+xml" data="reduce/image.svg" title="Reduce Step Diagram">
+Reduce step diagram showing pairwise comparison reducing elements to a single result
+</object>
+
+In this diagram:
+
+- The **Traversal Elements** are V1, V2, and V3, with their ages.
+- The **Reduction** process (e.g., finding the element with the maximum age) happens in steps:
+    - **V1 vs V2**: V1 (age 30) is kept, V2 (age 25) is discarded.
+    - **V1 vs V3**: V3 (age 40) is kept, V1 (age 30) is discarded.
+- The final **Result** is the single remaining element, **V3**.
+- This step **terminates the traversal**.
 
 ## Syntax
 

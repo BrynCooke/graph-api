@@ -1,34 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 200"> <!-- Removed width/height -->
+<svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+    <title>Collect Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'collect' step:
+        - Shows a walker state with highlighted vertices V1, V2, V3.
+        - A step arrow points to the 'collect()' operation.
+        - The result is shown as a collection box (e.g., Vec) containing [V1, V2, V3].
+        - Indicates that the traversal terminates after this step.
+    </desc>
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
-        </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
-    <text x="10" y="25" class="step-label halo">Walker Step: <tspan class="code">collect()</tspan></text>
+
+    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">collect()</tspan></text>
 
     <!-- Walker State (Vertices) -->
-    <g class="node active" transform="translate(50, 80)">
-        <circle r="15"></circle><text class="node-label">V1</text>
+    <text x="150" y="60" class="text-color-muted" text-anchor="middle">Walker State</text>
+    <g class="node highlighted" transform="translate(80, 100)">
+        <circle r="20"></circle><text class="node-label">V1</text>
     </g>
-    <g class="node active" transform="translate(110, 80)">
-        <circle r="15"></circle><text class="node-label">V2</text>
+    <g class="node highlighted" transform="translate(160, 100)">
+        <circle r="20"></circle><text class="node-label">V2</text>
     </g>
-    <g class="node active" transform="translate(170, 80)">
-        <circle r="15"></circle><text class="node-label">V3</text>
+    <g class="node highlighted" transform="translate(240, 100)">
+        <circle r="20"></circle><text class="node-label">V3</text>
     </g>
 
     <!-- Step Arrow -->
-    <line class="step-arrow" x1="170" y1="80" x2="250" y2="80" />
+    <line class="step-arrow" x1="260" y1="100" x2="340" y2="100" marker-end="url(#arrowhead-pointer)"/>
+    <text x="300" y="90" class="text-color-muted" font-size="12px">collect()</text>
 
     <!-- Resulting Collection -->
-    <g transform="translate(330, 80)">
-        <rect class="index-box" x="-60" y="-30" width="120" height="60" />
-        <text class="index-title" y="-10">Collection</text>
-        <text class="index-value range" y="15">[V1, V2, V3]</text>
+    <text x="450" y="60" class="text-color-muted" text-anchor="middle">Result</text>
+    <g transform="translate(450, 100)">
+        <rect class="index-box" x="-75" y="-25" width="150" height="50"/>
+        <text class="index-title" y="-5">Collection&lt;Vec&gt;</text>
+        <text class="index-value range" y="20">[V1, V2, V3]</text>
     </g>
-    <text x="210" y="110" class="text-color-muted" font-size="12px">Terminates Traversal</text>
+    <text x="450" y="150" class="text-color-muted" font-size="12px" text-anchor="middle">Terminates Traversal</text>
 </svg>

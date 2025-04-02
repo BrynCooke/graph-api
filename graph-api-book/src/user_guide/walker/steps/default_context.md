@@ -1,12 +1,18 @@
 # Default Context
 
-The `default_context` step provides a simplified way to track vertex and edge information during traversal, without
+The `push_default_context` step provides a simplified way to track vertex and edge information during traversal, without
 having to define custom context types. It automatically captures the current vertex or edge to make it available in
 downstream steps.
 
-<object type="image/svg+xml" data="default_context/image.svg">
+<object type="image/svg+xml" data="default_context/image.svg" title="Push Default Context Step Diagram">
 Default Context step diagram showing the current element being stored in context
 </object>
+
+In this diagram:
+
+- After `push_default_context` is called while the walker is at **A**, the context box shows **`element: A`**.
+- Later, when the walker moves to **B**, the context box automatically updates to show **`element: B`**.
+- This demonstrates how the default context tracks the current element without manual updates.
 
 ## Syntax
 

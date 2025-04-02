@@ -3,9 +3,17 @@
 The `first` step retrieves only the first element from a traversal and immediately terminates. This is a terminal
 operation that short-circuits the traversal for efficiency.
 
-<object type="image/svg+xml" data="first/image.svg">
+<object type="image/svg+xml" data="first/image.svg" title="First Step Diagram">
 First step diagram showing retrieval of only the first element from a traversal
 </object>
+
+In this diagram:
+
+- **Before `first()`**: The walker contains highlighted elements **A, B, C, D**.
+- The **`.first()` step** is applied.
+- **After `first()`**: Only element **A** remains highlighted. Elements B, C, and D are faded, indicating they are no longer part of the result set.
+- The final **Result** is shown as `Some(A)`, representing the `Option` returned by `first()`.
+- This step **terminates the traversal**.
 
 ## Syntax
 

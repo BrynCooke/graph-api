@@ -2,9 +2,20 @@
 
 The `fold` step accumulates a result by processing each element in a traversal, operating like the standard Rust `fold` operation but specifically for graph traversals. It's a powerful terminal operation that builds a single value from all elements.
 
-<object type="image/svg+xml" data="fold/image.svg">
+<object type="image/svg+xml" data="fold/image.svg" title="Fold Step Diagram">
 Fold step diagram showing accumulation of values from traversal elements
 </object>
+
+In this diagram:
+
+- The **Traversal Elements** are V1, V2, and V3, with their respective ages.
+- The **Accumulator** box shows the step-by-step process:
+    - Starts with an **Initial** value of 0.
+    - Processes **V1**: `0 + 30 = 30`.
+    - Processes **V2**: `30 + 25 = 55`.
+    - Processes **V3**: `55 + 40 = 95`.
+- The **Result** box shows the final accumulated value (95).
+- This step **terminates the traversal**.
 
 ## Syntax
 

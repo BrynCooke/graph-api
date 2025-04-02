@@ -1,37 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 200"> <!-- Removed width/height -->
+<svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+    <title>Count Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'count' step:
+        - Shows a walker state with highlighted vertices V1, V2, V3, V4.
+        - A step arrow points to the 'count()' operation.
+        - The result is shown as a single numeric value (4) in a result box.
+        - Indicates that the traversal terminates after this step.
+    </desc>
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
-        </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
-    <text x="10" y="25" class="step-label halo">Walker Step: <tspan class="code">count()</tspan></text>
+
+    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">count()</tspan></text>
 
     <!-- Walker State (Vertices) -->
-    <g class="node active" transform="translate(50, 80)">
-        <circle r="15"></circle><text class="node-label">V1</text>
+    <text x="180" y="60" class="text-color-muted" text-anchor="middle">Walker State</text>
+    <g class="node highlighted" transform="translate(80, 100)">
+        <circle r="20"></circle><text class="node-label">V1</text>
     </g>
-    <g class="node active" transform="translate(110, 80)">
-        <circle r="15"></circle><text class="node-label">V2</text>
+    <g class="node highlighted" transform="translate(160, 100)">
+        <circle r="20"></circle><text class="node-label">V2</text>
     </g>
-    <g class="node active" transform="translate(170, 80)">
-        <circle r="15"></circle><text class="node-label">V3</text>
+    <g class="node highlighted" transform="translate(240, 100)">
+        <circle r="20"></circle><text class="node-label">V3</text>
     </g>
-    <g class="node active" transform="translate(230, 80)">
-        <circle r="15"></circle><text class="node-label">V4</text>
+     <g class="node highlighted" transform="translate(320, 100)">
+        <circle r="20"></circle><text class="node-label">V4</text>
     </g>
 
     <!-- Step Arrow -->
-    <line class="step-arrow" x1="230" y1="80" x2="310" y2="80" />
+    <line class="step-arrow" x1="340" y1="100" x2="420" y2="100" marker-end="url(#arrowhead-pointer)"/>
+    <text x="380" y="90" class="text-color-muted" font-size="12px">count()</text>
 
     <!-- Resulting Count -->
-    <g transform="translate(370, 80)">
-        <rect class="index-box" x="-30" y="-30" width="60" height="60" />
-        <text class="index-title" y="-10">Count</text>
-        <text class="index-value range" y="15" font-size="18px">4</text>
+    <text x="500" y="60" class="text-color-muted" text-anchor="middle">Result</text>
+    <g transform="translate(500, 100)">
+        <rect class="index-box" x="-30" y="-25" width="60" height="50"/>
+        <text class="index-title" y="-5">Count</text>
+        <text class="index-value range" y="20" font-size="18px">4</text>
     </g>
-    <text x="270" y="110" class="text-color-muted" font-size="12px">Terminates Traversal</text>
+    <text x="500" y="150" class="text-color-muted" font-size="12px" text-anchor="middle">Terminates Traversal</text>
 </svg>

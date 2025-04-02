@@ -4,9 +4,17 @@ The `detour` step allows you to temporarily branch off from the main traversal t
 continue with the results. It's like taking a side trip during your graph journey to explore or evaluate conditions
 before proceeding on your main path.
 
-<object type="image/svg+xml" data="detour/image.svg">
+<object type="image/svg+xml" data="detour/image.svg" title="Detour Step Diagram">
 Detour step diagram showing main path branching into a sub-walker and returning results
 </object>
+
+In this diagram:
+
+- The **Main Path** starts at vertex **A**.
+- The **`detour()` step** initiates a **Detour Sub-Walker** also starting from A.
+- The sub-walker follows a different path (e.g., **A → D → E**).
+- The **results** of the sub-walker (vertex **E**) replace the original element (A) in the main traversal.
+- The **Main Path resumes** from the detour result (**E**), continuing to F.
 
 ## Syntax
 

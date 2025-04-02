@@ -1,10 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 650 350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
     <title>Vertices Step Diagram (using Index)</title>
-    <desc>Diagram illustrating the 'vertices' step selecting nodes using an index (VertexIndex::person()), highlighting
-        the selected 'Person' nodes (A, C).
+    <desc>
+        Diagram illustrating the 'vertices' step using an index:
+        - Shows a graph with vertices A(Person), B(Product), C(Person), D(Review).
+        - Represents the step with the code `graph.walk().vertices(VertexIndex::person())`.
+        - Shows the resulting walker state where only vertices A and C (labeled "Person") are highlighted.
+        - Vertices B and D are not highlighted, indicating they were filtered out by the index lookup.
     </desc>
-
     <defs>
         <!-- Filter for Dropshadow -->
         <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -42,55 +46,55 @@
         <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
                 refY="3.5" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L10,3.5 L0,7 Z"/>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
 
-    <!-- === Step Representation === -->
-    <g id="step-representation" class="step-label" transform="translate(30, 175)">
+    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">vertices()</tspan></text>
+
+    <!-- Step Representation -->
+    <g id="step-representation" class="step-label" transform="translate(30, 150)">
         <text x="0" y="-15">graph.walk()</text>
         <text class="code" x="0" y="15">.vertices(VertexIndex::person())</text>
-        <line class="step-arrow" x1="280" y1="0" x2="330" y2="0"/>
+        <line class="step-arrow" x1="280" y1="0" x2="330" y2="0" marker-end="url(#arrowhead-pointer)"/>
     </g>
 
-    <!-- === Graph Structure === -->
-    <g id="graph" transform="translate(360, 50)">
+    <!-- Resulting Walker State -->
+    <g id="graph-result" transform="translate(360, 50)">
+         <text class="step-label" x="120" y="0" text-anchor="middle">Resulting Walker State</text>
 
-        <!-- Draw EDGES first -->
-        <g class="edge directed" id="edge-A-B"> <!-- Person -> Product -->
-            <line x1="100" y1="50" x2="220" y2="50"></line>
+        <!-- Edges (Rendered first, not highlighted) -->
+        <g class="edge directed" id="edge-A-B">
+            <line x1="100" y1="50" x2="220" y2="50" marker-end="url(#arrowhead)"/>
         </g>
-        <g class="edge directed" id="edge-C-A"> <!-- Person -> Person -->
-            <path d="M 80 160 Q 50 105 80 70"/>
+        <g class="edge directed" id="edge-C-A">
+            <path d="M 80 160 Q 50 105 80 70" marker-end="url(#arrowhead)"/>
         </g>
-        <g class="edge directed" id="edge-C-D"> <!-- Person -> Review -->
-            <line x1="100" y1="180" x2="220" y2="180"></line>
+        <g class="edge directed" id="edge-C-D">
+            <line x1="100" y1="180" x2="220" y2="180" marker-end="url(#arrowhead)"/>
         </g>
-        <g class="edge directed" id="edge-D-B"> <!-- Review -> Product -->
-            <path d="M 240 160 Q 270 105 240 70"/>
+        <g class="edge directed" id="edge-D-B">
+            <path d="M 240 160 Q 270 105 240 70" marker-end="url(#arrowhead)"/>
         </g>
 
-        <!-- Draw NODES second (so they and their text are on top) -->
+        <!-- Nodes (Only Person nodes highlighted) -->
         <g class="node highlighted" id="node-A" transform="translate(80, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">A</text>
-            <text class="property-text" y="30">{label: "Person"}</text> <!-- Adjusted Y -->
+            <circle r="20"></circle><text class="node-label">A</text>
+            <text class="property-text halo" y="30">Person</text>
         </g>
         <g class="node" id="node-B" transform="translate(240, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">B</text>
-            <text class="property-text" y="30">{label: "Product"}</text> <!-- Adjusted Y -->
+            <circle r="20"></circle><text class="node-label">B</text>
+            <text class="property-text halo" y="30">Product</text>
         </g>
         <g class="node highlighted" id="node-C" transform="translate(80, 180)">
-            <circle r="20"></circle>
-            <text class="node-label">C</text>
-            <text class="property-text" y="30">{label: "Person"}</text> <!-- Adjusted Y -->
+            <circle r="20"></circle><text class="node-label">C</text>
+            <text class="property-text halo" y="30">Person</text>
         </g>
         <g class="node" id="node-D" transform="translate(240, 180)">
-            <circle r="20"></circle>
-            <text class="node-label">D</text>
-            <text class="property-text" y="30">{label: "Review"}</text> <!-- Adjusted Y -->
+            <circle r="20"></circle><text class="node-label">D</text>
+            <text class="property-text halo" y="30">Review</text>
         </g>
-
-    </g> <!-- End of graph group -->
-
+    </g>
 </svg>

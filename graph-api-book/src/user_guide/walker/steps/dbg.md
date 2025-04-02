@@ -3,9 +3,16 @@
 The `dbg` step prints detailed information about the current traversal state, making it easier to debug complex graph
 operations. Like a checkpoint in your traversal, it lets you see what's happening without changing the traversal flow.
 
-<object type="image/svg+xml" data="dbg/image.svg">
+<object type="image/svg+xml" data="dbg/image.svg" title="Dbg Step Diagram">
 Debug step diagram showing traversal state being printed to console
 </object>
+
+In this diagram:
+
+- The **Walker Traversal** shows elements V1, V2, V3 being processed.
+- The **`dbg()` step** is conceptually inserted between elements.
+- **Dashed arrows** point from each element to the **Console Output** box, indicating that `dbg()` prints information for each element as it passes through.
+- The **traversal continues** to the next step, unaffected by the `dbg()` call.
 
 ## Syntax
 

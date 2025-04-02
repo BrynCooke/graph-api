@@ -1,54 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 280"> <!-- Increased height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+    <title>Vertices By ID Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'vertices_by_id' step:
+        - Shows the initial graph state with vertices V1, V2, V3, V4.
+        - Represents the step with the code `vertices_by_id([1, 3])`.
+        - Shows the resulting walker state where only vertices V1 (id=1) and V3 (id=3) are highlighted.
+        - Vertices V2 and V4 are faded, indicating they were not selected by the ID list.
+    </desc>
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
-        </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
-    <text x="10" y="25" class="step-label halo">Walker Step: <tspan class="code">vertices_by_id()</tspan></text>
+
+    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">vertices_by_id()</tspan></text>
 
     <!-- Graph State -->
-    <text x="150" y="60" class="text-color-muted" text-anchor="middle">Graph State</text>
-    <g class="node" transform="translate(50, 100)">
-        <circle r="15"></circle><text class="node-label">V1</text>
-        <text class="property-text" y="25">(id: 1)</text> <!-- Adjusted Y -->
-    </g>
-    <g class="node" transform="translate(150, 100)">
-        <circle r="15"></circle><text class="node-label">V2</text>
-        <text class="property-text" y="25">(id: 2)</text> <!-- Adjusted Y -->
-    </g>
-    <g class="node" transform="translate(250, 100)">
-        <circle r="15"></circle><text class="node-label">V3</text>
-        <text class="property-text" y="25">(id: 3)</text> <!-- Adjusted Y -->
-    </g>
-     <g class="node" transform="translate(350, 100)">
-        <circle r="15"></circle><text class="node-label">V4</text>
-        <text class="property-text" y="25">(id: 4)</text> <!-- Adjusted Y -->
+    <g id="graph-state" transform="translate(50, 50)">
+        <text class="step-label" x="180" y="0" text-anchor="middle">Graph State</text>
+        <g class="node" transform="translate(60, 50)">
+            <circle r="20"></circle><text class="node-label">V1</text>
+            <text class="property-text halo" y="30">id: 1</text>
+        </g>
+        <g class="node" transform="translate(140, 50)">
+            <circle r="20"></circle><text class="node-label">V2</text>
+            <text class="property-text halo" y="30">id: 2</text>
+        </g>
+        <g class="node" transform="translate(220, 50)">
+            <circle r="20"></circle><text class="node-label">V3</text>
+            <text class="property-text halo" y="30">id: 3</text>
+        </g>
+        <g class="node" transform="translate(300, 50)">
+            <circle r="20"></circle><text class="node-label">V4</text>
+            <text class="property-text halo" y="30">id: 4</text>
+        </g>
     </g>
 
-    <!-- Step Arrow -->
-    <line class="step-arrow" x1="150" y1="135" x2="150" y2="175" />
-    <text x="165" y="160" class="text-color-muted" font-size="12px">vertices_by_id([1, 3])</text>
+     <!-- Step Arrow -->
+    <line class="step-arrow" x1="180" y1="110" x2="180" y2="150" marker-end="url(#arrowhead-pointer)"/>
+    <text x="195" y="135" class="text-color-muted" font-size="12px">vertices_by_id([1, 3])</text>
 
     <!-- Walker State -->
-    <text x="150" y="200" class="text-color-muted" text-anchor="middle">Walker State</text>
-    <g class="node active" transform="translate(50, 240)">
-        <circle r="15"></circle><text class="node-label">V1</text>
-        <text class="property-text" y="25">(id: 1)</text> <!-- Adjusted Y -->
-    </g>
-    <g class="node visited" transform="translate(150, 240)" opacity="0.5"> <!-- Not selected -->
-        <circle r="15"></circle><text class="node-label">V2</text>
-        <text class="property-text" y="25">(id: 2)</text> <!-- Adjusted Y -->
-    </g>
-    <g class="node active" transform="translate(250, 240)">
-        <circle r="15"></circle><text class="node-label">V3</text>
-        <text class="property-text" y="25">(id: 3)</text> <!-- Adjusted Y -->
-    </g>
-     <g class="node visited" transform="translate(350, 240)" opacity="0.5"> <!-- Not selected -->
-        <circle r="15"></circle><text class="node-label">V4</text>
-        <text class="property-text" y="25">(id: 4)</text> <!-- Adjusted Y -->
+    <g id="walker-state" transform="translate(50, 160)">
+         <text class="step-label" x="180" y="0" text-anchor="middle">Resulting Walker State</text>
+        <g class="node highlighted" transform="translate(60, 50)"> <!-- Selected -->
+            <circle r="20"></circle><text class="node-label">V1</text>
+            <text class="property-text halo" y="30">id: 1</text>
+        </g>
+        <g class="node visited" transform="translate(140, 50)"> <!-- Not selected -->
+            <circle r="20"></circle><text class="node-label">V2</text>
+            <text class="property-text halo" y="30">id: 2</text>
+        </g>
+        <g class="node highlighted" transform="translate(220, 50)"> <!-- Selected -->
+            <circle r="20"></circle><text class="node-label">V3</text>
+            <text class="property-text halo" y="30">id: 3</text>
+        </g>
+        <g class="node visited" transform="translate(300, 50)"> <!-- Not selected -->
+            <circle r="20"></circle><text class="node-label">V4</text>
+            <text class="property-text halo" y="30">id: 4</text>
+        </g>
     </g>
 </svg>

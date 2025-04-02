@@ -1,57 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 320"> <!-- Removed width/height -->
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
+    <title>Detour Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'detour' step:
+        - Shows the main walker path at vertex A.
+        - The 'detour()' step initiates a sub-walker from A.
+        - The sub-walker explores a different path (e.g., A -> D -> E).
+        - The results of the sub-walker (e.g., vertex E) replace the original element (A) in the main path.
+        - The main path continues from the detour results (E).
+    </desc>
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
-    <text x="10" y="25" class="step-label halo">Walker Step: <tspan class="code">detour()</tspan></text>
+
+    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">detour()</tspan></text>
 
     <!-- Main Path Before Detour -->
-    <text x="150" y="60" class="text-color-muted" text-anchor="middle">Main Path (at V1)</text>
-    <g class="node active" transform="translate(150, 100)">
-        <circle r="20"></circle><text class="node-label">V1</text>
+    <text x="100" y="60" class="text-color-muted" text-anchor="middle">Main Path</text>
+    <g class="node highlighted" transform="translate(100, 100)">
+        <circle r="20"></circle><text class="node-label">A</text>
     </g>
-    <g class="node" transform="translate(250, 100)">
-        <circle r="20"></circle><text class="node-label">V2</text>
+    <g class="node" transform="translate(200, 100)">
+        <circle r="20"></circle><text class="node-label">B</text>
     </g>
-    <line class="edge directed" x1="170" y1="100" x2="230" y2="100" />
+    <line class="edge directed path" x1="120" y1="100" x2="180" y2="100" marker-end="url(#arrowhead)"/>
 
     <!-- Detour Path -->
-    <g transform="translate(350, 160)"> <!-- Adjusted Y -->
-        <rect class="index-box" x="-100" y="-50" width="200" height="100" stroke-dasharray="5 3"/>
-        <text class="index-title" y="-30">Detour Sub-Walker</text>
-        <g class="node active" transform="translate(-50, 10)">
-             <circle r="15"></circle><text class="node-label">D1</text>
+    <g transform="translate(350, 180)">
+        <rect class="index-box" x="-120" y="-70" width="240" height="140" stroke-dasharray="5 3"/>
+        <text class="index-title" y="-50">Detour Sub-Walker</text>
+        <g class="node highlighted" transform="translate(-80, 0)">
+             <circle r="20"></circle><text class="node-label">A</text>
         </g>
-        <g class="node" transform="translate(50, 10)">
-             <circle r="15"></circle><text class="node-label">D2</text>
+        <g class="node" transform="translate(0, 0)">
+             <circle r="20"></circle><text class="node-label">D</text>
         </g>
-        <line class="edge directed" x1="-35" y1="10" x2="35" y2="10" />
-        <text class="text-color-muted" y="40" font-size="12px">e.g., .edges().head()</text>
+        <g class="node highlighted" transform="translate(80, 0)">
+             <circle r="20"></circle><text class="node-label">E</text>
+        </g>
+        <line class="edge directed path" x1="-60" y1="0" x2="-20" y2="0" marker-end="url(#arrowhead)"/>
+        <line class="edge directed path" x1="20" y1="0" x2="60" y2="0" marker-end="url(#arrowhead)"/>
+        <text class="text-color-muted" y="50" font-size="12px" text-anchor="middle">e.g., .edges().tail().edges().tail()</text>
     </g>
     <!-- Arrow into Detour -->
-    <path class="step-arrow" d="M 150 120 q 50 40 100 40" fill="none" /> <!-- Adjusted curve -->
+    <path class="step-arrow" d="M 100 120 q 75 60 130 60" fill="none" marker-end="url(#arrowhead-pointer)"/>
+    <text x="180" y="160" class="text-color-muted" font-size="12px">detour(|sub| ...)</text>
     <!-- Arrow out of Detour -->
-    <path class="step-arrow" d="M 450 160 q 50 -40 0 -80" fill="none" /> <!-- Adjusted curve -->
+    <path class="step-arrow" d="M 430 250 q 50 0 70 -50" fill="none" marker-end="url(#arrowhead-pointer)"/>
 
 
     <!-- Main Path After Detour -->
-     <text x="150" y="230" class="text-color-muted" text-anchor="middle">Main Path (Results from Detour)</text> <!-- Adjusted Y -->
-    <g class="node active" transform="translate(150, 270)"> <!-- Adjusted Y -->
-        <circle r="20"></circle><text class="node-label">D1</text>
+     <text x="500" y="60" class="text-color-muted" text-anchor="middle">Main Path (Resumed)</text>
+    <g class="node highlighted" transform="translate(500, 100)">
+        <circle r="20"></circle><text class="node-label">E</text>
     </g>
-     <g class="node" transform="translate(250, 270)"> <!-- Adjusted Y -->
-        <circle r="20"></circle><text class="node-label">?</text> <!-- Next step depends on detour result -->
+     <g class="node" transform="translate(500, 200)">
+        <circle r="20"></circle><text class="node-label">F</text>
     </g>
-    <line class="edge directed" x1="170" y1="270" x2="230" y2="270" stroke-dasharray="3 3"/> <!-- Adjusted Y -->
+    <line class="edge directed path" x1="500" y1="120" x2="500" y2="180" marker-end="url(#arrowhead)"/>
 
     <!-- Link Before and After -->
-    <line class="scan-pointer" x1="150" y1="120" x2="150" y2="250" marker-end="none" /> <!-- Adjusted Y -->
-    <text x="170" y="180" class="text-color-muted" font-size="12px">Detour replaces</text> <!-- Adjusted Y -->
-    <text x="170" y="195" class="text-color-muted" font-size="12px">current elements</text> <!-- Adjusted Y -->
+    <text x="100" y="280" class="text-color-muted" font-size="12px" text-anchor="middle">Detour results (E) replace original element (A)</text>
 
 </svg>

@@ -3,9 +3,15 @@
 The `head` step navigates from edges to their source (origin) vertices, allowing traversal back to where the edges start
 from.
 
-<object type="image/svg+xml" data="head_tail/image_head.svg">
+<object type="image/svg+xml" data="head_tail/image_head.svg" title="Head Step Diagram">
 Head step diagram showing traversal from edge to source vertex
 </object>
+
+In this diagram:
+
+- **Before `head()`**: The walker is positioned on the highlighted edge **A -> B**.
+- The **`.head()` step** is applied.
+- **After `head()`**: The walker moves to the **source vertex** of the edge, so vertex **A** is now highlighted. The edge and vertex B are no longer highlighted.
 
 ## Syntax
 
