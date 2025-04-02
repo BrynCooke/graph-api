@@ -57,9 +57,9 @@
 
     <!-- Step Representation -->
     <g id="step-representation" class="step-label" transform="translate(30, 150)">
-        <!-- Reduced font size implicitly via step-label class, adjusted position -->
-        <text x="100" y="-10" text-anchor="middle">graph.walk()</text>
-        <text class="code" x="100" y="10" text-anchor="middle">.vertices(VertexIndex::person())</text>
+        <!-- Reduced font size explicitly, adjusted position -->
+        <text x="100" y="-10" text-anchor="middle" font-size="var(--font-size-small)">graph.walk()</text>
+        <text class="code" x="100" y="10" text-anchor="middle" font-size="var(--font-size-small)">.vertices(VertexIndex::person())</text>
         <!-- Removed step arrow line, will use index pointers instead -->
     </g>
 
