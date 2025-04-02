@@ -130,6 +130,15 @@ svg {
     stroke-width: var(--stroke-width-normal);
 }
 
+/* Text for traversal order labels */
+.traversal-text {
+    font-size: var(--font-size-small);
+    fill: var(--text-color-muted);
+    text-anchor: middle;
+    dominant-baseline: central;
+    user-select: none;
+}
+
 /* Halo effect for primary text elements in SVGs */
 .halo {
     stroke: var(--graph-bg); /* Use the page background color */
