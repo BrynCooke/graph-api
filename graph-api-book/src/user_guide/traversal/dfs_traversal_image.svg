@@ -2,7 +2,13 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
     <title>Depth-First Traversal Order</title>
-    <desc>Diagram illustrating the Depth-First Search (DFS) order of graph traversal. Nodes are visited in the order A(1) -> B(2) -> D(3) -> E(4) -> C(5) -> F(6).</desc>
+    <desc>
+        Diagram illustrating the Depth-First Search (DFS) order of graph traversal:
+        - Shows a simple directed graph with nodes A through F.
+        - Highlights the traversal path using the 'path' edge class.
+        - Indicates the order of node visits with numerical labels (1-6).
+        - The traversal order shown is A(1) -> B(2) -> D(3) -> E(4) -> C(5) -> F(6).
+    </desc>
 
     <defs>
         <!-- Standard arrowhead marker -->
@@ -40,40 +46,40 @@
 
         <!-- Nodes (Rendered After Edges) -->
         <!-- Node A (Start) -->
-        <g class="node visited" id="node-A" transform="translate(100, 50)">
+        <g class="node" id="node-A" transform="translate(100, 50)">
             <circle r="20"/>
             <text class="node-label">A</text>
-            <text class="traversal-order-label" y="-25">(1)</text>
+            <text class="traversal-order-label halo" x="5" y="-25">(1)</text>
         </g>
         <!-- Node B -->
-        <g class="node visited" id="node-B" transform="translate(100, 150)">
+        <g class="node" id="node-B" transform="translate(100, 150)">
             <circle r="20"/>
             <text class="node-label">B</text>
-            <text class="traversal-order-label" y="-25">(2)</text>
+            <text class="traversal-order-label halo" x="5" y="-25">(2)</text>
         </g>
         <!-- Node C -->
-        <g class="node visited" id="node-C" transform="translate(300, 50)">
+        <g class="node" id="node-C" transform="translate(300, 50)">
             <circle r="20"/>
             <text class="node-label">C</text>
-            <text class="traversal-order-label" y="-25">(5)</text>
+            <text class="traversal-order-label halo" x="5" y="-25">(5)</text>
         </g>
         <!-- Node D -->
-        <g class="node visited" id="node-D" transform="translate(30, 250)">
+        <g class="node" id="node-D" transform="translate(30, 250)">
             <circle r="20"/>
             <text class="node-label">D</text>
-            <text class="traversal-order-label" y="-25">(3)</text>
+            <text class="traversal-order-label halo" x="5" y="-25">(3)</text>
         </g>
         <!-- Node E -->
-        <g class="node visited" id="node-E" transform="translate(170, 250)">
+        <g class="node" id="node-E" transform="translate(170, 250)">
             <circle r="20"/>
             <text class="node-label">E</text>
-            <text class="traversal-order-label" y="-25">(4)</text>
+            <text class="traversal-order-label halo" x="5" y="-25">(4)</text>
         </g>
         <!-- Node F -->
-        <g class="node visited" id="node-F" transform="translate(300, 150)">
+        <g class="node" id="node-F" transform="translate(300, 150)">
             <circle r="20"/>
             <text class="node-label">F</text>
-            <text class="traversal-order-label" y="-25">(6)</text>
+            <text class="traversal-order-label halo" x="5" y="-25">(6)</text>
         </g>
 
     </g> <!-- End of graph-group -->
