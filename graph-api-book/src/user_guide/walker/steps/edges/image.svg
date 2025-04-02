@@ -57,10 +57,6 @@
         </g>
     </g>
 
-     <!-- Step Arrow (Vertical between Before/After) -->
-    <line class="step-arrow" x1="350" y1="200" x2="350" y2="240" marker-end="url(#arrowhead-pointer)"/> <!-- Adjusted position -->
-    <text x="250" y="225" class="text-color-muted" font-size="12px">.edges()</text> <!-- Adjusted position -->
-
     <!-- After edges() step (Bottom Right) -->
     <g id="after-step" transform="translate(200, 250)"> <!-- Shifted left and further down -->
          <text class="step-label" x="150" y="0" text-anchor="middle">After edges()</text>
