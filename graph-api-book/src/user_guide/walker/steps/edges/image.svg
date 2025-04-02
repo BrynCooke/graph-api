@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height -->
+<svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height -->
     <title>Edges Step Diagram</title>
     <desc>
         Diagram illustrating the 'edges' step:
@@ -15,7 +15,8 @@
                 orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-         <marker id="arrowhead-highlighted" class="marker-arrowhead-highlighted marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+        <marker id="arrowhead-highlighted" class="marker-arrowhead-highlighted marker-base" markerWidth="8"
+                markerHeight="6" refX="7" refY="3"
                 orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
@@ -25,7 +26,9 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">edges()</tspan></text>
+    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step:
+        <tspan class="code">edges()</tspan>
+    </text>
 
     <!-- Step Representation (Left) -->
     <g id="step-representation" class="step-label" transform="translate(30, 150)">
@@ -39,43 +42,50 @@
     <g id="before-step" transform="translate(200, 50)"> <!-- Shifted left -->
         <text class="step-label" x="150" y="0" text-anchor="middle">Before edges()</text>
         <g class="node highlighted" id="node-A-before" transform="translate(150, 50)">
-            <circle r="20"></circle><text class="node-label">A</text>
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
         </g>
         <g class="node" id="node-B-before" transform="translate(300, 50)">
-            <circle r="20"></circle><text class="node-label">B</text>
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
         </g>
-         <g class="node" id="node-C-before" transform="translate(300, 150)"> <!-- Moved C below B -->
-            <circle r="20"></circle><text class="node-label">C</text>
+        <g class="node" id="node-C-before" transform="translate(300, 150)"> <!-- Moved C below B -->
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
         </g>
         <g class="edge directed" id="edge-A-B-before">
             <line x1="170" y1="50" x2="280" y2="50" marker-end="url(#arrowhead)"/>
             <text x="225" y="40" class="edge-label halo">likes</text>
         </g>
-         <g class="edge directed" id="edge-A-C-before">
+        <g class="edge directed" id="edge-A-C-before">
             <path d="M 170 65 q 65 40 130 70" marker-end="url(#arrowhead)" fill="none"/> <!-- Curved path A->C -->
-             <text x="235" y="95" class="edge-label halo">created</text> <!-- Adjusted label position -->
+            <text x="235" y="95" class="edge-label halo">created</text> <!-- Adjusted label position -->
         </g>
     </g>
 
     <!-- After edges() step (Bottom Right) -->
     <g id="after-step" transform="translate(200, 250)"> <!-- Shifted left and further down -->
-         <text class="step-label" x="150" y="0" text-anchor="middle">After edges()</text>
+        <text class="step-label" x="150" y="0" text-anchor="middle">After edges()</text>
         <g class="node" id="node-A-after" transform="translate(150, 50)">
-            <circle r="20"></circle><text class="node-label">A</text>
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
         </g>
         <g class="node" id="node-B-after" transform="translate(300, 50)">
-            <circle r="20"></circle><text class="node-label">B</text>
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
         </g>
-         <g class="node" id="node-C-after" transform="translate(300, 150)"> <!-- Moved C below B -->
-            <circle r="20"></circle><text class="node-label">C</text>
+        <g class="node" id="node-C-after" transform="translate(300, 150)"> <!-- Moved C below B -->
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
         </g>
         <g class="edge directed highlighted" id="edge-A-B-after">
             <line x1="170" y1="50" x2="280" y2="50" marker-end="url(#arrowhead-highlighted)"/>
             <text x="225" y="40" class="edge-label halo highlighted">likes</text>
         </g>
-         <g class="edge directed highlighted" id="edge-A-C-after">
-             <path d="M 170 65 q 65 40 130 70" marker-end="url(#arrowhead-highlighted)" fill="none"/> <!-- Curved path A->C -->
-             <text x="235" y="95" class="edge-label halo highlighted">created</text> <!-- Adjusted label position -->
+        <g class="edge directed highlighted" id="edge-A-C-after">
+            <path d="M 170 65 q 65 40 130 70" marker-end="url(#arrowhead-highlighted)"
+                  fill="none"/> <!-- Curved path A->C -->
+            <text x="235" y="95" class="edge-label halo highlighted">created</text> <!-- Adjusted label position -->
         </g>
     </g>
 </svg>
