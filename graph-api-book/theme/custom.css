@@ -172,7 +172,7 @@ svg {
 }
 
 .edge-label text {
-    fill: var(--text-color-muted);
+    fill: var(--text-color-muted); /* Ensure default fill is set */
     font-size: var(--font-size-small);
     text-anchor: middle;
     stroke: var(--graph-bg);
