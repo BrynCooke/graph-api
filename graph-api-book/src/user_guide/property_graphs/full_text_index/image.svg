@@ -75,25 +75,25 @@
     <g id="index-pointers-group">
         <!-- Pointers from index value list to corresponding nodes -->
         <!-- From 'efficient' [C] -->
-        <path class="index-pointer-unselected" d="M 175 110 Q 260 180 363 277"
+        <path class="index-pointer-unselected" d="M 180 110 Q 260 180 363 277"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To C -->
         <!-- From 'fast' [A] -->
-        <path class="index-pointer-unselected" d="M 175 150 Q 260 120 363 103"
+        <path class="index-pointer-unselected" d="M 180 150 Q 260 120 363 103"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
         <!-- From 'graph' [A, B] -->
-        <path class="index-pointer-unselected" d="M 195 190 Q 270 140 363 103"
+        <path class="index-pointer-unselected" d="M 200 190 Q 270 140 363 103"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
-        <path class="index-pointer-unselected" d="M 195 190 Q 350 190 513 183"
+        <path class="index-pointer-unselected" d="M 200 190 Q 350 190 513 183"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B -->
         <!-- From 'library' [A, B] -->
-        <path class="index-pointer-unselected" d="M 195 230 Q 270 160 363 103"
+        <path class="index-pointer-unselected" d="M 200 230 Q 270 160 363 103"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
-        <path class="index-pointer-unselected" d="M 195 230 Q 350 210 513 183"
+        <path class="index-pointer-unselected" d="M 200 230 Q 350 210 513 183"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B -->
         <!-- From 'traversal' [B, C] - Selected -->
-        <path class="index-pointer" d="M 195 270 Q 350 230 513 183"
+        <path class="index-pointer" d="M 200 270 Q 350 230 513 183"
               marker-end="url(#arrowhead-pointer)"/> <!-- To B -->
-        <path class="index-pointer" d="M 195 270 Q 270 270 363 277"
+        <path class="index-pointer" d="M 200 270 Q 270 270 363 277"
               marker-end="url(#arrowhead-pointer)"/> <!-- To C -->
     </g>
 
@@ -102,10 +102,12 @@
 
         <!-- Edges (Rendered Before Nodes) -->
         <g class="edge directed" id="edge-A-B">
-            <path d="M 100 70 Q 280 90 490 130" marker-end="url(#arrowhead)"/> <!-- A -> B -->
+            <!-- Start near A (80, 70), End near B (230, 150) -->
+            <path d="M 98 79 Q 160 100 216 136" marker-end="url(#arrowhead)"/> <!-- A -> B -->
         </g>
         <g class="edge directed" id="edge-B-C">
-            <path d="M 490 170 Q 280 190 100 210" marker-end="url(#arrowhead)"/> <!-- B -> C -->
+            <!-- Start near B (230, 150), End near C (80, 230) -->
+            <path d="M 216 164 Q 150 200 98 221" marker-end="url(#arrowhead)"/> <!-- B -> C -->
         </g>
 
         <!-- Nodes (Rendered After Edges) -->

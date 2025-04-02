@@ -66,17 +66,17 @@
     <g id="index-pointers-group">
         <!-- Pointers from index value list to corresponding nodes -->
         <!-- From Age 25 [A] - Unselected -->
-        <path class="index-pointer-unselected" d="M 130 110 Q 220 90 313 83"
+        <path class="index-pointer-unselected" d="M 135 110 Q 220 90 313 83"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
 
         <!-- From Age 35 [B, D] - Selected -->
-        <path class="index-pointer" d="M 150 150 Q 300 110 463 83"
+        <path class="index-pointer" d="M 155 150 Q 300 110 463 83"
               marker-end="url(#arrowhead-pointer)"/> <!-- To B -->
-        <path class="index-pointer" d="M 150 150 Q 300 190 463 247"
+        <path class="index-pointer" d="M 155 150 Q 300 190 463 247"
               marker-end="url(#arrowhead-pointer)"/> <!-- To D -->
 
         <!-- From Age 42 [C] - Selected -->
-        <path class="index-pointer" d="M 130 190 Q 220 220 313 247"
+        <path class="index-pointer" d="M 135 190 Q 220 220 313 247"
               marker-end="url(#arrowhead-pointer)"/> <!-- To C -->
     </g>
 
