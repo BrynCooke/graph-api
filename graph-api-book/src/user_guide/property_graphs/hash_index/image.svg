@@ -2,15 +2,25 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
     <title>Hash Vertex Index Example with Query</title>
-    <desc>Diagram showing a hash index on the 'name' property. The index maps names to vertex IDs. A query for 'name = "Alice"' is highlighted, showing the index lookup returning nodes A and C.</desc>
+    <desc>Diagram showing a hash index on the 'name' property. The index maps names to vertex IDs. A query for 'name =
+        "Alice"' is highlighted, showing the index lookup returning nodes A and C.
+    </desc>
 
     <defs>
         <!-- Standard arrowhead marker -->
-        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
         <!-- Pointer arrowhead marker (often styled differently, e.g., accent color) -->
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+
+        <marker id="arrowhead-pointer-unselected" class="marker-arrowhead-pointer-unselected marker-base"
+                markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
         <!-- Add other standard markers if needed (.active, .visited, .path) -->
@@ -19,7 +29,7 @@
     <!-- === Index Structure === -->
     <g id="index-group" class="index-container" transform="translate(20, 40)">
         <rect class="index-box" x="0" y="0" width="220" height="190"/>
-        <text class="index-title halo" x="110" y="25">Vertex Index (on 'name')</text>
+        <text class="index-title" x="110" y="25">Vertex Index (on 'name')</text>
 
         <!-- Divider Lines -->
         <line class="index-divider hash" x1="0" y1="45" x2="220" y2="45"/>
@@ -28,18 +38,18 @@
         <!-- Index Entries -->
         <!-- Entry for "Alice" - Highlighted due to query -->
         <g class="index-entry highlighted" transform="translate(10, 70)"> <!-- Adjusted x for padding -->
-            <text class="index-key hash halo" x="80" y="0">"Alice"</text> <!-- Centered in key column -->
-            <text class="index-value hash halo" x="110" y="0">[ A, C ]</text> <!-- Start of value column -->
+            <text class="index-key hash" x="80" y="0">"Alice"</text> <!-- Centered in key column -->
+            <text class="index-value hash" x="110" y="0">[ A, C ]</text> <!-- Start of value column -->
         </g>
         <!-- Entry for "Bob" -->
         <g class="index-entry" transform="translate(10, 110)">
-            <text class="index-key hash halo" x="80" y="0">"Bob"</text>
-            <text class="index-value hash halo" x="110" y="0">[ B ]</text>
+            <text class="index-key hash" x="80" y="0">"Bob"</text>
+            <text class="index-value hash" x="110" y="0">[ B ]</text>
         </g>
         <!-- Entry for "Charlie" -->
         <g class="index-entry" transform="translate(10, 150)">
-            <text class="index-key hash halo" x="80" y="0">"Charlie"</text>
-            <text class="index-value hash halo" x="110" y="0">[ D ]</text>
+            <text class="index-key hash" x="80" y="0">"Charlie"</text>
+            <text class="index-value hash" x="110" y="0">[ D ]</text>
         </g>
 
         <!-- Query Highlight Box around "Alice" entry -->
@@ -50,15 +60,19 @@
     <!-- === Index Pointers === -->
     <g id="index-pointers-group">
         <!-- Pointers from index value list to corresponding nodes -->
-        <!-- From "Alice" [A, C] (y=70 + baseline offset ~4 = 74) -->
-        <path class="index-pointer" d="M 160 74 Q 260 64 360 90" marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
-        <path class="index-pointer" d="M 160 74 Q 260 147 360 220" marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
+        <!-- From "Alice" [A, C] -->
+        <path class="index-pointer" d="M 200 110 Q 260 84 360 90"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
+        <path class="index-pointer" d="M 200 110 Q 260 127 360 210"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
 
-        <!-- From "Bob" [B] (y=110 + baseline offset ~4 = 114) -->
-        <path class="index-pointer" d="M 140 114 Q 340 104 510 90" marker-end="url(#arrowhead-pointer)"/> <!-- To B (edge) -->
+        <!-- From "Bob" [B] -->
+        <path class="index-pointer-unselected" d="M 180 150 Q 340 104 510 90"
+              marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B (edge) -->
 
-        <!-- From "Charlie" [D] (y=150 + baseline offset ~4 = 154) -->
-        <path class="index-pointer" d="M 140 154 Q 340 187 510 220" marker-end="url(#arrowhead-pointer)"/> <!-- To D (edge) -->
+        <!-- From "Charlie" [D] -->
+        <path class="index-pointer-unselected" d="M 180 190 Q 340 187 510 220"
+              marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To D (edge) -->
     </g>
 
     <!-- === Graph Structure === -->
