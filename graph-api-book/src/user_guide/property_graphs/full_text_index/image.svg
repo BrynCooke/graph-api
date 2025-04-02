@@ -29,7 +29,7 @@
     <!-- === Index Structure === -->
     <g id="index-group" class="index-container" transform="translate(20, 40)">
         <rect class="index-box" x="0" y="0" width="240" height="260"/>
-        <text class="index-title halo" x="120" y="25">Full-Text Index (on 'description')</text>
+        <text class="index-title" x="120" y="25">Full-Text Index (on 'description')</text>
 
         <!-- Divider Lines -->
         <line class="index-divider fulltext" x1="0" y1="45" x2="240" y2="45"/>
@@ -37,32 +37,32 @@
 
         <!-- Index Entries -->
         <g class="index-entry" transform="translate(10, 70)">
-            <text class="index-token fulltext halo" x="100" y="0">'efficient'</text> <!-- Centered in key column -->
-            <text class="index-value fulltext halo" x="125" y="0">[ C ]</text> <!-- Start of value column -->
+            <text class="index-token fulltext" x="100" y="0">'efficient'</text> <!-- Centered in key column -->
+            <text class="index-value fulltext" x="125" y="0">[ C ]</text> <!-- Start of value column -->
         </g>
         <line class="index-divider fulltext" x1="10" y1="90" x2="230" y2="90"/>
 
         <g class="index-entry" transform="translate(10, 110)">
-            <text class="index-token fulltext halo" x="100" y="0">'fast'</text>
-            <text class="index-value fulltext halo" x="125" y="0">[ A ]</text>
+            <text class="index-token fulltext" x="100" y="0">'fast'</text>
+            <text class="index-value fulltext" x="125" y="0">[ A ]</text>
         </g>
         <line class="index-divider fulltext" x1="10" y1="130" x2="230" y2="130"/>
 
         <g class="index-entry" transform="translate(10, 150)">
-            <text class="index-token fulltext halo" x="100" y="0">'graph'</text>
-            <text class="index-value fulltext halo" x="125" y="0">[ A, B ]</text>
+            <text class="index-token fulltext" x="100" y="0">'graph'</text>
+            <text class="index-value fulltext" x="125" y="0">[ A, B ]</text>
         </g>
         <line class="index-divider fulltext" x1="10" y1="170" x2="230" y2="170"/>
 
         <g class="index-entry" transform="translate(10, 190)">
-            <text class="index-token fulltext halo" x="100" y="0">'library'</text>
-            <text class="index-value fulltext halo" x="125" y="0">[ A, B ]</text>
+            <text class="index-token fulltext" x="100" y="0">'library'</text>
+            <text class="index-value fulltext" x="125" y="0">[ A, B ]</text>
         </g>
         <line class="index-divider fulltext" x1="10" y1="210" x2="230" y2="210"/>
 
         <g class="index-entry highlighted" transform="translate(10, 230)">
-            <text class="index-token fulltext halo" x="100" y="0">'traversal'</text>
-            <text class="index-value fulltext halo" x="125" y="0">[ B, C ]</text>
+            <text class="index-token fulltext" x="100" y="0">'traversal'</text>
+            <text class="index-value fulltext" x="125" y="0">[ B, C ]</text>
         </g>
         <line class="index-divider fulltext" x1="10" y1="250" x2="230" y2="250"/>
 
@@ -75,25 +75,25 @@
     <g id="index-pointers-group">
         <!-- Pointers from index value list to corresponding nodes -->
         <!-- From 'efficient' [C] -->
-        <path class="index-pointer-unselected" d="M 190 110 Q 250 160 360 210"
+        <path class="index-pointer-unselected" d="M 175 110 Q 260 180 363 277"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To C -->
         <!-- From 'fast' [A] -->
-        <path class="index-pointer-unselected" d="M 190 150 Q 250 110 360 90"
+        <path class="index-pointer-unselected" d="M 175 150 Q 260 120 363 103"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
         <!-- From 'graph' [A, B] -->
-        <path class="index-pointer-unselected" d="M 190 190 Q 250 130 360 90"
+        <path class="index-pointer-unselected" d="M 195 190 Q 270 140 363 103"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
-        <path class="index-pointer-unselected" d="M 190 190 Q 300 150 510 150"
+        <path class="index-pointer-unselected" d="M 195 190 Q 350 190 513 183"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B -->
         <!-- From 'library' [A, B] -->
-        <path class="index-pointer-unselected" d="M 190 230 Q 250 150 360 90"
+        <path class="index-pointer-unselected" d="M 195 230 Q 270 160 363 103"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
-        <path class="index-pointer-unselected" d="M 190 230 Q 300 190 510 150"
+        <path class="index-pointer-unselected" d="M 195 230 Q 350 210 513 183"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B -->
         <!-- From 'traversal' [B, C] - Selected -->
-        <path class="index-pointer" d="M 190 270 Q 300 210 510 150"
+        <path class="index-pointer" d="M 195 270 Q 350 230 513 183"
               marker-end="url(#arrowhead-pointer)"/> <!-- To B -->
-        <path class="index-pointer" d="M 190 270 Q 250 250 360 210"
+        <path class="index-pointer" d="M 195 270 Q 270 270 363 277"
               marker-end="url(#arrowhead-pointer)"/> <!-- To C -->
     </g>
 
@@ -115,7 +115,7 @@
             <text class="node-label">A</text>
         </g>
         <!-- Node B - Highlighted -->
-        <g class="node highlighted" id="node-B" transform="translate(510, 150)"> <!-- Center at abs (810, 190) -->
+        <g class="node highlighted" id="node-B" transform="translate(230, 150)"> <!-- Center at abs (530, 190) -->
             <circle r="20"/>
             <text class="node-label">B</text>
         </g>
@@ -129,7 +129,7 @@
         <g id="property-texts-group">
             <!-- Positioned below nodes -->
             <text class="property-text halo" x="80" y="100">{desc: "Fast graph library"}</text>  <!-- Node A: 80, 70+30 -->
-            <text class="property-text halo" x="400" y="180">{desc: "Library for graph traversal"}</text> <!-- Node B: 510, 150+30 -->
+            <text class="property-text halo" x="230" y="180">{desc: "Library for graph traversal"}</text> <!-- Node B: 230, 150+30 -->
             <text class="property-text halo" x="80" y="260">{desc: "Efficient traversal..."}</text> <!-- Node C: 80, 230+30 -->
         </g>
 

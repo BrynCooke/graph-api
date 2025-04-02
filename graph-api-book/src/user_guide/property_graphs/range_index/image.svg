@@ -42,7 +42,7 @@
         </g>
         <line class="index-divider range" x1="10" y1="90" x2="210" y2="90"/>
 
-        <!-- Entry for Age 35 (Node B) - Highlighted -->
+        <!-- Entry for Age 35 (Nodes B, D) - Highlighted -->
         <g class="index-entry highlighted" transform="translate(10, 110)">
             <text class="index-key range" x="55" y="0">35</text>
             <text class="index-value range" x="80" y="0">[ B, D ]</text>
@@ -66,22 +66,22 @@
     <g id="index-pointers-group">
         <!-- Pointers from index value list to corresponding nodes -->
         <!-- From Age 25 [A] - Unselected -->
-        <path class="index-pointer-unselected" d="M 150 110 Q 220 94 360 90"
+        <path class="index-pointer-unselected" d="M 130 110 Q 220 90 313 83"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
 
         <!-- From Age 35 [B, D] - Selected -->
-        <path class="index-pointer" d="M 170 150 Q 280 134 510 100"
+        <path class="index-pointer" d="M 150 150 Q 300 110 463 83"
               marker-end="url(#arrowhead-pointer)"/> <!-- To B -->
-        <path class="index-pointer" d="M 170 150 Q 280 187 510 230"
+        <path class="index-pointer" d="M 150 150 Q 300 190 463 247"
               marker-end="url(#arrowhead-pointer)"/> <!-- To D -->
 
         <!-- From Age 42 [C] - Selected -->
-        <path class="index-pointer" d="M 150 190 Q 220 217 360 240"
+        <path class="index-pointer" d="M 130 190 Q 220 220 313 247"
               marker-end="url(#arrowhead-pointer)"/> <!-- To C -->
     </g>
 
     <!-- === Graph Structure === -->
-    <g id="graph-group" transform="translate(300, 40)"> <!-- Shifted right -->
+    <g id="graph-group" transform="translate(250, 40)"> <!-- Shifted left -->
 
         <!-- Edges (Rendered Before Nodes) -->
         <g class="edge directed" id="edge-A-B">

@@ -137,10 +137,8 @@ Diagrams should use semantic class names that correspond to the styles in `custo
       overlap lines or complex backgrounds to ensure readability. This adds a background stroke matching the diagram
       background.
 
-        * **Apply `halo` to:** Edge labels (`.edge-label text`), index text (`.index-entry text`, `.index-title`),
-          query text (`.query-text`), step labels (`.step-label text`), property text (`.property-text`).
-        * **Do NOT typically apply `halo` to:** Node labels (`.node-label`) or index text, as these are
-          usually positioned over solid node backgrounds where a halo is unnecessary.
+        * **Apply `halo` to:** Edge labels (`.edge-label text`), query text (`.query-text`), step labels (`.step-label text`), property text (`.property-text`).
+        * **Do NOT apply `halo` to:** Node labels (`.node-label`) or index text (`.index-title`, `.index-key`, `.index-value`, `.index-token`), as these are usually positioned over solid backgrounds where a halo is unnecessary or visually distracting.
 
       Example usage: `<text class="edge-label halo">...`, `<text class="property-text halo">...`.
 * **Rendering Order:** Ensure text elements are rendered *after* potentially overlapping graphical elements (lines,
@@ -193,11 +191,9 @@ Diagrams should use semantic class names that correspond to the styles in `custo
 *   [ ] Does it use the defined CSS classes for elements (nodes, edges, indexes, etc.)?
 *   [ ] Are states (active, visited, highlighted) applied correctly using classes?
 *   [ ] Is text legible and contrast sufficient in both light and dark modes?
-*   [ ] Does text that might overlap lines or other elements (edge labels, index text, query text, property text, etc.)
-    use the `halo` class?
-*   [ ] Is the `halo` class *not* used on node labels unless specifically needed?
+*   [ ] Does text that might overlap lines or other elements (edge labels, query text, property text, step labels) use the `halo` class?
+*   [ ] Is the `halo` class *not* used on node labels or index text?
 *   [ ] Are text elements rendered *after* potentially overlapping shapes/lines in the SVG structure?
 *   [ ] Has the SVG been optimized (e.g., using `svgo`)?
-*
 
 ---

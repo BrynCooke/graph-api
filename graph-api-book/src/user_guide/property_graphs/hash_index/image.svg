@@ -29,7 +29,7 @@
     <!-- === Index Structure === -->
     <g id="index-group" class="index-container" transform="translate(20, 40)">
         <rect class="index-box" x="0" y="0" width="220" height="190"/>
-        <text class="index-title" x="110" y="25">Vertex Index (on 'name')</text>
+        <text class="index-title" x="110" y="25">Hash Index (on 'name')</text> <!-- Updated title -->
 
         <!-- Divider Lines -->
         <line class="index-divider hash" x1="0" y1="45" x2="220" y2="45"/>
@@ -61,22 +61,22 @@
     <g id="index-pointers-group">
         <!-- Pointers from index value list to corresponding nodes -->
         <!-- From "Alice" [A, C] -->
-        <path class="index-pointer" d="M 200 110 Q 260 84 360 90"
+        <path class="index-pointer" d="M 190 110 Q 260 84 313 83"
               marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
-        <path class="index-pointer" d="M 200 110 Q 260 127 360 210"
+        <path class="index-pointer" d="M 190 110 Q 260 160 313 227"
               marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
 
         <!-- From "Bob" [B] -->
-        <path class="index-pointer-unselected" d="M 180 150 Q 340 104 510 90"
+        <path class="index-pointer-unselected" d="M 190 150 Q 320 110 463 83"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B (edge) -->
 
         <!-- From "Charlie" [D] -->
-        <path class="index-pointer-unselected" d="M 180 190 Q 340 187 510 220"
+        <path class="index-pointer-unselected" d="M 190 190 Q 320 200 463 227"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To D (edge) -->
     </g>
 
     <!-- === Graph Structure === -->
-    <g id="graph-group" transform="translate(300, 40)"> <!-- Shifted right for more space -->
+    <g id="graph-group" transform="translate(250, 40)"> <!-- Shifted left -->
 
         <!-- Edges (Rendered Before Nodes) -->
         <g class="edge directed" id="edge-A-B">
