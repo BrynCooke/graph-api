@@ -14,14 +14,15 @@ Consider an index on an `age` property:
 
 In this diagram:
 
-- The **graph** on the right contains vertices with an `age` property.
+- The **graph** on the right contains vertices (A, B, C, D) with an `age` property.
 - The **range index** on the left stores `(age, vertex)` pairs, crucially **sorted by age**. Notice how `age: 35`
   appears twice, pointing to both `B` and `D`.
 - When a **range query** like `age >= 35` is executed:
-    1. The index efficiently locates the starting point for the value `35`.
-    2. It then scans forward through the sorted index entries (35, 35, 42) until the condition is no longer met.
-    3. The vertices associated with these index entries (`B`, `D`, `C`) are identified as the result.
-- The **orange highlighting** shows the portion of the index scanned and the resulting vertices in the graph.
+    - The index efficiently locates the starting point for the value `35`.
+    - It then scans forward through the sorted index entries (35, 35, 42) until the condition is no longer met.
+    - The vertices associated with these index entries (`B`, `D`, `C`) are identified as the result.
+- The **orange highlighting** shows the portion of the index scanned (`age >= 35`) and the resulting vertices (`B`, `D`, `C`) in the graph.
+- **Blue arrows** point from the selected index entries to the corresponding graph vertices.
 
 This is much faster than checking the `age` property of every single vertex in the graph for large datasets.
 

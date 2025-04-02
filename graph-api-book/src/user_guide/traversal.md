@@ -25,9 +25,16 @@ possible along each branch before backtracking.
 Diagram illustrating Depth-First Search traversal order
 </object>
 
-In the diagram above, starting from node 'A', the traversal visits nodes in the following order: A, B, D, E (exploring
-the left branch fully), then backtracks to A and explores the right branch C, F. This DFS behaviour is fundamental to
-how walkers navigate the graph.
+In the diagram above:
+
+- The traversal starts at node **A**.
+- It explores the **left branch** first: **A → B → D → E**.
+- After reaching the end of the left branch (E), it **backtracks** to B, then A.
+- It then explores the **right branch**: **A → C → F**.
+- The **final DFS order** is indicated by the numbers: **A(1) → B(2) → D(3) → E(4) → C(5) → F(6)**.
+- The **orange arrows** highlight the path taken during the traversal.
+
+This DFS behaviour is fundamental to how walkers navigate the graph.
 
 ## Examples
 

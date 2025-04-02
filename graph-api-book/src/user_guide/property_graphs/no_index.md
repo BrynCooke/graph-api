@@ -13,9 +13,9 @@ In this diagram:
 
 - The **graph** contains several vertices (A-E), some of which have the property `name: "Alice"`.
 - The **query** at the top left indicates the desired starting condition: find vertices where `name = "Alice"`.
-- The **gray dashed arrows** illustrate the process *without an index*: To satisfy the query, the traversal mechanism
-  must conceptually examine **every single vertex** (A, B, C, D, E) to check if its `name` property matches "Alice".
-  This represents a full graph scan.
+- The **blue arrows** illustrate the process *without an index*: To satisfy the query, the traversal mechanism must
+  conceptually examine **every single vertex** (A, B, C, D, E) to check if its `name` property matches "Alice". This
+  represents a full graph scan.
 - The **orange highlighting** on vertices `A` and `C` shows the *result* of this scan – these are the only vertices
   found that satisfy the query condition.
 

@@ -14,16 +14,17 @@ Consider an index on a `description` property:
 
 In this diagram:
 
-- The **graph** on the right has vertices with text `description` properties.
+- The **graph** on the right has vertices (A, B, C) with text `description` properties.
 - The **full-text index** on the left is an inverted index:
     - It lists processed **tokens** (like 'fast', 'graph', 'traversal').
     - For each token, it points to the **vertices** (`A`, `B`, `C`) whose `description` contains that token after
       processing. Note how 'graph' points to both `A` and `B`.
 - When a **query** like `description CONTAINS 'traversal'` is performed:
-    1. The index is used to look up the token 'traversal'.
-    2. The index directly provides the list of matching vertices: `[ B, C ]`.
+    - The index is used to look up the token 'traversal'.
+    - The index directly provides the list of matching vertices: `[ B, C ]`.
 - The **orange highlighting** shows the index entry for 'traversal' being used and the resulting vertices (`B`, `C`)
   identified in the graph.
+- **Blue arrows** point from the selected index entry to the corresponding graph vertices.
 
 This approach is fundamental to searching documentation, product descriptions, user comments, or any unstructured text
 associated with graph elements.
