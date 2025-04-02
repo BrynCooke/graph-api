@@ -444,7 +444,7 @@ svg {
 
 /* --- Step Representation Styles --- */
 .step-label text {
-    font-size: var(--font-size-large); /* Slightly larger text for the step */
+    font-size: var(--font-size-small); /* Slightly larger text for the step */
     font-weight: var(--font-weight-bold);
     fill: var(--text-color);
     text-anchor: start; /* Align text to the start */
