@@ -1,5 +1,6 @@
-<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
+<?xml-stylesheet type="text/css" href="../../../theme/custom.css"?>
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"> <!-- Removed width/height -->
     <title>Graph Scan Without Index</title>
     <desc>Diagram illustrating that finding nodes (e.g., name='Alice') without an index requires scanning every node (A,
         B, C, D, E). Matching nodes A and C are highlighted.
@@ -44,11 +45,16 @@
         <g id="scan-pointers">
             <!-- Originating near Query text (relative x=-50, y=-30) -->
             <!-- Pointing towards center of each node (relative coordinates) -->
-            <line class="scan-pointer" x1="-50" y1="-30" x2="100" y2="50" marker-end="url(#arrowhead-scan)"/> <!-- -> A -->
-            <line class="scan-pointer" x1="-50" y1="-30" x2="300" y2="50" marker-end="url(#arrowhead-scan)"/> <!-- -> B -->
-            <line class="scan-pointer" x1="-50" y1="-30" x2="50" y2="180" marker-end="url(#arrowhead-scan)"/> <!-- -> C -->
-            <line class="scan-pointer" x1="-50" y1="-30" x2="250" y2="180" marker-end="url(#arrowhead-scan)"/> <!-- -> D -->
-            <line class="scan-pointer" x1="-50" y1="-30" x2="400" y2="180" marker-end="url(#arrowhead-scan)"/> <!-- -> E -->
+            <line class="scan-pointer" x1="-50" y1="-30" x2="100" y2="50"
+                  marker-end="url(#arrowhead-scan)"/> <!-- -> A -->
+            <line class="scan-pointer" x1="-50" y1="-30" x2="300" y2="50"
+                  marker-end="url(#arrowhead-scan)"/> <!-- -> B -->
+            <line class="scan-pointer" x1="-50" y1="-30" x2="50" y2="180"
+                  marker-end="url(#arrowhead-scan)"/> <!-- -> C -->
+            <line class="scan-pointer" x1="-50" y1="-30" x2="250" y2="180"
+                  marker-end="url(#arrowhead-scan)"/> <!-- -> D -->
+            <line class="scan-pointer" x1="-50" y1="-30" x2="400" y2="180"
+                  marker-end="url(#arrowhead-scan)"/> <!-- -> E -->
         </g>
 
         <!-- === Edges (Rendered After Scan Pointers, Before Nodes) === -->
