@@ -16,6 +16,16 @@ as:
 - Collecting data
 - Modifying the graph
 
+## Traversal Order (Depth-First)
+
+By default, the Graph API walker performs a **Depth-First Search (DFS)** traversal. This means it explores as far as possible along each branch before backtracking.
+
+<object type="image/svg+xml" data="dfs_traversal_image.svg">
+Diagram illustrating Depth-First Search traversal order
+</object>
+
+In the diagram above, starting from node 'A', the traversal visits nodes in the following order: A, B, D, E (exploring the left branch fully), then backtracks to A and explores the right branch C, F. This DFS behaviour is fundamental to how walkers navigate the graph.
+
 ## Examples
 
 ### Basic Traversal
