@@ -47,12 +47,12 @@
             <!-- Originating near Query text (relative x=-50, y=-30) -->
             <!-- Pointing towards center of each node (relative coordinates) -->
             <!-- Using index-pointer-unselected style for consistency -->
-            <line class="index-pointer-unselected" x1="-50" y1="-30" x2="87" y2="37"
-                  marker-end="url(#arrowhead-pointer-unselected)"/> <!-- -> A -->
+            <line class="index-pointer" x1="-50" y1="-30" x2="87" y2="37"
+                  marker-end="url(#arrowhead-pointer)"/> <!-- -> A -->
             <line class="index-pointer-unselected" x1="-50" y1="-30" x2="287" y2="37"
                   marker-end="url(#arrowhead-pointer-unselected)"/> <!-- -> B -->
-            <line class="index-pointer-unselected" x1="-50" y1="-30" x2="37" y2="167"
-                  marker-end="url(#arrowhead-pointer-unselected)"/> <!-- -> C -->
+            <line class="index-pointer" x1="-50" y1="-30" x2="37" y2="167"
+                  marker-end="url(#arrowhead-pointer)"/> <!-- -> C -->
             <line class="index-pointer-unselected" x1="-50" y1="-30" x2="237" y2="167"
                   marker-end="url(#arrowhead-pointer-unselected)"/> <!-- -> D -->
             <line class="index-pointer-unselected" x1="-50" y1="-30" x2="387" y2="167"

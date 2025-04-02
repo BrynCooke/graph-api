@@ -133,14 +133,15 @@ svg {
 /* Halo effect for primary text elements in SVGs */
 .halo {
     stroke: var(--graph-bg); /* Use the page background color */
-    stroke-width: 4px; /* Adjust thickness as needed */
+    stroke-width: 6px; /* Adjust thickness as needed */
     paint-order: stroke; /* Ensure stroke is drawn behind the text fill */
 }
 
 /* Apply halo to property text */
 .property-text.halo {
     stroke: var(--graph-bg);
-    stroke-width: 4px;
+    stroke-width: 10px;
+    stroke-opacity: 0.9;
     stroke-linejoin: round;
     paint-order: stroke;
 }
@@ -323,6 +324,15 @@ svg {
     /* marker-end should be applied directly in SVG via attribute */
 }
 
+.index-pointer-unselected {
+    fill: none;
+    stroke: var(--index-pointer-stroke);
+    stroke-width: var(--stroke-width-normal);
+    stroke-opacity: 0.3;
+    stroke-dasharray: 4 2;
+    /* marker-end should be applied directly in SVG via attribute */
+}
+
 /* --- Query Highlight Styles --- */
 .query-highlight-box {
     fill: var(--highlight-fill);
@@ -394,6 +404,11 @@ svg {
 /* Index Pointer Arrowhead */
 .marker-arrowhead-pointer path {
     fill: var(--index-pointer-stroke);
+}
+
+.marker-arrowhead-pointer-unselected path {
+    fill: var(--index-pointer-stroke);
+    opacity: 0.3;
 }
 
 

@@ -11,7 +11,6 @@
     - [Hash Indexes](./user_guide/property_graphs/hash_index.md)
     - [Range Indexes](./user_guide/property_graphs/range_index.md)
     - [Full-text Indexes](./user_guide/property_graphs/full_text_index.md)
-    - [Combining Indexes](./user_guide/property_graphs/combining_indexes.md)
 - [Derive Macros](./user_guide/derive_macros.md)
 - [Basic Operations](./user_guide/basic_operations.md)
 - [Graph Traversal](./user_guide/traversal.md)

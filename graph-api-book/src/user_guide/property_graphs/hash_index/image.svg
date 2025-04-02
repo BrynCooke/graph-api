@@ -61,17 +61,17 @@
     <g id="index-pointers-group">
         <!-- Pointers from index value list to corresponding nodes -->
         <!-- From "Alice" [A, C] -->
-        <path class="index-pointer" d="M 200 110 Q 260 84 313 83"
+        <path class="index-pointer" d="M 200 110 Q 260 90 310 90"
               marker-end="url(#arrowhead-pointer)"/> <!-- To A (edge) -->
-        <path class="index-pointer" d="M 200 110 Q 260 160 313 227"
+        <path class="index-pointer" d="M 200 110 Q 260 160 313 210"
               marker-end="url(#arrowhead-pointer)"/> <!-- To C (edge) -->
 
         <!-- From "Bob" [B] -->
-        <path class="index-pointer-unselected" d="M 165 150 Q 320 110 463 83"
+        <path class="index-pointer-unselected" d="M 180 150 Q 320 130 463 100"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B (edge) -->
 
         <!-- From "Charlie" [D] -->
-        <path class="index-pointer-unselected" d="M 165 190 Q 320 200 463 227"
+        <path class="index-pointer-unselected" d="M 180 190 Q 320 180 460 215"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To D (edge) -->
     </g>
 

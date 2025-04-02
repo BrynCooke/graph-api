@@ -75,25 +75,25 @@
     <g id="index-pointers-group">
         <!-- Pointers from index value list to corresponding nodes -->
         <!-- From 'efficient' [C] -->
-        <path class="index-pointer-unselected" d="M 180 110 Q 260 180 363 277"
+        <path class="index-pointer-unselected" d="M 195 110 Q 260 180 363 260"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To C -->
         <!-- From 'fast' [A] -->
-        <path class="index-pointer-unselected" d="M 180 150 Q 260 120 363 103"
+        <path class="index-pointer-unselected" d="M 195 150 Q 260 120 358 110"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
         <!-- From 'graph' [A, B] -->
-        <path class="index-pointer-unselected" d="M 200 190 Q 270 140 363 103"
+        <path class="index-pointer-unselected" d="M 215 190 Q 270 140 358 110"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
-        <path class="index-pointer-unselected" d="M 200 190 Q 350 190 513 183"
+        <path class="index-pointer-unselected" d="M 215 190 Q 350 190 510 190"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B -->
         <!-- From 'library' [A, B] -->
-        <path class="index-pointer-unselected" d="M 200 230 Q 270 160 363 103"
+        <path class="index-pointer-unselected" d="M 215 230 Q 270 160 358 110"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
-        <path class="index-pointer-unselected" d="M 200 230 Q 350 210 513 183"
+        <path class="index-pointer-unselected" d="M 215 230 Q 350 210 510 190"
               marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B -->
         <!-- From 'traversal' [B, C] - Selected -->
-        <path class="index-pointer" d="M 200 270 Q 350 230 513 183"
+        <path class="index-pointer" d="M 215 270 Q 350 230 510 190"
               marker-end="url(#arrowhead-pointer)"/> <!-- To B -->
-        <path class="index-pointer" d="M 200 270 Q 270 270 363 277"
+        <path class="index-pointer" d="M 215 270 Q 270 270 360 270"
               marker-end="url(#arrowhead-pointer)"/> <!-- To C -->
     </g>
 
@@ -130,9 +130,12 @@
         <!-- Property Text (Rendered Last within Graph Group) -->
         <g id="property-texts-group">
             <!-- Positioned below nodes -->
-            <text class="property-text halo" x="80" y="100">{desc: "Fast graph library"}</text>  <!-- Node A: 80, 70+30 -->
-            <text class="property-text halo" x="230" y="180">{desc: "Library for graph traversal"}</text> <!-- Node B: 230, 150+30 -->
-            <text class="property-text halo" x="80" y="260">{desc: "Efficient traversal..."}</text> <!-- Node C: 80, 230+30 -->
+            <text class="property-text halo" x="80" y="100">{desc: "Fast graph library"}
+            </text>  <!-- Node A: 80, 70+30 -->
+            <text class="property-text halo" x="200" y="180">{desc: "Library for graph traversal"}
+            </text> <!-- Node B: 230, 150+30 -->
+            <text class="property-text halo" x="80" y="260">{desc: "Efficient traversal..."}
+            </text> <!-- Node C: 80, 230+30 -->
         </g>
 
     </g> <!-- End of graph-group -->
