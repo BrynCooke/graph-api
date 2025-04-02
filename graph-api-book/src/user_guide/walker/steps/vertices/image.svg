@@ -57,13 +57,23 @@
 
     <!-- Step Representation -->
     <g id="step-representation" class="step-label" transform="translate(30, 150)">
-        <text x="0" y="-15">graph.walk()</text>
-        <text class="code" x="0" y="15">.vertices(VertexIndex::person())</text>
-        <line class="step-arrow" x1="280" y1="0" x2="330" y2="0" marker-end="url(#arrowhead-pointer)"/>
+        <!-- Reduced font size implicitly via step-label class, adjusted position -->
+        <text x="100" y="-10" text-anchor="middle">graph.walk()</text>
+        <text class="code" x="100" y="10" text-anchor="middle">.vertices(VertexIndex::person())</text>
+        <!-- Removed step arrow line, will use index pointers instead -->
+    </g>
+
+    <!-- Index Pointers -->
+    <g id="index-pointers-group">
+        <!-- Pointers from step text to selected nodes A and C -->
+        <path class="index-pointer" d="M 200 160 Q 250 100 313 83"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To A -->
+        <path class="index-pointer" d="M 200 160 Q 250 200 313 213"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To C -->
     </g>
 
     <!-- Resulting Walker State -->
-    <g id="graph-result" transform="translate(360, 50)">
+    <g id="graph-result" transform="translate(250, 50)"> <!-- Shifted left -->
          <text class="step-label" x="120" y="0" text-anchor="middle">Resulting Walker State</text>
 
         <!-- Edges (Rendered first, not highlighted) -->
