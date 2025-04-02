@@ -36,7 +36,7 @@
     </g>
 
     <!-- Before edges() step (Top Right) -->
-    <g id="before-step" transform="translate(250, 50)"> <!-- Shifted right -->
+    <g id="before-step" transform="translate(200, 50)"> <!-- Shifted left -->
         <text class="step-label" x="150" y="0" text-anchor="middle">Before edges()</text>
         <g class="node highlighted" id="node-A-before" transform="translate(150, 50)">
             <circle r="20"></circle><text class="node-label">A</text>
@@ -59,10 +59,10 @@
 
      <!-- Step Arrow (Vertical between Before/After) -->
     <line class="step-arrow" x1="400" y1="180" x2="400" y2="220" marker-end="url(#arrowhead-pointer)"/>
-    <text x="300" y="205" class="text-color-muted" font-size="12px">.edges()</text> <!-- Moved text near arrow -->
+    <text x="250" y="205" class="text-color-muted" font-size="12px">.edges()</text> <!-- Moved text near arrow -->
 
     <!-- After edges() step (Bottom Right) -->
-    <g id="after-step" transform="translate(250, 230)"> <!-- Shifted right and down -->
+    <g id="after-step" transform="translate(200, 230)"> <!-- Shifted left and down -->
          <text class="step-label" x="150" y="0" text-anchor="middle">After edges()</text>
         <g class="node" id="node-A-after" transform="translate(150, 50)">
             <circle r="20"></circle><text class="node-label">A</text>
