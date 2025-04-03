@@ -18,10 +18,6 @@
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-        <marker id="arrowhead-bidir" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5"
-                markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 z"/>
-        </marker>
     </defs>
 
     <!-- Step Representation (Left) -->
@@ -64,8 +60,8 @@
             <text class="index-value range" y="5">element: A</text>
         </g>
         <!-- Link Context -->
-        <line class="index-pointer" x1="150" y1="70" x2="150" y2="90" marker-start="url(#arrowhead-bidir)"
-              marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
+        <line class="index-pointer" x1="150" y1="70" x2="150" y2="90"
+              marker-end="url(#arrowhead-pointer)" stroke-dasharray="none"/>
     </g>
 
     <!-- Later in Traversal (Bottom Right) -->
@@ -86,8 +82,8 @@
             <text class="index-value range" y="5">element: B</text>
         </g>
         <!-- Link Context -->
-        <line class="index-pointer" x1="300" y1="70" x2="300" y2="90" marker-start="url(#arrowhead-bidir)"
-              marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
+        <line class="index-pointer" x1="300" y1="70" x2="300" y2="90"
+              marker-end="url(#arrowhead-pointer)" stroke-dasharray="none"/>
         <text x="150" y="140" class="text-color-muted" font-size="12px" text-anchor="middle">Context automatically updates</text>
     </g>
 </svg>
