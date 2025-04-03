@@ -9,10 +9,11 @@ Probe step diagram showing side effects being triggered without affecting traver
 
 In this diagram:
 
-- The **Walker Traversal** shows elements V1, V2, V3 being processed.
-- The **`probe()` step** is conceptually inserted between elements.
-- **Dashed arrows** point from each element to the **Side Effect (e.g., Log)** box, indicating that `probe()` executes a function (like logging) for each element.
-- The **traversal continues** to the next step, unaffected by the `probe()` call.
+- **Before `probe()`**: The walker contains highlighted elements **V1, V2, V3**.
+- The **code snippet** on the left shows the `.probe(|v, _| ...)` step being applied.
+- **After `probe()`**: The walker state remains **identical** to the "Before" state, with **V1, V2, V3** still highlighted.
+- A separate **Side Effect box** (e.g., representing console output) is shown, indicating the action performed by the `probe` function for each element.
+- The traversal continues to the next step, **unaffected** by the `probe`.
 
 ## Syntax
 
