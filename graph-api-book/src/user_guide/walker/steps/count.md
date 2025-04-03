@@ -9,10 +9,10 @@ Count step diagram showing walker state reducing to a single count value
 
 In this diagram:
 
-- The **Walker State** shows the elements currently in the traversal (V1, V2, V3, V4), highlighted.
-- The **`count()` step** processes these elements.
-- The **Result** is a single numeric value (4) representing the number of elements.
-- This step **terminates the traversal**.
+- **Before `count()`**: The walker contains highlighted elements **V1, V2, V3, V4**.
+- The **code snippet** on the left shows the `.count()` step being applied.
+- **After `count()`**: The result is shown as a box containing the single numeric value **4**, representing the number of elements.
+- This step consumes the walker and **terminates the Graph API traversal**.
 
 ## Syntax
 
