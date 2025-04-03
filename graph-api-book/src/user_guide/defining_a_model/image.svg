@@ -1,14 +1,16 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"> <!-- Removed width/height -->
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
         </marker>
-        <marker id="arrowhead-bidir" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead-bidir" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
         </marker>
     </defs>
-    <text x="10" y="25" class="step-label halo">Graph Model Example</text>
+    <text x="10" y="25" class="step-label">Graph Model Example</text>
 
     <!-- Vertices -->
     <g class="node" transform="translate(400, 60)"> <!-- Adjusted Y -->
@@ -38,16 +40,19 @@
     </g>
 
     <!-- Edges -->
-    <path id="bryn-eve" class="edge directed" d="M 200 140 q 50 -60 150 -80" marker-start="url(#arrowhead-bidir)" marker-end="url(#arrowhead-bidir)" fill="none"/> <!-- Adjusted path -->
-    <text class="edge-label"><textPath href="#bryn-eve" startOffset="50%">Follows</textPath></text>
+    <path id="bryn-eve" class="edge directed" d="M 200 140 q 50 -60 150 -80" marker-start="url(#arrowhead-bidir)"
+          marker-end="url(#arrowhead-bidir)" fill="none"/> <!-- Adjusted path -->
+    <text class="edge-label">
+        <textPath href="#bryn-eve" startOffset="50%">Follows</textPath>
+    </text>
 
-    <line id="eve-julia" class="edge directed" x1="400" y1="90" x2="400" y2="140" /> <!-- Adjusted Y -->
+    <line id="eve-julia" class="edge directed" x1="400" y1="90" x2="400" y2="140"/> <!-- Adjusted Y -->
     <text class="edge-label" x="410" y="115">Follows</text> <!-- Adjusted Y -->
 
     <path id="julia-bryn" class="edge directed" d="M 290 170 L 270 170" fill="none"/> <!-- Adjusted Y -->
     <text class="edge-label" x="280" y="160">Follows</text> <!-- Adjusted Y -->
 
-    <line id="bryn-graphapi" class="edge directed" x1="150" y1="140" x2="150" y2="90" /> <!-- Adjusted Y -->
+    <line id="bryn-graphapi" class="edge directed" x1="150" y1="140" x2="150" y2="90"/> <!-- Adjusted Y -->
     <text class="edge-label" x="160" y="115">Created</text> <!-- Adjusted Y -->
 
     <path id="bryn-alpaca1" class="edge directed" d="M 150 200 L 150 250" fill="none"/> <!-- Adjusted Y -->

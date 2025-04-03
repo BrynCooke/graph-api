@@ -79,7 +79,6 @@ Diagrams should use semantic class names that correspond to the styles in `custo
     * Container: `<g class="edge">`
     * Line/Path: `<line>` or `<path>` within `.edge`
     * Label: `<g class="edge-label"><text>...</text></g>` (uses `--text-color-muted`, small font)
-    * Use `class="halo"` on text elements for readability against complex backgrounds.
     * States: Add classes like `.active`, `.visited`, `.path` to the `<g class="edge">` element.
     * Direction: Add `class="directed"` to the `<g class="edge">` for arrowheads.
 * **Arrowheads (Markers):**
@@ -133,16 +132,8 @@ Diagrams should use semantic class names that correspond to the styles in `custo
       horizontal.
     * For text associated with arrows (like `.step-label` or `.index-pointer`), place the text clearly offset from the
       arrow's path and arrowhead to avoid collision. Consider placing text *above* or *beside* the arrow shaft.
-    * **Text Readability (`halo` class):** Use the `halo` class (defined in `custom.css`) on text elements that might
-      overlap lines or complex backgrounds to ensure readability. This adds a background stroke matching the diagram
-      background.
-
-        * **Apply `halo` to:** Edge labels (`.edge-label text`), query text (`.query-text`), step labels (`.step-label text`), property text (`.property-text`).
-        * **Do NOT apply `halo` to:** Node labels (`.node-label`) or index text (`.index-title`, `.index-key`, `.index-value`, `.index-token`), as these are usually positioned over solid backgrounds where a halo is unnecessary or visually distracting.
-
-      Example usage: `<text class="edge-label halo">...`, `<text class="property-text halo">...`.
 * **Rendering Order:** Ensure text elements are rendered *after* potentially overlapping graphical elements (lines,
-  shapes) within the SVG structure or their respective groups. This prevents lines from being drawn over text halos.
+  shapes) within the SVG structure or their respective groups. This prevents lines from being drawn over text.
 * **Symmetry and Balance:** Strive for a balanced composition. Arrange elements symmetrically where it makes sense for
   the structure being depicted (e.g., in simple tree layouts). Avoid lopsided or visually jarring arrangements. Use
   grid-like alignments for index entries or lists.
@@ -191,8 +182,6 @@ Diagrams should use semantic class names that correspond to the styles in `custo
 *   [ ] Does it use the defined CSS classes for elements (nodes, edges, indexes, etc.)?
 *   [ ] Are states (active, visited, highlighted) applied correctly using classes?
 *   [ ] Is text legible and contrast sufficient in both light and dark modes?
-*   [ ] Does text that might overlap lines or other elements (edge labels, query text, property text, step labels) use the `halo` class?
-*   [ ] Is the `halo` class *not* used on node labels or index text?
 *   [ ] Are text elements rendered *after* potentially overlapping shapes/lines in the SVG structure?
 *   [ ] Has the SVG been optimized (e.g., using `svgo`)?
 

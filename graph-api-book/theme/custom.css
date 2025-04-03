@@ -139,20 +139,15 @@ svg {
     user-select: none;
 }
 
-/* Halo effect for primary text elements in SVGs */
-.halo {
-    stroke: var(--graph-bg); /* Use the page background color */
-    stroke-width: 6px; /* Adjust thickness as needed */
-    paint-order: stroke; /* Ensure stroke is drawn behind the text fill */
-}
 
 /* Apply halo to property text */
 .property-text.halo {
     stroke: var(--graph-bg);
     stroke-width: 10px;
-    stroke-opacity: 0.9;
     stroke-linejoin: round;
     paint-order: stroke;
+    pointer-events: none;
+    user-select: none;
 }
 
 .property-text tspan {
@@ -171,12 +166,12 @@ svg {
     stroke-width: var(--stroke-width-normal);
 }
 
-.edge-label text {
+.edge-label {
     fill: var(--text-color-muted); /* Ensure default fill is set */
     font-size: var(--font-size-small);
     text-anchor: middle;
     stroke: var(--graph-bg);
-    stroke-width: 3px;
+    stroke-width: 10px;
     stroke-linejoin: round;
     paint-order: stroke;
     pointer-events: none;
@@ -468,7 +463,6 @@ svg {
 }
 
 .step-label text.code {
-    font-family: monospace;
     fill: var(--accent-primary); /* Use accent for the step name/code */
 }
 

@@ -130,11 +130,11 @@
         <!-- Property Text (Rendered Last within Graph Group) -->
         <g id="property-texts-group">
             <!-- Positioned below nodes -->
-            <text class="property-text halo" x="80" y="100">{desc: "Fast graph library"}
+            <text class="property-text" x="80" y="100">{desc: "Fast graph library"}
             </text>  <!-- Node A: 80, 70+30 -->
-            <text class="property-text halo" x="200" y="180">{desc: "Library for graph traversal"}
+            <text class="property-text" x="200" y="180">{desc: "Library for graph traversal"}
             </text> <!-- Node B: 230, 150+30 -->
-            <text class="property-text halo" x="80" y="260">{desc: "Efficient traversal..."}
+            <text class="property-text" x="80" y="260">{desc: "Efficient traversal..."}
             </text> <!-- Node C: 80, 230+30 -->
         </g>
 
@@ -142,6 +142,6 @@
 
     <!-- === Query Text === -->
     <!-- Positioned below index box (ends at y=300), centered at x=140 (20+120) -->
-    <text class="query-text halo" x="140" y="340">Query: description CONTAINS "traversal"</text>
+    <text class="query-text" x="140" y="340">Query: description CONTAINS "traversal"</text>
 
 </svg>

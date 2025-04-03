@@ -20,19 +20,24 @@
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-         <marker id="arrowhead-bidir" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead-bidir" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
         </marker>
     </defs>
-    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">push_context()</tspan></text>
+    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
+        <tspan class="code">push_context()</tspan>
+    </text>
 
     <!-- State 1: Before Context -->
     <text x="100" y="60" class="text-color-muted" text-anchor="middle">Before Context</text>
     <g class="node highlighted" transform="translate(100, 100)">
-        <circle r="20"></circle><text class="node-label">V1</text>
+        <circle r="20"></circle>
+        <text class="node-label">V1</text>
     </g>
     <g class="node" transform="translate(200, 100)">
-        <circle r="20"></circle><text class="node-label">V2</text>
+        <circle r="20"></circle>
+        <text class="node-label">V2</text>
     </g>
     <line class="edge directed" x1="120" y1="100" x2="180" y2="100" marker-end="url(#arrowhead)"/>
 
@@ -43,10 +48,12 @@
     <!-- State 2: After Context (at V1) -->
     <text x="100" y="210" class="text-color-muted" text-anchor="middle">After Context (at V1)</text>
     <g class="node highlighted" transform="translate(100, 250)">
-        <circle r="20"></circle><text class="node-label">V1</text>
+        <circle r="20"></circle>
+        <text class="node-label">V1</text>
     </g>
     <g class="node" transform="translate(200, 250)">
-        <circle r="20"></circle><text class="node-label">V2</text>
+        <circle r="20"></circle>
+        <text class="node-label">V2</text>
     </g>
     <line class="edge directed" x1="120" y1="250" x2="180" y2="250" marker-end="url(#arrowhead)"/>
 
@@ -57,27 +64,31 @@
         <text class="index-value range" y="20">"V1_ID"</text>
     </g>
     <!-- Link Context to State 2 -->
-    <line class="index-pointer" x1="100" y1="230" x2="275" y2="100" marker-start="url(#arrowhead-bidir)" marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
+    <line class="index-pointer" x1="100" y1="230" x2="275" y2="100" marker-start="url(#arrowhead-bidir)"
+          marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
 
     <!-- State 3: Later (at V2) -->
-     <text x="400" y="210" class="text-color-muted" text-anchor="middle">Later (at V2)</text>
+    <text x="400" y="210" class="text-color-muted" text-anchor="middle">Later (at V2)</text>
     <g class="node" transform="translate(350, 250)">
-        <circle r="20"></circle><text class="node-label">V1</text>
+        <circle r="20"></circle>
+        <text class="node-label">V1</text>
     </g>
     <g class="node highlighted" transform="translate(450, 250)">
-        <circle r="20"></circle><text class="node-label">V2</text>
+        <circle r="20"></circle>
+        <text class="node-label">V2</text>
     </g>
     <line class="edge directed" x1="370" y1="250" x2="430" y2="250" marker-end="url(#arrowhead)"/>
 
     <!-- Context Box 2 (Same context, linked to new position) -->
-     <g transform="translate(350, 100)"> <!-- Position remains same -->
+    <g transform="translate(350, 100)"> <!-- Position remains same -->
         <!-- Re-draw context box to show it's still there -->
-         <rect class="index-box" x="-75" y="-25" width="150" height="50"/>
-         <text class="index-title" y="-5">Context</text>
-         <text class="index-value range" y="20">"V1_ID"</text>
-     </g>
+        <rect class="index-box" x="-75" y="-25" width="150" height="50"/>
+        <text class="index-title" y="-5">Context</text>
+        <text class="index-value range" y="20">"V1_ID"</text>
+    </g>
     <!-- Link Context to State 3 -->
-    <line class="index-pointer" x1="450" y1="230" x2="425" y2="125" marker-start="url(#arrowhead-bidir)" marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
+    <line class="index-pointer" x1="450" y1="230" x2="425" y2="125" marker-start="url(#arrowhead-bidir)"
+          marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
     <text x="400" y="160" class="text-color-muted" font-size="12px">Context travels with walker</text>
 
 </svg>

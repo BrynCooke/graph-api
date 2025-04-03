@@ -17,45 +17,63 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">mutate()</tspan></text>
-    <text x="300" y="50" class="text-color-muted" font-size="12px" text-anchor="middle">(Requires <tspan class="code">walk_mut()</tspan>)</text>
+    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
+        <tspan class="code">mutate()</tspan>
+    </text>
+    <text x="300" y="50" class="text-color-muted" font-size="12px" text-anchor="middle">(Requires <tspan class="code">
+        walk_mut()</tspan>)
+    </text>
 
     <!-- Before Mutate -->
     <g id="before-step" transform="translate(50, 70)">
         <text class="step-label" x="150" y="0" text-anchor="middle">Before mutate()</text>
         <g class="node highlighted" transform="translate(50, 50)">
-            <circle r="20"></circle><text class="node-label">V1</text>
-            <text class="property-text halo" y="30">status: Old</text>
+            <circle r="20"></circle>
+            <text class="node-label">V1</text>
+            <text class="property-text" y="30">status: Old</text>
         </g>
         <g class="node highlighted" transform="translate(150, 50)">
-            <circle r="20"></circle><text class="node-label">V2</text>
-            <text class="property-text halo" y="30">status: Old</text>
+            <circle r="20"></circle>
+            <text class="node-label">V2</text>
+            <text class="property-text" y="30">status: Old</text>
         </g>
         <g class="node highlighted" transform="translate(250, 50)">
-            <circle r="20"></circle><text class="node-label">V3</text>
-            <text class="property-text halo" y="30">status: Old</text>
+            <circle r="20"></circle>
+            <text class="node-label">V3</text>
+            <text class="property-text" y="30">status: Old</text>
         </g>
     </g>
 
-     <!-- Step Arrow -->
+    <!-- Step Arrow -->
     <line class="step-arrow" x1="150" y1="130" x2="150" y2="170" marker-end="url(#arrowhead-pointer)"/>
     <text x="165" y="155" class="text-color-muted" font-size="12px">mutate(|v| v.status = New)</text>
 
     <!-- After Mutate -->
     <g id="after-step" transform="translate(250, 70)">
-         <text class="step-label" x="150" y="0" text-anchor="middle">After mutate()</text>
+        <text class="step-label" x="150" y="0" text-anchor="middle">After mutate()</text>
         <g class="node highlighted" transform="translate(50, 50)">
-            <circle r="20"></circle><text class="node-label">V1</text>
-            <text class="property-text halo" y="30">status: <tspan fill="var(--accent-secondary)">New</tspan></text>
+            <circle r="20"></circle>
+            <text class="node-label">V1</text>
+            <text class="property-text" y="30">status:
+                <tspan fill="var(--accent-secondary)">New</tspan>
+            </text>
         </g>
         <g class="node highlighted" transform="translate(150, 50)">
-            <circle r="20"></circle><text class="node-label">V2</text>
-            <text class="property-text halo" y="30">status: <tspan fill="var(--accent-secondary)">New</tspan></text>
+            <circle r="20"></circle>
+            <text class="node-label">V2</text>
+            <text class="property-text" y="30">status:
+                <tspan fill="var(--accent-secondary)">New</tspan>
+            </text>
         </g>
         <g class="node highlighted" transform="translate(250, 50)">
-            <circle r="20"></circle><text class="node-label">V3</text>
-            <text class="property-text halo" y="30">status: <tspan fill="var(--accent-secondary)">New</tspan></text>
+            <circle r="20"></circle>
+            <text class="node-label">V3</text>
+            <text class="property-text" y="30">status:
+                <tspan fill="var(--accent-secondary)">New</tspan>
+            </text>
         </g>
-        <text x="150" y="110" class="text-color-muted" font-size="12px" text-anchor="middle">Traversal continues with mutated elements</text>
+        <text x="150" y="110" class="text-color-muted" font-size="12px" text-anchor="middle">Traversal continues with
+            mutated elements
+        </text>
     </g>
 </svg>

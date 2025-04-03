@@ -19,19 +19,24 @@
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-         <marker id="arrowhead-bidir" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 z" />
+        <marker id="arrowhead-bidir" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5"
+                markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
         </marker>
     </defs>
-    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">push_default_context()</tspan></text>
+    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
+        <tspan class="code">push_default_context()</tspan>
+    </text>
 
     <!-- State 1: After push_default_context -->
     <text x="150" y="60" class="text-color-muted" text-anchor="middle">After push_default_context</text>
     <g class="node highlighted" transform="translate(150, 100)">
-        <circle r="20"></circle><text class="node-label">A</text>
+        <circle r="20"></circle>
+        <text class="node-label">A</text>
     </g>
     <g class="node" transform="translate(250, 100)">
-        <circle r="20"></circle><text class="node-label">B</text>
+        <circle r="20"></circle>
+        <text class="node-label">B</text>
     </g>
     <line class="edge directed" x1="170" y1="100" x2="230" y2="100" marker-end="url(#arrowhead)"/>
 
@@ -41,16 +46,19 @@
         <text class="index-value range" y="5">element: A</text>
     </g>
     <!-- Link Context 1 -->
-    <line class="index-pointer" x1="150" y1="120" x2="150" y2="150" marker-start="url(#arrowhead-bidir)" marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
+    <line class="index-pointer" x1="150" y1="120" x2="150" y2="150" marker-start="url(#arrowhead-bidir)"
+          marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
     <text x="250" y="175" class="text-color-muted" font-size="12px">Still at A, with A in context</text>
 
     <!-- State 2: Later in traversal -->
     <text x="400" y="60" class="text-color-muted" text-anchor="middle">Later in Traversal</text>
     <g class="node" transform="translate(350, 100)">
-        <circle r="20"></circle><text class="node-label">A</text>
+        <circle r="20"></circle>
+        <text class="node-label">A</text>
     </g>
     <g class="node highlighted" transform="translate(450, 100)">
-        <circle r="20"></circle><text class="node-label">B</text>
+        <circle r="20"></circle>
+        <text class="node-label">B</text>
     </g>
     <line class="edge directed" x1="370" y1="100" x2="430" y2="100" marker-end="url(#arrowhead)"/>
 
@@ -60,7 +68,8 @@
         <text class="index-value range" y="5">element: B</text>
     </g>
     <!-- Link Context 2 -->
-    <line class="index-pointer" x1="450" y1="120" x2="450" y2="150" marker-start="url(#arrowhead-bidir)" marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
+    <line class="index-pointer" x1="450" y1="120" x2="450" y2="150" marker-start="url(#arrowhead-bidir)"
+          marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
     <text x="350" y="220" class="text-color-muted" font-size="12px">Context automatically updates to B</text>
 
 </svg>

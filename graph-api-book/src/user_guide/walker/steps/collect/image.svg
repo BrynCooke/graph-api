@@ -16,18 +16,23 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">collect()</tspan></text>
+    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
+        <tspan class="code">collect()</tspan>
+    </text>
 
     <!-- Walker State (Vertices) -->
     <text x="150" y="60" class="text-color-muted" text-anchor="middle">Walker State</text>
     <g class="node highlighted" transform="translate(80, 100)">
-        <circle r="20"></circle><text class="node-label">V1</text>
+        <circle r="20"></circle>
+        <text class="node-label">V1</text>
     </g>
     <g class="node highlighted" transform="translate(160, 100)">
-        <circle r="20"></circle><text class="node-label">V2</text>
+        <circle r="20"></circle>
+        <text class="node-label">V2</text>
     </g>
     <g class="node highlighted" transform="translate(240, 100)">
-        <circle r="20"></circle><text class="node-label">V3</text>
+        <circle r="20"></circle>
+        <text class="node-label">V3</text>
     </g>
 
     <!-- Step Arrow -->

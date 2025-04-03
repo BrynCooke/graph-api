@@ -53,10 +53,6 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step:
-        <tspan class="code">vertices()</tspan>
-    </text>
-    
     <!-- Index Pointers -->
     <g id="index-pointers-group">
         <!-- Pointers from step text to selected nodes A and C -->
@@ -70,7 +66,7 @@
     <g id="step-representation" class="step-label" transform="translate(30, 150)">
         <!-- Reduced font size explicitly, adjusted position -->
         <text x="0" y="-10" text-anchor="middle" font-size="var(--font-size-small)">graph.walk()</text>
-        <text class="code halo" x="0" y="10" text-anchor="middle" font-size="var(--font-size-small)">
+        <text class="code" x="10" y="10" text-anchor="middle" font-size="var(--font-size-small)">
             .vertices(VertexIndex::person())
         </text>
         <!-- Removed step arrow line, will use index pointers instead -->
@@ -98,22 +94,22 @@
         <g class="node highlighted" id="node-A" transform="translate(80, 50)">
             <circle r="20"></circle>
             <text class="node-label">A</text>
-            <text class="property-text halo" y="30">Person</text>
+            <text class="property-text" y="30">Person</text>
         </g>
         <g class="node" id="node-B" transform="translate(240, 50)">
             <circle r="20"></circle>
             <text class="node-label">B</text>
-            <text class="property-text halo" y="30">Product</text>
+            <text class="property-text" y="30">Product</text>
         </g>
         <g class="node highlighted" id="node-C" transform="translate(80, 180)">
             <circle r="20"></circle>
             <text class="node-label">C</text>
-            <text class="property-text halo" y="30">Person</text>
+            <text class="property-text" y="30">Person</text>
         </g>
         <g class="node" id="node-D" transform="translate(240, 180)">
             <circle r="20"></circle>
             <text class="node-label">D</text>
-            <text class="property-text halo" y="30">Review</text>
+            <text class="property-text" y="30">Review</text>
         </g>
     </g>
 </svg>

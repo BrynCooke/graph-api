@@ -26,14 +26,11 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step:
-        <tspan class="code">edges()</tspan>
-    </text>
-
     <!-- Step Representation (Left) -->
     <g id="step-representation" class="step-label" transform="translate(30, 150)">
-        <text x="0" y="-10" text-anchor="middle" font-size="var(--font-size-small)">walker</text>
-        <text class="code halo" x="0" y="10" text-anchor="middle" font-size="var(--font-size-small)">
+        <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">graph</text>
+        <text x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">.vertices_by_id([A])</text>
+        <text class="code" x="10" y="30" text-anchor="start" font-size="var(--font-size-small)">
             .edges()
         </text>
     </g>
@@ -55,11 +52,11 @@
         </g>
         <g class="edge directed" id="edge-A-B-before">
             <line x1="170" y1="50" x2="280" y2="50" marker-end="url(#arrowhead)"/>
-            <text x="225" y="40" class="edge-label halo">likes</text>
+            <text x="225" y="40" class="edge-label">likes</text>
         </g>
         <g class="edge directed" id="edge-A-C-before">
             <path d="M 170 65 q 65 40 130 70" marker-end="url(#arrowhead)" fill="none"/> <!-- Curved path A->C -->
-            <text x="235" y="95" class="edge-label halo">created</text> <!-- Adjusted label position -->
+            <text x="235" y="95" class="edge-label">created</text> <!-- Adjusted label position -->
         </g>
     </g>
 
@@ -80,12 +77,12 @@
         </g>
         <g class="edge directed highlighted" id="edge-A-B-after">
             <line x1="170" y1="50" x2="280" y2="50" marker-end="url(#arrowhead-highlighted)"/>
-            <text x="225" y="40" class="edge-label halo highlighted">likes</text>
+            <text x="225" y="40" class="edge-label highlighted">likes</text>
         </g>
         <g class="edge directed highlighted" id="edge-A-C-after">
             <path d="M 170 65 q 65 40 130 70" marker-end="url(#arrowhead-highlighted)"
                   fill="none"/> <!-- Curved path A->C -->
-            <text x="235" y="95" class="edge-label halo highlighted">created</text> <!-- Adjusted label position -->
+            <text x="235" y="95" class="edge-label highlighted">created</text> <!-- Adjusted label position -->
         </g>
     </g>
 </svg>

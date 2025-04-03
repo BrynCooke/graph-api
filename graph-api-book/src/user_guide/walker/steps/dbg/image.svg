@@ -21,18 +21,23 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label halo" text-anchor="middle">Walker Step: <tspan class="code">dbg()</tspan></text>
+    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
+        <tspan class="code">dbg()</tspan>
+    </text>
 
     <!-- Walker State -->
     <text x="180" y="60" class="text-color-muted" text-anchor="middle">Walker Traversal</text>
     <g class="node highlighted" transform="translate(80, 100)">
-        <circle r="20"></circle><text class="node-label">V1</text>
+        <circle r="20"></circle>
+        <text class="node-label">V1</text>
     </g>
     <g class="node highlighted" transform="translate(180, 100)">
-        <circle r="20"></circle><text class="node-label">V2</text>
+        <circle r="20"></circle>
+        <text class="node-label">V2</text>
     </g>
     <g class="node highlighted" transform="translate(280, 100)">
-        <circle r="20"></circle><text class="node-label">V3</text>
+        <circle r="20"></circle>
+        <text class="node-label">V3</text>
     </g>
     <line class="edge directed path" x1="100" y1="100" x2="160" y2="100" marker-end="url(#arrowhead)"/>
     <line class="edge directed path" x1="200" y1="100" x2="260" y2="100" marker-end="url(#arrowhead)"/>

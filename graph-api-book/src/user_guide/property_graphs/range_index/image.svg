@@ -122,16 +122,16 @@
         <!-- Property Text (Rendered Last within Graph Group) -->
         <g id="property-texts-group">
             <!-- Positioned below nodes -->
-            <text class="property-text halo" x="80" y="80">{age: 25, ...}</text>  <!-- Node A: 80, 50+30 -->
-            <text class="property-text halo" x="230" y="80">{age: 35, ...}</text>    <!-- Node B: 230, 50+30 -->
-            <text class="property-text halo" x="80" y="230">{age: 42, ...}</text>  <!-- Node C: 80, 200+30 -->
-            <text class="property-text halo" x="230" y="230">{age: 35, ...}</text><!-- Node D: 230, 200+30 -->
+            <text class="property-text" x="80" y="80">{age: 25, ...}</text>  <!-- Node A: 80, 50+30 -->
+            <text class="property-text" x="230" y="80">{age: 35, ...}</text>    <!-- Node B: 230, 50+30 -->
+            <text class="property-text" x="80" y="230">{age: 42, ...}</text>  <!-- Node C: 80, 200+30 -->
+            <text class="property-text" x="230" y="230">{age: 35, ...}</text><!-- Node D: 230, 200+30 -->
         </g>
 
     </g> <!-- End of graph-group -->
 
     <!-- === Query Text === -->
     <!-- Positioned below index box (ends at y=280), centered at x=130 (20+110) -->
-    <text class="query-text halo" x="130" y="310">Query: age >= 35</text>
+    <text class="query-text" x="130" y="310">Query: age >= 35</text>
 
 </svg>

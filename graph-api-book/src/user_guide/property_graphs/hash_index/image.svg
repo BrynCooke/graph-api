@@ -119,16 +119,16 @@
         <g id="property-texts-group">
             <!-- Coordinates relative to graph-group origin (300, 40) -->
             <!-- Positioned below nodes -->
-            <text class="property-text halo" x="80" y="80">{name: "Alice", ...}</text>  <!-- Node A: 80, 50+30 -->
-            <text class="property-text halo" x="230" y="80">{name: "Bob", ...}</text>    <!-- Node B: 230, 50+30 -->
-            <text class="property-text halo" x="80" y="210">{name: "Alice", ...}</text>  <!-- Node C: 80, 180+30 -->
-            <text class="property-text halo" x="230" y="210">{name: "Charlie", ...}</text><!-- Node D: 230, 180+30 -->
+            <text class="property-text" x="80" y="80">{name: "Alice", ...}</text>  <!-- Node A: 80, 50+30 -->
+            <text class="property-text" x="230" y="80">{name: "Bob", ...}</text>    <!-- Node B: 230, 50+30 -->
+            <text class="property-text" x="80" y="210">{name: "Alice", ...}</text>  <!-- Node C: 80, 180+30 -->
+            <text class="property-text" x="230" y="210">{name: "Charlie", ...}</text><!-- Node D: 230, 180+30 -->
         </g>
 
     </g> <!-- End of graph-group -->
 
     <!-- === Query Text === -->
     <!-- Positioned below index box (ends at y=230), centered at x=130 (20+110) -->
-    <text class="query-text halo" x="130" y="260">Query: name = "Alice"</text>
+    <text class="query-text" x="130" y="260">Query: name = "Alice"</text>
 
 </svg>
