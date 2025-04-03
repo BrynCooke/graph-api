@@ -25,8 +25,16 @@
         <tspan class="code">filter()</tspan>
     </text>
 
-    <!-- Before filter() step -->
-    <g id="before-step" transform="translate(50, 50)">
+    <!-- Step Representation (Left) -->
+    <g id="step-representation" class="step-label" transform="translate(30, 150)">
+        <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">walker</text>
+        <text class="code" x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">
+            .filter(|v| v.age > 30)
+        </text>
+    </g>
+
+    <!-- Before filter() step (Top Right) -->
+    <g id="before-step" transform="translate(200, 50)"> <!-- Shifted right -->
         <text class="step-label" x="150" y="0" text-anchor="middle">Before filter()</text>
         <g class="node highlighted" id="node-A-before" transform="translate(50, 50)">
             <circle r="20"></circle>
