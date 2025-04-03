@@ -10,11 +10,10 @@ Context step diagram showing context value traveling with the walker
 
 In this diagram:
 
-- The walker starts at **V1**.
-- The **`push_context(|v| v.id)`** step is applied.
-- A **Context box** containing `"V1_ID"` is created and linked to the walker (still at V1).
-- Later, the walker moves to **V2**.
-- The **Context box** (still containing `"V1_ID"`) remains linked to the walker, demonstrating that context travels with the traversal state.
+- **Before `push_context()`**: The walker is positioned at vertex **V1**.
+- The **code snippet** on the left shows the `.push_context(|v| v.id)` step being applied.
+- **After `push_context()`**: The walker is still at **V1**, but now has an associated **Context box** containing the value `"V1_ID"` (the result of the context function).
+- **Later (at V2)**: The walker has moved to vertex **V2**. The **Context box** (still containing `"V1_ID"`) remains associated with the walker, demonstrating that the context value travels along with the traversal state.
 
 ## Methods for Adding Context
 

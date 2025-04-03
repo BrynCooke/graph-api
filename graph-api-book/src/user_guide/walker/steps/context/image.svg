@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height -->
     <title>Push Context Step Diagram</title>
     <desc>
         Diagram illustrating the 'push_context' step:
         - Shows the walker state before the step, positioned at V1.
         - Represents the step with the code `push_context(|v| v.id)`.
-        - Shows the walker state after the step, still positioned at V1.
-        - A context box is introduced, containing the value "V1_ID".
-        - A pointer links the walker state to the context box, indicating the context travels with the walker.
-        - Shows the walker moving to V2, with the context box still attached.
+        - Shows the walker state after the step, still positioned at V1, but with context "V1_ID".
+        - Shows a later state where the walker has moved to V2, but the context "V1_ID" remains.
     </desc>
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
@@ -25,70 +23,73 @@
             <path d="M 0 0 L 10 5 L 0 10 z"/>
         </marker>
     </defs>
-    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
-        <tspan class="code">push_context()</tspan>
-    </text>
 
-    <!-- State 1: Before Context -->
-    <text x="100" y="60" class="text-color-muted" text-anchor="middle">Before Context</text>
-    <g class="node highlighted" transform="translate(100, 100)">
-        <circle r="20"></circle>
-        <text class="node-label">V1</text>
+    <!-- Step Representation (Left) -->
+    <g id="step-representation" class="step-label" transform="translate(30, 220)"> <!-- Centered vertically -->
+        <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">walker</text>
+        <text class="code" x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">
+            .push_context(|v| v.id)
+        </text>
     </g>
-    <g class="node" transform="translate(200, 100)">
-        <circle r="20"></circle>
-        <text class="node-label">V2</text>
-    </g>
-    <line class="edge directed" x1="120" y1="100" x2="180" y2="100" marker-end="url(#arrowhead)"/>
 
-    <!-- Step Arrow -->
-    <line class="step-arrow" x1="100" y1="130" x2="100" y2="180" marker-end="url(#arrowhead-pointer)"/>
-    <text x="115" y="160" class="text-color-muted" font-size="12px">push_context(|v| v.id)</text>
+    <!-- Before push_context() step (Top Right) -->
+    <g id="before-step" transform="translate(200, 20)">
+        <text class="step-label" x="150" y="0" text-anchor="middle">Before push_context()</text>
+        <g class="node highlighted" id="node-V1-before" transform="translate(150, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V1</text>
+        </g>
+        <g class="node" id="node-V2-before" transform="translate(300, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V2</text>
+        </g>
+        <line class="edge directed" x1="170" y1="50" x2="280" y2="50" marker-end="url(#arrowhead)"/>
+    </g>
 
-    <!-- State 2: After Context (at V1) -->
-    <text x="100" y="210" class="text-color-muted" text-anchor="middle">After Context (at V1)</text>
-    <g class="node highlighted" transform="translate(100, 250)">
-        <circle r="20"></circle>
-        <text class="node-label">V1</text>
+    <!-- After push_context() step (Middle Right) -->
+    <g id="after-step" transform="translate(200, 160)">
+        <text class="step-label" x="150" y="0" text-anchor="middle">After push_context()</text>
+        <g class="node highlighted" id="node-V1-after" transform="translate(150, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V1</text>
+        </g>
+        <g class="node" id="node-V2-after" transform="translate(300, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V2</text>
+        </g>
+        <line class="edge directed" x1="170" y1="50" x2="280" y2="50" marker-end="url(#arrowhead)"/>
+        <!-- Context Box -->
+        <g transform="translate(150, 110)">
+            <rect class="index-box" x="-75" y="-20" width="150" height="40"/>
+            <text class="index-title" y="-5">Context</text>
+            <text class="index-value range" y="15">"V1_ID"</text>
+        </g>
+        <!-- Link Context -->
+        <line class="index-pointer" x1="150" y1="70" x2="150" y2="90" marker-start="url(#arrowhead-bidir)"
+              marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
     </g>
-    <g class="node" transform="translate(200, 250)">
-        <circle r="20"></circle>
-        <text class="node-label">V2</text>
-    </g>
-    <line class="edge directed" x1="120" y1="250" x2="180" y2="250" marker-end="url(#arrowhead)"/>
 
-    <!-- Context Box 1 -->
-    <g transform="translate(350, 100)">
-        <rect class="index-box" x="-75" y="-25" width="150" height="50"/>
-        <text class="index-title" y="-5">Context</text>
-        <text class="index-value range" y="20">"V1_ID"</text>
+    <!-- Later in Traversal (Bottom Right) -->
+    <g id="later-step" transform="translate(200, 320)">
+        <text class="step-label" x="150" y="0" text-anchor="middle">Later (at V2)</text>
+        <g class="node" id="node-V1-later" transform="translate(150, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V1</text>
+        </g>
+        <g class="node highlighted" id="node-V2-later" transform="translate(300, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V2</text>
+        </g>
+        <line class="edge directed" x1="170" y1="50" x2="280" y2="50" marker-end="url(#arrowhead)"/>
+        <!-- Context Box (Same context) -->
+        <g transform="translate(300, 110)"> <!-- Positioned relative to V2 -->
+            <rect class="index-box" x="-75" y="-20" width="150" height="40"/>
+            <text class="index-title" y="-5">Context</text>
+            <text class="index-value range" y="15">"V1_ID"</text>
+        </g>
+        <!-- Link Context -->
+        <line class="index-pointer" x1="300" y1="70" x2="300" y2="90" marker-start="url(#arrowhead-bidir)"
+              marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
+        <text x="150" y="140" class="text-color-muted" font-size="12px" text-anchor="middle">Context travels with walker</text>
     </g>
-    <!-- Link Context to State 2 -->
-    <line class="index-pointer" x1="100" y1="230" x2="275" y2="100" marker-start="url(#arrowhead-bidir)"
-          marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
-
-    <!-- State 3: Later (at V2) -->
-    <text x="400" y="210" class="text-color-muted" text-anchor="middle">Later (at V2)</text>
-    <g class="node" transform="translate(350, 250)">
-        <circle r="20"></circle>
-        <text class="node-label">V1</text>
-    </g>
-    <g class="node highlighted" transform="translate(450, 250)">
-        <circle r="20"></circle>
-        <text class="node-label">V2</text>
-    </g>
-    <line class="edge directed" x1="370" y1="250" x2="430" y2="250" marker-end="url(#arrowhead)"/>
-
-    <!-- Context Box 2 (Same context, linked to new position) -->
-    <g transform="translate(350, 100)"> <!-- Position remains same -->
-        <!-- Re-draw context box to show it's still there -->
-        <rect class="index-box" x="-75" y="-25" width="150" height="50"/>
-        <text class="index-title" y="-5">Context</text>
-        <text class="index-value range" y="20">"V1_ID"</text>
-    </g>
-    <!-- Link Context to State 3 -->
-    <line class="index-pointer" x1="450" y1="230" x2="425" y2="125" marker-start="url(#arrowhead-bidir)"
-          marker-end="url(#arrowhead-bidir)" stroke-dasharray="none"/>
-    <text x="400" y="160" class="text-color-muted" font-size="12px">Context travels with walker</text>
-
 </svg>
