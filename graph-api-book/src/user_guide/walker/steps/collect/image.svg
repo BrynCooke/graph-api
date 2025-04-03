@@ -5,7 +5,7 @@
     <desc>
         Diagram illustrating the 'collect' step:
         - Shows a walker state with highlighted vertices V1, V2, V3.
-        - Represents the collect step with the code `.collect::<Vec<_>>()`.
+        - Represents the collect step with the code `.collect::&lt;Vec&lt;_&gt;&gt;()`.
         - Shows the result as a collection box (Vec) containing [V1, V2, V3].
         - Indicates that the traversal terminates after this step.
     </desc>
