@@ -21,10 +21,6 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
-        <tspan class="code">filter()</tspan>
-    </text>
-
     <!-- Step Representation (Left) -->
     <g id="step-representation" class="step-label" transform="translate(30, 150)">
         <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">walker</text>
