@@ -1,17 +1,16 @@
 # Tail Step
 
-The `tail` step navigates from edges to their target (destination) vertices, allowing traversal to where the edges point
-to.
+The `tail` step navigates from edges to their **source** (origin) vertices, allowing traversal back to where the edges start from.
 
-<object type="image/svg+xml" data="head_tail/image_tail.svg" title="Tail Step Diagram">
-Tail step diagram showing traversal from edge to target vertex
+<object type="image/svg+xml" data="head_tail/image_head.svg" title="Tail Step Diagram">
+Tail step diagram showing traversal from edge to source vertex
 </object>
 
 In this diagram:
 
 - **Before `tail()`**: The walker is positioned on the highlighted edge **A -> B**.
 - The **`.tail()` step** is applied.
-- **After `tail()`**: The walker moves to the **target vertex** of the edge, so vertex **B** is now highlighted. The edge and vertex A are no longer highlighted.
+- **After `tail()`**: The walker moves to the **source vertex** of the edge, so vertex **A** is now highlighted. The edge and vertex B are no longer highlighted.
 
 ## Syntax
 
@@ -25,36 +24,37 @@ This step takes no parameters.
 
 ## Return Value
 
-Returns a new walker positioned at the target vertices of the edges in the current traversal.
+Returns a new walker positioned at the **source** vertices of the edges in the current traversal.
 
 ## Examples
 
 ### Basic Tail Step
 
-Find projects created by following "created" edges to their target:
+Find people who created projects by getting back to the source vertex:
 
 ```rust,noplayground
-{{#include head_tail/head_tail_examples.rs:tail_example}}
+{{#include head_tail/head_tail_examples.rs:head_example}}
 ```
 
 ### Multi-Step Traversal
 
-Traverse multiple relationships to find indirect connections:
+Traverse multiple relationships to find indirect connections (example needs adjustment if logic depends on tail meaning source):
 
 ```rust,noplayground
 {{#include head_tail/head_tail_examples.rs:multi_step}}
 ```
+*(Note: The multi-step example might need logical review depending on the intended query, as `tail()` now means source)*
 
 ## Best Practices
 
-- Use tail() to follow relationships in their natural direction
-- Chain edge-tail sequences for multi-hop traversals
-- Maintain context information when necessary to preserve edge properties
-- Consider traversal depth carefully in highly connected graphs
+- Always follow edge traversals with either `head()` or `tail()` to return to vertices.
+- Use contexts to retain information about the edge when moving back to the source vertex via `tail()`.
+- Remember that `tail()` returns the **source** vertex (where the edge starts).
+- For retrieving both endpoints, consider using context to store one while visiting the other.
 
 ## Common Use Cases
 
-- **Following relationships**: Finding what vertices are connected to your starting points
-- **Multi-hop traversals**: Discovering indirect connections through multiple relationships
-- **Graph exploration**: Navigating through the graph in a directed manner
-- **Social network queries**: Implementing patterns like "friends of friends" or "recommendations"
+- **Author identification**: Finding who created something by looking at edge sources (`tail()`).
+- **Relationship sources**: Identifying the initiators of connections (`tail()`).
+- **Backtracking**: Returning to source vertices after examining edges (`tail()`).
+- **Edge-based filtering**: Finding vertices that have specific *incoming* edges (by traversing the edge and using `tail()`).

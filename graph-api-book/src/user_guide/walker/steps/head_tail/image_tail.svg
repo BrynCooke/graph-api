@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
-    <title>Tail Step Diagram</title>
+    <title>Head Step Diagram</title>
     <desc>
-        Diagram illustrating the 'tail' step:
+        Diagram illustrating the 'head' step:
         - Shows the walker state positioned on the edge A->B (follows), which is highlighted.
-        - The 'tail()' step is applied.
-        - After the step, the walker is positioned on vertex B (the target/tail of the edge), which is now highlighted.
+        - The 'head()' step is applied.
+        - After the step, the walker is positioned on vertex B (the target/head of the edge), which is now highlighted.
         - The edge A->B and vertex A are no longer highlighted.
     </desc>
     <defs>
@@ -30,13 +30,13 @@
         <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">walker</text>
         <text x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">.edges(EdgeSearch::scan())</text>
         <text class="code" x="10" y="30" text-anchor="start" font-size="var(--font-size-small)">
-            .tail()
+            .head()
         </text>
     </g>
 
-    <!-- Before tail() step (Top Right) -->
+    <!-- Before head() step (Top Right) -->
     <g id="before-step" transform="translate(200, 20)">
-        <text class="step-label" x="150" y="0" text-anchor="middle">Before tail()</text>
+        <text class="step-label" x="150" y="0" text-anchor="middle">Before head()</text>
         <g class="node" id="node-A-before" transform="translate(150, 50)">
             <circle r="20"></circle>
             <text class="node-label">A</text>
@@ -51,9 +51,9 @@
         </g>
     </g>
 
-    <!-- After tail() step (Bottom Right) -->
+    <!-- After head() step (Bottom Right) -->
     <g id="after-step" transform="translate(200, 180)">
-        <text class="step-label" x="150" y="0" text-anchor="middle">After tail()</text>
+        <text class="step-label" x="150" y="0" text-anchor="middle">After head()</text>
         <g class="node" id="node-A-after" transform="translate(150, 50)">
             <circle r="20"></circle>
             <text class="node-label">A</text>

@@ -1,17 +1,16 @@
 # Head Step
 
-The `head` step navigates from edges to their source (origin) vertices, allowing traversal back to where the edges start
-from.
+The `head` step navigates from edges to their **target** (destination) vertices, allowing traversal to where the edges point to.
 
-<object type="image/svg+xml" data="head_tail/image_head.svg" title="Head Step Diagram">
-Head step diagram showing traversal from edge to source vertex
+<object type="image/svg+xml" data="head_tail/image_tail.svg" title="Head Step Diagram">
+Head step diagram showing traversal from edge to target vertex
 </object>
 
 In this diagram:
 
 - **Before `head()`**: The walker is positioned on the highlighted edge **A -> B**.
 - The **`.head()` step** is applied.
-- **After `head()`**: The walker moves to the **source vertex** of the edge, so vertex **A** is now highlighted. The edge and vertex B are no longer highlighted.
+- **After `head()`**: The walker moves to the **target vertex** of the edge, so vertex **B** is now highlighted. The edge and vertex A are no longer highlighted.
 
 ## Syntax
 
@@ -25,26 +24,26 @@ This step takes no parameters.
 
 ## Return Value
 
-Returns a new walker positioned at the source vertices of the edges in the current traversal.
+Returns a new walker positioned at the **target** vertices of the edges in the current traversal.
 
 ## Example
 
-Find people who created projects by getting back to the source vertex:
+Find projects created by following "created" edges to their target:
 
 ```rust,noplayground
-{{#include head_tail/head_tail_examples.rs:head_example}}
+{{#include head_tail/head_tail_examples.rs:tail_example}}
 ```
 
 ## Best Practices
 
-- Always follow edge traversals with either head() or tail() to return to vertices
-- Use contexts to retain information about the edge when moving to vertices
-- Remember that head() returns the source vertex (where the edge starts)
-- For retrieving both endpoints, consider using context to store one while visiting the other
+- Use `head()` to follow relationships in their natural direction (to the target).
+- Chain edge-head sequences for multi-hop traversals towards targets.
+- Maintain context information when necessary to preserve edge properties while moving to the target.
+- Consider traversal depth carefully in highly connected graphs when following edges.
 
 ## Common Use Cases
 
-- **Author identification**: Finding who created something by looking at edge sources
-- **Relationship sources**: Identifying the initiators of connections
-- **Backtracking**: Returning to source vertices after examining edges
-- **Edge-based filtering**: Finding vertices that have specific outgoing edges
+- **Following relationships**: Finding what vertices are connected *to* your starting points (targets).
+- **Multi-hop traversals**: Discovering indirect connections through multiple relationships towards targets.
+- **Graph exploration**: Navigating through the graph in a directed manner towards targets.
+- **Social network queries**: Implementing patterns like "friends of friends" or "recommendations" by moving to targets.
