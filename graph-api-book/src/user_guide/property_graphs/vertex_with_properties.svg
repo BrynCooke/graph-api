@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
+    <title>Vertex with Properties</title>
+    <desc>A single graph vertex representing a Person with associated properties.</desc>
+    <defs>
+        <!-- No markers needed -->
+    </defs>
+    <g class="node" id="node-bryn" transform="translate(150, 75)">
+        <circle r="30"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="25">name: Bryn</text>
+        <text class="property-text" y="40">age: 28</text>
+    </g>
+</svg>
