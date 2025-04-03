@@ -122,6 +122,11 @@ svg {
     text-anchor: middle;
     dominant-baseline: hanging;
     user-select: none;
+    stroke: var(--graph-bg);
+    stroke-width: 10px;
+    stroke-linejoin: round;
+    paint-order: stroke;
+    pointer-events: none;
 }
 
 /* Style for the 'X' mark on filtered out elements */
@@ -371,7 +376,7 @@ svg {
 .node.highlighted ellipse,
 .node.highlighted rect {
     stroke: var(--highlight-stroke);
-    stroke-width: var(--stroke-width-thick);
+    stroke-width: var(--stroke-width-extra-thick);
 }
 
 /* Highlight variations for different index types and general highlighted entries */
@@ -464,6 +469,12 @@ svg {
 
 .step-label text.code {
     fill: var(--accent-primary); /* Use accent for the step name/code */
+    stroke: var(--graph-bg);
+    stroke-width: 10px;
+    stroke-linejoin: round;
+    paint-order: stroke;
+    pointer-events: none;
+    user-select: none;
 }
 
 .step-arrow {

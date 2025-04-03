@@ -56,9 +56,9 @@
     <!-- Index Pointers -->
     <g id="index-pointers-group">
         <!-- Pointers from step text to selected nodes A and C -->
-        <path class="index-pointer" d="M 200 160 Q 250 100 313 83"
+        <path class="index-pointer" d="M 200 160 Q 250 100 310 100"
               marker-end="url(#arrowhead-pointer)"/> <!-- To A -->
-        <path class="index-pointer" d="M 200 160 Q 250 200 313 213"
+        <path class="index-pointer" d="M 200 160 Q 250 200 310 225"
               marker-end="url(#arrowhead-pointer)"/> <!-- To C -->
     </g>
 
