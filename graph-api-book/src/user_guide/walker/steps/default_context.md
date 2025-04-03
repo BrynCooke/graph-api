@@ -10,9 +10,10 @@ Default Context step diagram showing the current element being stored in context
 
 In this diagram:
 
-- After `push_default_context` is called while the walker is at **A**, the context box shows **`element: A`**.
-- Later, when the walker moves to **B**, the context box automatically updates to show **`element: B`**.
-- This demonstrates how the default context tracks the current element without manual updates.
+- **Before `push_default_context()`**: The walker is positioned at vertex **A**.
+- The **code snippet** on the left shows the `.push_default_context()` step being applied.
+- **After `push_default_context()`**: The walker is still at **A**, but now has an associated **Context box** containing `element: A`.
+- **Later (at B)**: The walker has moved to vertex **B**. The **Context box** automatically updates to contain `element: B`, demonstrating that the default context tracks the current element.
 
 ## Syntax
 
