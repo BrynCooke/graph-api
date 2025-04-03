@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
     <title>First Step Diagram</title>
     <desc>
         Diagram illustrating the 'first' step:
         - Shows a walker state with highlighted vertices A, B, C, D.
-        - A step arrow points to the 'first()' operation.
-        - The result shows only vertex A highlighted.
-        - Vertices B, C, D are shown faded, indicating they were discarded.
-        - A final result box shows 'Some(A)', indicating the Option result.
-        - Indicates that the traversal terminates after this step.
+        - Represents the first step with the code `.first()`.
+        - Shows the traversal state after the step, where only the first vertex (A) remains highlighted.
+        - Vertices B, C, and D are shown faded, indicating they were discarded.
+        - The result `Some(A)` is indicated below the 'After' state.
     </desc>
     <defs>
         <!-- Marker Definitions -->
@@ -21,22 +20,18 @@
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
-                refY="3.5" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L10,3.5 L0,7 Z"/>
-        </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
-                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L8,3 L0,6 Z"/>
-        </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
-        <tspan class="code">first()</tspan>
-    </text>
+    <!-- Step Representation (Left) -->
+    <g id="step-representation" class="step-label" transform="translate(30, 150)">
+        <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">walker</text>
+        <text class="code" x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">
+            .first()
+        </text>
+    </g>
 
-    <!-- Before first() step -->
-    <g id="before-step" transform="translate(50, 50)">
+    <!-- Before first() step (Top Right) -->
+    <g id="before-step" transform="translate(200, 20)"> <!-- Adjusted position -->
         <text class="step-label" x="180" y="0" text-anchor="middle">Before first()</text>
         <g class="node highlighted" id="node-A-before" transform="translate(60, 50)">
             <circle r="20"></circle>
@@ -56,12 +51,8 @@
         </g>
     </g>
 
-    <!-- Step Arrow -->
-    <line class="step-arrow" x1="180" y1="100" x2="180" y2="140" marker-end="url(#arrowhead-pointer)"/>
-    <text x="195" y="125" class="text-color-muted" font-size="12px">.first()</text>
-
-    <!-- After first() step -->
-    <g id="after-step" transform="translate(50, 150)">
+    <!-- After first() step (Bottom Right) -->
+    <g id="after-step" transform="translate(200, 180)"> <!-- Adjusted position -->
         <text class="step-label" x="180" y="0" text-anchor="middle">After first()</text>
         <g class="node highlighted" id="node-A-after" transform="translate(60, 50)">
             <circle r="20"></circle>
@@ -79,18 +70,10 @@
             <circle r="20"></circle>
             <text class="node-label">D</text>
         </g>
+        <!-- Result Indication -->
+        <text x="180" y="110" class="text-color-muted" font-size="12px" text-anchor="middle">Result:
+            <tspan class="code">Some(A)</tspan>
+        </text>
+        <text x="180" y="130" class="text-color-muted" font-size="12px" text-anchor="middle">Terminates Traversal</text>
     </g>
-
-    <!-- Option Box Result -->
-    <g id="option-result" transform="translate(450, 100)">
-        <text class="step-label" x="0" y="-10" text-anchor="middle">Result</text>
-        <rect x="-50" y="0" width="100" height="40" rx="8" ry="8"
-              fill="var(--accent-secondary)" fill-opacity="0.15"
-              stroke="var(--accent-secondary)" stroke-width="1.5"/>
-        <text class="code" x="0" y="25" text-anchor="middle" font-weight="bold">Some(A)</text>
-    </g>
-    <!-- Arrow from first vertex to Option result -->
-    <path d="M 120 200 q 150 0 280 -80" class="step-arrow" marker-end="url(#arrowhead-pointer)" fill="none"/>
-    <text x="450" y="160" class="text-color-muted" font-size="12px" text-anchor="middle">Terminates Traversal</text>
-
 </svg>
