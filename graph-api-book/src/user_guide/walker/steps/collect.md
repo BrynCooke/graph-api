@@ -9,10 +9,10 @@ Collect step diagram showing walker state transforming into a collection
 
 In this diagram:
 
-- The **Walker State** shows the elements currently in the traversal (V1, V2, V3), highlighted.
-- The **`collect()` step** transforms these elements.
-- The **Result** is a standard Rust collection (like `Vec`, `HashSet`, etc.) containing the elements.
-- This step **terminates the traversal**.
+- **Before `collect()`**: The walker contains highlighted elements **V1, V2, V3**.
+- The **code snippet** on the left shows the `.collect::<Vec<_>>()` step being applied.
+- **After `collect()`**: The result is shown as a box representing a standard **Rust Collection** (e.g., `Vec`) containing the elements `[V1, V2, V3]`.
+- This step consumes the walker and **terminates the Graph API traversal**.
 
 ## Syntax
 
