@@ -10,11 +10,9 @@ Detour step diagram showing main path branching into a sub-walker and returning 
 
 In this diagram:
 
-- The **Main Path** starts at vertex **A**.
-- The **`detour()` step** initiates a **Detour Sub-Walker** also starting from A.
-- The sub-walker follows a different path (e.g., **A → D → E**).
-- The **results** of the sub-walker (vertex **E**) replace the original element (A) in the main traversal.
-- The **Main Path resumes** from the detour result (**E**), continuing to F.
+- **Before `detour()`**: The main walker is positioned at vertex **A**.
+- **During `detour()`**: The code snippet on the left shows the `.detour()` step being applied. A **Detour Sub-Walker** is initiated from A and explores a separate path (A → D → E). The sub-walker finishes at **E**.
+- **After `detour()`**: The main walker's position is updated to the result of the sub-walker (**E**). The main traversal resumes from E, ready to proceed to the next step (e.g., to F).
 
 ## Syntax
 
