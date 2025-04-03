@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
     <title>Dbg Step Diagram</title>
     <desc>
         Diagram illustrating the 'dbg' step:
-        - Shows a walker traversing elements V1, V2, V3.
-        - The 'dbg()' step is inserted in the traversal chain.
-        - Dashed arrows point from each element to a "Console Output" box.
-        - The console box shows example debug output for each element.
-        - The traversal continues to the next step unaffected by the debug output.
+        - Shows a walker state with highlighted vertices V1, V2, V3.
+        - Represents the dbg step with the code `.dbg("Label")`.
+        - Shows the traversal state after the step, which is identical to the state before.
+        - A separate box indicates the console output triggered by the dbg step.
+        - The traversal continues unaffected.
     </desc>
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
@@ -21,42 +21,57 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
-        <tspan class="code">dbg()</tspan>
-    </text>
-
-    <!-- Walker State -->
-    <text x="180" y="60" class="text-color-muted" text-anchor="middle">Walker Traversal</text>
-    <g class="node highlighted" transform="translate(80, 100)">
-        <circle r="20"></circle>
-        <text class="node-label">V1</text>
-    </g>
-    <g class="node highlighted" transform="translate(180, 100)">
-        <circle r="20"></circle>
-        <text class="node-label">V2</text>
-    </g>
-    <g class="node highlighted" transform="translate(280, 100)">
-        <circle r="20"></circle>
-        <text class="node-label">V3</text>
-    </g>
-    <line class="edge directed path" x1="100" y1="100" x2="160" y2="100" marker-end="url(#arrowhead)"/>
-    <line class="edge directed path" x1="200" y1="100" x2="260" y2="100" marker-end="url(#arrowhead)"/>
-    <line class="edge directed path" x1="300" y1="100" x2="360" y2="100" marker-end="url(#arrowhead)"/>
-    <text x="400" y="105" class="text-color-muted" font-size="12px">Traversal continues...</text>
-
-
-    <!-- Debug Output Box -->
-    <g transform="translate(300, 220)">
-        <rect class="index-box" x="-150" y="-35" width="300" height="70" stroke-dasharray="3 3"/>
-        <text class="index-title" y="-20">Console Output (dbg)</text>
-        <text class="index-value range" y="0" font-family="monospace">- Vertex { id: V1, ... }</text>
-        <text class="index-value range" y="15" font-family="monospace">- Vertex { id: V2, ... }</text>
-        <text class="index-value range" y="30" font-family="monospace">- Vertex { id: V3, ... }</text>
+    <!-- Step Representation (Left) -->
+    <g id="step-representation" class="step-label" transform="translate(30, 150)">
+        <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">walker</text>
+        <text class="code" x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">
+            .dbg("Label")
+        </text>
     </g>
 
-    <!-- Arrows to Debug Output -->
-    <path class="scan-pointer" d="M 80 120 q 0 50 70 85" marker-end="url(#arrowhead-pointer)" fill="none"/>
-    <path class="scan-pointer" d="M 180 120 q 0 65 0 85" marker-end="url(#arrowhead-pointer)" fill="none"/>
-    <path class="scan-pointer" d="M 280 120 q 0 50 -70 85" marker-end="url(#arrowhead-pointer)" fill="none"/>
+    <!-- Before dbg() step (Top Right) -->
+    <g id="before-step" transform="translate(200, 20)"> <!-- Adjusted position -->
+        <text class="step-label" x="150" y="0" text-anchor="middle">Before dbg()</text>
+        <g class="node highlighted" id="node-V1-before" transform="translate(80, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V1</text>
+        </g>
+        <g class="node highlighted" id="node-V2-before" transform="translate(160, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V2</text>
+        </g>
+        <g class="node highlighted" id="node-V3-before" transform="translate(240, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V3</text>
+        </g>
+    </g>
+
+    <!-- After dbg() step (Bottom Right) -->
+    <g id="after-step" transform="translate(200, 180)"> <!-- Adjusted position -->
+        <text class="step-label" x="150" y="0" text-anchor="middle">After dbg()</text>
+        <g class="node highlighted" id="node-V1-after" transform="translate(80, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V1</text>
+        </g>
+        <g class="node highlighted" id="node-V2-after" transform="translate(160, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V2</text>
+        </g>
+        <g class="node highlighted" id="node-V3-after" transform="translate(240, 50)">
+            <circle r="20"></circle>
+            <text class="node-label">V3</text>
+        </g>
+        <!-- Debug Output Box -->
+        <g transform="translate(350, 50)"> <!-- Positioned to the side -->
+            <rect class="index-box" x="-100" y="-35" width="200" height="70" stroke-dasharray="3 3"/>
+            <text class="index-title" y="-20">Console Output (dbg)</text>
+            <text class="index-value range" y="0" font-family="monospace">[Label] V1: ...</text>
+            <text class="index-value range" y="15" font-family="monospace">[Label] V2: ...</text>
+            <text class="index-value range" y="30" font-family="monospace">[Label] V3: ...</text>
+        </g>
+        <!-- Arrow to Debug Output Box -->
+        <path class="scan-pointer" d="M 240 70 q 40 0 90 -5" marker-end="url(#arrowhead-pointer)" fill="none"/>
+        <text x="150" y="110" class="text-color-muted" font-size="12px" text-anchor="middle">Traversal continues unaffected</text>
+    </g>
 
 </svg>

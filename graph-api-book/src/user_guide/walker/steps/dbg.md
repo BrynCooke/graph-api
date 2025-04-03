@@ -9,10 +9,11 @@ Debug step diagram showing traversal state being printed to console
 
 In this diagram:
 
-- The **Walker Traversal** shows elements V1, V2, V3 being processed.
-- The **`dbg()` step** is conceptually inserted between elements.
-- **Dashed arrows** point from each element to the **Console Output** box, indicating that `dbg()` prints information for each element as it passes through.
-- The **traversal continues** to the next step, unaffected by the `dbg()` call.
+- **Before `dbg()`**: The walker contains highlighted elements **V1, V2, V3**.
+- The **code snippet** on the left shows the `.dbg("Label")` step being applied.
+- **After `dbg()`**: The walker state remains **identical** to the "Before" state, with **V1, V2, V3** still highlighted.
+- A separate **Console Output box** is shown, indicating the debug information printed by the `dbg` step for each element.
+- The traversal continues to the next step, **unaffected** by the `dbg`.
 
 ## Syntax
 
