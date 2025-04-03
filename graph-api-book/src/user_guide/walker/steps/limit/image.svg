@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
     <title>Limit Step Diagram</title>
     <desc>
         Diagram illustrating the 'limit' step:
@@ -21,12 +21,16 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
-        <tspan class="code">limit()</tspan>
-    </text>
+    <!-- Step Representation (Left) -->
+    <g id="step-representation" class="step-label" transform="translate(30, 150)">
+        <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">walker</text>
+        <text class="code" x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">
+            .limit(2)
+        </text>
+    </g>
 
-    <!-- Before limit() step -->
-    <g id="before-step" transform="translate(50, 50)">
+    <!-- Before limit() step (Top Right) -->
+    <g id="before-step" transform="translate(200, 20)"> <!-- Adjusted position -->
         <text class="step-label" x="180" y="0" text-anchor="middle">Before limit()</text>
         <g class="node highlighted" id="node-A-before" transform="translate(60, 50)">
             <circle r="20"></circle>
@@ -46,12 +50,8 @@
         </g>
     </g>
 
-    <!-- Step Arrow -->
-    <line class="step-arrow" x1="180" y1="100" x2="180" y2="140" marker-end="url(#arrowhead-pointer)"/>
-    <text x="195" y="125" class="text-color-muted" font-size="12px">.limit(2)</text>
-
-    <!-- After limit() step -->
-    <g id="after-step" transform="translate(50, 150)">
+    <!-- After limit() step (Bottom Right) -->
+    <g id="after-step" transform="translate(200, 180)"> <!-- Adjusted position -->
         <text class="step-label" x="180" y="0" text-anchor="middle">After limit(2)</text>
         <g class="node highlighted" id="node-A-after" transform="translate(60, 50)">
             <circle r="20"></circle>
