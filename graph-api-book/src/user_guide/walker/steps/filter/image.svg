@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height -->
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
     <title>Filter Step Diagram</title>
     <desc>
         Diagram illustrating the 'filter' step:
@@ -30,7 +30,7 @@
     </g>
 
     <!-- Before filter() step (Top Right) -->
-    <g id="before-step" transform="translate(200, 50)"> <!-- Shifted right -->
+    <g id="before-step" transform="translate(200, 20)"> <!-- Adjusted position -->
         <text class="step-label" x="150" y="0" text-anchor="middle">Before filter()</text>
         <g class="node highlighted" id="node-A-before" transform="translate(50, 50)">
             <circle r="20"></circle>
@@ -42,20 +42,15 @@
             <text class="node-label">B</text>
             <text class="property-text" y="30">age=25</text>
         </g>
-        <g class="node highlighted" id="node-C-before" transform="translate(150, 120)"> <!-- Moved C below B -->
+        <g class="node highlighted" id="node-C-before" transform="translate(250, 50)"> <!-- Moved C next to B -->
             <circle r="20"></circle>
             <text class="node-label">C</text>
             <text class="property-text" y="30">age=40</text>
         </g>
     </g>
 
-    <!-- Step Arrow -->
-    <line class="step-arrow" x1="150" y1="160" x2="150" y2="200"
-          marker-end="url(#arrowhead-pointer)"/> <!-- Adjusted Y -->
-    <text x="165" y="185" class="text-color-muted" font-size="12px">.filter(|v| v.age > 30)</text> <!-- Adjusted Y -->
-
-    <!-- After filter() step -->
-    <g id="after-step" transform="translate(250, 50)"> <!-- Adjusted transform for spacing -->
+    <!-- After filter() step (Bottom Right) -->
+    <g id="after-step" transform="translate(200, 180)"> <!-- Adjusted position -->
         <text class="step-label" x="150" y="0" text-anchor="middle">After filter()</text>
         <g class="node highlighted" id="node-A-after" transform="translate(50, 50)">
             <circle r="20"></circle>
@@ -70,7 +65,7 @@
             <line class="filtered-out-mark" x1="-10" y1="-10" x2="10" y2="10"/>
             <line class="filtered-out-mark" x1="-10" y1="10" x2="10" y2="-10"/>
         </g>
-        <g class="node highlighted" id="node-C-after" transform="translate(150, 120)"> <!-- Moved C below B -->
+        <g class="node highlighted" id="node-C-after" transform="translate(250, 50)"> <!-- Moved C next to B -->
             <circle r="20"></circle>
             <text class="node-label">C</text>
             <text class="property-text" y="30">age=40</text>
