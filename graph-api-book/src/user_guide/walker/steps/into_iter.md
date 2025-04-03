@@ -10,9 +10,9 @@ Into Iterator step diagram showing walker state converting to a Rust iterator
 
 In this diagram:
 
-- The **Walker State** shows the elements currently in the traversal (V1, V2, V3), highlighted.
-- The **`into_iter()` step** transforms the walker.
-- The **Result** is a standard **Rust Iterator** that will yield the IDs of the elements (V1, V2, V3).
+- **Before `into_iter()`**: The walker contains highlighted elements **V1, V2, V3**.
+- The **code snippet** on the left shows the `.into_iter()` step being applied.
+- **After `into_iter()`**: The result is shown as a box representing a standard **Rust Iterator** that will yield the IDs of the elements (V1, V2, V3).
 - This step consumes the walker and **terminates the Graph API traversal**.
 
 ## Syntax
