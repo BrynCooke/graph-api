@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
     <title>Tail Step Diagram</title>
     <desc>
         Diagram illustrating the 'tail' step:
@@ -10,26 +10,9 @@
         - The edge A->B and vertex A are no longer highlighted.
     </desc>
     <defs>
-        <!-- Marker Definitions -->
-        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
-                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
-        </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
-                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L8,3 L0,6 Z"/>
-        </marker>
-        <marker id="arrowhead-active" class="marker-arrowhead-active marker-base" markerWidth="10" markerHeight="7"
-                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L10,3.5 L0,7 Z"/>
-        </marker>
-        <marker id="arrowhead-visited" class="marker-arrowhead-visited marker-base" markerWidth="10" markerHeight="7"
-                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L10,3.5 L0,7 Z"/>
-        </marker>
-        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
-                refY="3.5" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L10,3.5 L0,7 Z"/>
         </marker>
         <marker id="arrowhead-highlighted" class="marker-arrowhead-highlighted marker-base" markerWidth="8"
                 markerHeight="6" refX="7" refY="3"
@@ -42,45 +25,46 @@
         </marker>
     </defs>
 
-    <text x="300" y="30" class="step-label" text-anchor="middle">Walker Step:
-        <tspan class="code">tail()</tspan>
-    </text>
+    <!-- Step Representation (Left) -->
+    <g id="step-representation" class="step-label" transform="translate(30, 150)">
+        <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">walker</text>
+        <text x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">.edges(EdgeSearch::scan())</text>
+        <text class="code" x="10" y="30" text-anchor="start" font-size="var(--font-size-small)">
+            .tail()
+        </text>
+    </g>
 
-    <!-- Before tail() step -->
-    <g id="before-step" transform="translate(50, 50)">
+    <!-- Before tail() step (Top Right) -->
+    <g id="before-step" transform="translate(200, 20)">
         <text class="step-label" x="150" y="0" text-anchor="middle">Before tail()</text>
-        <g class="node" id="node-A-before" transform="translate(50, 50)">
+        <g class="node" id="node-A-before" transform="translate(150, 50)">
             <circle r="20"></circle>
             <text class="node-label">A</text>
         </g>
-        <g class="node" id="node-B-before" transform="translate(250, 50)">
+        <g class="node" id="node-B-before" transform="translate(350, 50)">
             <circle r="20"></circle>
             <text class="node-label">B</text>
         </g>
         <g class="edge directed highlighted" id="edge-A-B-before">
-            <line x1="70" y1="50" x2="230" y2="50" marker-end="url(#arrowhead-highlighted)"/>
-            <text x="150" y="40" class="edge-label highlighted">follows</text>
+            <line x1="170" y1="50" x2="330" y2="50" marker-end="url(#arrowhead-highlighted)"/>
+            <text x="250" y="40" class="edge-label highlighted">follows</text>
         </g>
     </g>
 
-    <!-- Step Arrow -->
-    <line class="step-arrow" x1="150" y1="100" x2="150" y2="140" marker-end="url(#arrowhead-pointer)"/>
-    <text x="165" y="125" class="text-color-muted" font-size="12px">.tail()</text>
-
-    <!-- After tail() step -->
-    <g id="after-step" transform="translate(250, 50)">
+    <!-- After tail() step (Bottom Right) -->
+    <g id="after-step" transform="translate(200, 180)">
         <text class="step-label" x="150" y="0" text-anchor="middle">After tail()</text>
-        <g class="node" id="node-A-after" transform="translate(50, 50)">
+        <g class="node" id="node-A-after" transform="translate(150, 50)">
             <circle r="20"></circle>
             <text class="node-label">A</text>
         </g>
-        <g class="node highlighted" id="node-B-after" transform="translate(250, 50)"> <!-- B is now highlighted -->
+        <g class="node highlighted" id="node-B-after" transform="translate(350, 50)"> <!-- B is now highlighted -->
             <circle r="20"></circle>
             <text class="node-label">B</text>
         </g>
         <g class="edge directed" id="edge-A-B-after"> <!-- Edge no longer highlighted -->
-            <line x1="70" y1="50" x2="230" y2="50" marker-end="url(#arrowhead)"/>
-            <text x="150" y="40" class="edge-label">follows</text>
+            <line x1="170" y1="50" x2="330" y2="50" marker-end="url(#arrowhead)"/>
+            <text x="250" y="40" class="edge-label">follows</text>
         </g>
     </g>
 </svg>
