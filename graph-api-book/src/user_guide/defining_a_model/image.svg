@@ -1,65 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"> <!-- Removed width/height -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450"> <!-- Adjusted height -->
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5"
-                markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 0 L 10 5 L 0 10 z"/>
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-        <marker id="arrowhead-bidir" class="marker-arrowhead marker-base" viewBox="0 0 10 10" refX="5" refY="5"
-                markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M 0 0 L 10 5 L 0 10 z"/>
-        </marker>
+        <!-- No bi-directional marker needed for this layout -->
     </defs>
-    <text x="10" y="25" class="step-label">Graph Model Example</text>
+    <text x="300" y="25" class="step-label" text-anchor="middle">Graph Model Example</text>
 
     <!-- Vertices -->
-    <g class="node" transform="translate(400, 60)"> <!-- Adjusted Y -->
-        <rect x="-100" y="-30" width="200" height="60" class="node-box"/>
-        <text class="node-label" y="-15">Person (Eve)</text>
-        <text class="property-text" y="10">name: Eve, user: eve789, age: 31</text>
+    <g class="node" id="node-bryn" transform="translate(150, 100)">
+        <circle r="30"></circle> <!-- Slightly larger radius -->
+        <text class="node-label">Person</text>
+        <text class="property-text" y="25">name: Bryn</text>
+        <text class="property-text" y="40">age: 28</text>
     </g>
-    <g class="node" transform="translate(400, 170)"> <!-- Adjusted Y -->
-        <rect x="-110" y="-30" width="220" height="60" class="node-box"/>
-        <text class="node-label" y="-15">Person (Julia)</text>
-        <text class="property-text" y="10">name: Julia, user: julia456, age: 34</text>
+    <g class="node" id="node-julia" transform="translate(450, 100)">
+        <circle r="30"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="25">name: Julia</text>
+        <text class="property-text" y="40">age: 34</text>
     </g>
-    <g class="node" transform="translate(150, 170)"> <!-- Adjusted Y -->
-        <rect x="-120" y="-30" width="240" height="60" class="node-box"/>
-        <text class="node-label" y="-15">Person (Bryn)</text>
-        <text class="property-text" y="10">name: Bryn, user: bryn123, age: 28</text>
+    <g class="node" id="node-graphapi" transform="translate(150, 250)">
+        <circle r="30"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="25">name: GraphApi</text>
     </g>
-    <g class="node" transform="translate(150, 60)"> <!-- Adjusted Y -->
-        <rect x="-70" y="-25" width="140" height="50" class="node-box"/>
-        <text class="node-label" y="-10">Project</text>
-        <text class="property-text" y="10">name: GraphApi</text>
+    <g class="node" id="node-alpaca" transform="translate(450, 250)">
+        <circle r="30"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="25">name: Alpaca</text>
     </g>
-    <g class="node" transform="translate(150, 280)"> <!-- Adjusted Y -->
-        <rect x="-70" y="-25" width="140" height="50" class="node-box"/>
-        <text class="node-label" y="-10">Project</text>
-        <text class="property-text" y="10">name: Alpaca</text>
+    <g class="node" id="node-rust" transform="translate(300, 380)"> <!-- Added Rust Project -->
+        <circle r="30"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="25">name: Rust</text>
     </g>
 
     <!-- Edges -->
-    <path id="bryn-eve" class="edge directed" d="M 200 140 q 50 -60 150 -80" marker-start="url(#arrowhead-bidir)"
-          marker-end="url(#arrowhead-bidir)" fill="none"/> <!-- Adjusted path -->
-    <text class="edge-label">
-        <textPath href="#bryn-eve" startOffset="50%">Follows</textPath>
-    </text>
-
-    <line id="eve-julia" class="edge directed" x1="400" y1="90" x2="400" y2="140"/> <!-- Adjusted Y -->
-    <text class="edge-label" x="410" y="115">Follows</text> <!-- Adjusted Y -->
-
-    <path id="julia-bryn" class="edge directed" d="M 290 170 L 270 170" fill="none"/> <!-- Adjusted Y -->
-    <text class="edge-label" x="280" y="160">Follows</text> <!-- Adjusted Y -->
-
-    <line id="bryn-graphapi" class="edge directed" x1="150" y1="140" x2="150" y2="90"/> <!-- Adjusted Y -->
-    <text class="edge-label" x="160" y="115">Created</text> <!-- Adjusted Y -->
-
-    <path id="bryn-alpaca1" class="edge directed" d="M 150 200 L 150 250" fill="none"/> <!-- Adjusted Y -->
-    <text class="edge-label" x="160" y="220">Liked</text> <!-- Adjusted Y -->
-    <text class="edge-label" x="160" y="235">Commented</text> <!-- Adjusted Y -->
-
-    <path id="julia-alpaca" class="edge directed" d="M 350 200 q -75 60 -150 80" fill="none"/> <!-- Adjusted path -->
-    <text class="edge-label" transform="translate(275, 240) rotate(-25)">Created</text> <!-- Adjusted transform -->
+    <g class="edge directed" id="edge-bryn-julia">
+        <line x1="180" y1="100" x2="420" y2="100" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="90">Follows</text>
+    </g>
+    <g class="edge directed" id="edge-julia-bryn">
+        <!-- Slightly curved path back -->
+        <path d="M 420 115 q -150 30 -240 0" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="135">Follows</text>
+    </g>
+    <g class="edge directed" id="edge-bryn-graphapi">
+        <line x1="150" y1="130" x2="150" y2="220" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="160" y="175">Created</text>
+    </g>
+    <g class="edge directed" id="edge-julia-alpaca">
+        <line x1="450" y1="130" x2="450" y2="220" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="460" y="175">Created</text>
+    </g>
+    <g class="edge directed" id="edge-bryn-alpaca">
+        <line x1="180" y1="115" x2="420" y2="235" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="165">Liked</text>
+    </g>
+    <g class="edge directed" id="edge-bryn-rust"> <!-- Added Bryn -> Rust -->
+        <line x1="175" y1="125" x2="280" y2="360" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="220" y="240">Contributes</text>
+    </g>
+    <g class="edge directed" id="edge-julia-rust"> <!-- Added Julia -> Rust -->
+        <line x1="425" y1="125" x2="320" y2="360" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="380" y="240">Contributes</text>
+    </g>
 
 </svg>
