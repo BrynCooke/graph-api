@@ -11,14 +11,14 @@ where
     /// # Tail Step
     ///
     /// The `tail` step transforms an edge traversal into a vertex traversal by moving to the
-    /// tail vertex of each edge. In graph theory, the tail is the destination/target vertex
-    /// that the edge points to.
+    /// tail vertex of each edge. In graph theory, the tail is the source/origin vertex
+    /// that the edge comes from.
     ///
     /// ## Visual Diagram
     ///
     /// Before tail step (with edges as current elements):
     /// ```text
-    ///   [A] --- edge1* ---> [B] --- edge2* ---> [C]  
+    ///   [A] --- edge1* ---> [B] --- edge2* ---> [C]
     ///    ^                                         
     ///    |                                         
     ///   edge3*                                       
@@ -26,14 +26,14 @@ where
     ///   [D]                                        
     /// ```
     ///
-    /// After tail step (moved to target vertices of edges):
+    /// After tail step (moved to source vertices of edges):
     /// ```text
-    ///   [A] --- edge1 ---> [B]* --- edge2 ---> [C]*  
+    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]
     ///    ^                                         
     ///    |                                         
     ///   edge3                                       
     ///    |                                         
-    ///   [D]                                        
+    ///   [D]*
     /// ```
     ///
     /// ## Parameters
@@ -42,7 +42,7 @@ where
     ///
     /// ## Return Value
     ///
-    /// A vertex walker that will traverse the destination/target vertices of the edges from the previous step.
+    /// A vertex walker that will traverse the source vertices of the edges from the previous step.
     ///
     /// ## Example
     ///
@@ -56,11 +56,11 @@ where
     ///
     /// - The `tail` step can only be used after an edge traversal step
     /// - Transforms the traversal type from EdgeWalker to VertexWalker
-    /// - For directed graphs, tail refers to the destination/target vertex
+    /// - For directed graphs, tail refers to the source/origin vertex
     /// - For undirected graphs, the distinction between head and tail may depend on implementation
     /// - Commonly used in conjunction with `edges` to follow relationships
     /// - The head-tail terminology follows standard graph theory convention
-    /// - When working with edges, remember that `tail()` gives you "where the edge points to" (destination)
+    /// - When working with edges, remember that `tail()` gives you "where the edge comes from" (source)
     pub fn tail(self) -> VertexWalkerBuilder<'graph, Mutability, Graph, Endpoints<'graph, Walker>> {
         VertexWalkerBuilder {
             _phantom: Default::default(),

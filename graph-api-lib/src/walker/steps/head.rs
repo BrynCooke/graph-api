@@ -11,8 +11,8 @@ where
     /// # Head Step
     ///
     /// The `head` step transforms an edge traversal into a vertex traversal by moving to the
-    /// head vertex of each edge. In graph theory, the head is the source/origin vertex that
-    /// the edge comes from.
+    /// head vertex of each edge. In graph theory, the head is the destination/target vertex that
+    /// the edge point to.
     ///
     /// ## Visual Diagram
     ///
@@ -26,14 +26,14 @@ where
     ///   [D]                                        
     /// ```
     ///
-    /// After head step (moved to source vertices of edges):
+    /// After head step (moved to target vertices of edges):
     /// ```text
-    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]  
+    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*
     ///    ^                                         
     ///    |                                         
     ///   edge3                                       
     ///    |                                         
-    ///   [D]*                                        
+    ///   [D]
     /// ```
     ///
     /// ## Parameters
@@ -42,7 +42,7 @@ where
     ///
     /// ## Return Value
     ///
-    /// A vertex walker that will traverse the source/origin vertices of the edges from the previous step.
+    /// A vertex walker that will traverse the destination/target vertices of the edges from the previous step.
     ///
     /// ## Example
     ///
@@ -54,11 +54,11 @@ where
     ///
     /// - The `head` step can only be used after an edge traversal step
     /// - Transforms the traversal type from EdgeWalker to VertexWalker
-    /// - For directed graphs, head refers to the source/origin vertex
+    /// - For directed graphs, head refers to the destination/target vertex
     /// - For undirected graphs, the distinction between head and tail may depend on implementation
     /// - Commonly used in conjunction with incoming edges to find vertices that point to certain destinations
     /// - The head-tail terminology follows standard graph theory convention
-    /// - When working with edges, remember that `head()` gives you "where the edge comes from" (source)
+    /// - When working with edges, remember that `head()` gives you "where the edge points to" (destination)
     pub fn head(self) -> VertexWalkerBuilder<'graph, Mutability, Graph, Endpoints<'graph, Walker>> {
         VertexWalkerBuilder {
             _phantom: Default::default(),
