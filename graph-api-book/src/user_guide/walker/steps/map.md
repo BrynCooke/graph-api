@@ -9,10 +9,9 @@ Map step diagram showing elements being transformed into values in an iterator
 
 In this diagram:
 
-- The **Walker State** shows highlighted elements **A, B, C**.
-- Arrows point from each element to the **Map Function** box, which contains the transformation logic (e.g., extracting the name).
-- An arrow points from the Map Function to the **Result** box.
-- The Result box represents a standard **Rust Iterator** yielding the transformed values (e.g., `"NameA"`, `"NameB"`, `"NameC"`).
+- **Before `map()`**: The walker contains highlighted elements **A, B, C**.
+- The **code snippet** on the left shows the `.map(|v, _| v.name())` step being applied.
+- **After `map()`**: The result is shown as a box representing a standard **Rust Iterator** yielding the transformed values (e.g., `"NameA"`, `"NameB"`, `"NameC"`).
 - This step consumes the walker and **terminates the Graph API traversal**.
 
 ## Syntax
