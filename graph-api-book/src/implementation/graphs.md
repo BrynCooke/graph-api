@@ -1,35 +1,36 @@
 # Creating a Graph Implementation
 
-This chapter provides detailed guidance for implementing a new Graph API backend. It expands on the concepts introduced in the [Implementation Guide for Graph Backends](./guides.md).
+This chapter provides detailed guidance for implementing a new Graph API backend. It expands on the concepts introduced
+in the [Implementation Guide for Graph Backends](./guide).
 
 ## Design Considerations
 
 Before starting implementation, consider these key design decisions:
 
 1. **Storage Strategy**: How will you store vertices and edges? Options include:
-   - Adjacency lists (good for sparse graphs)
-   - Adjacency matrices (good for dense graphs)
-   - Edge lists
-   - Custom hybrid approaches
+    - Adjacency lists (good for sparse graphs)
+    - Adjacency matrices (good for dense graphs)
+    - Edge lists
+    - Custom hybrid approaches
 
 2. **Memory vs. Performance Trade-offs**: Will your implementation prioritize:
-   - Low memory usage
-   - Fast traversal operations
-   - Fast mutation operations
-   - Fast index lookups
+    - Low memory usage
+    - Fast traversal operations
+    - Fast mutation operations
+    - Fast index lookups
 
 3. **Feature Support**: Which Graph API features will you support?
-   - Basic graph operations (required)
-   - Label indexes
-   - Hash indexes
-   - Range indexes
-   - Full-text indexes
-   - Other specialized indexes
+    - Basic graph operations (required)
+    - Label indexes
+    - Hash indexes
+    - Range indexes
+    - Full-text indexes
+    - Other specialized indexes
 
 4. **Usage Context**: Is your implementation designed for:
-   - General-purpose use
-   - Specific application domains
-   - Particular data patterns
+    - General-purpose use
+    - Specific application domains
+    - Particular data patterns
 
 ## Core Implementation Approach
 
@@ -54,6 +55,7 @@ pub struct MyEdgeId {
 ```
 
 Make sure your ID types:
+
 - Implement `Copy`, `Clone`, `Debug`, `Eq`, `PartialEq`, and `Hash`
 - Are small and efficient (IDs are used extensively)
 - Can be converted to `ElementId`
@@ -117,7 +119,7 @@ where
 
 impl<'graph, Graph> Iterator for MyVertexIter<'_, 'graph, Graph>
 where
-    Graph: graph_api_lib::Graph<VertexId = MyVertexId> + 'graph,
+    Graph: graph_api_lib::Graph<VertexId=MyVertexId> + 'graph,
 {
     type Item = MyVertexReference<'graph, Graph>;
 
@@ -139,7 +141,7 @@ pub struct MyMutationListener<'reference, Element> {
 }
 
 impl<'reference, Element> graph_api_lib::MutationListener<'reference, Element>
-    for MyMutationListener<'reference, Element>
+for MyMutationListener<'reference, Element>
 where
     Element: graph_api_lib::Element,
 {
@@ -155,10 +157,10 @@ where
 
 1. **Memory Layout**: Keep related data together to improve cache locality.
 2. **Data Structures**: Choose the right data structures for your use case:
-   - `Vec` for dense storage with stable IDs
-   - `HashMap` for sparse storage with integer IDs
-   - `BTreeMap` for ordered collections
-   - Consider specialized structures like `smallbox` for tiny collections
+    - `Vec` for dense storage with stable IDs
+    - `HashMap` for sparse storage with integer IDs
+    - `BTreeMap` for ordered collections
+    - Consider specialized structures like `smallbox` for tiny collections
 
 3. **Avoid Cloning**: Pass references whenever possible instead of cloning data.
 4. **Index Carefully**: Indexes improve query performance but add overhead to mutations.
@@ -201,4 +203,5 @@ After implementing the basic graph functionality:
 2. Check the [Implementing Indexes](./indexes.md) chapter for adding index support.
 3. See [Performance Considerations](./performance.md) for optimization tips.
 
-Remember that implementing a graph backend is an iterative process. Start with a minimal working implementation, test it thoroughly, and then add more features incrementally.
+Remember that implementing a graph backend is an iterative process. Start with a minimal working implementation, test it
+thoroughly, and then add more features incrementally.
