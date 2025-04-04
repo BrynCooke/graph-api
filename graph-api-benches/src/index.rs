@@ -1,11 +1,11 @@
 use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
-use crate::{
-    SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexHashIndex,
-    SupportsVertexLabelIndex, SupportsVertexRangeIndex,
-};
 
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
-use graph_api_lib::{Graph, Supported, VertexSearch};
+use graph_api_lib::{
+    Graph, VertexSearch, 
+    SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexHashIndex,
+    SupportsVertexLabelIndex, SupportsVertexRangeIndex
+};
 use graph_api_test::{Edge, EdgeIndex, Vertex, VertexIndex};
 
 /// Run all index operation benchmarks
@@ -13,15 +13,12 @@ pub fn run_benchmarks<G>(
     #[allow(unused_variables)] group: &mut BenchmarkGroup<WallTime>,
     #[allow(unused_variables)] setup: impl Fn() -> G + Clone,
 ) where
-    G: Graph<
-            Vertex = Vertex,
-            Edge = Edge,
-            SupportsVertexLabelIndex = SupportsVertexLabelIndex,
-            SupportsVertexHashIndex = SupportsVertexHashIndex,
-            SupportsVertexFullTextIndex = SupportsVertexFullTextIndex,
-            SupportsVertexRangeIndex = SupportsVertexRangeIndex,
-            SupportsEdgeLabelIndex = SupportsEdgeLabelIndex,
-        >,
+    G: Graph<Vertex = Vertex, Edge = Edge>
+        + SupportsVertexLabelIndex
+        + SupportsVertexHashIndex 
+        + SupportsVertexFullTextIndex
+        + SupportsVertexRangeIndex
+        + SupportsEdgeLabelIndex,
 {
     #[cfg(feature = "vertex-label-index")]
     bench_index_vertex_label(group, setup.clone());
@@ -37,12 +34,12 @@ pub fn run_benchmarks<G>(
 
 /// Benchmark vertex label index lookup
 #[allow(dead_code)]
-fn bench_index_vertex_label<
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexLabelIndex = Supported>,
->(
+fn bench_index_vertex_label<G>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
-) {
+) where
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexLabelIndex,
+{
     group.throughput(Throughput::Elements(1));
     group.bench_function("index_vertex_label", |b| {
         // Setup: Create graph with random data
@@ -61,12 +58,12 @@ fn bench_index_vertex_label<
 
 /// Benchmark vertex property index lookup
 #[allow(dead_code)]
-fn bench_index_vertex_property<
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexHashIndex = Supported>,
->(
+fn bench_index_vertex_property<G>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
-) {
+) where
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexHashIndex,
+{
     group.throughput(Throughput::Elements(1));
     group.bench_function("index_vertex_property", |b| {
         // Setup: Create graph with test data
@@ -84,12 +81,12 @@ fn bench_index_vertex_property<
 
 /// Benchmark vertex full-text index lookup
 #[allow(dead_code)]
-fn bench_index_vertex_fulltext<
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexFullTextIndex = Supported>,
->(
+fn bench_index_vertex_fulltext<G>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
-) {
+) where
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexFullTextIndex,
+{
     group.throughput(Throughput::Elements(1));
     group.bench_function("index_vertex_fulltext", |b| {
         // Setup: Create graph with test data
@@ -107,12 +104,12 @@ fn bench_index_vertex_fulltext<
 
 /// Benchmark vertex range index range queries
 #[allow(dead_code)]
-fn bench_index_vertex_range_range<
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexRangeIndex = Supported>,
->(
+fn bench_index_vertex_range_range<G>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
-) {
+) where
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexRangeIndex,
+{
     group.throughput(Throughput::Elements(1));
     group.bench_function("index_vertex_range_range", |b| {
         // Setup: Create graph with random data
@@ -130,12 +127,12 @@ fn bench_index_vertex_range_range<
 
 /// Benchmark edge label index lookup
 #[allow(dead_code)]
-fn bench_index_edge_label<
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
->(
+fn bench_index_edge_label<G>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
-) {
+) where
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
+{
     group.throughput(Throughput::Elements(1));
     group.bench_function("index_edge_label", |b| {
         // Setup: Create graph with random data

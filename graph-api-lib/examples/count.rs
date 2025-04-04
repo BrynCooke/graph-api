@@ -1,5 +1,7 @@
-use graph_api_lib::Supported;
-use graph_api_lib::{EdgeSearch, VertexSearch};
+use graph_api_lib::{
+    EdgeSearch, VertexSearch,
+    SupportsVertexHashIndex, SupportsVertexLabelIndex, SupportsEdgeLabelIndex
+};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{Edge, EdgeIndex, Vertex, VertexExt, VertexIndex, populate_graph};
 
@@ -12,13 +14,10 @@ fn main() {
 
 fn example<Graph>(graph: Graph)
 where
-    Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            Edge = Edge,
-            SupportsVertexHashIndex = Supported,
-            SupportsVertexLabelIndex = Supported,
-            SupportsEdgeLabelIndex = Supported,
-        >,
+    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>
+        + SupportsVertexHashIndex
+        + SupportsVertexLabelIndex
+        + SupportsEdgeLabelIndex,
 {
     // Count all vertices in the graph
     let vertex_count = graph.walk().vertices(VertexSearch::scan()).count();

@@ -8,8 +8,10 @@ use crate::graph::label::{Adjacency, LabelledEdges, LabelledVertices, VertexStor
 use crate::id::VertexId;
 use crate::index::VertexIndexStorage;
 use graph_api_lib::{
-    Direction, EdgeSearch, Element, ElementId, Graph, Index, Label, Project, ProjectMut, Supported,
-    Value, VertexSearch,
+    Direction, EdgeSearch, Element, ElementId, Graph, Index, Label, Project, ProjectMut,
+    SupportsVertexLabelIndex, SupportsEdgeLabelIndex, SupportsVertexHashIndex, SupportsEdgeHashIndex,
+    SupportsVertexRangeIndex, SupportsEdgeRangeIndex, SupportsVertexFullTextIndex, 
+    SupportsEdgeAdjacentLabelIndex, SupportsClear, Value, VertexSearch,
 };
 use smallbox::space::S8;
 use smallbox::{SmallBox, smallbox};
@@ -436,15 +438,6 @@ where
     Vertex: Element,
     Edge: Element,
 {
-    type SupportsVertexLabelIndex = Supported;
-    type SupportsEdgeLabelIndex = Supported;
-    type SupportsVertexHashIndex = Supported;
-    type SupportsEdgeHashIndex = Supported;
-    type SupportsVertexRangeIndex = Supported;
-    type SupportsEdgeRangeIndex = Supported;
-    type SupportsVertexFullTextIndex = Supported;
-    type SupportsEdgeAdjacentLabelIndex = Supported;
-    type SupportsClear = Supported;
     type Vertex = Vertex;
     type Edge = Edge;
     type VertexId = VertexId;
@@ -713,6 +706,71 @@ where
         }
     }
 
+    // Clear method moved to SupportsClear implementation
+}
+
+// Implement all the support traits for SimpleGraph
+impl<Vertex, Edge> SupportsVertexLabelIndex for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsEdgeLabelIndex for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsVertexHashIndex for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsEdgeHashIndex for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsVertexRangeIndex for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsEdgeRangeIndex for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsVertexFullTextIndex for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsEdgeAdjacentLabelIndex for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsClear for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
     fn clear(&mut self) {
         // Clear all vertex storages
         for labelled_vertices in &mut self.vertices {

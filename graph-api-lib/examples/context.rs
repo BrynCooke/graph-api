@@ -1,7 +1,7 @@
 use graph_api_lib::EdgeReference;
 use graph_api_lib::EdgeSearch;
 use graph_api_lib::Graph;
-use graph_api_lib::Supported;
+use graph_api_lib::SupportsEdgeLabelIndex;
 use graph_api_lib::VertexReference;
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
@@ -23,7 +23,7 @@ fn main() {
 
 fn vertex_context_example<G>(graph: &G, bryn_id: G::VertexId, julia_id: G::VertexId)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // Use push_default_context to make source vertex information available during traversal
     let knows: Vec<_> = graph
@@ -56,7 +56,7 @@ where
 
 fn edge_context_example<G>(graph: &G, person_id: G::VertexId)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // Walk the graph starting from the person vertex
     let edge_types = graph

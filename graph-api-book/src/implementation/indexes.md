@@ -47,7 +47,7 @@ pub enum IndexType {
 
 ### Declare Index Support
 
-To support indexes in your implementation, declare which types you support in your `Graph` implementation:
+To support indexes in your implementation, implement the appropriate support traits:
 
 ```rust
 impl<Vertex, Edge> Graph for MyGraph<Vertex, Edge>
@@ -55,14 +55,58 @@ where
     Vertex: Element,
     Edge: Element,
 {
-    type SupportsVertexLabelIndex = Supported;
-    type SupportsEdgeLabelIndex = Supported;
-    type SupportsVertexHashIndex = Supported;
-    type SupportsEdgeHashIndex = Supported;
-    type SupportsVertexRangeIndex = Supported;
-    type SupportsEdgeRangeIndex = Supported;
-    type SupportsVertexFullTextIndex = Supported;
-    // ...other type declarations
+    // Core Graph functionality
+    // ...
+}
+
+// Implement support traits for the indexing features you want to provide
+impl<Vertex, Edge> SupportsVertexLabelIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsEdgeLabelIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsVertexHashIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsEdgeHashIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsVertexRangeIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsEdgeRangeIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+}
+
+impl<Vertex, Edge> SupportsVertexFullTextIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
 }
 ```
 

@@ -1,5 +1,5 @@
 use graph_api_lib::{EdgeReference, VertexReference};
-use graph_api_lib::{EdgeSearch, Supported};
+use graph_api_lib::{EdgeSearch, SupportsVertexLabelIndex, SupportsEdgeLabelIndex};
 use graph_api_lib::{Graph, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Vertex;
@@ -19,7 +19,7 @@ fn main() {
 
 fn vertex_example<G>(graph: &G)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexLabelIndex,
 {
     // Find the oldest person in the graph
     let oldest = graph
@@ -43,12 +43,9 @@ where
 
 fn edge_example<G>(graph: &G)
 where
-    G: Graph<
-            Vertex = Vertex,
-            Edge = Edge,
-            SupportsVertexLabelIndex = Supported,
-            SupportsEdgeLabelIndex = Supported,
-        >,
+    G: Graph<Vertex = Vertex, Edge = Edge>
+        + SupportsVertexLabelIndex
+        + SupportsEdgeLabelIndex,
 {
     // Find the edge with the highest "since" value between two edges
     let oldest_edge = graph

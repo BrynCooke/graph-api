@@ -1,4 +1,4 @@
-use graph_api_lib::{Graph, Supported, VertexReference};
+use graph_api_lib::{Graph, SupportsEdgeLabelIndex, VertexReference};
 use graph_api_test::{Edge, EdgeIndex, Person, Vertex, VertexExt};
 use std::ops::Deref;
 
@@ -6,7 +6,7 @@ use std::ops::Deref;
 // Context example showing how to calculate the total age of all friends
 pub fn context_traversal_example<G>(graph: &G, person_id: G::VertexId)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // Calculate total age of all friends of a person
     let _total_age = graph

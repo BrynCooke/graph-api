@@ -62,28 +62,22 @@ pub enum VertexIndex {
 impl VertexIndex {
     pub fn person<'search, Graph>() -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexLabelIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexLabelIndex,
     {
         graph_api_lib::VertexSearch::label(VertexLabel::Person)
     }
     pub fn project<'search, Graph>() -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexLabelIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexLabelIndex,
     {
         graph_api_lib::VertexSearch::label(VertexLabel::Project)
     }
     pub fn rust<'search, Graph>() -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexLabelIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexLabelIndex,
     {
         graph_api_lib::VertexSearch::label(VertexLabel::Rust)
     }
@@ -91,10 +85,8 @@ impl VertexIndex {
         value: &'search str,
     ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexHashIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexHashIndex,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonName, value)
     }
@@ -102,10 +94,8 @@ impl VertexIndex {
         value: u64,
     ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexHashIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexHashIndex,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonAge, value)
     }
@@ -113,10 +103,8 @@ impl VertexIndex {
         value: Uuid,
     ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexHashIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexHashIndex,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonUniqueId, value)
     }
@@ -124,10 +112,8 @@ impl VertexIndex {
         value: &'search str,
     ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexHashIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexHashIndex,
     {
         graph_api_lib::VertexSearch::get(VertexIndex::PersonUsername, value)
     }
@@ -135,10 +121,8 @@ impl VertexIndex {
         value: &'search str,
     ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexFullTextIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexFullTextIndex,
     {
         graph_api_lib::VertexSearch::full_text(VertexIndex::PersonBiography, value)
     }
@@ -146,10 +130,8 @@ impl VertexIndex {
         range: std::ops::Range<u64>,
     ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexRangeIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexRangeIndex,
     {
         graph_api_lib::VertexSearch::range(VertexIndex::PersonAge, range)
     }
@@ -157,10 +139,8 @@ impl VertexIndex {
         range: std::ops::Range<&'search str>,
     ) -> graph_api_lib::VertexSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Vertex = Vertex,
-            SupportsVertexRangeIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Vertex = Vertex>
+            + graph_api_lib::SupportsVertexRangeIndex,
     {
         graph_api_lib::VertexSearch::range(VertexIndex::PersonUsername, range)
     }

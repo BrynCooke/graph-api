@@ -1,4 +1,4 @@
-use graph_api_lib::{EdgeReference, EdgeSearch, Graph, Supported, VertexReference};
+use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexReference};
 use graph_api_book::standard_model::{Edge, Vertex, standard_populated_graph};
 
 // ANCHOR: basic_context

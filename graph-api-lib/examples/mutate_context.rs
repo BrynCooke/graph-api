@@ -1,4 +1,4 @@
-use graph_api_lib::{EdgeSearch, Graph, Supported};
+use graph_api_lib::{EdgeSearch, Graph, SupportsEdgeLabelIndex};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{Edge, Vertex, populate_graph};
 
@@ -15,7 +15,7 @@ fn main() {
 
 fn vertex_mutate_context_example<G>(graph: &G, start_id: G::VertexId)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // Use mutate_context to track each vertex we've seen
     // Here we're using context as a way to observe the traversal
@@ -37,7 +37,7 @@ where
 
 fn edge_mutate_context_example<G>(graph: &G, start_id: G::VertexId)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // Use mutate_context to track each edge in the traversal
     let ctx = graph

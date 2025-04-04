@@ -40,6 +40,14 @@ pub struct MyEdgeId {
     to: MyVertexId,
 }
 
+// Import the necessary traits
+use graph_api_lib::{
+    Graph, Element, EdgeSearch, VertexSearch, 
+    SupportsVertexLabelIndex, SupportsEdgeLabelIndex, SupportsVertexHashIndex,
+    SupportsVertexRangeIndex, SupportsEdgeRangeIndex, SupportsVertexFullTextIndex,
+    SupportsEdgeAdjacentLabelIndex, SupportsClear
+};
+
 // Main graph structure
 pub struct MyGraph<Vertex, Edge>
 where
@@ -151,17 +159,12 @@ where
 Now implement the `Graph` trait for your graph structure:
 
 ```rust
+// First implement the core Graph trait
 impl<Vertex, Edge> Graph for MyGraph<Vertex, Edge>
 where
     Vertex: Element,
     Edge: Element,
 {
-    // Declare which features are supported
-    type SupportsVertexLabelIndex = Supported; // Or Unsupported
-    type SupportsEdgeLabelIndex = Supported;
-    type SupportsVertexHashIndex = Supported;
-    // ... other feature support declarations
-    
     // Define the core types
     type Vertex = Vertex;
     type Edge = Edge;
@@ -231,9 +234,43 @@ where
         // Implementation details
     }
 
-    fn clear(&mut self)
-    where
-        Self: Graph<SupportsClear = Supported> {
+    // No clear method here - it's moved to the SupportsClear trait
+}
+
+// Then implement support traits for the features you want to provide
+impl<Vertex, Edge> SupportsVertexLabelIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    // Any trait-specific methods would go here
+}
+
+impl<Vertex, Edge> SupportsEdgeLabelIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    // Any trait-specific methods would go here
+}
+
+impl<Vertex, Edge> SupportsVertexHashIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    // Any trait-specific methods would go here
+}
+
+// Add more support trait implementations as needed
+
+// Implement SupportsClear if you want to support clearing the graph
+impl<Vertex, Edge> SupportsClear for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    fn clear(&mut self) {
         // Clear all graph data
     }
 }

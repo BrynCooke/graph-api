@@ -1,7 +1,7 @@
-use crate::graph::{EdgeReferenceMut, Unsupported, VertexReference, VertexReferenceMut};
+use crate::graph::{EdgeReferenceMut, VertexReference, VertexReferenceMut};
 use crate::search::vertex::VertexSearch;
 use crate::{Direction, EdgeReference, Element, ElementId, Graph, Project, ProjectMut};
-use crate::{EdgeSearch, Supported};
+use crate::{EdgeSearch, SupportsClear};
 use petgraph::EdgeType;
 use petgraph::stable_graph::StableGraph;
 use petgraph::stable_graph::{EdgeIndex, Edges, IndexType};
@@ -20,15 +20,6 @@ where
     Vertex: Element,
     Edge: Element,
 {
-    type SupportsVertexLabelIndex = Unsupported;
-    type SupportsEdgeLabelIndex = Unsupported;
-    type SupportsVertexHashIndex = Unsupported;
-    type SupportsEdgeHashIndex = Unsupported;
-    type SupportsVertexRangeIndex = Unsupported;
-    type SupportsEdgeRangeIndex = Unsupported;
-    type SupportsVertexFullTextIndex = Unsupported;
-    type SupportsEdgeAdjacentLabelIndex = Unsupported;
-    type SupportsClear = Supported;
 
     type Vertex = Vertex;
     type Edge = Edge;
@@ -160,6 +151,16 @@ where
         }
     }
 
+    // Clear method moved to SupportsClear implementation
+}
+
+impl<Vertex, Edge, Ty, Ix> SupportsClear for StableGraph<Vertex, Edge, Ty, Ix>
+where
+    Ty: EdgeType,
+    Ix: IndexType,
+    Vertex: Element,
+    Edge: Element,
+{
     fn clear(&mut self) {
         petgraph::stable_graph::StableGraph::clear(self);
     }

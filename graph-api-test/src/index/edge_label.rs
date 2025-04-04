@@ -1,9 +1,9 @@
 use crate::{Edge, EdgeIndex, Vertex, assert_elements_eq, populate_graph};
-use graph_api_lib::{Graph, Supported};
+use graph_api_lib::{Graph, SupportsEdgeLabelIndex};
 
 pub fn test_index<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     let refs = populate_graph(graph);
     let collected = graph
@@ -17,7 +17,7 @@ where
 
 pub fn test_index_limit<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     let refs = populate_graph(graph);
     let collected = graph

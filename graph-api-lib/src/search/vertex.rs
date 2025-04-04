@@ -1,5 +1,5 @@
 use crate::element::Element;
-use crate::{Label, Supported, Value, ValueRange};
+use crate::{Label, Value, ValueRange};
 use derivative::Derivative;
 use std::ops::Range;
 
@@ -44,7 +44,7 @@ where
 
     pub fn label(label: <Graph::Vertex as Element>::Label) -> Self
     where
-        Graph: crate::Graph<SupportsVertexLabelIndex = Supported>,
+        Graph: crate::Graph + crate::SupportsVertexLabelIndex,
     {
         Self::Label { label, limit: None }
     }
@@ -52,7 +52,7 @@ where
     pub fn get<V>(index: <<Graph::Vertex as Element>::Label as Label>::Index, value: V) -> Self
     where
         V: Into<Value<'search>>,
-        Graph: crate::Graph<SupportsVertexHashIndex = Supported>,
+        Graph: crate::Graph + crate::SupportsVertexHashIndex,
     {
         Self::Index {
             index,
@@ -64,7 +64,7 @@ where
     pub fn range<R>(index: <<Graph::Vertex as Element>::Label as Label>::Index, range: R) -> Self
     where
         R: Into<ValueRange<'search>>,
-        Graph: crate::Graph<SupportsVertexRangeIndex = Supported>,
+        Graph: crate::Graph + crate::SupportsVertexRangeIndex,
     {
         Self::Range {
             index,
@@ -78,7 +78,7 @@ where
         search: &'search str,
     ) -> Self
     where
-        Graph: crate::Graph<SupportsVertexFullTextIndex = Supported>,
+        Graph: crate::Graph + crate::SupportsVertexFullTextIndex,
     {
         Self::FullText {
             index,

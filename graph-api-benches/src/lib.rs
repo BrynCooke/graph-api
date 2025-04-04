@@ -11,36 +11,13 @@ pub mod traversal;
 pub mod vertex;
 
 use criterion::{BenchmarkGroup, Criterion};
-use graph_api_lib::Graph;
-#[allow(unused_imports)]
-use graph_api_lib::{Supported, Unsupported};
+use graph_api_lib::{
+    Graph, 
+    SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexHashIndex,
+    SupportsVertexLabelIndex, SupportsVertexRangeIndex
+};
 use graph_api_test::{Edge, Vertex};
 use std::time::Duration;
-
-#[cfg(feature = "vertex-label-index")]
-pub(crate) type SupportsVertexLabelIndex = Supported;
-#[cfg(not(feature = "vertex-label-index"))]
-pub(crate) type SupportsVertexLabelIndex = Unsupported;
-
-#[cfg(feature = "vertex-index")]
-pub(crate) type SupportsVertexHashIndex = Supported;
-#[cfg(not(feature = "vertex-index"))]
-pub(crate) type SupportsVertexHashIndex = Unsupported;
-
-#[cfg(feature = "vertex-full-text-index")]
-pub(crate) type SupportsVertexFullTextIndex = Supported;
-#[cfg(not(feature = "vertex-full-text-index"))]
-pub(crate) type SupportsVertexFullTextIndex = Unsupported;
-
-#[cfg(feature = "vertex-range-index")]
-pub(crate) type SupportsVertexRangeIndex = Supported;
-#[cfg(not(feature = "vertex-range-index"))]
-pub(crate) type SupportsVertexRangeIndex = Unsupported;
-
-#[cfg(feature = "edge-label-index")]
-pub(crate) type SupportsEdgeLabelIndex = Supported;
-#[cfg(not(feature = "edge-label-index"))]
-pub(crate) type SupportsEdgeLabelIndex = Unsupported;
 
 /// Configures the default settings for benchmark groups
 pub fn configure_group<G: Graph<Vertex = Vertex, Edge = Edge>>(
@@ -54,15 +31,12 @@ pub fn configure_group<G: Graph<Vertex = Vertex, Edge = Edge>>(
 /// Run all benchmarks for a given graph implementation
 pub fn run_benchmarks<G>(c: &mut Criterion, setup: impl Fn() -> G + Clone)
 where
-    G: Graph<
-            Vertex = Vertex,
-            Edge = Edge,
-            SupportsVertexLabelIndex = SupportsVertexLabelIndex,
-            SupportsVertexHashIndex = SupportsVertexHashIndex,
-            SupportsVertexFullTextIndex = SupportsVertexFullTextIndex,
-            SupportsVertexRangeIndex = SupportsVertexRangeIndex,
-            SupportsEdgeLabelIndex = SupportsEdgeLabelIndex,
-        >,
+    G: Graph<Vertex = Vertex, Edge = Edge>
+        + SupportsVertexLabelIndex
+        + SupportsVertexHashIndex
+        + SupportsVertexFullTextIndex
+        + SupportsVertexRangeIndex
+        + SupportsEdgeLabelIndex,
 {
     // Run vertex operation benchmarks
     let mut vertex_group = c.benchmark_group("vertex_operations");

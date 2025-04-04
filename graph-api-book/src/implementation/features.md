@@ -27,22 +27,37 @@ Optional features you may want to support:
 
 ## Declaring Feature Support
 
-The Graph API uses the `Support` trait marker to indicate which features a graph implementation supports:
+The Graph API uses separate support traits to indicate which features a graph implementation supports:
 
 ```rust
+// First implement the core Graph trait
 impl<Vertex, Edge> Graph for MyGraph<Vertex, Edge>
 where
     Vertex: Element,
     Edge: Element,
 {
-    // Supported features use the Supported marker
-    type SupportsVertexLabelIndex = Supported;
-    type SupportsEdgeLabelIndex = Supported;
-    
-    // Unsupported features use the Unsupported marker
-    type SupportsVertexFullTextIndex = Unsupported;
+    // Core Graph functionality
     // ...
 }
+
+// Then implement the relevant support traits
+impl<Vertex, Edge> SupportsVertexLabelIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    // Any trait-specific methods if needed
+}
+
+impl<Vertex, Edge> SupportsEdgeLabelIndex for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    // Any trait-specific methods if needed
+}
+
+// Skip implementing SupportsVertexFullTextIndex if not supported
 ```
 
 ## Implementing Optional Features
@@ -97,21 +112,30 @@ impl<K: Hash + Eq, V: Copy + Eq + Hash> HashIndex<K, V> {
 
 ### Graph Clearing
 
-To support clearing all elements from a graph:
+To support clearing all elements from a graph, implement the `SupportsClear` trait:
 
 ```rust
-// Declare support
-type SupportsClear = Supported;
-
-// Implement the clear method
-fn clear(&mut self)
+// First implement the Graph trait
+impl<Vertex, Edge> Graph for MyGraph<Vertex, Edge>
 where
-    Self: Graph<SupportsClear = Supported>,
+    Vertex: Element,
+    Edge: Element,
 {
-    self.vertices.clear();
-    self.edges.clear();
-    self.indexes.iter_mut().for_each(|idx| idx.clear());
-    // Clear any other data structures
+    // ...core graph functionality
+}
+
+// Then implement the SupportsClear trait
+impl<Vertex, Edge> SupportsClear for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    fn clear(&mut self) {
+        self.vertices.clear();
+        self.edges.clear();
+        self.indexes.iter_mut().for_each(|idx| idx.clear());
+        // Clear any other data structures
+    }
 }
 ```
 
@@ -235,10 +259,25 @@ where
     E: Element,
 {
     pub fn supports_full_text_index(&self) -> bool {
-        // Check if feature is supported
-        std::any::TypeId::of::<Self::SupportsVertexFullTextIndex>() 
-            == std::any::TypeId::of::<Supported>()
+        // Check if feature is supported using trait objects
+        self as &dyn Any
+            .downcast_ref::<dyn SupportsVertexFullTextIndex>()
+            .is_some()
     }
+}
+```
+
+Or simply use trait bounds in your API:
+
+```rust
+pub fn search_full_text<G>(graph: &G, text: &str) -> Vec<G::VertexId>
+where
+    G: Graph + SupportsVertexFullTextIndex,
+{
+    // Can safely use full text search here
+    graph.walk()
+        .vertices(VertexIndex::person_by_biography(text))
+        .collect()
 }
 ```
 

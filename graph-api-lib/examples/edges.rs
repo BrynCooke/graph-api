@@ -1,4 +1,4 @@
-use graph_api_lib::{EdgeSearch, Supported};
+use graph_api_lib::{EdgeSearch, SupportsEdgeLabelIndex};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{Edge, EdgeIndex, Vertex, populate_graph};
 
@@ -11,7 +11,7 @@ fn main() {
 
 fn example<Graph>(graph: Graph, bryn_id: Graph::VertexId)
 where
-    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // Get all edges from bryn
     let bryn_edges = graph

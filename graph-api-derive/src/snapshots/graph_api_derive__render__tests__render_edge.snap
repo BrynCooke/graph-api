@@ -50,28 +50,19 @@ pub enum EdgeIndex {}
 impl EdgeIndex {
     pub fn knows<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Edge = Edge,
-            SupportsEdgeLabelIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
     {
         graph_api_lib::EdgeSearch::label(EdgeLabel::Knows)
     }
     pub fn created<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Edge = Edge,
-            SupportsEdgeLabelIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
     {
         graph_api_lib::EdgeSearch::label(EdgeLabel::Created)
     }
     pub fn language<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
     where
-        Graph: graph_api_lib::Graph<
-            Edge = Edge,
-            SupportsEdgeLabelIndex = graph_api_lib::Supported,
-        >,
+        Graph: graph_api_lib::Graph<Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
     {
         graph_api_lib::EdgeSearch::label(EdgeLabel::Language)
     }

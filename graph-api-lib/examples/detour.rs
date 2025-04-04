@@ -1,5 +1,5 @@
 use graph_api_lib::Graph;
-use graph_api_lib::Supported;
+use graph_api_lib::SupportsEdgeLabelIndex;
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
 use graph_api_test::Vertex;
@@ -16,7 +16,7 @@ fn main() {
 
 fn example<G>(graph: &G, bryn_id: G::VertexId)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // Count projects that Bryn created using detour
     let bryn_project_count = graph

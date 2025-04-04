@@ -656,7 +656,7 @@ impl Variant {
         let select_name = format_ident!("{}", self.ident.to_string().to_snake());
         quote! {#vis fn #select_name<'search, Graph>() -> graph_api_lib::#search_ident<'search, Graph>
             where
-                Graph: graph_api_lib::Graph<#element_type = #element_ident, #feature = graph_api_lib::Supported>,
+                Graph: graph_api_lib::Graph<#element_type = #element_ident> + graph_api_lib::#feature,
             {
             graph_api_lib::#search_ident::label(#label_ident::#variant)
         }}
@@ -690,7 +690,7 @@ impl Variant {
                 };
                 quote! {#vis fn #select_name<'search, Graph>(value: #ty) -> graph_api_lib::#search_ident<'search, Graph>
                     where
-                        Graph: graph_api_lib::Graph<#element_type = #element_ident, #feature = graph_api_lib::Supported>,
+                        Graph: graph_api_lib::Graph<#element_type = #element_ident> + graph_api_lib::#feature,
                     {
                     graph_api_lib::#search_ident::#call(#index_ident::#index_variant, value)
                 }}
@@ -716,7 +716,7 @@ impl Variant {
                 let ty = ref_type(&f.ty, Some(Lifetime::new("'search", self.ident.span())));
                 quote! {#vis fn #select_name<'search, Graph>(range: std::ops::Range<#ty>) -> graph_api_lib::#search_ident<'search, Graph>
                     where
-                        Graph: graph_api_lib::Graph<#element_type = #element_ident, #feature = graph_api_lib::Supported>,
+                        Graph: graph_api_lib::Graph<#element_type = #element_ident> + graph_api_lib::#feature,
                     {
                     graph_api_lib::#search_ident::range(#index_ident::#index_variant, range)
                 }}

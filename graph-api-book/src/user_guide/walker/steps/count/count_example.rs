@@ -1,16 +1,13 @@
-use graph_api_lib::{Graph, Supported, VertexSearch};
+use graph_api_lib::{Graph, SupportsVertexLabelIndex, SupportsEdgeLabelIndex, VertexSearch};
 use graph_api_test::{Edge, EdgeIndex, Vertex, VertexExt, VertexIndex};
 
 // ANCHOR: all
 // Function demonstrating the count step
 pub fn count_example<G>(graph: G)
 where
-    G: Graph<
-            Vertex = Vertex,
-            Edge = Edge,
-            SupportsVertexLabelIndex = Supported,
-            SupportsEdgeLabelIndex = Supported,
-        >,
+    G: Graph<Vertex = Vertex, Edge = Edge> + 
+       SupportsVertexLabelIndex + 
+       SupportsEdgeLabelIndex,
 {
     // ANCHOR: basic_count
     // Basic count - how many people are in the graph?

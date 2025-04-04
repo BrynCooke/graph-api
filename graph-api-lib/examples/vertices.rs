@@ -1,4 +1,4 @@
-use graph_api_lib::{Graph, Supported, VertexSearch};
+use graph_api_lib::{Graph, SupportsVertexLabelIndex, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{Vertex, VertexIndex, populate_graph};
 
@@ -11,7 +11,7 @@ fn main() {
 
 fn example<G>(graph: G)
 where
-    G: Graph<Vertex = Vertex, SupportsVertexLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex> + SupportsVertexLabelIndex,
 {
     // The vertices() step is the starting point for most graph traversals
     // It finds vertices matching the given search criteria

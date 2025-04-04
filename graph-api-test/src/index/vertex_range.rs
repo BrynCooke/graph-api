@@ -1,14 +1,9 @@
 use crate::{Edge, PersonMut, Vertex, VertexIndex, assert_elements_eq, populate_graph};
-use graph_api_lib::{Graph, Supported, VertexReferenceMut};
+use graph_api_lib::{Graph, SupportsVertexHashIndex, SupportsVertexRangeIndex, VertexReferenceMut};
 
 pub fn test_index<T>(graph: &mut T)
 where
-    T: Graph<
-            Vertex = Vertex,
-            Edge = Edge,
-            SupportsVertexRangeIndex = Supported,
-            SupportsVertexHashIndex = Supported,
-        >,
+    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexRangeIndex + SupportsVertexHashIndex,
 {
     let refs = populate_graph(graph);
     // Test range query for age between 20-40
@@ -27,7 +22,7 @@ where
 
 pub fn test_index_remove<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexRangeIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexRangeIndex,
 {
     let refs = populate_graph(graph);
     // Remove a vertex
@@ -45,7 +40,7 @@ where
 
 pub fn test_index_update<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexRangeIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexRangeIndex,
 {
     let refs = populate_graph(graph);
     graph

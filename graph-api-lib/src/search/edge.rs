@@ -1,5 +1,5 @@
 use crate::element::Element;
-use crate::{Direction, Supported};
+use crate::Direction;
 
 /// A search to apply to edges when querying a graph.
 /// This allows graph implementations to support vertex centric indexes.
@@ -101,7 +101,7 @@ where
     /// Adjacent vertex label must match
     pub fn adjacent_labelled(mut self, adjacent_label: <Graph::Vertex as Element>::Label) -> Self
     where
-        Graph: crate::Graph<SupportsEdgeAdjacentLabelIndex = Supported>,
+        Graph: crate::Graph + crate::SupportsEdgeAdjacentLabelIndex,
     {
         self.adjacent_label = Some(adjacent_label);
         self

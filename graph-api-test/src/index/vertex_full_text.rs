@@ -1,5 +1,5 @@
 use crate::{Edge, PersonMut, Vertex, VertexIndex, assert_elements_eq, populate_graph};
-use graph_api_lib::{Graph, Supported, VertexReferenceMut};
+use graph_api_lib::{Graph, SupportsVertexFullTextIndex, VertexReferenceMut};
 
 /// Tests that a vertex can be added to the graph and that the indexed field
 /// search returns the added vertex.
@@ -9,7 +9,7 @@ use graph_api_lib::{Graph, Supported, VertexReferenceMut};
 /// expected result.
 pub fn test_index<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexFullTextIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexFullTextIndex,
 {
     let refs = populate_graph(graph);
     let collected = graph
@@ -28,7 +28,7 @@ where
 /// returns an empty result.
 pub fn test_index_remove<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexFullTextIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexFullTextIndex,
 {
     let refs = populate_graph(graph);
     graph.remove_vertex(refs.bryn);
@@ -52,7 +52,7 @@ where
 ///   with the updated vertex
 pub fn test_index_update<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexFullTextIndex = Supported>,
+    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexFullTextIndex,
 {
     let refs = populate_graph(graph);
     graph

@@ -6,19 +6,6 @@ use derivative::Derivative;
 use std::fmt::Debug;
 use std::hash::Hash;
 
-/// Marker for feature support
-pub trait Support {}
-
-/// Marker for feature support
-pub struct Supported {}
-
-impl Support for Supported {}
-
-/// Marker for feature support
-pub struct Unsupported {}
-
-impl Support for Unsupported {}
-
 /// The direction of an edge in a graph.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, PartialOrd, Ord)]
 #[repr(u8)]
@@ -66,24 +53,6 @@ where
 
 /// Graphs that implement this trait can be used with the walker API.
 pub trait Graph: Sized + Debug {
-    /// Supports indexing of vertices by label.
-    type SupportsVertexLabelIndex: Support;
-    /// Supports indexing of edges by label.
-    type SupportsEdgeLabelIndex: Support;
-    /// Supports indexing of vertices by field.
-    type SupportsVertexHashIndex: Support;
-    /// Supports indexing of edges by field.
-    type SupportsEdgeHashIndex: Support;
-    /// Supports indexing of vertices by field with range support.
-    type SupportsVertexRangeIndex: Support;
-    /// Supports indexing of edges by field with range support.
-    type SupportsEdgeRangeIndex: Support;
-    /// Supports indexing of vertices by field using an inverted full text index.
-    type SupportsVertexFullTextIndex: Support;
-    /// Supports indexing of edges by adjacent vertex label.
-    type SupportsEdgeAdjacentLabelIndex: Support;
-    /// Supports clearing of all vertices and edges
-    type SupportsClear: Support;
 
     /// The type of the vertices in the graph. This is usually an enum.
     type Vertex: Debug + Element;
@@ -171,10 +140,11 @@ pub trait Graph: Sized + Debug {
         search: &EdgeSearch<'search, Self>,
     ) -> Self::EdgeIter<'search, '_>;
 
-    /// Clears the graph. This may not be supported by all graph implementations.
-    fn clear(&mut self)
-    where
-        Self: Graph<SupportsClear = Supported>;
+    /// Clears the graph. Default implementation returns an error.
+    /// Implement the `SupportsClear` trait to provide this functionality.
+    fn clear(&mut self) {
+        panic!("This graph implementation does not support clearing")
+    }
 
     /// Returns a string representation of an element in the graph.
     fn dbg<T: Into<ElementId<Self>>>(&self, id: T) -> String {

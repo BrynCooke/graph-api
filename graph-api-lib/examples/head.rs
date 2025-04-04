@@ -1,4 +1,4 @@
-use graph_api_lib::{EdgeSearch, Graph, Supported};
+use graph_api_lib::{EdgeSearch, Graph, SupportsVertexLabelIndex, SupportsEdgeLabelIndex};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{Edge, EdgeIndex, Vertex, VertexIndex, populate_graph};
 
@@ -11,12 +11,9 @@ fn main() {
 
 fn example<G>(graph: G, graph_api_id: G::VertexId)
 where
-    G: Graph<
-            Vertex = Vertex,
-            Edge = Edge,
-            SupportsVertexLabelIndex = Supported,
-            SupportsEdgeLabelIndex = Supported,
-        >,
+    G: Graph<Vertex = Vertex, Edge = Edge> 
+        + SupportsVertexLabelIndex
+        + SupportsEdgeLabelIndex,
 {
     // Find all people who created projects
     // The head() step returns the source vertices of edges

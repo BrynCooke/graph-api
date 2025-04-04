@@ -1,7 +1,7 @@
 use graph_api_lib::EdgeReference;
 use graph_api_lib::EdgeSearch;
 use graph_api_lib::Graph;
-use graph_api_lib::Supported;
+use graph_api_lib::SupportsEdgeLabelIndex;
 use graph_api_lib::VertexReference;
 use graph_api_test::Edge;
 use graph_api_test::EdgeExt;
@@ -12,7 +12,7 @@ use graph_api_test::Vertex;
 
 pub fn vertex_context_example<G>(graph: &G, bryn_id: G::VertexId, julia_id: G::VertexId)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // ANCHOR: vertex_context
     // Use push_default_context to make source vertex information available during traversal
@@ -47,7 +47,7 @@ where
 
 pub fn edge_context_example<G>(graph: &G, person_id: G::VertexId)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // ANCHOR: edge_context
     // Walk the graph starting from the person vertex
@@ -75,7 +75,7 @@ where
 
 pub fn path_tracking_example<G>(graph: &G, start_id: G::VertexId)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsEdgeLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     // ANCHOR: path_tracking
     // Track the path while traversing

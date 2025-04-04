@@ -1,4 +1,4 @@
-use graph_api_lib::{Graph, Supported};
+use graph_api_lib::{Graph, SupportsVertexLabelIndex};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
 use graph_api_test::Project;
@@ -17,7 +17,7 @@ fn main() {
 
 fn basic_example<G>(graph: &mut G)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexLabelIndex,
 {
     // Add a new project node to demonstrate mutations
     let new_project_id = graph.add_vertex(Vertex::Project(Project {

@@ -1,6 +1,7 @@
 use graph_api_lib::Graph;
 use graph_api_lib::VertexReference;
-use graph_api_lib::{EdgeReference, Supported};
+use graph_api_lib::EdgeReference;
+use graph_api_lib::{SupportsVertexLabelIndex, SupportsEdgeLabelIndex};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
 use graph_api_test::EdgeIndex;
@@ -20,7 +21,7 @@ fn main() {
 
 fn vertex_example<G>(graph: &G)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge, SupportsVertexLabelIndex = Supported>,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexLabelIndex,
 {
     // Calculate the average age of people
     let (total_age, person_count) =
@@ -47,12 +48,9 @@ where
 
 fn edge_example<G>(graph: &G)
 where
-    G: Graph<
-            Vertex = Vertex,
-            Edge = Edge,
-            SupportsVertexLabelIndex = Supported,
-            SupportsEdgeLabelIndex = Supported,
-        >,
+    G: Graph<Vertex = Vertex, Edge = Edge> 
+        + SupportsVertexLabelIndex
+        + SupportsEdgeLabelIndex,
 {
     // Working with edges - find the earliest relationship year
     let earliest_relation = graph
