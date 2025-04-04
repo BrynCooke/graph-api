@@ -39,6 +39,7 @@
 
 # Implementation Guide
 
+- [Implementation Guide for Graph Backends](./implementation/guides.md)
 - [Creating a Graph Implementation](./implementation/graphs.md)
 - [Testing Your Implementation](./implementation/testing.md)
 - [Features and Extensions](./implementation/features.md)
