@@ -2,9 +2,8 @@ use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
 
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_lib::{
-    Graph, VertexSearch, 
-    SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexHashIndex,
-    SupportsVertexLabelIndex, SupportsVertexRangeIndex
+    Graph, SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexHashIndex,
+    SupportsVertexLabelIndex, SupportsVertexRangeIndex, VertexSearch,
 };
 use graph_api_test::{Edge, EdgeIndex, Vertex, VertexIndex};
 
@@ -15,14 +14,14 @@ pub fn run_benchmarks<G>(
 ) where
     G: Graph<Vertex = Vertex, Edge = Edge>
         + SupportsVertexLabelIndex
-        + SupportsVertexHashIndex 
+        + SupportsVertexHashIndex
         + SupportsVertexFullTextIndex
         + SupportsVertexRangeIndex
         + SupportsEdgeLabelIndex,
 {
     #[cfg(feature = "vertex-label-index")]
     bench_index_vertex_label(group, setup.clone());
-    #[cfg(feature = "vertex-index")]
+    #[cfg(feature = "vertex-hash-index")]
     bench_index_vertex_property(group, setup.clone());
     #[cfg(feature = "vertex-full-text-index")]
     bench_index_vertex_fulltext(group, setup.clone());
@@ -34,10 +33,8 @@ pub fn run_benchmarks<G>(
 
 /// Benchmark vertex label index lookup
 #[allow(dead_code)]
-fn bench_index_vertex_label<G>(
-    group: &mut BenchmarkGroup<WallTime>,
-    setup: impl Fn() -> G + Clone,
-) where
+fn bench_index_vertex_label<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
     G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexLabelIndex,
 {
     group.throughput(Throughput::Elements(1));
@@ -127,10 +124,8 @@ fn bench_index_vertex_range_range<G>(
 
 /// Benchmark edge label index lookup
 #[allow(dead_code)]
-fn bench_index_edge_label<G>(
-    group: &mut BenchmarkGroup<WallTime>,
-    setup: impl Fn() -> G + Clone,
-) where
+fn bench_index_edge_label<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
     G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     group.throughput(Throughput::Elements(1));

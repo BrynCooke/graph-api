@@ -5,12 +5,12 @@ edition = "2024"
 
 [features]
 default = []
-vertex-index = []
+vertex-hash-index = []
 vertex-label-index = []
 vertex-full-text-index = []
 vertex-range-index = []
 edge-label-index = []
-edge-index = []
+edge-hash-index = []
 edge-range-index = []
 graph-clear = []
 

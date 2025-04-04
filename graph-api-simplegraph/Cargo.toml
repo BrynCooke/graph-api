@@ -18,7 +18,7 @@ uuid = { version = "1.11.0", features = ["v4"] }
 
 [dev-dependencies]
 graph-api-test = { path = "../graph-api-test", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
-graph-api-benches = { path = "../graph-api-benches", features = ["vertex-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-benches = { path = "../graph-api-benches", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 graph-api-derive = { path = "../graph-api-derive" }
 criterion = { version = "0.5", features = ["html_reports"] }
 rand = "0.8"
