@@ -26,7 +26,7 @@ When you apply `#[derive(VertexExt)]` to an enum, the following types are genera
 
 1. **VertexLabel** enum - Contains variants matching your enum's variants
 2. **VertexIndex** enum - Contains variants for each indexed field
-3. Projection structs - For accessing fields in a type-safe way
+3. **Projection** structs - For accessing fields in a type-safe way
 
 ### Example
 
