@@ -1,4 +1,4 @@
-use crate::standard_model::{VertexExt, VertexIndex, standard_populated_graph};
+use crate::standard_model::{Vertex, VertexExt, standard_populated_graph};
 use graph_api_lib::{EdgeSearch, Graph};
 
 // ANCHOR: all
@@ -12,7 +12,7 @@ pub fn take_example() {
     println!("First 2 people in the graph:");
     let people = graph
         .walk()
-        .vertices(VertexIndex::person())
+        .vertices(Vertex::person())
         .take(2) // Only take the first 2 vertices
         .collect::<Vec<_>>();
 
@@ -27,7 +27,7 @@ pub fn take_example() {
     println!("\nUp to 3 people over 30:");
     let older_people = graph
         .walk()
-        .vertices(VertexIndex::person()) // Get all Person vertices
+        .vertices(Vertex::person()) // Get all Person vertices
         .filter_by_person(|person, _| {
             // Using the typed projection with accessor methods
             person.age() > 30
@@ -43,7 +43,7 @@ pub fn take_example() {
 
     // ANCHOR: edge_example
     // Find the first 2 connections from the first person
-    if let Some(first_person) = graph.walk().vertices(VertexIndex::person()).first() {
+    if let Some(first_person) = graph.walk().vertices(Vertex::person()).first() {
         println!("\nFirst 2 connections from a person:");
 
         let connections = graph

@@ -1,6 +1,4 @@
-use crate::standard_model::{
-    Edge, Person, PersonMut, Vertex, VertexIndex, standard_populated_graph,
-};
+use crate::standard_model::{Edge, Person, PersonMut, Vertex, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference, VertexReferenceMut};
 
 // ANCHOR: all
@@ -16,7 +14,7 @@ pub fn mutate_example() {
     // Print original ages
     graph
         .walk()
-        .vertices(VertexIndex::person())
+        .vertices(Vertex::person())
         .probe(|vertex, _| {
             if let Some(person) = vertex.project::<Person<_>>() {
                 println!("  Before: {} is {} years old", person.name(), person.age());
@@ -27,7 +25,7 @@ pub fn mutate_example() {
     // Perform the mutation - increment everyone's age by 1
     let updated_count = graph
         .walk_mut() // Must use walk_mut() for mutations
-        .vertices(VertexIndex::person())
+        .vertices(Vertex::person())
         .mutate(|graph, vertex_id, _| {
             // Note: updating requires cloning and replacing due to Rust's ownership model
             if let Some(mut vertex) = graph.vertex_mut(vertex_id) {
@@ -53,21 +51,20 @@ pub fn mutate_example() {
     println!("  Created new project: GraphDB");
 
     // Add 'Created' edges from all people to the new project
-    let edge_count =
-        graph
-            .walk_mut()
-            .vertices(VertexIndex::person())
-            .mutate(|graph, person_id, _| {
-                // Create an edge from the person to the new project
-                graph.add_edge(person_id, new_project_id, Edge::Created);
+    let edge_count = graph
+        .walk_mut()
+        .vertices(Vertex::person())
+        .mutate(|graph, person_id, _| {
+            // Create an edge from the person to the new project
+            graph.add_edge(person_id, new_project_id, Edge::Created);
 
-                // Get person name for logging
-                if let Some(vertex) = graph.vertex(person_id) {
-                    if let Some(person) = vertex.project::<Person<_>>() {
-                        println!("  Added edge: {} -> GraphDB", person.name());
-                    }
+            // Get person name for logging
+            if let Some(vertex) = graph.vertex(person_id) {
+                if let Some(person) = vertex.project::<Person<_>>() {
+                    println!("  Added edge: {} -> GraphDB", person.name());
                 }
-            });
+            }
+        });
 
     println!("  Added {} 'Created' edges to the graph", edge_count);
     // ANCHOR_END: add_edges

@@ -5,7 +5,7 @@
     <desc>
         Diagram illustrating the 'vertices' step using an index:
         - Shows a graph with vertices A(Person), B(Product), C(Person), D(Review).
-        - Represents the step with the code `graph.walk().vertices(VertexIndex::person())`.
+        - Represents the step with the code `graph.walk().vertices(Vertex::person())`.
         - Shows the resulting walker state where only vertices A and C (labeled "Person") are highlighted.
         - Vertices B and D are not highlighted, indicating they were filtered out by the index lookup.
     </desc>
@@ -67,7 +67,7 @@
         <!-- Reduced font size explicitly, adjusted position -->
         <text x="0" y="-10" text-anchor="middle" font-size="var(--font-size-small)">graph.walk()</text>
         <text class="code" x="10" y="10" text-anchor="middle" font-size="var(--font-size-small)">
-            .vertices(VertexIndex::person())
+            .vertices(Vertex::person())
         </text>
         <!-- Removed step arrow line, will use index pointers instead -->
     </g>

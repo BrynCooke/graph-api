@@ -52,8 +52,6 @@
 - [API Reference](./reference/api.md)
 - [Support Traits](./reference/support_traits.md)
 - [Derive Macros](./reference/derive_macros.md)
-    - [VertexExt](./reference/derive_macros/vertex_ext.md)
-    - [EdgeExt](./reference/derive_macros/edge_ext.md)
 - [Existing Implementations](./reference/implementations.md)
     - [SimpleGraph](./reference/implementations/simple_graph.md)
     - [PetGraph](./reference/implementations/pet_graph.md)

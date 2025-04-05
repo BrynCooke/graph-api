@@ -1,4 +1,4 @@
-use crate::standard_model::{EdgeIndex, VertexIndex, standard_populated_graph};
+use crate::standard_model::{Edge, Vertex, standard_populated_graph};
 use graph_api_lib::{EdgeSearch, Graph};
 // ANCHOR: all
 // Function demonstrating the edges step
@@ -7,7 +7,7 @@ pub fn edges_step_example() {
     let graph = standard_populated_graph();
     let bryn = graph
         .walk()
-        .vertices(VertexIndex::person_by_username("bryn123"))
+        .vertices(Vertex::person_by_username("bryn123"))
         .first()
         .expect("bryn");
 
@@ -51,7 +51,7 @@ pub fn edges_step_example() {
     let created_edges = graph
         .walk()
         .vertices_by_id([bryn])
-        .edges(EdgeIndex::created())
+        .edges(Edge::created())
         .collect::<Vec<_>>();
 
     println!("Found {} 'Created' edges for Bryn", created_edges.len());
@@ -62,7 +62,7 @@ pub fn edges_step_example() {
     let outgoing_follows_edges = graph
         .walk()
         .vertices_by_id([bryn])
-        .edges(EdgeIndex::follows().outgoing())
+        .edges(Edge::follows().outgoing())
         .collect::<Vec<_>>();
 
     println!("Bryn follows {} people", outgoing_follows_edges.len());
@@ -71,7 +71,7 @@ pub fn edges_step_example() {
     let incoming_follows_edges = graph
         .walk()
         .vertices_by_id([bryn])
-        .edges(EdgeIndex::follows().incoming())
+        .edges(Edge::follows().incoming())
         .collect::<Vec<_>>();
 
     println!("{} people follow Bryn", incoming_follows_edges.len());

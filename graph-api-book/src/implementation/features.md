@@ -1,6 +1,7 @@
 # Features and Extensions
 
-This chapter covers how to extend your graph implementation with additional features and capabilities beyond the basic Graph API requirements.
+This chapter covers how to extend your graph implementation with additional features and capabilities beyond the basic
+Graph API requirements.
 
 ## Core vs. Extended Features
 
@@ -276,7 +277,7 @@ where
 {
     // Can safely use full text search here
     graph.walk()
-        .vertices(VertexIndex::person_by_biography(text))
+        .vertices(Vertex::person_by_biography(text))
         .collect()
 }
 ```
@@ -336,4 +337,6 @@ When adding features and extensions, follow these best practices:
 
 ## Conclusion
 
-Extending your graph implementation with additional features can make it more powerful and useful for specific use cases. By carefully designing extensions that complement the core Graph API, you can create a versatile graph implementation that meets a wide range of needs while maintaining compatibility with the broader ecosystem.
+Extending your graph implementation with additional features can make it more powerful and useful for specific use
+cases. By carefully designing extensions that complement the core Graph API, you can create a versatile graph
+implementation that meets a wide range of needs while maintaining compatibility with the broader ecosystem.

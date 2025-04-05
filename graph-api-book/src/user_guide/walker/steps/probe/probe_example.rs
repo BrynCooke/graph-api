@@ -1,4 +1,4 @@
-use crate::standard_model::{Person, Project, VertexIndex, standard_populated_graph};
+use crate::standard_model::{Person, Project, Vertex, standard_populated_graph};
 use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexReference};
 
 // ANCHOR: all
@@ -15,7 +15,7 @@ pub fn probe_example() {
 
     graph
         .walk()
-        .vertices(VertexIndex::person()) // Type-safe vertex lookup by label
+        .vertices(Vertex::person()) // Type-safe vertex lookup by label
         .probe(|vertex, _| {
             // Inspect vertex properties using type-safe projection
             if let Some(person) = vertex.project::<Person<_>>() {
@@ -34,7 +34,7 @@ pub fn probe_example() {
 
     graph
         .walk()
-        .vertices(VertexIndex::person_by_username("bryn123"))
+        .vertices(Vertex::person_by_username("bryn123"))
         .edges(EdgeSearch::scan().outgoing())
         .probe(|edge, _| {
             // Get the target vertex to display relationship context

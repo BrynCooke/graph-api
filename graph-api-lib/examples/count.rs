@@ -1,6 +1,6 @@
 use graph_api_lib::{
-    EdgeSearch, VertexSearch,
-    SupportsVertexHashIndex, SupportsVertexLabelIndex, SupportsEdgeLabelIndex
+    EdgeSearch, SupportsEdgeLabelIndex, SupportsVertexHashIndex, SupportsVertexLabelIndex,
+    VertexSearch,
 };
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::{Edge, EdgeIndex, Vertex, VertexExt, VertexIndex, populate_graph};

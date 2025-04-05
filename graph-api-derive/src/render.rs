@@ -12,6 +12,7 @@ impl Model {
         let enum_index = self.as_enum_index();
         let impl_index = self.as_impl_index();
         let impl_element = self.as_impl_element();
+        let impl_selectors = self.as_selectors();
 
         let projections: Vec<TokenStream> = self
             .variants
@@ -42,6 +43,7 @@ impl Model {
             #enum_index
             #impl_index
             #impl_element
+            #impl_selectors
 
             #(#projections)*
 
@@ -71,6 +73,7 @@ impl Model {
         let enum_index = self.as_enum_index();
         let impl_index = self.as_impl_index();
         let impl_element = self.as_impl_element();
+        let impl_selectors = self.as_selectors();
 
         let projections: Vec<TokenStream> = self
             .variants
@@ -101,6 +104,7 @@ impl Model {
             #enum_index
             #impl_index
             #impl_element
+            #impl_selectors
 
             #(#projections)*
 
@@ -294,6 +298,16 @@ impl Model {
             .flat_map(Variant::indexes)
             .collect::<Vec<_>>();
 
+        quote! {
+            #[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]
+            #vis enum #index_ident {
+                #(#indexes),*
+            }
+        }
+    }
+
+    fn as_selectors(&self) -> TokenStream {
+        let ident = &self.ident;
         let label_selectors = self
             .variants
             .iter()
@@ -312,12 +326,7 @@ impl Model {
             .collect::<Vec<_>>();
 
         quote! {
-            #[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]
-            #vis enum #index_ident {
-                #(#indexes),*
-            }
-
-            impl #index_ident {
+            impl #ident {
                 #(#label_selectors)*
                 #(#index_selectors)*
                 #(#index_range_selectors)*

@@ -20,7 +20,6 @@ where
     Vertex: Element,
     Edge: Element,
 {
-
     type Vertex = Vertex;
     type Edge = Edge;
     type VertexId = NodeIndex<Ix>;

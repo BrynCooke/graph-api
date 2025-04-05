@@ -45,7 +45,7 @@ Make sure that examples are:
     - Use `filter_by_person(|person, _| ...)` when filtering by properties with a typed projection
     - Use projections like `vertex.project::<Person<_>>()` for type-safe access to properties
     - Use the projection's accessor methods (e.g., `person.name()`, `person.age()`) for field access
-    - Use generated index methods like `VertexIndex::person_by_username()` for efficient lookups
+    - Use generated index methods like `Vertex::person_by_username()` for efficient lookups
     - Remember that map steps don't automatically provide projections - use project explicitly
     - Show the type-safety benefits of these features, as they are core advantages of the Graph API
 7. Showcase type safety - Explicitly demonstrate how the API provides type-safe access to vertex and edge properties.

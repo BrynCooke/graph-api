@@ -42,21 +42,12 @@ pub enum VertexLabel {
 
 **Purpose**: Provides type-safe representations of vertex types, used for label-based indexing and filtering.
 
-### 2. Index Enum (VertexIndex)
+### 2. Index selectors
 
-An enum with variants and methods for accessing indexed properties:
+Selectors to make querying easier:
 
 ```rust,noplayground
-// Generated from the above Vertex enum
-pub enum VertexIndex {
-    // Variants for each indexed field
-    PersonUsername,
-    PersonBiography,
-    PersonAge,
-}
-
-// With methods like:
-impl VertexIndex {
+impl Vertex {
     // Find all Person vertices
     pub fn person() -> VertexSearch { /* ... */ }
     
@@ -140,15 +131,12 @@ pub enum EdgeLabel {
 
 **Purpose**: Provides type-safe representations of edge types, used for label-based indexing and filtering.
 
-### 2. Index Enum (EdgeIndex)
+### 2. Index selectors
+
+Selectors to make querying easier
 
 ```rust,noplayground
-pub enum EdgeIndex {
-    // Variants for indexed fields (if any)
-}
-
-// With methods like:
-impl EdgeIndex {
+impl Edge {
     // Find all Created edges
     pub fn created() -> EdgeSearch { /* ... */ }
     
@@ -207,20 +195,20 @@ where
 // Find all Person vertices
 let people = graph
     .walk()
-    .vertices(VertexIndex::person())
+    .vertices(Vertex::person())
     .collect::<Vec<_>>();
 
 // Find Person vertices with a specific username
 let user = graph
     .walk()
-    .vertices(VertexIndex::person_by_username("bryn123"))
+    .vertices(Vertex::person_by_username("bryn123"))
     .first()
     .unwrap();
 
 // Find Person vertices in an age range
 let adults = graph
     .walk()
-    .vertices(VertexIndex::person_by_age_range(18..65))
+    .vertices(Vertex::person_by_age_range(18..65))
     .collect::<Vec<_>>();
 ```
 
@@ -231,7 +219,7 @@ let adults = graph
 let created_projects = graph
     .walk()
     .vertices_by_id([person_id])
-    .edges(EdgeIndex::created().outgoing())
+    .edges(Edge::created().outgoing())
     .tail()  // Follow edges to target vertices
     .collect::<Vec<_>>();
 ```
@@ -242,7 +230,7 @@ let created_projects = graph
 // Find Person vertices that match specific criteria
 let experienced_devs = graph
     .walk()
-    .vertices(VertexIndex::person())
+    .vertices(Vertex::person())
     .filter_by_person(|person, _| {
         person.age() > 25 && person.biography().contains("developer")
     })

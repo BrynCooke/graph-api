@@ -1,5 +1,5 @@
 use graph_api_lib::{Graph, SupportsEdgeLabelIndex, VertexReference};
-use graph_api_test::{Edge, EdgeIndex, Person, Vertex, VertexExt};
+use graph_api_test::{Edge, Person, Vertex, VertexExt};
 use std::ops::Deref;
 
 // ANCHOR: all
@@ -12,7 +12,7 @@ where
     let _total_age = graph
         .walk()
         .vertices_by_id(vec![person_id])
-        .edges(EdgeIndex::knows())
+        .edges(Edge::knows())
         .tail()
         .filter_person()
         .push_context(|v, _| {

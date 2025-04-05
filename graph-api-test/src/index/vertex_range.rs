@@ -1,4 +1,4 @@
-use crate::{Edge, PersonMut, Vertex, VertexIndex, assert_elements_eq, populate_graph};
+use crate::{Edge, PersonMut, Vertex, assert_elements_eq, populate_graph};
 use graph_api_lib::{Graph, SupportsVertexHashIndex, SupportsVertexRangeIndex, VertexReferenceMut};
 
 pub fn test_index<T>(graph: &mut T)
@@ -9,13 +9,13 @@ where
     // Test range query for age between 20-40
     let collected = graph
         .walk()
-        .vertices(VertexIndex::person_by_age_range(20..46))
+        .vertices(Vertex::person_by_age_range(20..46))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
 
     let collected = graph
         .walk()
-        .vertices(VertexIndex::person_by_age(45))
+        .vertices(Vertex::person_by_age(45))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
 }
@@ -32,7 +32,7 @@ where
     assert_eq!(
         graph
             .walk()
-            .vertices(VertexIndex::person_by_age_range(20..46))
+            .vertices(Vertex::person_by_age_range(20..46))
             .count(),
         0
     );
@@ -53,13 +53,13 @@ where
     // Test range query for age between 20-40
     let collected = graph
         .walk()
-        .vertices(VertexIndex::person_by_age_range(20..46))
+        .vertices(Vertex::person_by_age_range(20..46))
         .count();
     assert_eq!(collected, 0);
 
     let collected = graph
         .walk()
-        .vertices(VertexIndex::person_by_age_range(100..106))
+        .vertices(Vertex::person_by_age_range(100..106))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
 }

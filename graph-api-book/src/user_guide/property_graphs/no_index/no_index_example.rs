@@ -1,4 +1,4 @@
-use crate::standard_model::{Vertex, VertexIndex, standard_populated_graph};
+use crate::standard_model::{Vertex, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference, VertexSearch};
 
 // ANCHOR: all
@@ -83,7 +83,7 @@ pub fn scan_example() {
     let start_index = std::time::Instant::now();
     let _julia_by_index = graph
         .walk()
-        .vertices(VertexIndex::person_by_username("julia456"))
+        .vertices(Vertex::person_by_username("julia456"))
         .collect::<Vec<_>>();
     let index_duration = start_index.elapsed();
 

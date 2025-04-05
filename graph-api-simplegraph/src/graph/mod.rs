@@ -9,9 +9,9 @@ use crate::id::VertexId;
 use crate::index::VertexIndexStorage;
 use graph_api_lib::{
     Direction, EdgeSearch, Element, ElementId, Graph, Index, Label, Project, ProjectMut,
-    SupportsVertexLabelIndex, SupportsEdgeLabelIndex, SupportsVertexHashIndex, SupportsEdgeHashIndex,
-    SupportsVertexRangeIndex, SupportsEdgeRangeIndex, SupportsVertexFullTextIndex, 
-    SupportsEdgeAdjacentLabelIndex, SupportsClear, Value, VertexSearch,
+    SupportsClear, SupportsEdgeAdjacentLabelIndex, SupportsEdgeHashIndex, SupportsEdgeLabelIndex,
+    SupportsEdgeRangeIndex, SupportsVertexFullTextIndex, SupportsVertexHashIndex,
+    SupportsVertexLabelIndex, SupportsVertexRangeIndex, Value, VertexSearch,
 };
 use smallbox::space::S8;
 use smallbox::{SmallBox, smallbox};

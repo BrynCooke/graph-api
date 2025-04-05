@@ -9,9 +9,10 @@ Vertices step diagram showing initial selection of vertices based on criteria
 
 In this diagram:
 
-- The step shown is **`graph.walk().vertices(VertexIndex::person())`**.
+- The step shown is **`graph.walk().vertices(Vertex::person())`**.
 - The **Resulting Walker State** shows the graph structure.
-- Only vertices **A** and **C** (which are "Person" vertices) are **highlighted**, indicating they are the elements selected by the `vertices` step and are now in the walker's state.
+- Only vertices **A** and **C** (which are "Person" vertices) are **highlighted**, indicating they are the elements
+  selected by the `vertices` step and are now in the walker's state.
 - Vertices B (Product) and D (Review) are not highlighted.
 
 ## Syntax

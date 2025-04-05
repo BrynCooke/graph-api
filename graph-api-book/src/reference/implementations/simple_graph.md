@@ -1,10 +1,14 @@
 # SimpleGraph
 
-`SimpleGraph` is the flagship implementation of the Graph API, designed specifically for property graphs with full indexing support. It serves as both a reference implementation and a practical, high-performance graph for most use cases.
+`SimpleGraph` is the flagship implementation of the Graph API, designed specifically for property graphs with full
+indexing support. It serves as both a reference implementation and a practical, high-performance graph for most use
+cases.
 
 ## Overview
 
-`SimpleGraph` is a custom in-memory graph implementation that fully supports all Graph API features, including all types of indexes. It's designed for property graph use cases where elements are identified by labels (enum variants) and may have properties that need indexing.
+`SimpleGraph` is a custom in-memory graph implementation that fully supports all Graph API features, including all types
+of indexes. It's designed for property graph use cases where elements are identified by labels (enum variants) and may
+have properties that need indexing.
 
 ```rust
 use graph_api_simplegraph::SimpleGraph;
@@ -49,15 +53,16 @@ graph.add_edge(alice, project, Edge::Created);
 
 `SimpleGraph` uses a custom data structure designed specifically for property graphs:
 
-1. **Vertex Storage**: Vertices are stored in collections grouped by label (enum variant), allowing for efficient label-based filtering.
+1. **Vertex Storage**: Vertices are stored in collections grouped by label (enum variant), allowing for efficient
+   label-based filtering.
 
 2. **Edge Storage**: Edges are stored with both head and tail connections, enabling fast traversal in both directions.
 
 3. **Indexes**: Multiple index types are implemented to support different query patterns:
-   - Label indexes for finding vertices/edges by label
-   - Hash indexes for exact property matching
-   - Range indexes for numeric and string range queries
-   - Full-text indexes for text search
+    - Label indexes for finding vertices/edges by label
+    - Hash indexes for exact property matching
+    - Range indexes for numeric and string range queries
+    - Full-text indexes for text search
 
 4. **Adjacency Lists**: Each vertex maintains an adjacency list for fast edge traversal.
 
@@ -142,7 +147,8 @@ While `SimpleGraph` is a robust implementation, it has some limitations:
 
 ## Source Code
 
-The source code for `SimpleGraph` is available in the [graph-api-simplegraph](https://github.com/BrynCooke/graph-api/tree/main/graph-api-simplegraph) crate.
+The source code for `SimpleGraph` is available in
+the [graph-api-simplegraph](https://github.com/BrynCooke/graph-api/tree/main/graph-api-simplegraph) crate.
 
 ## Example Usage
 
@@ -202,31 +208,31 @@ graph.add_edge(bob, project, Edge::Created);
 
 // Query by label
 let people = graph.walk()
-    .vertices(VertexIndex::person_all())
+    .vertices(Vertex::person_all())
     .collect::<Vec<_>>();
 assert_eq!(people.len(), 2);
 
 // Query by property (hash index)
 let alice_found = graph.walk()
-    .vertices(VertexIndex::person_by_name("Alice"))
+    .vertices(Vertex::person_by_name("Alice"))
     .collect::<Vec<_>>();
 assert_eq!(alice_found.len(), 1);
 
 // Query by range (range index)
 let young_people = graph.walk()
-    .vertices(VertexIndex::person_by_age(20..30))
+    .vertices(Vertex::person_by_age(20..30))
     .collect::<Vec<_>>();
 assert_eq!(young_people.len(), 1);
 
 // Text search (full-text index)
 let developers = graph.walk()
-    .vertices(VertexIndex::person_by_bio("developer"))
+    .vertices(Vertex::person_by_bio("developer"))
     .collect::<Vec<_>>();
 assert_eq!(developers.len(), 1);
 
 // Traversal
 let alices_creations = graph.walk()
-    .vertices(VertexIndex::person_by_name("Alice"))
+    .vertices(Vertex::person_by_name("Alice"))
     .edges(EdgeIndex::created().direction(Direction::Outgoing))
     .head()
     .collect::<Vec<_>>();
@@ -269,7 +275,7 @@ graph.vertex_mut(vertex_id)
 
 // The age index is automatically updated, so this query now works
 let people = graph.walk()
-    .vertices(VertexIndex::person_by_age(31..32))
+    .vertices(Vertex::person_by_age(31..32))
     .collect::<Vec<_>>();
 assert_eq!(people.len(), 1);
 ```

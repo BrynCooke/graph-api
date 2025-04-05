@@ -1,4 +1,4 @@
-use crate::standard_model::{VertexExt, VertexIndex, standard_populated_graph};
+use crate::standard_model::{Vertex, VertexExt, standard_populated_graph};
 use graph_api_lib::Graph;
 
 // ANCHOR: all
@@ -9,7 +9,7 @@ pub fn first_example() {
 
     // ANCHOR: basic_usage
     // Get the first person in the graph (if any)
-    let first_person = graph.walk().vertices(VertexIndex::person()).first();
+    let first_person = graph.walk().vertices(Vertex::person()).first();
 
     match first_person {
         Some(person) => println!("Found a person: {:?}", person),
@@ -21,7 +21,7 @@ pub fn first_example() {
     // Get the first person with a specific name
     let first_bryn = graph
         .walk()
-        .vertices(VertexIndex::person()) // Get all Person vertices
+        .vertices(Vertex::person()) // Get all Person vertices
         .filter_by_person(|person, _| {
             // Using the typed projection with accessor methods
             person.name().contains("Bryn")
@@ -38,7 +38,7 @@ pub fn first_example() {
     // Use first to check if any element matches a condition
     let has_young_person = graph
         .walk()
-        .vertices(VertexIndex::person())
+        .vertices(Vertex::person())
         .filter_by_person(|person, _| {
             // Using type-safe accessor methods
             person.age() < 30

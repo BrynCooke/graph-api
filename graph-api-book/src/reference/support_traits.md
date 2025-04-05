@@ -1,6 +1,8 @@
 # Support Traits
 
-The Graph API uses a trait-based approach to indicate which optional features a graph implementation supports. This allows for a more flexible and extensible API, where new capabilities can be added over time without breaking existing implementations.
+The Graph API uses a trait-based approach to indicate which optional features a graph implementation supports. This
+allows for a more flexible and extensible API, where new capabilities can be added over time without breaking existing
+implementations.
 
 ## Core Trait
 
@@ -49,7 +51,8 @@ pub trait Graph: Sized + Debug {
 
 ## Support Traits
 
-These traits enable optional features for graph implementations. Each support trait extends the `Graph` trait, so implementations must first implement `Graph` before they can implement any support traits.
+These traits enable optional features for graph implementations. Each support trait extends the `Graph` trait, so
+implementations must first implement `Graph` before they can implement any support traits.
 
 ### Vertex Index Support
 
@@ -95,7 +98,8 @@ pub trait SupportsClear: Graph {
 
 ## Using Support Traits
 
-When you implement a graph, first implement the core `Graph` trait, and then implement any support traits for the features you want to provide:
+When you implement a graph, first implement the core `Graph` trait, and then implement any support traits for the
+features you want to provide:
 
 ```rust
 // Core implementation
@@ -133,7 +137,8 @@ where
 
 ## Using Supported Features
 
-When writing code that uses supported features, use trait bounds to ensure the graph implementation supports the required features:
+When writing code that uses supported features, use trait bounds to ensure the graph implementation supports the
+required features:
 
 ```rust
 // Function that uses vertex label indexing
@@ -143,7 +148,7 @@ where
 {
     // Can safely use label indexing here
     graph.walk()
-        .vertices(VertexIndex::person())
+        .vertices(Vertex::person())
         .map(|v| v.id())
         .collect()
 }
@@ -155,7 +160,7 @@ where
 {
     // Can safely use range indexing here
     graph.walk()
-        .vertices(VertexIndex::person_by_age_range(18..))
+        .vertices(Vertex::person_by_age_range(18..))
         .map(|v| v.id())
         .collect()
 }
@@ -163,7 +168,8 @@ where
 
 ## Adding New Support Traits
 
-The trait-based approach allows for adding new support traits over time without breaking existing code. To add a new support trait:
+The trait-based approach allows for adding new support traits over time without breaking existing code. To add a new
+support trait:
 
 1. Define the new trait extending the `Graph` trait
 2. Add any required methods

@@ -53,7 +53,6 @@ where
 
 /// Graphs that implement this trait can be used with the walker API.
 pub trait Graph: Sized + Debug {
-
     /// The type of the vertices in the graph. This is usually an enum.
     type Vertex: Debug + Element;
 

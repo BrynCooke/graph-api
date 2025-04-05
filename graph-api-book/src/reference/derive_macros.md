@@ -98,7 +98,7 @@ For each enum variant, a method is generated to query by label:
 
 ```rust,noplayground
 // Query for all Person vertices
-VertexIndex::person() -> VertexSearch<'_, Graph>
+Vertex::person() -> VertexSearch<'_, Graph>
 ```
 
 #### Property-based Querying
@@ -107,10 +107,10 @@ For each indexed field, methods are generated for exact matching:
 
 ```rust,noplayground
 // Query for Person vertices with a specific name
-VertexIndex::person_by_name(value: & str) -> VertexSearch<'_, Graph>
+Vertex::person_by_name(value: & str) -> VertexSearch<'_, Graph>
 
 // Query for Person vertices with a specific age
-VertexIndex::person_by_age(value: u64) -> VertexSearch<'_, Graph>
+Vertex::person_by_age(value: u64) -> VertexSearch<'_, Graph>
 ```
 
 #### Range-based Querying
@@ -119,7 +119,7 @@ For fields with the `#[index(range)]` attribute:
 
 ```rust,noplayground
 // Query for Person vertices with age in a range
-VertexIndex::person_by_age_range(range: Range<u64>) -> VertexSearch<'_, Graph>
+Vertex::person_by_age_range(range: Range<u64>) -> VertexSearch<'_, Graph>
 ```
 
 #### Full-text Querying
@@ -128,7 +128,7 @@ For fields with the `#[index(full_text)]` attribute:
 
 ```rust,noplayground
 // Query for Person vertices with matching text in biography
-VertexIndex::person_by_biography(search: & str) -> VertexSearch<'_, Graph>
+Vertex::person_by_biography(search: & str) -> VertexSearch<'_, Graph>
 ```
 
 ## EdgeExt Derive Macro
@@ -293,19 +293,19 @@ The generated types integrate with the Graph walker pattern:
 // Find all person vertices
 let people = graph
 .walk()
-.vertices(VertexIndex::person())
+.vertices(Vertex::person())
 .collect::<Vec<_ > > ();
 
 // Find people with a specific name
 let named_people = graph
 .walk()
-.vertices(VertexIndex::person_by_name("Bryn"))
+.vertices(Vertex::person_by_name("Bryn"))
 .collect::<Vec<_ > > ();
 
 // Find people in an age range
 let adults = graph
 .walk()
-.vertices(VertexIndex::person_by_age_range(18..65))
+.vertices(Vertex::person_by_age_range(18..65))
 .collect::<Vec<_ > > ();
 
 // Find outgoing 'knows' edges from a vertex
@@ -324,7 +324,7 @@ Filter extensions can be combined with other walker steps:
 // Find adults named "Bryn" with a complex filter
 let result = graph
 .walk()
-.vertices(VertexIndex::person())
+.vertices(Vertex::person())
 .filter_by_person( | person, _ | {
 person.age() > = 18 & & person.name().contains("Bryn")
 })
@@ -350,7 +350,7 @@ where
     G::SupportsVertexLabelIndex: Supported,
 {
     // Now you can use label-based indexes
-    graph.walk().vertices(VertexIndex::person())...
+    graph.walk().vertices(Vertex::person())...
 }
 ```
 

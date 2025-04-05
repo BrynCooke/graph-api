@@ -1,4 +1,4 @@
-use crate::standard_model::{VertexExt, VertexIndex, standard_populated_graph};
+use crate::standard_model::{Vertex, VertexExt, standard_populated_graph};
 use graph_api_lib::{Graph, VertexSearch};
 
 // ANCHOR: all
@@ -21,10 +21,7 @@ pub fn vertices_step_example() {
     // ANCHOR: label_index
     // Use a label-based index for more efficient lookups
     // This narrows the search to only person vertices
-    let people = graph
-        .walk()
-        .vertices(VertexIndex::person())
-        .collect::<Vec<_>>();
+    let people = graph.walk().vertices(Vertex::person()).collect::<Vec<_>>();
 
     println!("Found {} person vertices", people.len());
     // ANCHOR_END: label_index
@@ -50,7 +47,7 @@ pub fn vertices_step_example() {
     // Filter after retrieval when specialized indexes aren't available
     let young_people = graph
         .walk()
-        .vertices(VertexIndex::person()) // Get all Person vertices
+        .vertices(Vertex::person()) // Get all Person vertices
         .filter_by_person(|person, _| {
             // Use type-safe accessor methods
             person.age() < 30 // Find people under 30

@@ -1,4 +1,4 @@
-use crate::standard_model::{EdgeIndex, VertexExt, VertexIndex, standard_populated_graph};
+use crate::standard_model::{Edge, Vertex, VertexExt, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference};
 
 // ANCHOR: all
@@ -13,17 +13,17 @@ pub fn detour_example() {
 
     let projects = graph
         .walk()
-        .vertices(VertexIndex::person()) // Start with all people
+        .vertices(Vertex::person()) // Start with all people
         .detour(|sub_walker| {
             // The detour checks if this person follows someone over 30
             sub_walker
-                .edges(EdgeIndex::follows()) // Follow "follows" edges
+                .edges(Edge::follows()) // Follow "follows" edges
                 .head() // Move to the target person
                 .filter_by_person(|person, _| person.age() > 30) // Check if they're over 30
                 .take(1) // We only need one match to qualify
         })
         // Back to original person vertices that passed the detour check
-        .edges(EdgeIndex::created()) // Find what they created
+        .edges(Edge::created()) // Find what they created
         .head() // Move to the created project
         .filter_project() // Keep only project vertices
         .collect::<Vec<_>>();
@@ -39,17 +39,17 @@ pub fn detour_example() {
 
     let creators = graph
         .walk()
-        .vertices(VertexIndex::person()) // Start with all people
+        .vertices(Vertex::person()) // Start with all people
         .push_default_context()
         .detour(|creator_walker| {
             // Detour to check if this person created something that was liked
             creator_walker
-                .edges(EdgeIndex::created()) // Find what they created
+                .edges(Edge::created()) // Find what they created
                 .head() // Move to the created project
                 .detour(|project_walker| {
                     // Nested detour to check if the project was liked
                     project_walker
-                        .edges(EdgeIndex::liked()) // Find "liked" edges pointing to this project
+                        .edges(Edge::liked()) // Find "liked" edges pointing to this project
                         .tail() // Move to the person who liked it
                         .filter(|liker, ctx| {
                             // Check that the liker is different from the creator

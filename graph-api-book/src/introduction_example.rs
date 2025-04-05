@@ -1,4 +1,4 @@
-use crate::standard_model::{EdgeIndex, VertexIndex, standard_populated_graph};
+use crate::standard_model::{Edge, Vertex, standard_populated_graph};
 use graph_api_lib::Graph;
 
 // ANCHOR: all
@@ -10,7 +10,7 @@ pub fn basic_example() {
     // Find a person using the username index (exact match)
     let bryn = graph
         .walk()
-        .vertices(VertexIndex::person_by_username("bryn123"))
+        .vertices(Vertex::person_by_username("bryn123"))
         .first()
         .expect("Bryn should exist in the graph");
 
@@ -20,7 +20,7 @@ pub fn basic_example() {
     let projects_created_by_bryn = graph
         .walk()
         .vertices_by_id(vec![bryn])
-        .edges(EdgeIndex::created().outgoing())
+        .edges(Edge::created().outgoing())
         .head()
         .collect::<Vec<_>>();
 
@@ -30,7 +30,7 @@ pub fn basic_example() {
     let followed_by_bryn = graph
         .walk()
         .vertices_by_id(vec![bryn])
-        .edges(EdgeIndex::follows().outgoing())
+        .edges(Edge::follows().outgoing())
         .head()
         .collect::<Vec<_>>();
 
@@ -39,7 +39,7 @@ pub fn basic_example() {
     // Find all people with "graph" in their biography
     let graph_enthusiasts = graph
         .walk()
-        .vertices(VertexIndex::person_by_biography("graph"))
+        .vertices(Vertex::person_by_biography("graph"))
         .collect::<Vec<_>>();
 
     println!("Found {} graph enthusiasts", graph_enthusiasts.len());
@@ -47,7 +47,7 @@ pub fn basic_example() {
     // Find people in a specific age range
     let people_in_30s = graph
         .walk()
-        .vertices(VertexIndex::person_by_age_range(30..40))
+        .vertices(Vertex::person_by_age_range(30..40))
         .collect::<Vec<_>>();
 
     println!("Found {} people in their 30s", people_in_30s.len());

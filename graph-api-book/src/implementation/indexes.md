@@ -1,6 +1,7 @@
 # Implementing Indexes
 
-Indexes are a critical component for efficient graph operations, allowing for quick lookups of elements based on property values. This chapter guides you through implementing different types of indexes in your graph backend.
+Indexes are a critical component for efficient graph operations, allowing for quick lookups of elements based on
+property values. This chapter guides you through implementing different types of indexes in your graph backend.
 
 ## Index Types Overview
 
@@ -307,7 +308,8 @@ fn vertices<'search>(
 
 ## Implementing Full-Text Indexes
 
-Full-text indexes enable searching through text properties with capabilities like prefix matching, fuzzy matching, or tokenized searches.
+Full-text indexes enable searching through text properties with capabilities like prefix matching, fuzzy matching, or
+tokenized searches.
 
 ### Data Structure
 
@@ -483,7 +485,7 @@ fn test_hash_index() {
     
     // Test index lookup
     let results = graph.walk()
-        .vertices(VertexIndex::person_by_name("Alice"))
+        .vertices(Vertex::person_by_name("Alice"))
         .collect::<Vec<_>>();
     
     assert_eq!(results.len(), 1);
@@ -495,7 +497,7 @@ fn test_hash_index() {
         .set_name("Alicia");
     
     let results = graph.walk()
-        .vertices(VertexIndex::person_by_name("Alicia"))
+        .vertices(Vertex::person_by_name("Alicia"))
         .collect::<Vec<_>>();
     
     assert_eq!(results.len(), 1);
@@ -505,4 +507,7 @@ fn test_hash_index() {
 
 ## Conclusion
 
-Implementing efficient indexes is key to building a high-performance graph backend. By carefully designing index structures and ensuring proper updates during mutations, you can provide fast lookup capabilities while maintaining reasonable memory usage. Remember that different use cases may require different indexing strategies, so consider the expected query patterns when deciding which indexes to implement and how to optimize them.
+Implementing efficient indexes is key to building a high-performance graph backend. By carefully designing index
+structures and ensuring proper updates during mutations, you can provide fast lookup capabilities while maintaining
+reasonable memory usage. Remember that different use cases may require different indexing strategies, so consider the
+expected query patterns when deciding which indexes to implement and how to optimize them.

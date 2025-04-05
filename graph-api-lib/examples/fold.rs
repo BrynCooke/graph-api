@@ -1,7 +1,7 @@
+use graph_api_lib::EdgeReference;
 use graph_api_lib::Graph;
 use graph_api_lib::VertexReference;
-use graph_api_lib::EdgeReference;
-use graph_api_lib::{SupportsVertexLabelIndex, SupportsEdgeLabelIndex};
+use graph_api_lib::{SupportsEdgeLabelIndex, SupportsVertexLabelIndex};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
 use graph_api_test::EdgeIndex;
@@ -48,9 +48,7 @@ where
 
 fn edge_example<G>(graph: &G)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge> 
-        + SupportsVertexLabelIndex
-        + SupportsEdgeLabelIndex,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexLabelIndex + SupportsEdgeLabelIndex,
 {
     // Working with edges - find the earliest relationship year
     let earliest_relation = graph

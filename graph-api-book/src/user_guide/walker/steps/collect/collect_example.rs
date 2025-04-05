@@ -1,4 +1,4 @@
-use crate::standard_model::{Person, VertexExt, VertexIndex, standard_populated_graph};
+use crate::standard_model::{Person, Vertex, VertexExt, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference};
 use std::collections::{BTreeSet, HashSet};
 
@@ -13,7 +13,7 @@ pub fn collect_example() {
     // Use the person() index method to get all Person vertices
     let person_vertices: Vec<_> = graph
         .walk()
-        .vertices(VertexIndex::person()) // Type-safe vertex lookup by label
+        .vertices(Vertex::person()) // Type-safe vertex lookup by label
         .collect::<Vec<_>>();
 
     println!("Found {} person vertices", person_vertices.len());
@@ -23,7 +23,7 @@ pub fn collect_example() {
     // Collect into a HashSet for unique elements
     let unique_names: HashSet<String> = graph
         .walk()
-        .vertices(VertexIndex::person())
+        .vertices(Vertex::person())
         // Use map to extract properties from each person
         .map(|person, _| {
             // Use projection to access Person methods in a type-safe way
@@ -41,7 +41,7 @@ pub fn collect_example() {
     // Collect into a BTreeSet for range unique elements
     let range_ages: BTreeSet<u8> = graph
         .walk()
-        .vertices(VertexIndex::person())
+        .vertices(Vertex::person())
         // Use filter_person() to work exclusively with Person vertices (no closure needed)
         .filter_person() // Label-based type filter with no closure
         // Extract age from each Person vertex

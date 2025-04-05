@@ -1,4 +1,4 @@
-use crate::{Edge, PersonMut, Vertex, VertexIndex, assert_elements_eq, populate_graph};
+use crate::{Edge, PersonMut, Vertex, assert_elements_eq, populate_graph};
 use graph_api_lib::{Graph, SupportsVertexFullTextIndex, VertexReferenceMut};
 
 /// Tests that a vertex can be added to the graph and that the indexed field
@@ -14,7 +14,7 @@ where
     let refs = populate_graph(graph);
     let collected = graph
         .walk()
-        .vertices(VertexIndex::person_by_biography("graph"))
+        .vertices(Vertex::person_by_biography("graph"))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
     graph.remove_vertex(refs.bryn);
@@ -35,7 +35,7 @@ where
     assert_eq!(
         graph
             .walk()
-            .vertices(VertexIndex::person_by_biography("graph"))
+            .vertices(Vertex::person_by_biography("graph"))
             .count(),
         0
     );
@@ -64,14 +64,14 @@ where
     assert_eq!(
         graph
             .walk()
-            .vertices(VertexIndex::person_by_biography("graph"))
+            .vertices(Vertex::person_by_biography("graph"))
             .count(),
         0
     );
     assert_eq!(
         graph
             .walk()
-            .vertices(VertexIndex::person_by_biography("proxy"))
+            .vertices(Vertex::person_by_biography("proxy"))
             .count(),
         1
     );

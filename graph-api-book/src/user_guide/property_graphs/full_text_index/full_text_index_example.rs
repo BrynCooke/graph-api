@@ -1,4 +1,4 @@
-use crate::standard_model::{VertexIndex, standard_populated_graph};
+use crate::standard_model::{Vertex, standard_populated_graph};
 use graph_api_lib::Graph;
 
 // ANCHOR: all
@@ -28,7 +28,7 @@ pub fn full_text_queries() {
     // Find people with "developer" in their biography
     let developers = graph
         .walk()
-        .vertices(VertexIndex::person_by_biography("developer"))
+        .vertices(Vertex::person_by_biography("developer"))
         .collect::<Vec<_>>();
 
     println!("Found {} people who are developers", developers.len());
@@ -36,7 +36,7 @@ pub fn full_text_queries() {
     // Find people with "graph" in their biography
     let graph_enthusiasts = graph
         .walk()
-        .vertices(VertexIndex::person_by_biography("graph"))
+        .vertices(Vertex::person_by_biography("graph"))
         .collect::<Vec<_>>();
 
     println!(
@@ -47,7 +47,7 @@ pub fn full_text_queries() {
     // Find people with "network" in their biography
     let network_specialists = graph
         .walk()
-        .vertices(VertexIndex::person_by_biography("network"))
+        .vertices(Vertex::person_by_biography("network"))
         .collect::<Vec<_>>();
 
     println!("Found {} network specialists", network_specialists.len());
@@ -57,7 +57,7 @@ pub fn full_text_queries() {
     // For example, searching for "develop" would also match "developer"
     let develop_related = graph
         .walk()
-        .vertices(VertexIndex::person_by_biography("develop"))
+        .vertices(Vertex::person_by_biography("develop"))
         .collect::<Vec<_>>();
 
     println!(

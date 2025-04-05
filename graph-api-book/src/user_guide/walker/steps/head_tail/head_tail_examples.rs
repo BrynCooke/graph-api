@@ -1,14 +1,13 @@
+use crate::standard_model::{Edge, Vertex};
 use graph_api_lib::Graph;
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{EdgeIndex, VertexIndex, populate_graph};
 
 // ANCHOR: all
 // Function demonstrating the head and tail steps
 pub fn head_tail_examples() {
     // Create a new graph
-    let mut graph = SimpleGraph::new();
+    let graph = SimpleGraph::new();
     // Populate the graph with test data
-    let _refs = populate_graph(&mut graph);
 
     // ANCHOR: tail_example
     // Find projects created by people
@@ -17,8 +16,8 @@ pub fn head_tail_examples() {
     // 3. Use head() to get to the projects (the target vertices)
     let projects = graph
         .walk()
-        .vertices(VertexIndex::person())
-        .edges(EdgeIndex::created().outgoing())
+        .vertices(Vertex::person())
+        .edges(Edge::created().outgoing())
         .head() // Move to the target vertex of the edge
         .collect::<Vec<_>>();
 
@@ -32,8 +31,8 @@ pub fn head_tail_examples() {
     // 3. Use tail() to get back to those same people (the source vertices)
     let creators = graph
         .walk()
-        .vertices(VertexIndex::person())
-        .edges(EdgeIndex::created().outgoing())
+        .vertices(Vertex::person())
+        .edges(Edge::created().outgoing())
         .tail() // Move to the source vertex of the edge
         .collect::<Vec<_>>();
 
@@ -41,14 +40,14 @@ pub fn head_tail_examples() {
     // ANCHOR_END: head_example
 
     // ANCHOR: multi_step
-    // Find people who know someone who created a project
+    // Find people who follow someone who created a project
     // This demonstrates chaining head and tail multiple times
     let indirect_creators = graph
         .walk()
-        .vertices(VertexIndex::person())
-        .edges(EdgeIndex::knows().outgoing())
-        .tail() // Move to the people they know
-        .edges(EdgeIndex::created().outgoing())
+        .vertices(Vertex::person())
+        .edges(Edge::follows().outgoing())
+        .tail() // Move to the people they follow
+        .edges(Edge::created().outgoing())
         .tail() // Move to the projects created by those people
         .collect::<Vec<_>>();
 

@@ -1,4 +1,4 @@
-use crate::{Edge, EdgeIndex, Vertex, assert_elements_eq, populate_graph};
+use crate::{Edge, Vertex, assert_elements_eq, populate_graph};
 use graph_api_lib::{Graph, SupportsEdgeLabelIndex};
 
 pub fn test_index<T>(graph: &mut T)
@@ -9,7 +9,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn])
-        .edges(EdgeIndex::knows().outgoing())
+        .edges(Edge::knows().outgoing())
         .collect::<Vec<_>>();
 
     assert_elements_eq!(graph, collected, vec![refs.bryn_knows_julia])
@@ -23,7 +23,7 @@ where
     let collected = graph
         .walk()
         .vertices_by_id([refs.bryn])
-        .edges(EdgeIndex::knows().outgoing().with_limit(1))
+        .edges(Edge::knows().outgoing().with_limit(1))
         .collect::<Vec<_>>();
 
     assert_elements_eq!(graph, collected, vec![refs.bryn_knows_julia])

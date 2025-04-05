@@ -1,5 +1,5 @@
 use graph_api_lib::{EdgeReference, VertexReference};
-use graph_api_lib::{EdgeSearch, SupportsVertexLabelIndex, SupportsEdgeLabelIndex};
+use graph_api_lib::{EdgeSearch, SupportsEdgeLabelIndex, SupportsVertexLabelIndex};
 use graph_api_lib::{Graph, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Vertex;
@@ -43,9 +43,7 @@ where
 
 fn edge_example<G>(graph: &G)
 where
-    G: Graph<Vertex = Vertex, Edge = Edge>
-        + SupportsVertexLabelIndex
-        + SupportsEdgeLabelIndex,
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexLabelIndex + SupportsEdgeLabelIndex,
 {
     // Find the edge with the highest "since" value between two edges
     let oldest_edge = graph
