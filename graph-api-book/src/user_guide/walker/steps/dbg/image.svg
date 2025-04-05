@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
     <title>Dbg Step Diagram</title>
     <desc>
         Diagram illustrating the 'dbg' step:
@@ -48,30 +48,20 @@
 
     <!-- After dbg() step (Bottom Right) -->
     <g id="after-step" transform="translate(200, 180)"> <!-- Adjusted position -->
-        <text class="step-label" x="150" y="0" text-anchor="middle">After dbg()</text>
-        <g class="node highlighted" id="node-V1-after" transform="translate(80, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">V1</text>
-        </g>
-        <g class="node highlighted" id="node-V2-after" transform="translate(160, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">V2</text>
-        </g>
-        <g class="node highlighted" id="node-V3-after" transform="translate(240, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">V3</text>
-        </g>
+        <text class="step-label" x="150" y="0" text-anchor="middle">For each element visited</text>
+
         <!-- Debug Output Box -->
-        <g transform="translate(350, 50)"> <!-- Positioned to the side -->
+        <g transform="translate(160, 50)"> <!-- Positioned to the side -->
             <rect class="index-box" x="-100" y="-35" width="200" height="70" stroke-dasharray="3 3"/>
             <text class="index-title" y="-20">Console Output (dbg)</text>
-            <text class="index-value range" y="0" font-family="monospace">[Label] V1: ...</text>
-            <text class="index-value range" y="15" font-family="monospace">[Label] V2: ...</text>
-            <text class="index-value range" y="30" font-family="monospace">[Label] V3: ...</text>
+            <text class="index-value range" x="-80" y="0" font-family="monospace">[Label] V1: ...</text>
+            <text class="index-value range" x="-80" y="15" font-family="monospace">[Label] V2: ...</text>
+            <text class="index-value range" x="-80" y="30" font-family="monospace">[Label] V3: ...</text>
         </g>
         <!-- Arrow to Debug Output Box -->
-        <path class="scan-pointer" d="M 240 70 q 40 0 90 -5" marker-end="url(#arrowhead-pointer)" fill="none"/>
-        <text x="150" y="110" class="text-color-muted" font-size="12px" text-anchor="middle">Traversal continues unaffected</text>
+        <text x="150" y="110" class="text-color-muted" font-size="12px" text-anchor="middle">Traversal continues
+            unaffected
+        </text>
     </g>
 
 </svg>

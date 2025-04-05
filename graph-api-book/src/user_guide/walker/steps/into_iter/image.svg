@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
     <title>Into Iterator Step Diagram</title>
     <desc>
         Diagram illustrating the 'into_iter' step:
@@ -53,7 +53,7 @@
         <g transform="translate(150, 50)">
             <rect class="index-box" x="-85" y="-25" width="170" height="50"/>
             <text class="index-title" y="-5">Rust Iterator</text>
-            <text class="index-value range" y="20">Iterator&lt;Item=ID&gt;</text>
+            <text class="index-value range" y="20" x="-70">Iterator&lt;Item=ID&gt;</text>
         </g>
         <text x="150" y="110" class="text-color-muted" font-size="12px" text-anchor="middle">Terminates Walker</text>
     </g>

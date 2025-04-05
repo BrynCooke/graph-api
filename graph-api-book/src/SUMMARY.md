@@ -56,12 +56,4 @@
     - [SimpleGraph](./reference/implementations/simple_graph.md)
     - [PetGraph](./reference/implementations/pet_graph.md)
 
-****
 
-# Appendix
-
-- [Glossary](./appendix/glossary.md)
-- [Contributing](./appendix/contributing.md)
-- [Design Principles](./appendix/design_principles.md)
-- [SVG Diagram Guidelines](./diagram-guidelines.md)
-- [Performance Specifications](./appendix/performance_specs.md)

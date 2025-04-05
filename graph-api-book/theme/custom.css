@@ -438,6 +438,11 @@ svg {
 }
 
 /* Apply default marker to directed edges */
+.edge {
+    stroke: var(--edge-stroke);
+    stroke-width: var(--stroke-width-normal);
+}
+
 .edge.directed line,
 .edge.directed path {
     /* marker-end should be applied directly in SVG via attribute */

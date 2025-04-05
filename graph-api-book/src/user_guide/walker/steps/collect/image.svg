@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
     <title>Collect Step Diagram</title>
     <desc>
         Diagram illustrating the 'collect' step:
@@ -53,7 +53,7 @@
         <g transform="translate(150, 50)">
             <rect class="index-box" x="-75" y="-25" width="150" height="50"/>
             <text class="index-title" y="-5">Collection&lt;Vec&gt;</text>
-            <text class="index-value range" y="20">[V1, V2, V3]</text>
+            <text class="index-value range" y="20" x="-50">[V1, V2, V3]</text>
         </g>
         <text x="150" y="110" class="text-color-muted" font-size="12px" text-anchor="middle">Terminates Traversal</text>
     </g>

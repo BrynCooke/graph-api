@@ -43,7 +43,7 @@
     </g>
 
     <!-- After push_default_context() step (Middle Right) -->
-    <g id="after-step" transform="translate(200, 160)">
+    <g id="after-step" transform="translate(200, 150)">
         <text class="step-label" x="150" y="0" text-anchor="middle">After push_default_context()</text>
         <g class="node highlighted" id="node-A-after" transform="translate(150, 50)">
             <circle r="20"></circle>
@@ -57,7 +57,7 @@
         <!-- Context Box -->
         <g transform="translate(150, 110)">
             <rect class="index-box" x="-75" y="-20" width="150" height="40"/>
-            <text class="index-value range" y="5">element: A</text>
+            <text class="index-value range" y="5" x="-40">element: A</text>
         </g>
         <!-- Link Context -->
         <line class="index-pointer" x1="150" y1="70" x2="150" y2="90"
@@ -79,11 +79,13 @@
         <!-- Context Box (Updated context) -->
         <g transform="translate(300, 110)"> <!-- Positioned relative to B -->
             <rect class="index-box" x="-75" y="-20" width="150" height="40"/>
-            <text class="index-value range" y="5">element: B</text>
+            <text class="index-value range" y="5" x="-40">element: B</text>
         </g>
         <!-- Link Context -->
         <line class="index-pointer" x1="300" y1="70" x2="300" y2="90"
               marker-end="url(#arrowhead-pointer)" stroke-dasharray="none"/>
-        <text x="150" y="140" class="text-color-muted" font-size="12px" text-anchor="middle">Context automatically updates</text>
+        <text x="150" y="150" class="text-color-muted" font-size="12px" text-anchor="middle">Context automatically
+            updates
+        </text>
     </g>
 </svg>

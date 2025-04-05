@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height -->
     <title>Count Step Diagram</title>
     <desc>
         Diagram illustrating the 'count' step:
@@ -57,7 +57,7 @@
         <g transform="translate(180, 50)">
             <rect class="index-box" x="-30" y="-25" width="60" height="50"/>
             <text class="index-title" y="-5">Count</text>
-            <text class="index-value range" y="20" font-size="18px">4</text>
+            <text class="index-value range" y="20" x="-5" font-size="18px">4</text>
         </g>
         <text x="180" y="110" class="text-color-muted" font-size="12px" text-anchor="middle">Terminates Traversal</text>
     </g>
