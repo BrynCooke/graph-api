@@ -300,25 +300,25 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, probe_test_vertices_probe, $crate::steps::probe::test_vertices_probe}
         $crate::general_test!{$setup, probe_test_edges_probe, $crate::steps::probe::test_edges_probe}
         $crate::edge_index_label_test!{$setup, index_edge_label_test_index, $crate::index::edge_label::test_index}
-        // $crate::edge_index_label_test!{$setup, index_edge_label_test_index_limit, $crate::index::edge_label::test_index_limit}
-        // $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index, $crate::index::vertex_label::test_index}
-        // $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index_limit, $crate::index::vertex_label::test_index_limit}
-        // $crate::vertex_index_hash_test!{$setup, index_vertex_hash_test_index, $crate::index::vertex_hash::test_index}
-        // $crate::vertex_index_hash_test!{$setup, index_vertex_hash_test_index_remove, $crate::index::vertex_hash::test_index_remove}
-        // $crate::vertex_index_hash_test!{$setup, index_vertex_hash_test_index_update, $crate::index::vertex_hash::test_index_update}
-        // $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index, $crate::index::vertex_full_text::test_index}
-        // $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index_remove, $crate::index::vertex_full_text::test_index_remove}
-        // $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index_update, $crate::index::vertex_full_text::test_index_update}
-        // $crate::vertex_index_range_test!{$setup, index_vertex_range_test_index, $crate::index::vertex_range::test_index}
-        // $crate::vertex_index_range_test!{$setup, index_vertex_range_test_index_remove, $crate::index::vertex_range::test_index_remove}
-        // $crate::vertex_index_range_test!{$setup, index_vertex_range_test_index_update, $crate::index::vertex_range::test_index_update}
-        //
-        // $crate::proptest! {
-        //     #[test]
-        //     fn fuzz_test(operations in $crate::collection::vec($crate::fuzz::arb_graph_operation(), 0..100)) {
-        //         $crate::fuzz::test_fuzz($setup, operations);
-        //     }
-        // }
+        $crate::edge_index_label_test!{$setup, index_edge_label_test_index_limit, $crate::index::edge_label::test_index_limit}
+        $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index, $crate::index::vertex_label::test_index}
+        $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index_limit, $crate::index::vertex_label::test_index_limit}
+        $crate::vertex_index_hash_test!{$setup, index_vertex_hash_test_index, $crate::index::vertex_hash::test_index}
+        $crate::vertex_index_hash_test!{$setup, index_vertex_hash_test_index_remove, $crate::index::vertex_hash::test_index_remove}
+        $crate::vertex_index_hash_test!{$setup, index_vertex_hash_test_index_update, $crate::index::vertex_hash::test_index_update}
+        $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index, $crate::index::vertex_full_text::test_index}
+        $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index_remove, $crate::index::vertex_full_text::test_index_remove}
+        $crate::vertex_index_full_text_test!{$setup, index_vertex_full_text_test_index_update, $crate::index::vertex_full_text::test_index_update}
+        $crate::vertex_index_range_test!{$setup, index_vertex_range_test_index, $crate::index::vertex_range::test_index}
+        $crate::vertex_index_range_test!{$setup, index_vertex_range_test_index_remove, $crate::index::vertex_range::test_index_remove}
+        $crate::vertex_index_range_test!{$setup, index_vertex_range_test_index_update, $crate::index::vertex_range::test_index_update}
+
+        $crate::proptest! {
+            #[test]
+            fn fuzz_test(operations in $crate::collection::vec($crate::fuzz::arb_graph_operation(), 0..100)) {
+                $crate::fuzz::test_fuzz($setup, operations);
+            }
+        }
     };
 }
 

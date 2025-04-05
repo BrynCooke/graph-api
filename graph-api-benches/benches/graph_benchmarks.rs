@@ -1,5 +1,4 @@
 use criterion::{Criterion, criterion_group, criterion_main};
-use graph_api_test::bench_suite;
 
 fn criterion_benchmark(c: &mut Criterion) {
     // This is just a placeholder. Each graph implementation will need to

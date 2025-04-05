@@ -58,7 +58,7 @@ where
         .push_context(|edge, _ctx| {
             // Determine edge type based on the edge type
             let edge_type = match edge.weight() {
-                Edge::Created { .. } => "Created",
+                Edge::Created => "Created",
                 Edge::Knows { .. } => "Knows",
                 Edge::Language(_) => "Language",
             };
