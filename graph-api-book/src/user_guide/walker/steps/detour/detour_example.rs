@@ -20,7 +20,7 @@ pub fn detour_example() {
                 .edges(EdgeIndex::follows()) // Follow "follows" edges
                 .head() // Move to the target person
                 .filter_by_person(|person, _| person.age() > 30) // Check if they're over 30
-                .limit(1) // We only need one match to qualify
+                .take(1) // We only need one match to qualify
         })
         // Back to original person vertices that passed the detour check
         .edges(EdgeIndex::created()) // Find what they created

@@ -81,7 +81,7 @@ fn bench_query_collect<G: Graph<Vertex = Vertex, Edge = Edge>>(
             graph
                 .walk()
                 .vertices(VertexSearch::scan())
-                .limit(25)
+                .take(25)
                 .collect::<Vec<_>>()
         })
     });
@@ -98,6 +98,6 @@ fn bench_count<G: Graph<Vertex = Vertex, Edge = Edge>>(
         let mut graph = setup();
         generate_test_graph(&mut graph);
 
-        b.iter(|| graph.walk().vertices(VertexSearch::scan()).limit(0).count())
+        b.iter(|| graph.walk().vertices(VertexSearch::scan()).take(0).count())
     });
 }

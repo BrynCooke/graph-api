@@ -7,7 +7,7 @@ pub mod filter;
 pub mod filter_derive;
 pub mod first;
 pub mod fold;
-pub mod limit;
+pub mod take;
 pub mod mutate_context;
 pub mod mutation;
 pub mod probe;

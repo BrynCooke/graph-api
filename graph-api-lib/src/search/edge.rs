@@ -1,5 +1,5 @@
-use crate::element::Element;
 use crate::Direction;
+use crate::element::Element;
 
 /// A search to apply to edges when querying a graph.
 /// This allows graph implementations to support vertex centric indexes.
@@ -93,9 +93,22 @@ where
     }
 
     /// The maximum number of edges to return relative to the starting vertex.
-    pub fn limit(mut self, limit: usize) -> Self {
+    ///
+    /// The name `take` follows Rust's standard library's naming conventions.
+    pub fn take(mut self, n: usize) -> Self {
+        self.limit = Some(n);
+        self
+    }
+
+    /// The maximum number of edges to return relative to the starting vertex.
+    pub fn with_limit(mut self, limit: usize) -> Self {
         self.limit = Some(limit);
         self
+    }
+
+    /// The maximum number of edges to return from this search
+    pub fn limit(&self) -> Option<usize> {
+        self.limit
     }
 
     /// Adjacent vertex label must match

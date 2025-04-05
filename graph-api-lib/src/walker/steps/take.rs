@@ -5,15 +5,15 @@ use crate::walker::{EdgeWalker, VertexWalker, Walker};
 use include_doc::function_body;
 use std::marker::PhantomData;
 
-// ================ LIMIT IMPLEMENTATION ================
+// ================ TAKE IMPLEMENTATION ================
 
-pub struct VertexLimit<'graph, Parent> {
+pub struct VertexTake<'graph, Parent> {
     _phantom_data: PhantomData<&'graph ()>,
     parent: Parent,
     limit: usize,
 }
 
-impl<Parent> VertexLimit<'_, Parent> {
+impl<Parent> VertexTake<'_, Parent> {
     pub(crate) fn new(parent: Parent, limit: usize) -> Self {
         Self {
             _phantom_data: Default::default(),
@@ -23,7 +23,7 @@ impl<Parent> VertexLimit<'_, Parent> {
     }
 }
 
-impl<'graph, Parent> Walker<'graph> for VertexLimit<'graph, Parent>
+impl<'graph, Parent> Walker<'graph> for VertexTake<'graph, Parent>
 where
     Parent: VertexWalker<'graph>,
 {
@@ -42,7 +42,7 @@ where
     }
 }
 
-impl<'graph, Parent> VertexWalker<'graph> for VertexLimit<'graph, Parent>
+impl<'graph, Parent> VertexWalker<'graph> for VertexTake<'graph, Parent>
 where
     Parent: VertexWalker<'graph>,
 {
@@ -56,13 +56,13 @@ where
     }
 }
 
-pub struct EdgeLimit<'graph, Parent> {
+pub struct EdgeTake<'graph, Parent> {
     _phantom_data: PhantomData<&'graph ()>,
     parent: Parent,
     limit: usize,
 }
 
-impl<Parent> EdgeLimit<'_, Parent> {
+impl<Parent> EdgeTake<'_, Parent> {
     pub(crate) fn new(parent: Parent, limit: usize) -> Self {
         Self {
             _phantom_data: Default::default(),
@@ -72,7 +72,7 @@ impl<Parent> EdgeLimit<'_, Parent> {
     }
 }
 
-impl<'graph, Parent> Walker<'graph> for EdgeLimit<'graph, Parent>
+impl<'graph, Parent> Walker<'graph> for EdgeTake<'graph, Parent>
 where
     Parent: EdgeWalker<'graph>,
 {
@@ -90,7 +90,7 @@ where
     }
 }
 
-impl<'graph, Parent> EdgeWalker<'graph> for EdgeLimit<'graph, Parent>
+impl<'graph, Parent> EdgeWalker<'graph> for EdgeTake<'graph, Parent>
 where
     Parent: EdgeWalker<'graph>,
 {
@@ -109,14 +109,14 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    /// # Limit Step
+    /// # Take Step
     ///
-    /// The `limit` step restricts a vertex traversal to return at most a specified number of vertices.
+    /// The `take` step restricts a vertex traversal to return at most a specified number of vertices.
     /// This is useful for pagination, performance optimization, or when you only need a subset of results.
     ///
     /// ## Visual Diagram
     ///
-    /// Before limit step (with multiple vertices in traversal):
+    /// Before take step (with multiple vertices in traversal):
     /// ```text
     ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
     ///    ^                                         
@@ -126,7 +126,7 @@ where
     ///   [D]*                                        
     /// ```
     ///
-    /// After limit(2) step (only first 2 vertices remain in traversal):
+    /// After take(2) step (only first 2 vertices remain in traversal):
     /// ```text
     ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]  
     ///    ^                                         
@@ -138,7 +138,7 @@ where
     ///
     /// ## Parameters
     ///
-    /// - `limit`: A usize value specifying the maximum number of vertices to include in the traversal
+    /// - `n`: A usize value specifying the maximum number of vertices to include in the traversal
     ///
     /// ## Return Value
     ///
@@ -147,25 +147,26 @@ where
     /// ## Example
     ///
     /// ```rust
-    #[doc = function_body!("examples/limit.rs", vertex_example, [])]
+    #[doc = function_body!("examples/take.rs", vertex_example, [])]
     /// ```
     ///
     /// ## Notes
     ///
-    /// - The `limit` step is generally applied after filtering operations but before terminal operations
+    /// - The `take` step is generally applied after filtering operations but before terminal operations
     /// - It does not guarantee which vertices will be returned, just how many
     /// - For predictable results, combine with sorting operations or range indexes
     /// - Can significantly improve performance by avoiding unnecessary traversal
     /// - Particularly useful for large graphs where full traversal would be expensive
     /// - If the traversal contains fewer vertices than the limit, all vertices are returned
     /// - Different from `first()` which returns only a single vertex as an Option
-    pub fn limit(
+    /// - Follows the naming convention of Rust's standard library Iterator::take
+    pub fn take(
         self,
-        limit: usize,
-    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexLimit<'graph, Walker>> {
+        n: usize,
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexTake<'graph, Walker>> {
         VertexWalkerBuilder {
             _phantom: Default::default(),
-            walker: self.walker.limit(limit),
+            walker: self.walker.take(n),
             graph: self.graph,
         }
     }
@@ -176,14 +177,14 @@ where
     Graph: crate::graph::Graph,
     Walker: EdgeWalker<'graph, Graph = Graph>,
 {
-    /// # Limit Step
+    /// # Take Step
     ///
-    /// The `limit` step restricts an edge traversal to return at most a specified number of edges.
+    /// The `take` step restricts an edge traversal to return at most a specified number of edges.
     /// This is useful for pagination, performance optimization, or when you only need a subset of edges.
     ///
     /// ## Visual Diagram
     ///
-    /// Before limit step (with multiple edges in traversal):
+    /// Before take step (with multiple edges in traversal):
     /// ```text
     ///   [Person A] --- knows* ---> [Person B] --- created* ---> [Project]
     ///    ^                                         
@@ -193,7 +194,7 @@ where
     ///   [Company]                                        
     /// ```
     ///
-    /// After limit(2) step (only first 2 edges remain in traversal):
+    /// After take(2) step (only first 2 edges remain in traversal):
     /// ```text
     ///   [Person A] --- knows* ---> [Person B] --- created* ---> [Project]
     ///    ^                                         
@@ -205,7 +206,7 @@ where
     ///
     /// ## Parameters
     ///
-    /// - `limit`: A usize value specifying the maximum number of edges to include in the traversal
+    /// - `n`: A usize value specifying the maximum number of edges to include in the traversal
     ///
     /// ## Return Value
     ///
@@ -214,23 +215,24 @@ where
     /// ## Example
     ///
     /// ```rust
-    #[doc = function_body!("examples/limit.rs", edge_example, [])]
+    #[doc = function_body!("examples/take.rs", edge_example, [])]
     /// ```
     ///
     /// ## Notes
     ///
-    /// - Use limit to avoid processing excessive numbers of connections in a dense graph
+    /// - Use take to avoid processing excessive numbers of connections in a dense graph
     /// - Improves performance for graphs with highly connected nodes
     /// - Particularly useful when you only need to analyze a sample of connections
     /// - The order of edges returned depends on the graph implementation
     /// - For pagination purposes, consider combining with sorting or other ordering mechanisms
-    pub fn limit(
+    /// - Follows the naming convention of Rust's standard library Iterator::take
+    pub fn take(
         self,
-        limit: usize,
-    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeLimit<'graph, Walker>> {
+        n: usize,
+    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeTake<'graph, Walker>> {
         EdgeWalkerBuilder {
             _phantom: Default::default(),
-            walker: self.walker.limit(limit),
+            walker: self.walker.take(n),
             graph: self.graph,
         }
     }

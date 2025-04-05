@@ -3,8 +3,8 @@ use crate::search::vertex::VertexSearch;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder};
 use crate::walker::steps::reduce::VertexReduce;
 use crate::walker::steps::{
-    Detour, EdgeContext, EdgeFilter, EdgeLimit, Edges, End, Endpoints, VertexContext, VertexFilter,
-    VertexIter, VertexLimit, Vertices, Waypoint,
+    Detour, EdgeContext, EdgeFilter, EdgeTake, Edges, End, Endpoints, VertexContext, VertexFilter,
+    VertexIter, VertexTake, Vertices, Waypoint,
 };
 use crate::{EdgeSearch, ElementId};
 use steps::reduce::EdgeReduce;
@@ -78,8 +78,8 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
         VertexFilter::new(self, predicate)
     }
 
-    fn limit(self, limit: usize) -> VertexLimit<'graph, Self> {
-        VertexLimit::new(self, limit)
+    fn take(self, n: usize) -> VertexTake<'graph, Self> {
+        VertexTake::new(self, n)
     }
 
     fn detour<Path, Terminal, WalkerBuilder>(
@@ -166,8 +166,8 @@ pub trait EdgeWalker<'graph>: Walker<'graph> {
         Endpoints::new(self, End::Tail)
     }
 
-    fn limit(self, limit: usize) -> EdgeLimit<'graph, Self> {
-        EdgeLimit::new(self, limit)
+    fn take(self, n: usize) -> EdgeTake<'graph, Self> {
+        EdgeTake::new(self, n)
     }
 
     fn reduce<Reducer>(self, reducer: Reducer) -> EdgeReduce<'graph, Self, Reducer>

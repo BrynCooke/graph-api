@@ -111,7 +111,7 @@ graph.walk()
 
 ### Limit Traversal Size
 
-Use `limit()` to prevent processing excessive elements:
+Use `take()` to prevent processing excessive elements:
 
 ```rust,noplayground
 # use graph_api_test::Vertex;
@@ -136,7 +136,7 @@ Use `limit()` to prevent processing excessive elements:
 // Limit to first 10 results
 graph.walk()
     .vertices(VertexSearch::scan())
-    .limit(10)
+    .take(10)
     .collect::<Vec<_>>();
 ```
 

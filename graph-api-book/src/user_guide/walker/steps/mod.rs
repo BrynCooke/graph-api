@@ -12,7 +12,7 @@ pub mod first;
 pub mod fold;
 pub mod head_tail;
 pub mod into_iter;
-pub mod limit;
+pub mod take;
 pub mod map;
 pub mod mutate;
 pub mod probe;

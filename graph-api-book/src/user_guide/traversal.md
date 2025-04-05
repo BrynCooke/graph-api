@@ -93,7 +93,7 @@ See the [Walker Steps](./walker/steps.md) section for detailed documentation on 
 ### Filtering Steps
 
 - [filter](./walker/steps/filter.md) - Keep only elements that match a predicate
-- [limit](./walker/steps/limit.md) - Limit the number of elements
+- [take](./walker/steps/take.md) - Limit the number of elements
 - [first](./walker/steps/first.md) - Take only the first element
 
 ### Context Steps

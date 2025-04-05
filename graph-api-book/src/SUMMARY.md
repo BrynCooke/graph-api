@@ -23,7 +23,7 @@
         - [tail](./user_guide/walker/steps/tail.md)
         - [filter](./user_guide/walker/steps/filter.md)
         - [map](./user_guide/walker/steps/map.md)
-        - [limit](./user_guide/walker/steps/limit.md)
+        - [take](./user_guide/walker/steps/take.md)
         - [first](./user_guide/walker/steps/first.md)
         - [context](./user_guide/walker/steps/context.md)
         - [default_context](./user_guide/walker/steps/default_context.md)

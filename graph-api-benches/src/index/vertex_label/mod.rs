@@ -75,7 +75,7 @@ where
             let results = graph
                 .walk()
                 .vertices(VertexIndex::person())
-                .limit(10)
+                .take(10)
                 .collect::<Vec<_>>();
 
             assert!(!results.is_empty());

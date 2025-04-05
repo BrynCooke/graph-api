@@ -69,7 +69,7 @@ where
     });
 
     for id in person_ids.iter().take(5) {
-        let edge_id = graph.add_edge(id, project, Edge::Created);
+        let edge_id = graph.add_edge(*id, project, Edge::Created);
         edge_ids.push(edge_id);
     }
 
@@ -105,7 +105,7 @@ where
             let results = graph
                 .walk()
                 .vertices(graph_api_lib::VertexSearch::scan())
-                .limit(5)
+                .take(5)
                 .edges(EdgeIndex::knows())
                 .collect::<Vec<_>>();
 
@@ -124,7 +124,7 @@ where
             let results = graph
                 .walk()
                 .vertices(graph_api_lib::VertexSearch::scan())
-                .limit(10)
+                .take(10)
                 .edges(EdgeIndex::created())
                 .collect::<Vec<_>>();
 

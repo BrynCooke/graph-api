@@ -277,7 +277,7 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, edges_test_all_edges_filtered, $crate::steps::edges::test_all_edges_filtered}
         $crate::general_test!{$setup, edges_test_all_edges_filtered_limit, $crate::steps::edges::test_all_edges_filtered_limit}
         $crate::general_test!{$setup, context_test_vertices_context, $crate::steps::context::test_vertices_context}
-        $crate::general_test!{$setup, vertices_test_limit, $crate::steps::vertices::test_limit}
+        $crate::general_test!{$setup, vertices_test_take, $crate::steps::vertices::test_take}
         $crate::general_test!{$setup, vertices_test_head, $crate::steps::vertices::test_head}
         $crate::general_test!{$setup, vertices_test_tail, $crate::steps::vertices::test_tail}
         $crate::general_test!{$setup, mutate_context_vertex, $crate::steps::mutate_context::test_vertex_mutate_context}
@@ -286,8 +286,8 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, mutation_test_edge_mutation, $crate::steps::mutation::test_edge_mutation}
         $crate::general_test!{$setup, count_test_vertices_count, $crate::steps::count::test_vertices_count}
         $crate::general_test!{$setup, count_test_edges_count, $crate::steps::count::test_edges_count}
-        $crate::general_test!{$setup, limit_test_vertices_limit, $crate::steps::limit::test_vertices_limit}
-        $crate::general_test!{$setup, limit_test_edges_limit, $crate::steps::limit::test_edges_limit}
+        $crate::general_test!{$setup, take_test_vertices_take, $crate::steps::take::test_vertices_take}
+        $crate::general_test!{$setup, take_test_edges_take, $crate::steps::take::test_edges_take}
         $crate::general_test!{$setup, first_test_vertices_first, $crate::steps::first::test_vertices_first}
         $crate::general_test!{$setup, first_test_edges_first, $crate::steps::first::test_edges_first}
         $crate::general_test!{$setup, fold_test_vertices_fold, $crate::steps::fold::test_vertices_fold}

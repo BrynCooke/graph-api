@@ -19,7 +19,7 @@ where
     let vertices = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .limit(2) // Only process two vertices, regardless of how many exist
+        .take(2) // Only process two vertices, regardless of how many exist
         .collect::<Vec<_>>();
 
     // Verify we got at most 2 vertices
@@ -36,7 +36,7 @@ where
         .walk()
         .vertices_by_id(vec![start_id])
         .edges(EdgeSearch::scan())
-        .limit(3) // Only process three edges, even if there are more
+        .take(3) // Only process three edges, even if there are more
         .collect::<Vec<_>>();
 
     // Verify we got at most 3 edges

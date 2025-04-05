@@ -138,7 +138,7 @@ where
             graph
                 .walk()
                 .vertices(VertexSearch::scan())
-                .limit(10)
+                .take(10)
                 .collect::<Vec<_>>()
         })
     });

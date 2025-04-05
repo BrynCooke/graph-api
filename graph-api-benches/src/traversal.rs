@@ -102,7 +102,7 @@ fn bench_traversal_complex<G: Graph<Vertex = Vertex, Edge = Edge>>(
                 .filter_by_person(|v, _| v.age() > 40)
                 .push_context(|v, _ctx| v.project::<Person<_>>().unwrap().age())
                 .edges(EdgeSearch::scan().outgoing())
-                .limit(5)
+                .take(5)
                 .head()
                 .collect::<Vec<_>>()
         })

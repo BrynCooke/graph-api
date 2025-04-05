@@ -1,7 +1,7 @@
 use crate::{Edge, Vertex, populate_graph};
 use graph_api_lib::{EdgeSearch, Graph};
 
-pub fn test_vertices_limit<T>(graph: &mut T)
+pub fn test_vertices_take<T>(graph: &mut T)
 where
     T: Graph<Vertex = Vertex, Edge = Edge>,
 {
@@ -10,13 +10,13 @@ where
         graph
             .walk_mut()
             .vertices_by_id(vec![refs.bryn, refs.julia])
-            .limit(1)
+            .take(1)
             .count(),
         1
     );
 }
 
-pub fn test_edges_limit<T>(graph: &mut T)
+pub fn test_edges_take<T>(graph: &mut T)
 where
     T: Graph<Vertex = Vertex, Edge = Edge>,
 {
@@ -26,7 +26,7 @@ where
             .walk_mut()
             .vertices_by_id(vec![refs.bryn])
             .edges(EdgeSearch::scan().outgoing())
-            .limit(1)
+            .take(1)
             .count(),
         1
     );

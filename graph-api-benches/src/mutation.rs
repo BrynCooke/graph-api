@@ -34,7 +34,7 @@ fn bench_mutation_vertex_update<G: Graph<Vertex = Vertex, Edge = Edge>>(
                     .walk_mut()
                     .vertices(VertexSearch::scan())
                     .filter_person()
-                    .limit(10)
+                    .take(10)
                     .mutate(|graph, vertex_id, _context| {
                         let mut vertex = graph.vertex_mut(vertex_id).expect("vertex");
                         let mut person = vertex.project_mut::<PersonMut<_, _>>().expect("person");
@@ -94,7 +94,7 @@ fn bench_mutation_edge_remove<G: Graph<Vertex = Vertex, Edge = Edge>>(
                     .walk_mut()
                     .vertices(VertexSearch::scan())
                     .edges(EdgeSearch::scan().outgoing())
-                    .limit(1)
+                    .take(1)
                     .mutate(|graph, edge_id, _| {
                         graph.remove_edge(edge_id);
                     });

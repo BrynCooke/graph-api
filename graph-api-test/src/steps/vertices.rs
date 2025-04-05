@@ -29,7 +29,7 @@ where
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
 }
 
-pub fn test_limit<T>(graph: &mut T)
+pub fn test_take<T>(graph: &mut T)
 where
     T: Graph<Vertex = Vertex, Edge = Edge>,
 {
