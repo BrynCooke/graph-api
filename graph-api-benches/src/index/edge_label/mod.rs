@@ -68,8 +68,8 @@ where
         name: "TestProject".to_string(),
     });
 
-    for i in 0..5 {
-        let edge_id = graph.add_edge(person_ids[i], project, Edge::Created);
+    for id in person_ids.iter().take(5) {
+        let edge_id = graph.add_edge(id, project, Edge::Created);
         edge_ids.push(edge_id);
     }
 

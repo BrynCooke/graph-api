@@ -35,11 +35,11 @@ and ergonomic usage patterns. It includes features for graph traversal, modifica
 #[derive(Debug, Clone, VertexExt)]
 pub enum Vertex {
     Person {
-        #[index]
+        #[index(hash)]
         name: String,
         #[index(range)]
         age: u64,
-        #[index]
+        #[index(hash)]
         unique_id: Uuid,
         #[index(range)]
         username: String,
@@ -97,7 +97,8 @@ pub enum Edge {
         })
         .map(|v, ctx| **ctx.parent() + *ctx) // Add the ages collected during the traversal 
         .collect::<Vec<_>>();
-# }
+    #
+}
 
 ```
 
