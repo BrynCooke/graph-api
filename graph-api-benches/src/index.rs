@@ -1,40 +1,55 @@
+#[cfg(any(
+    feature = "edge-label-index",
+    feature = "vertex-full-text-index",
+    feature = "vertex-hash-index",
+    feature = "vertex-label-index",
+    feature = "vertex-range-index"
+))]
 use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
+use criterion::{BenchmarkGroup, measurement::WallTime};
 
-use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
-use graph_api_lib::{
-    Graph, SupportsEdgeLabelIndex, SupportsVertexFullTextIndex, SupportsVertexHashIndex,
-    SupportsVertexLabelIndex, SupportsVertexRangeIndex, VertexSearch,
-};
+#[cfg(any(
+    feature = "edge-label-index",
+    feature = "vertex-full-text-index",
+    feature = "vertex-hash-index",
+    feature = "vertex-label-index",
+    feature = "vertex-range-index"
+))]
+use criterion::Throughput;
+#[cfg(feature = "edge-label-index")]
+use graph_api_lib::SupportsEdgeLabelIndex;
+#[cfg(feature = "vertex-full-text-index")]
+use graph_api_lib::SupportsVertexFullTextIndex;
+#[cfg(feature = "vertex-hash-index")]
+use graph_api_lib::SupportsVertexHashIndex;
+#[cfg(feature = "vertex-label-index")]
+use graph_api_lib::SupportsVertexLabelIndex;
+#[cfg(feature = "vertex-range-index")]
+use graph_api_lib::SupportsVertexRangeIndex;
+
+#[cfg(any(
+    feature = "edge-label-index",
+    feature = "vertex-full-text-index",
+    feature = "vertex-hash-index",
+    feature = "vertex-label-index",
+    feature = "vertex-range-index"
+))]
+use graph_api_lib::{Graph, VertexSearch};
+#[cfg(any(
+    feature = "edge-label-index",
+    feature = "vertex-full-text-index",
+    feature = "vertex-hash-index",
+    feature = "vertex-label-index",
+    feature = "vertex-range-index"
+))]
 use graph_api_test::{Edge, EdgeIndex, Vertex, VertexIndex};
 
-/// Run all index operation benchmarks
-pub fn run_benchmarks<G>(
-    #[allow(unused_variables)] group: &mut BenchmarkGroup<WallTime>,
-    #[allow(unused_variables)] setup: impl Fn() -> G + Clone,
-) where
-    G: Graph<Vertex = Vertex, Edge = Edge>
-        + SupportsVertexLabelIndex
-        + SupportsVertexHashIndex
-        + SupportsVertexFullTextIndex
-        + SupportsVertexRangeIndex
-        + SupportsEdgeLabelIndex,
-{
-    #[cfg(feature = "vertex-label-index")]
-    bench_index_vertex_label(group, setup.clone());
-    #[cfg(feature = "vertex-hash-index")]
-    bench_index_vertex_property(group, setup.clone());
-    #[cfg(feature = "vertex-full-text-index")]
-    bench_index_vertex_fulltext(group, setup.clone());
-    #[cfg(feature = "vertex-range-index")]
-    bench_index_vertex_range_range(group, setup.clone());
-    #[cfg(feature = "edge-label-index")]
-    bench_index_edge_label(group, setup.clone());
-}
-
 /// Benchmark vertex label index lookup
-#[allow(dead_code)]
-fn bench_index_vertex_label<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
-where
+#[cfg(feature = "vertex-label-index")]
+pub fn bench_vertex_label_index<G>(
+    group: &mut BenchmarkGroup<WallTime>,
+    setup: impl Fn() -> G + Clone,
+) where
     G: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexLabelIndex,
 {
     group.throughput(Throughput::Elements(1));
@@ -53,9 +68,16 @@ where
     });
 }
 
+#[cfg(not(feature = "vertex-label-index"))]
+pub fn bench_vertex_label_index<G>(
+    _group: &mut BenchmarkGroup<WallTime>,
+    _setup: impl Fn() -> G + Clone,
+) {
+}
+
 /// Benchmark vertex property index lookup
-#[allow(dead_code)]
-fn bench_index_vertex_property<G>(
+#[cfg(feature = "vertex-hash-index")]
+pub fn bench_vertex_hash_index<G>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) where
@@ -75,10 +97,16 @@ fn bench_index_vertex_property<G>(
         })
     });
 }
+#[cfg(not(feature = "vertex-hash-index"))]
+pub fn bench_vertex_hash_index<G>(
+    _group: &mut BenchmarkGroup<WallTime>,
+    _setup: impl Fn() -> G + Clone,
+) {
+}
 
 /// Benchmark vertex full-text index lookup
-#[allow(dead_code)]
-fn bench_index_vertex_fulltext<G>(
+#[cfg(feature = "vertex-full-text-index")]
+pub fn bench_vertex_fulltext_index<G>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) where
@@ -99,9 +127,16 @@ fn bench_index_vertex_fulltext<G>(
     });
 }
 
+#[cfg(not(feature = "vertex-full-text-index"))]
+pub fn bench_vertex_fulltext_index<G>(
+    _group: &mut BenchmarkGroup<WallTime>,
+    _setup: impl Fn() -> G + Clone,
+) {
+}
+
 /// Benchmark vertex range index range queries
-#[allow(dead_code)]
-fn bench_index_vertex_range_range<G>(
+#[cfg(feature = "vertex-range-index")]
+pub fn bench_vertex_range_index<G>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) where
@@ -122,10 +157,19 @@ fn bench_index_vertex_range_range<G>(
     });
 }
 
+#[cfg(not(feature = "vertex-range-index"))]
+pub fn bench_vertex_range_index<G>(
+    _group: &mut BenchmarkGroup<WallTime>,
+    _setup: impl Fn() -> G + Clone,
+) {
+}
+
 /// Benchmark edge label index lookup
-#[allow(dead_code)]
-fn bench_index_edge_label<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
-where
+#[cfg(feature = "edge-label-index")]
+pub fn bench_edge_label_index<G>(
+    group: &mut BenchmarkGroup<WallTime>,
+    setup: impl Fn() -> G + Clone,
+) where
     G: Graph<Vertex = Vertex, Edge = Edge> + SupportsEdgeLabelIndex,
 {
     group.throughput(Throughput::Elements(1));
@@ -143,4 +187,11 @@ where
                 .collect::<Vec<_>>()
         })
     });
+}
+
+#[cfg(not(feature = "edge-label-index"))]
+pub fn bench_edge_label_index<G>(
+    _group: &mut BenchmarkGroup<WallTime>,
+    _setup: impl Fn() -> G + Clone,
+) {
 }
