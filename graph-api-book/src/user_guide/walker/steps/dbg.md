@@ -1,19 +1,17 @@
 # Debug Step
 
-The `dbg` step prints detailed information about the current traversal state, making it easier to debug complex graph
-operations. Like a checkpoint in your traversal, it lets you see what's happening without changing the traversal flow.
+The `dbg` step provides a simple way to inspect the elements flowing through a traversal without altering them. It prints detailed information about each element to the console as it passes through the step.
 
 <object type="image/svg+xml" data="dbg/image.svg" title="Dbg Step Diagram">
-Debug step diagram showing traversal state being printed to console
+Debug step diagram showing elements flowing through, console output, and unchanged output stream
 </object>
 
 In this diagram:
 
-- **Before `dbg()`**: The walker contains highlighted elements **V1, V2, V3**.
-- The **code snippet** on the left shows the `.dbg("Label")` step being applied.
-- **After `dbg()`**: The walker state remains **identical** to the "Before" state, with **V1, V2, V3** still highlighted.
-- A separate **Console Output box** is shown, indicating the debug information printed by the `dbg` step for each element.
-- The traversal continues to the next step, **unaffected** by the `dbg`.
+- **Input Elements**: The walker starts with elements **A, B, C**.
+- The **`.dbg("Label")`** step processes each element.
+- **Console Output**: As each element (A, B, C) passes through the `dbg` step, its details are printed to the console, prefixed with the provided label. This is shown as a side effect.
+- **Output Elements (Unchanged)**: The elements **A, B, C** continue to the next step in the traversal, completely unaffected by the `dbg` operation.
 
 ## Syntax
 
