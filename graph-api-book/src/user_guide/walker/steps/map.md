@@ -1,7 +1,6 @@
 # Map Step
 
-The `map` step transforms vertices or edges in the traversal by applying a mapping function, returning an iterator over
-the transformed elements. This is a terminal step that ends the traversal.
+The `map` step transforms vertices or edges in the traversal by applying a mapping function, returning a standard Rust iterator over the transformed elements. This is a terminal step that consumes the walker and ends the Graph API traversal chain.
 
 <object type="image/svg+xml" data="map/image.svg" title="Map Step Diagram">
 Map step diagram showing elements being transformed into values in an iterator
@@ -9,10 +8,10 @@ Map step diagram showing elements being transformed into values in an iterator
 
 In this diagram:
 
-- **Before `map()`**: The walker contains highlighted elements **A, B, C**.
-- The **code snippet** on the left shows the `.map(|v, _| v.name())` step being applied.
-- **After `map()`**: The result is shown as a box representing a standard **Rust Iterator** yielding the transformed values (e.g., `"NameA"`, `"NameB"`, `"NameC"`).
-- This step consumes the walker and **terminates the Graph API traversal**.
+- An **Input Stream** contains elements **A, B, C**.
+- The **`.map(|v| v.name())`** step processes each element, applying the transformation function.
+- The output is represented as a **Rust Iterator** box, containing the resulting values (e.g., `"NameA"`, `"NameB"`, `"NameC"`).
+- The diagram indicates that this step **Terminates Walker**, meaning no further Graph API steps can be chained after `map`. Standard Rust iterator methods can be used on the result.
 
 ## Syntax
 
