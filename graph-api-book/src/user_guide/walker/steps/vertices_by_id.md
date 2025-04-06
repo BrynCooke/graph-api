@@ -1,7 +1,6 @@
 # Vertices By ID Step
 
-The `vertices_by_id` step starts a traversal from a specific set of vertices identified by their IDs. This is typically
-the most efficient way to start a traversal when you know exactly which vertices you want.
+The `vertices_by_id` step starts a traversal from a specific set of vertices identified by their IDs. This is typically the most efficient way to start a traversal when you know exactly which vertices you want to begin with.
 
 <object type="image/svg+xml" data="vertices_by_id/image.svg" title="Vertices By ID Step Diagram">
 Vertices By ID step diagram showing selection of vertices based on specific IDs
@@ -9,10 +8,10 @@ Vertices By ID step diagram showing selection of vertices based on specific IDs
 
 In this diagram:
 
-- The **Graph State** shows vertices V1, V2, V3, V4 with their IDs.
-- The **`vertices_by_id([1, 3])`** step is applied.
-- The **Resulting Walker State** shows only vertices **V1** (id=1) and **V3** (id=3) highlighted, as they were specified in the ID list.
-- Vertices V2 and V4 are faded, indicating they are not part of the walker's current state.
+- The **Conceptual Graph Vertices** represent available vertices V1 (id=1), V2 (id=2), V3 (id=3), and V4 (id=4).
+- The **`graph.walk().vertices_by_id([1, 3])`** step is applied, specifying IDs 1 and 3.
+- Pointers indicate that the step uses these IDs to look up the corresponding vertices (**V1** and **V3**) from the graph.
+- The **Output Stream** contains only the selected vertices **V1** and **V3**, which become the initial elements for the rest of the traversal.
 
 ## Syntax
 
