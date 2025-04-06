@@ -1,6 +1,6 @@
 # Fold Step
 
-The `fold` step accumulates a result by processing each element in a traversal, operating like the standard Rust `fold` operation but specifically for graph traversals. It's a powerful terminal operation that builds a single value from all elements.
+The `fold` step accumulates a result by processing each element in a traversal, operating like the standard Rust `fold` operation but specifically for graph traversals. It's a powerful terminal operation that builds a single value from all elements in the stream.
 
 <object type="image/svg+xml" data="fold/image.svg" title="Fold Step Diagram">
 Fold step diagram showing accumulation of values from traversal elements
@@ -8,14 +8,15 @@ Fold step diagram showing accumulation of values from traversal elements
 
 In this diagram:
 
-- The **Traversal Elements** are V1, V2, and V3, with their respective ages.
-- The **Accumulator** box shows the step-by-step process:
-    - Starts with an **Initial** value of 0.
-    - Processes **V1**: `0 + 30 = 30`.
-    - Processes **V2**: `30 + 25 = 55`.
-    - Processes **V3**: `55 + 40 = 95`.
-- The **Result** box shows the final accumulated value (95).
-- This step **terminates the traversal**.
+- An **Input Stream** contains elements **A** (age=30), **B** (age=25), and **C** (age=40).
+- The **`.fold(0, |acc, v| acc + v.age())`** step is applied. It starts with an initial accumulator value of `0`.
+- The **Accumulator** visualization shows the value being updated as each element is processed:
+    - Initial: `0`
+    - After A: `0 + 30 = 30`
+    - After B: `30 + 25 = 55`
+    - After C: `55 + 40 = 95`
+- The **Final Result** box shows the final accumulated value (`95`).
+- This step **Terminates Walker**, meaning no further Graph API steps can be chained after `fold`.
 
 ## Syntax
 
