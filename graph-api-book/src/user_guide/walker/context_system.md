@@ -1,12 +1,19 @@
 # Context System
 
-The context system is a powerful feature of the Graph API that enriches your traversals by carrying data alongside the traversal path. This allows you to maintain state, collect information, and make decisions based on previously visited elements as you explore the graph.
+The context system is a powerful feature of the Graph API that enriches your traversals by carrying data alongside the stream of elements (vertices or edges). This allows you to maintain state, collect information, and make decisions based on previously processed elements as you explore the graph.
 
 ## What is Context?
 
 <object type="image/svg+xml" data="context_system/image.svg">
-Diagram illustrating how context travels with the walker
+Diagram illustrating how context is added, travels with the stream, and is used by subsequent steps
 </object>
+
+In this diagram:
+- An **Input Stream** contains elements **A** and **B**.
+- The **`push_context`** step is applied. It calculates a context value (e.g., `"Ctx_A"`) based on the first element encountered (A) and attaches this *fixed* context to all subsequent elements.
+- The **Stream with Context** now contains pairs of `(Element, Context)`: `(A, "Ctx_A")`, `(B, "Ctx_A")`.
+- A subsequent **`map`** step receives both the current element and its associated context, allowing it to perform transformations using both pieces of information.
+- The **Final Output** shows the results produced by the `map` step.
 
 Context allows you to:
 

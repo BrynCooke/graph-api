@@ -1,83 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 380"> <!-- Adjusted height -->
+<svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height for legend -->
+    <title>Context System Overview Diagram</title>
+    <desc>
+        Diagram illustrating the context system:
+        - Shows an input stream of elements A, B.
+        - A 'push_context' step adds context ("Ctx_A") based on element A.
+        - The intermediate stream shows elements paired with the fixed context: (A, "Ctx_A"), (B, "Ctx_A").
+        - A subsequent 'map' step accesses both the element and its context.
+        - The final output shows the results of the map operation.
+    </desc>
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
-                orient="auto" markerUnits="strokeWidth">
-            <path d="M 0 0 L 10 5 L 0 10 z"/>
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
         <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
-    <text x="10" y="25" class="step-label">Context System Illustration</text>
 
-    <!-- State 1: After push_context -->
-    <text x="150" y="50" class="text-color-muted" text-anchor="middle">After push_context</text>
-    <g class="node highlighted" transform="translate(150, 100)"> <!-- Use highlighted class -->
-        <circle r="20"></circle>
-        <text class="node-label">A</text>
+    <!-- Input Stream -->
+    <text class="step-label" x="100" y="40" text-anchor="middle">Input Stream</text>
+    <line class="edge directed" x1="50" y1="100" x2="180" y2="100" marker-end="url(#arrowhead)"/>
+    <g class="node highlighted" transform="translate(80, 100)">
+        <circle r="15"></circle><text class="node-label">A</text>
     </g>
-    <g class="node" transform="translate(250, 100)">
-        <circle r="20"></circle>
-        <text class="node-label">B</text>
-    </g>
-    <g class="node" transform="translate(350, 100)">
-        <circle r="20"></circle>
-        <text class="node-label">C</text>
-    </g>
-    <g class="edge directed" id="edge-A-B-1">
-        <line x1="170" y1="100" x2="230" y2="100" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="200" y="90">Follows</text>
-    </g>
-    <g class="edge directed" id="edge-B-C-1">
-        <line x1="270" y1="100" x2="330" y2="100" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="90">Created</text>
+    <g class="node highlighted" transform="translate(130, 100)">
+        <circle r="15"></circle><text class="node-label">B</text>
     </g>
 
-    <!-- Context Box 1 -->
-    <g transform="translate(150, 170)">
-        <rect class="index-box" x="-75" y="-20" width="150" height="40"/>
-        <text class="index-title" y="-5">Context</text>
-        <text class="index-value range" y="15">username: alice</text>
-    </g>
-    <!-- Link Context 1 -->
-    <line class="index-pointer" x1="150" y1="120" x2="150" y2="150"
-          marker-end="url(#arrowhead-pointer)" stroke-dasharray="none"/>
-    <text x="250" y="175" class="text-color-muted" font-size="12px">Still at A, with context</text>
-
-    <!-- State 2: Later in traversal -->
-    <text x="150" y="240" class="text-color-muted" text-anchor="middle">Later in Traversal</text>
-    <g class="node" transform="translate(150, 290)"> <!-- Adjusted Y -->
-        <circle r="20"></circle>
-        <text class="node-label">A</text>
-    </g>
-    <g class="node highlighted" transform="translate(250, 290)"> <!-- Use highlighted class -->
-        <circle r="20"></circle>
-        <text class="node-label">B</text>
-    </g>
-    <g class="node" transform="translate(350, 290)"> <!-- Adjusted Y -->
-        <circle r="20"></circle>
-        <text class="node-label">C</text>
-    </g>
-    <g class="edge directed" id="edge-A-B-2">
-        <line x1="170" y1="290" x2="230" y2="290" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="200" y="280">Follows</text>
-    </g>
-    <g class="edge directed" id="edge-B-C-2">
-        <line x1="270" y1="290" x2="330" y2="290" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="280">Created</text>
+    <!-- Push Context Step -->
+    <g transform="translate(230, 100)">
+        <rect x="-50" y="-25" width="100" height="50" rx="5" ry="5"
+              fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+        <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">push_context</text>
+        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">(|v| v.id())</text>
     </g>
 
-    <!-- Context Box 2 -->
-    <g transform="translate(250, 350)"> <!-- Adjusted Y -->
-        <rect class="index-box" x="-75" y="-20" width="150" height="40"/>
-        <text class="index-title" y="-5">Context</text>
-        <text class="index-value range" y="15">username: alice</text>
+    <!-- Intermediate Stream (Element, Context) -->
+    <text class="step-label" x="400" y="40" text-anchor="middle">Stream with Context</text>
+    <line class="edge directed" x1="280" y1="100" x2="520" y2="100" marker-end="url(#arrowhead)"/>
+    <!-- Element A with Context -->
+    <g transform="translate(320, 100)">
+        <g class="node highlighted"><circle r="15"></circle><text class="node-label">A</text></g>
+        <g transform="translate(0, 50)">
+            <rect class="index-box" x="-35" y="-15" width="70" height="30"/>
+            <text class="index-value range" y="5" x="-25" text-anchor="middle">"Ctx_A"</text>
+        </g>
+        <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
     </g>
-    <!-- Link Context 2 -->
-    <line class="index-pointer" x1="250" y1="310" x2="250" y2="330"
-          marker-end="url(#arrowhead-pointer)" stroke-dasharray="none"/>
-    <text x="350" y="355" class="text-color-muted" font-size="12px">Context moves to B</text>
+    <!-- Element B with Context -->
+    <g transform="translate(420, 100)">
+        <g class="node highlighted"><circle r="15"></circle><text class="node-label">B</text></g>
+        <g transform="translate(0, 50)">
+            <rect class="index-box" x="-35" y="-15" width="70" height="30"/>
+            <text class="index-value range" y="5" x="-25" text-anchor="middle">"Ctx_A"</text>
+        </g>
+        <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
+    </g>
 
+    <!-- Map Step (Accessing Context) -->
+    <g transform="translate(230, 250)"> <!-- Positioned below intermediate stream -->
+        <rect x="-50" y="-25" width="100" height="50" rx="5" ry="5"
+              fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+        <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">map</text>
+        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">(|el, ctx| ...)</text>
+    </g>
+    <!-- Arrow from Intermediate Stream to Map Step -->
+    <path class="edge directed" d="M 370 170 Q 370 225 280 235" fill="none" marker-end="url(#arrowhead)"/>
+
+
+    <!-- Final Output Stream -->
+    <text class="step-label" x="400" y="210" text-anchor="middle">Final Output</text>
+    <line class="edge directed" x1="280" y1="250" x2="520" y2="250" marker-end="url(#arrowhead)"/>
+    <!-- Output Values -->
+     <g transform="translate(320, 250)">
+        <rect x="-60" y="-15" width="120" height="30" rx="3" ry="3"
+              fill="var(--accent-secondary)" fill-opacity="0.15"
+              stroke="var(--accent-secondary)" stroke-width="1"/>
+        <text x="0" y="0" text-anchor="middle" font-family="monospace" fill="var(--accent-secondary)" font-size="var(--font-size-small)">
+            "A with Ctx_A"
+        </text>
+    </g>
+     <g transform="translate(460, 250)">
+        <rect x="-60" y="-15" width="120" height="30" rx="3" ry="3"
+              fill="var(--accent-secondary)" fill-opacity="0.15"
+              stroke="var(--accent-secondary)" stroke-width="1"/>
+        <text x="0" y="0" text-anchor="middle" font-family="monospace" fill="var(--accent-secondary)" font-size="var(--font-size-small)">
+            "B with Ctx_A"
+        </text>
+    </g>
+
+    <!-- Legend -->
+    <g transform="translate(0, 320)"> <!-- Adjusted Y position -->
+        <rect class="index-box" x="25" y="0" width="550" height="120"/>
+        <text class="index-title" x="300" y="20">Legend</text>
+        <g transform="translate(60, 45)">
+            <g class="node highlighted"><circle r="10"></circle></g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">Element in the stream</text>
+        </g>
+        <g transform="translate(60, 70)">
+            <rect class="index-box" x="-10" y="-10" width="20" height="20"/>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">Context value associated with element</text>
+        </g>
+        <g transform="translate(60, 95)">
+             <rect x="-10" y="-10" width="20" height="20" rx="3" ry="3"
+                  fill="var(--accent-secondary)" fill-opacity="0.15"
+                  stroke="var(--accent-secondary)" stroke-width="1"/>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">Final output value after map</text>
+        </g>
+    </g>
 </svg>
