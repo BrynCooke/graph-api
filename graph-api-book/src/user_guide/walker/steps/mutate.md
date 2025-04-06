@@ -1,68 +1,55 @@
 # Mutate Step
 
-The `mutate` step allows you to modify vertices or edges during a traversal, enabling batch updates to graph elements.
-Unlike most other steps, this requires a mutable traversal started with `walk_mut()`.
+The `mutate` step iterates over elements in the traversal, applying a callback function to each one. This callback receives mutable access to the graph, allowing for **in-place modification** of vertices or edges. `mutate` is a terminal step that consumes the walker and returns the total count (`usize`) of elements processed.
 
 <object type="image/svg+xml" data="mutate/image.svg" title="Mutate Step Diagram">
-Mutate step diagram showing element properties being modified in-place
+Mutate step diagram showing elements being modified in-place and the step returning a count
 </object>
 
 In this diagram:
 
-- **Before `mutate()`**: The walker contains highlighted elements **V1, V2, V3**, each with `status: Old`.
-- The **`mutate(|v| v.status = New)`** step is applied (requires `walk_mut()`).
-- **After `mutate()`**: The elements **V1, V2, V3** are still highlighted, but their status property has been updated to `New`.
-- The **traversal continues** with these modified elements.
+- **Input Elements**: The walker starts with elements **A, B, C**, each having an initial value (e.g., `val=1`).
+- The **`.mutate(callback)`** step processes each element. The callback function has access to modify the graph.
+- **Mutated Elements (In Graph)**: The diagram shows the state of the elements *after* the mutation callback has been applied (e.g., **A'** with `val=10`). This highlights the in-place nature of the operation.
+- **Returns: usize**: The step completes and returns the count of elements processed (3 in this case), terminating the walker chain.
 
 ## Syntax
 
 ```rust,noplayground
-graph.walk_mut()
-    .vertices(...)
-    .mutate(|graph, element, context| {
-        // modification logic
-    })
+walker.mutate(|element, context, graph| {
+    // mutation logic using graph access
+})
 ```
 
 ## Parameters
 
-- `modifier`: A function that takes:
-    - A mutable reference to the current element (vertex or edge)
+- `callback`: A function that takes:
+    - A reference to the current element (vertex or edge) - Note: Direct mutable access to the *element itself* might vary; mutation often happens via the `graph` reference using the element's ID.
     - The element's context
-    - Performs in-place modifications to the element
+    - A mutable reference to the graph (`&mut G`)
+    - Performs modifications using the mutable graph reference (e.g., `graph.vertex_mut(element.id())`).
 
 ## Return Value
 
-Returns the same traversal unchanged, allowing you to continue chaining steps.
+Returns a `usize` representing the number of elements processed by the `mutate` step.
 
-## Examples
-
-### Updating Vertex Properties
-
-This example shows how to update properties of vertices during traversal:
+## Example
 
 ```rust,noplayground
 {{#include mutate/mutate_example.rs:update_vertex}}
 ```
 
-### Adding Edges
-
-This example demonstrates using the mutate step to add new connections to the graph:
-
-```rust,noplayground
-{{#include mutate/mutate_example.rs:add_edges}}
-```
-
 ## Best Practices
 
-- Always start with `walk_mut()` when planning to use the mutate step
-- Use pattern matching to handle different vertex/edge types appropriately
-- Combine with filter steps to selectively apply mutations to elements matching specific criteria
-- Keep structural changes (adding/removing edges) separate from property updates when possible
+- Use `mutate` specifically for modifying graph elements based on traversal results.
+- Access mutable elements via the provided `graph` reference and the element's ID (e.g., `graph.vertex_mut(id)`).
+- Be mindful that mutations are applied directly and immediately to the graph state.
+- Consider using `filter` or `control_flow` *before* `mutate` to precisely target which elements should be modified.
+- Understand the graph implementation's behavior regarding mutations during iteration (e.g., adding/removing elements might invalidate iterators in some graph types).
 
 ## Common Use Cases
 
-- **Batch updates**: Applying the same change to multiple elements matching criteria
-- **Property maintenance**: Updating attributes based on computations or external data
-- **Status changes**: Modifying state properties across a subset of graph elements
-- **Relationship enhancement**: Adding metadata to edges based on vertex properties
+- **Updating properties**: Modifying attributes of vertices or edges (e.g., incrementing age, changing status).
+- **Graph cleaning**: Standardizing data or fixing inconsistencies found during traversal.
+- **State transitions**: Updating element states based on workflow logic during traversal.
+- **Bulk updates**: Applying a change to a set of elements identified by prior traversal steps.
