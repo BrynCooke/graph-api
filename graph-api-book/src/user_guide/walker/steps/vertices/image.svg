@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height for legend -->
+<svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height for vertical layout & legend -->
     <title>Vertices Step Diagram</title>
     <desc>
         Diagram illustrating the 'vertices' step:
@@ -20,30 +20,30 @@
         </marker>
     </defs>
 
-    <!-- Conceptual Graph Representation (Input) -->
-    <g id="graph-input" transform="translate(100, 100)">
-        <text class="step-label" x="0" y="-60" text-anchor="middle">Conceptual Graph Vertices</text>
-        <!-- Represent vertices conceptually, not necessarily connected -->
-        <g class="node" transform="translate(-50, 0)">
+    <!-- Conceptual Graph Representation (Input - Vertical Layout) -->
+    <g id="graph-input" transform="translate(100, 50)"> <!-- Adjusted position -->
+        <text class="step-label" x="0" y="0" text-anchor="middle">Conceptual Graph Vertices</text>
+        <!-- Represent vertices conceptually, stacked vertically -->
+        <g class="node" transform="translate(0, 40)"> <!-- A -->
             <circle r="15"></circle><text class="node-label">A</text>
             <text class="property-text" y="25">Person</text>
         </g>
-        <g class="node" transform="translate(0, 0)">
+        <g class="node" transform="translate(0, 90)"> <!-- B -->
             <circle r="15"></circle><text class="node-label">B</text>
             <text class="property-text" y="25">Product</text>
         </g>
-        <g class="node" transform="translate(50, 0)">
+        <g class="node" transform="translate(0, 140)"> <!-- C -->
             <circle r="15"></circle><text class="node-label">C</text>
             <text class="property-text" y="25">Person</text>
         </g>
-        <g class="node" transform="translate(100, 0)">
+        <g class="node" transform="translate(0, 190)"> <!-- D -->
             <circle r="15"></circle><text class="node-label">D</text>
             <text class="property-text" y="25">Review</text>
         </g>
     </g>
 
     <!-- Vertices Step Box (Grouped) -->
-    <g id="vertices-step-group" transform="translate(300, 100)"> <!-- Centered position for the group -->
+    <g id="vertices-step-group" transform="translate(300, 140)"> <!-- Adjusted position -->
         <rect x="-100" y="-25" width="200" height="50" rx="5" ry="5"
               fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
         <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">graph.walk().vertices</text>
@@ -52,30 +52,29 @@
         </text>
     </g>
 
-    <!-- Arrow from Input to Step -->
-    <line class="edge directed" x1="200" y1="100" x2="200" y2="100" marker-end="url(#arrowhead)"/>
-    <!-- Note: This arrow is short, visually connecting the conceptual input to the step -->
-    <path class="index-pointer" d="M 150 100 Q 225 100 200 100" marker-end="url(#arrowhead-pointer)"/>
+    <!-- Pointers from Person Vertices (A, C) to Step Box -->
+    <path class="index-pointer" d="M 115 90 Q 200 110 200 125" marker-end="url(#arrowhead-pointer)"/> <!-- From A -->
+    <path class="index-pointer" d="M 115 190 Q 200 170 200 155" marker-end="url(#arrowhead-pointer)"/> <!-- From C -->
 
 
     <!-- Output Stream -->
     <text class="step-label" x="450" y="40" text-anchor="middle">Output Stream (Vertices)</text>
-    <line class="edge directed" x1="400" y1="100" x2="550" y2="100" marker-end="url(#arrowhead)"/>
+    <line class="edge directed" x1="400" y1="140" x2="550" y2="140" marker-end="url(#arrowhead)"/> <!-- Adjusted Y -->
 
     <!-- Output Vertices -->
-    <g class="node highlighted" transform="translate(430, 100)">
+    <g class="node highlighted" transform="translate(430, 140)"> <!-- Adjusted Y -->
         <circle r="15"></circle>
         <text class="node-label">A</text>
         <text class="property-text" y="25">Person</text>
     </g>
-    <g class="node highlighted" transform="translate(490, 100)">
+    <g class="node highlighted" transform="translate(490, 140)"> <!-- Adjusted Y -->
         <circle r="15"></circle>
         <text class="node-label">C</text>
         <text class="property-text" y="25">Person</text>
     </g>
 
     <!-- Legend -->
-    <g transform="translate(0, 220)"> <!-- Adjusted Y position -->
+    <g transform="translate(0, 320)"> <!-- Adjusted Y position -->
         <rect class="index-box" x="25" y="0" width="550" height="100"/>
         <text class="index-title" x="300" y="20">Legend</text>
 
