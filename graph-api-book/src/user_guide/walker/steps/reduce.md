@@ -1,6 +1,6 @@
 # Reduce Step
 
-The `reduce` step combines all elements in a traversal using a binary operation, returning a single result element. It repeatedly applies a function to pairs of elements until only one remains.
+The `reduce` step combines all elements in a traversal using a binary operation, returning a single result element. It repeatedly applies a function to pairs of elements, keeping one from each pair, until only one element remains.
 
 <object type="image/svg+xml" data="reduce/image.svg" title="Reduce Step Diagram">
 Reduce step diagram showing pairwise comparison reducing elements to a single result
@@ -8,12 +8,13 @@ Reduce step diagram showing pairwise comparison reducing elements to a single re
 
 In this diagram:
 
-- The **Traversal Elements** are V1, V2, and V3, with their ages.
-- The **Reduction** process (e.g., finding the element with the maximum age) happens in steps:
-    - **V1 vs V2**: V1 (age 30) is kept, V2 (age 25) is discarded.
-    - **V1 vs V3**: V3 (age 40) is kept, V1 (age 30) is discarded.
-- The final **Result** is the single remaining element, **V3**.
-- This step **terminates the traversal**.
+- An **Input Stream** contains elements **A** (age=30), **B** (age=25), and **C** (age=40).
+- The **`.reduce(|acc, v| ...)`** step is applied, using a reducer function that keeps the element with the maximum age.
+- The **Reduction Process** visualization shows the pairwise comparisons:
+    - **A vs B**: Element **A** is kept (30 > 25), **B** is discarded.
+    - **(A) vs C**: Element **C** is kept (40 > 30), **A** is discarded.
+- The **Final Result** box shows the single remaining element (**C**).
+- This step **Terminates Walker**, meaning no further Graph API steps can be chained after `reduce`.
 
 ## Syntax
 
