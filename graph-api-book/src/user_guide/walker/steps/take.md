@@ -9,10 +9,10 @@ Take step diagram showing traversal stopping after a specified number of element
 
 In this diagram:
 
-- **Before `take()`**: The walker contains highlighted elements **A, B, C, D**.
-- The **`.take(2)` step** is applied.
-- **After `take(2)`**: Only the first two elements, **A** and **B**, remain highlighted. Elements C and D are faded,
-  indicating they were discarded.
+- An **Input Stream** contains elements **A, B, C, D**.
+- The **`.take(2)` step** acts like a gate, processing elements sequentially.
+- Only the first two elements, **A** and **B**, pass through to the **Output Stream**.
+- Elements **C** and **D** are **Discarded** because the limit of 2 was reached. The traversal stops after yielding the second element.
 
 ## Syntax
 
