@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height for legend -->
+<svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height for legend -->
     <title>Take Step Diagram</title>
     <desc>
         Diagram illustrating the 'take' step:
@@ -95,16 +95,9 @@
                 <circle r="10"></circle>
             </g>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
-                Element discarded by <tspan class="code">.take()</tspan>
+                Element discarded by
+                <tspan class="code">.take()</tspan>
             </text>
         </g>
     </g>
-
-    <!-- Explanation Text -->
-    <text class="property-text" x="300" y="330" text-anchor="middle"> <!-- Adjusted Y position -->
-        The <tspan class="code">.take(2)</tspan> step allows only the first 2 elements (A, B) to pass.
-    </text>
-    <text class="property-text" x="300" y="350" text-anchor="middle"> <!-- Adjusted Y position -->
-        Subsequent elements (C, D) are discarded, and the traversal stops.
-    </text>
 </svg>
