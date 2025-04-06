@@ -55,10 +55,9 @@
     <g transform="translate(300, 150)"> <!-- Start visualization lower -->
         <text class="step-label" text-anchor="middle">Reduction Process (Max Age)</text>
 
-        <!-- Arrows from Input Stream Elements -->
-        <path class="edge directed" d="M 80 125 C 80 150 100 160 120 170" fill="none" marker-end="url(#arrowhead)"/> <!-- A -->
-        <path class="edge directed" d="M 130 125 C 130 150 150 160 170 170" fill="none" marker-end="url(#arrowhead)"/> <!-- B -->
-        <path class="edge directed" d="M 180 125 C 180 150 200 160 220 170" fill="none" marker-end="url(#arrowhead)"/> <!-- C -->
+        <!-- Arrows from Input Stream Elements to Step 1 -->
+        <path class="edge directed" d="M 80 125 C 80 145 200 155 250 185" fill="none" marker-end="url(#arrowhead)"/> <!-- A to Step 1 Left -->
+        <path class="edge directed" d="M 130 125 C 130 145 250 155 300 185" fill="none" marker-end="url(#arrowhead)"/> <!-- B to Step 1 Right -->
 
         <!-- Step 1: A vs B -->
         <g transform="translate(0, 40)"> <!-- Position first comparison -->
@@ -113,8 +112,10 @@
         </g>
 
         <!-- Connecting Lines -->
-        <path class="edge directed" d="M 0 120 V 130" fill="none" marker-end="url(#arrowhead)"/> <!-- A from step 1 to step 2 -->
-        <path class="edge directed" d="M 220 170 C 220 200 100 200 50 210" fill="none" marker-end="url(#arrowhead)"/> <!-- C from input to step 2 -->
+        <!-- Arrow from Result A (Step 1) down to Step 2 Left -->
+        <path class="edge directed" d="M 300 260 V 280" fill="none" marker-end="url(#arrowhead)"/>
+        <!-- Arrow from Input C down to Step 2 Right -->
+        <path class="edge directed" d="M 180 125 C 180 180 300 200 350 270" fill="none" marker-end="url(#arrowhead)"/>
 
     </g>
 
@@ -132,7 +133,7 @@
         </g>
     </g>
     <text x="300" y="450" class="text-color-muted" font-size="var(--font-size-small)" text-anchor="middle">Terminates Walker</text>
-    <!-- Arrow from Reduction Process to Final Result -->
+    <!-- Arrow from Reduction Process (Result C) to Final Result Box -->
     <path class="edge directed" d="M 300 330 V 380" fill="none" marker-end="url(#arrowhead)"/>
 
 
