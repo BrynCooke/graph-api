@@ -1,6 +1,8 @@
 # Detour Step
 
-The `detour` step is a powerful operation that allows you to execute a sub-traversal for *each* element currently in the main walker stream. The results yielded by each sub-traversal then *replace* the original element in the main stream. This enables complex conditional logic and exploration without losing the main traversal context.
+The `detour` step is a powerful operation that allows you to execute a sub-traversal for *each* element currently in the
+main walker stream. The results yielded by each sub-traversal *do not replace* the original element in the main stream.
+This enables complex conditional logic and exploration without losing the main traversal context.
 
 <object type="image/svg+xml" data="detour/image.svg" title="Detour Step Diagram">
 Detour step diagram showing input elements triggering sub-walkers, whose results form the output stream
@@ -10,9 +12,11 @@ In this diagram:
 
 - **Input Elements**: The main walker stream arrives at the `detour` step with elements **A** and **X**.
 - **`.detour(|sub| ...)`**: For each input element, a sub-walker is initiated:
-    - **Sub-Walker (from A)**: Starts at A, executes the steps defined in the closure (e.g., `edges().head()`), and yields results **B** and **C**.
+    - **Sub-Walker (from A)**: Starts at A, executes the steps defined in the closure (e.g., `edges().head()`), and
+      yields results **B** and **C**.
     - **Sub-Walker (from X)**: Starts at X, executes the same steps, and yields result **Y**.
-- **Output Elements (Results)**: The main walker stream continues, now containing the *combined results* from all sub-walkers (**B, C, Y**). The original elements (A, X) have been replaced.
+- **Output Elements (Results)**: The main walker stream continues, now containing the *combined results* from all
+  sub-walkers (**A, A, X**). The original elements (A, X) have been replaced.
 
 ## Syntax
 
@@ -28,7 +32,8 @@ walker.detour(|sub_walker_builder| {
 
 ## Parameters
 
-- `detour_fn`: A closure that receives a `StartWalkerBuilder` positioned at the current element from the main stream. This closure defines the steps for the sub-traversal.
+- `detour_fn`: A closure that receives a `StartWalkerBuilder` positioned at the current element from the main stream.
+  This closure defines the steps for the sub-traversal.
 
 ## Return Value
 

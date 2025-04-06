@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">
     <title>Detour Step Diagram</title>
     <desc>
         Diagram illustrating the 'detour' step:
@@ -21,7 +21,7 @@
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-         <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
@@ -45,42 +45,48 @@
     <rect x="250" y="75" width="100" height="50" rx="5" ry="5"
           fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
     <text class="step-label" x="300" y="105" text-anchor="middle" fill="var(--text-color-light)">detour</text>
-    <text class="property-text" x="300" y="130" text-anchor="middle">(|sub| ...)</text>
+    <text class="property-text" x="300" y="135" text-anchor="middle">(|sub| sub.edges().head())</text>
 
     <!-- Sub-Walker Execution Visualization -->
     <!-- Sub-Walker for A -->
-    <g transform="translate(100, 220)">
+    <g transform="translate(220, 220)">
         <rect class="index-box" x="-70" y="-50" width="140" height="100" stroke-dasharray="3 3"/>
         <text class="index-title" y="-35">Sub-Walker (from A)</text>
         <g class="node" transform="translate(0, -10)"> <!-- Start A -->
-             <circle r="10"></circle> <text class="node-label" font-size="10px">A</text>
+            <circle r="10"></circle>
+            <text class="node-label" font-size="10px">A</text>
         </g>
-        <text class="property-text" y="5" font-size="10px">edges().head()</text>
+        <text class="property-text" y="55" font-size="10px">edges().head()</text>
         <g class="node path" transform="translate(-30, 30)"> <!-- Result B -->
-             <circle r="10"></circle> <text class="node-label" font-size="10px">B</text>
+            <circle r="10"></circle>
+            <text class="node-label" font-size="10px">B</text>
         </g>
-         <g class="node path" transform="translate(30, 30)"> <!-- Result C -->
-             <circle r="10"></circle> <text class="node-label" font-size="10px">C</text>
+        <g class="node path" transform="translate(30, 30)"> <!-- Result C -->
+            <circle r="10"></circle>
+            <text class="node-label" font-size="10px">C</text>
         </g>
-        <line class="edge directed path" x1="0" y1="0" x2="-30" y2="20" marker-end="url(#arrowhead-path)" stroke-width="1"/>
-        <line class="edge directed path" x1="0" y1="0" x2="30" y2="20" marker-end="url(#arrowhead-path)" stroke-width="1"/>
+        <line class="edge directed path" x1="0" y1="0" x2="-30" y2="20" marker-end="url(#arrowhead-path)"
+              stroke-width="1"/>
+        <line class="edge directed path" x1="0" y1="0" x2="30" y2="20" marker-end="url(#arrowhead-path)"
+              stroke-width="1"/>
     </g>
-    <line class="index-pointer" x1="100" y1="115" x2="100" y2="170" marker-end="url(#arrowhead-pointer)"/>
 
     <!-- Sub-Walker for X -->
-     <g transform="translate(180, 220)">
+    <g transform="translate(380, 220)">
         <rect class="index-box" x="-70" y="-50" width="140" height="100" stroke-dasharray="3 3"/>
         <text class="index-title" y="-35">Sub-Walker (from X)</text>
-         <g class="node" transform="translate(0, -10)"> <!-- Start X -->
-             <circle r="10"></circle> <text class="node-label" font-size="10px">X</text>
+        <g class="node" transform="translate(0, -10)"> <!-- Start X -->
+            <circle r="10"></circle>
+            <text class="node-label" font-size="10px">X</text>
         </g>
-        <text class="property-text" y="5" font-size="10px">edges().head()</text>
+        <text class="property-text" y="55" font-size="10px">edges().head()</text>
         <g class="node path" transform="translate(0, 30)"> <!-- Result Y -->
-             <circle r="10"></circle> <text class="node-label" font-size="10px">Y</text>
+            <circle r="10"></circle>
+            <text class="node-label" font-size="10px">Y</text>
         </g>
-         <line class="edge directed path" x1="0" y1="0" x2="0" y2="20" marker-end="url(#arrowhead-path)" stroke-width="1"/>
+        <line class="edge directed path" x1="0" y1="0" x2="0" y2="20" marker-end="url(#arrowhead-path)"
+              stroke-width="1"/>
     </g>
-    <line class="index-pointer" x1="180" y1="115" x2="180" y2="170" marker-end="url(#arrowhead-pointer)"/>
 
     <!-- Output Stream -->
     <text class="step-label" x="450" y="40" text-anchor="middle">Output Elements (Results)</text>
@@ -89,42 +95,42 @@
     <!-- Output Elements (Results from Sub-Walkers) -->
     <g class="node highlighted" transform="translate(400, 100)">
         <circle r="15"></circle>
-        <text class="node-label">B</text>
+        <text class="node-label">A</text>
     </g>
     <g class="node highlighted" transform="translate(460, 100)">
         <circle r="15"></circle>
-        <text class="node-label">C</text>
+        <text class="node-label">A</text>
     </g>
     <g class="node highlighted" transform="translate(520, 100)">
         <circle r="15"></circle>
-        <text class="node-label">Y</text>
+        <text class="node-label">X</text>
     </g>
-
-    <!-- Connection from Sub-Walkers to Output -->
-    <path class="index-pointer" d="M 100 270 q 150 10 300 -155" marker-end="url(#arrowhead-pointer)"/>
-    <path class="index-pointer" d="M 180 270 q 100 0 280 -155" marker-end="url(#arrowhead-pointer)"/>
 
 
     <!-- Legend -->
-    <g transform="translate(0, 360)">
+    <g transform="translate(0, 320)">
         <rect class="index-box" x="25" y="0" width="550" height="120"/>
         <text class="index-title" x="300" y="20">Legend</text>
 
         <g transform="translate(60, 45)">
-            <g class="node highlighted"> <circle r="10"></circle> </g>
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
                 Element in main traversal stream
             </text>
         </g>
 
         <g transform="translate(60, 70)">
-             <rect x="-10" y="-5" width="20" height="10" class="index-box" stroke-dasharray="3 3"/>
+            <rect x="-10" y="-5" width="20" height="10" class="index-box" stroke-dasharray="3 3"/>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
                 Sub-walker execution (per input element)
             </text>
         </g>
-         <g transform="translate(60, 95)">
-            <g class="node path"> <circle r="10"></circle> </g>
+        <g transform="translate(60, 95)">
+            <g class="node path">
+                <circle r="10"></circle>
+            </g>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
                 Result element from a sub-walker
             </text>
