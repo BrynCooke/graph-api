@@ -7,7 +7,7 @@
         - Shows an input stream of elements A, B.
         - The 'push_context(|v| v.id())' step is applied when element A is processed.
         - The output stream shows elements A and B, each paired with the context "A_ID",
-          demonstrating that the context is fixed when pushed.
+        demonstrating that the context is fixed when pushed.
     </desc>
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
@@ -38,7 +38,8 @@
     <rect x="180" y="75" width="160" height="50" rx="5" ry="5"
           fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
     <text class="step-label" x="260" y="95" text-anchor="middle" fill="var(--text-color-light)">push_context</text>
-    <text class="code" x="260" y="115" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">
+    <text class="code" x="260" y="115" text-anchor="middle" fill="var(--text-color-light)"
+          font-size="var(--font-size-small)">
         (|v| v.id())
     </text>
 
@@ -56,7 +57,7 @@
         <!-- Context Box -->
         <g transform="translate(0, 50)">
             <rect class="index-box" x="-35" y="-15" width="70" height="30"/>
-            <text class="index-value range" y="5" x="-32" text-anchor="middle">"A_ID"</text>
+            <text class="index-value range" y="5" x="-25" text-anchor="middle">"A_ID"</text>
         </g>
         <!-- Link Context -->
         <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
@@ -71,7 +72,7 @@
         <!-- Context Box (Same context as A) -->
         <g transform="translate(0, 50)">
             <rect class="index-box" x="-35" y="-15" width="70" height="30"/>
-            <text class="index-value range" y="5" x="-32" text-anchor="middle">"A_ID"</text>
+            <text class="index-value range" y="5" x="-25" text-anchor="middle">"A_ID"</text>
         </g>
         <!-- Link Context -->
         <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
@@ -93,7 +94,6 @@
 
         <g transform="translate(60, 75)">
             <rect class="index-box" x="-10" y="-10" width="20" height="20"/>
-            <text class="index-value range" x="0" y="0" text-anchor="middle" font-size="var(--font-size-small)">Ctx</text>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
                 Context value associated with the element (fixed when pushed)
             </text>
