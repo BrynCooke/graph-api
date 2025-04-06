@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
     <title>Mutate Step Diagram</title>
@@ -20,7 +19,7 @@
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-         <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="8" markerHeight="6"
+        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="8" markerHeight="6"
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
@@ -31,7 +30,7 @@
     </defs>
 
     <!-- Input Stream -->
-    <text class="step-label" x="100" y="40" text-anchor="middle">Input Elements</text>
+    <text class="step-label" x="150" y="20" text-anchor="middle">Input Elements</text>
     <line class="edge directed" x1="50" y1="100" x2="250" y2="100" marker-end="url(#arrowhead)"/>
 
     <!-- Input Elements -->
@@ -58,16 +57,18 @@
     <text class="property-text" x="300" y="130" text-anchor="middle">(callback)</text>
 
     <!-- Processing Arrows -->
-    <path class="edge directed" d="M 350,100 Q 425,50 500,100" marker-end="url(#arrowhead-path)" stroke-dasharray="4 2" stroke="var(--accent-secondary)"/>
-    <path class="edge directed" d="M 500,100 Q 425,150 350,100" marker-end="url(#arrowhead-path)" stroke-dasharray="4 2" stroke="var(--accent-secondary)"/>
-    <text class="property-text" x="425" y="45" text-anchor="middle">Process & Mutate</text>
+    <path class="edge directed" d="M 350,100 Q 425,50 500,100" marker-end="url(#arrowhead-path)" stroke-dasharray="4 2"
+          stroke="var(--accent-secondary)"/>
+    <path class="edge directed" d="M 500,100 Q 425,150 350,100" marker-end="url(#arrowhead-path)" stroke-dasharray="4 2"
+          stroke="var(--accent-secondary)"/>
+    <text class="property-text" x="425" y="45" text-anchor="middle">Process &amp; Mutate</text>
     <text class="property-text" x="425" y="165" text-anchor="middle">Graph State</text>
 
 
     <!-- Graph State After Mutation -->
-    <text class="step-label" x="500" y="40" text-anchor="middle">Mutated Elements (In Graph)</text>
+    <text class="step-label" x="450" y="20" text-anchor="middle">Mutated Elements (In Graph)</text>
     <!-- Mutated Elements -->
-     <g class="node path" transform="translate(430, 100)"> <!-- Use 'path' class to indicate change -->
+    <g class="node path" transform="translate(430, 100)"> <!-- Use 'path' class to indicate change -->
         <circle r="15"></circle>
         <text class="node-label">A'</text>
         <text class="property-text" y="25">val=10</text>
@@ -85,17 +86,18 @@
 
     <!-- Return Value -->
     <g transform="translate(300, 220)">
-         <rect x="-75" y="-25" width="150" height="50" rx="5" ry="5"
+        <rect x="-75" y="-25" width="150" height="50" rx="5" ry="5"
               fill="var(--accent-secondary)" fill-opacity="0.15"
               stroke="var(--accent-secondary)" stroke-width="1.5"/>
         <text x="0" y="0" text-anchor="middle" font-weight="bold" fill="var(--accent-secondary)">Returns: usize</text>
         <text x="0" y="20" text-anchor="middle" font-family="monospace" fill="var(--accent-secondary)">
             3
         </text>
-         <text x="0" y="45" class="text-color-muted" font-size="12px" text-anchor="middle">Count of processed elements</text>
-         <text x="0" y="60" class="text-color-muted" font-size="12px" text-anchor="middle">Terminates Walker</text>
+        <text x="0" y="45" class="text-color-muted" font-size="12px" text-anchor="middle">Count of processed elements
+        </text>
+        <text x="0" y="60" class="text-color-muted" font-size="12px" text-anchor="middle">Terminates Walker</text>
     </g>
-     <line class="index-pointer" x1="300" y1="150" x2="300" y2="195" marker-end="url(#arrowhead-pointer)"/>
+    <line class="index-pointer" x1="300" y1="150" x2="300" y2="195" marker-end="url(#arrowhead-pointer)"/>
 
 
     <!-- Legend -->
@@ -104,24 +106,29 @@
         <text class="index-title" x="300" y="20">Legend</text>
 
         <g transform="translate(60, 45)">
-            <g class="node highlighted"> <circle r="10"></circle> </g>
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
                 Element before mutation (e.g., A, val=1)
             </text>
         </g>
 
         <g transform="translate(320, 45)">
-            <g class="node path"> <circle r="10"></circle> </g> <!-- Use 'path' class -->
+            <g class="node path">
+                <circle r="10"></circle>
+            </g> <!-- Use 'path' class -->
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
                 Element after mutation (e.g., A', val=10)
             </text>
         </g>
 
-         <g transform="translate(60, 65)">
-             <rect x="-10" y="-5" width="20" height="10" fill="var(--accent-secondary)" fill-opacity="0.15" stroke="var(--accent-secondary)" rx="2"/>
-             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
-                 Return value (count)
-             </text>
-         </g>
+        <g transform="translate(60, 65)">
+            <rect x="-10" y="-5" width="20" height="10" fill="var(--accent-secondary)" fill-opacity="0.15"
+                  stroke="var(--accent-secondary)" rx="2"/>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Return value (count)
+            </text>
+        </g>
     </g>
 </svg>
