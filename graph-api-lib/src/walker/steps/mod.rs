@@ -2,6 +2,7 @@
 pub use self::context::{
     ContextRef, DefaultEdgeContext, DefaultVertexContext, EdgeContext, VertexContext,
 };
+pub use self::control_flow::{EdgeControlFlow, VertexControlFlow};
 pub use self::detour::{Detour, Waypoint};
 pub use self::edges::Edges;
 pub use self::empty::Empty;

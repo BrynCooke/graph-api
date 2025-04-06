@@ -1,7 +1,8 @@
-use crate::ElementId;
 use crate::graph::Graph;
 use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
+use crate::{EdgeReference, ElementId, VertexReference};
+use include_doc::function_body;
 use std::marker::PhantomData;
 use std::ops::ControlFlow;
 
@@ -23,11 +24,15 @@ impl<Parent, Predicate> VertexControlFlow<'_, Parent, Predicate> {
 
 impl<'graph, Parent, Predicate> Walker<'graph> for VertexControlFlow<'graph, Parent, Predicate>
 where
+    Self: 'graph,
     Parent: VertexWalker<'graph>,
-    Predicate: Fn(
-        &<Parent::Graph as Graph>::VertexReference<'_>,
+    for<'a> Predicate: Fn(
+        &'a <Parent::Graph as Graph>::VertexReference<'graph>,
         &mut Parent::Context,
-    ) -> ControlFlow<(), ()>,
+    ) -> ControlFlow<
+        Option<&'a <Parent::Graph as Graph>::VertexReference<'graph>>,
+        Option<&'a <Parent::Graph as Graph>::VertexReference<'graph>>,
+    >,
 {
     type Graph = Parent::Graph;
     type Context = Parent::Context;
@@ -48,18 +53,25 @@ where
 impl<'graph, Parent, Predicate> VertexWalker<'graph>
     for VertexControlFlow<'graph, Parent, Predicate>
 where
+    Self: 'graph,
     Parent: VertexWalker<'graph>,
-    Predicate: Fn(
-        &<Parent::Graph as Graph>::VertexReference<'_>,
+    for<'a> Predicate: Fn(
+        &'a <Parent::Graph as Graph>::VertexReference<'graph>,
         &mut Parent::Context,
-    ) -> ControlFlow<(), ()>,
+    ) -> ControlFlow<
+        Option<&'a <Parent::Graph as Graph>::VertexReference<'graph>>,
+        Option<&'a <Parent::Graph as Graph>::VertexReference<'graph>>,
+    >,
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
         while let Some(next) = self.parent.next(graph) {
             if let Some(vertex) = graph.vertex(next) {
                 match (self.predicate)(&vertex, self.parent.ctx_mut()) {
-                    ControlFlow::Continue(()) => return Some(next),
-                    ControlFlow::Break(()) => return None,
+                    ControlFlow::Continue(Some(reference)) => return Some(reference.id()),
+                    ControlFlow::Continue(None) => continue, // Skip this element
+                    ControlFlow::Break(reference) => {
+                        return reference.map(|reference| reference.id());
+                    } // Break with optional final element
                 }
             }
         }
@@ -85,11 +97,15 @@ impl<Parent, Predicate> EdgeControlFlow<'_, Parent, Predicate> {
 
 impl<'graph, Parent, Predicate> Walker<'graph> for EdgeControlFlow<'graph, Parent, Predicate>
 where
+    Self: 'graph,
     Parent: EdgeWalker<'graph>,
-    Predicate: Fn(
-        &<Parent::Graph as Graph>::EdgeReference<'_>,
+    for<'a> Predicate: Fn(
+        &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
         &mut Parent::Context,
-    ) -> ControlFlow<(), ()>,
+    ) -> ControlFlow<
+        Option<&'a <Parent::Graph as Graph>::EdgeReference<'graph>>,
+        Option<&'a <Parent::Graph as Graph>::EdgeReference<'graph>>,
+    >,
 {
     type Graph = Parent::Graph;
     type Context = Parent::Context;
@@ -109,18 +125,26 @@ where
 
 impl<'graph, Parent, Predicate> EdgeWalker<'graph> for EdgeControlFlow<'graph, Parent, Predicate>
 where
+    Self: 'graph,
     Parent: EdgeWalker<'graph>,
-    Predicate: Fn(
-        &<Parent::Graph as Graph>::EdgeReference<'_>,
+    for<'a> Predicate: Fn(
+        &'a <Parent::Graph as Graph>::EdgeReference<'graph>,
         &mut Parent::Context,
-    ) -> ControlFlow<(), ()>,
+    ) -> ControlFlow<
+        Option<&'a <Parent::Graph as Graph>::EdgeReference<'graph>>,
+        Option<&'a <Parent::Graph as Graph>::EdgeReference<'graph>>,
+    >,
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId> {
-        if let Some(next) = self.parent.next(graph) {
-            let edge = graph.edge(next).expect("edge must exist");
-            match (self.predicate)(&edge, self.parent.ctx_mut()) {
-                ControlFlow::Continue(()) => return Some(next),
-                ControlFlow::Break(()) => return None,
+        while let Some(next) = self.parent.next(graph) {
+            if let Some(edge) = graph.edge(next) {
+                match (self.predicate)(&edge, self.parent.ctx_mut()) {
+                    ControlFlow::Continue(Some(reference)) => return Some(reference.id()),
+                    ControlFlow::Continue(None) => continue, // Skip this element
+                    ControlFlow::Break(reference) => {
+                        return reference.map(|reference| reference.id());
+                    } // Break with optional final element
+                }
             }
         }
         None
@@ -135,36 +159,41 @@ where
     /// # ControlFlow Step
     ///
     /// The `control_flow` step allows you to evaluate each vertex with a predicate function that returns a
-    /// `std::ops::ControlFlow` value. This gives precise control over traversal - you can either continue
-    /// processing the current element (ControlFlow::Continue) or stop the traversal completely (ControlFlow::Break).
+    /// `std::ops::ControlFlow` value. This gives precise control over traversal - you can either:
+    /// - Continue and include the element (ControlFlow::Continue(Some(id)))
+    /// - Continue but skip the element (ControlFlow::Continue(None))
+    /// - Stop traversal with an optional final element (ControlFlow::Break(option))
     ///
     /// ## Visual Diagram
     ///
     /// Before control_flow step (all vertices in traversal):
     /// ```text
-    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
-    ///    ^                                         
-    ///    |                                         
-    ///   edge3                                       
-    ///    |                                         
-    ///   [D]*                                        
+    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*
+    ///    ^
+    ///    |
+    ///   edge3
+    ///    |
+    ///   [D]*
     /// ```
     ///
-    /// After control_flow step with a condition that breaks when encountering [B]:
+    /// After control_flow step that only includes projects and breaks on "Graph" projects:
     /// ```text
-    ///   [A]* --- edge1 ---> [B] --- edge2 ---> [C]  
-    ///    ^                                         
-    ///    |                                         
-    ///   edge3                                       
-    ///    |                                         
-    ///   [D]                                        
+    ///   [A] --- edge1 ---> [B]* --- edge2 ---> [C]*
+    ///    ^
+    ///    |
+    ///   edge3
+    ///    |
+    ///   [D]
     /// ```
     ///
     /// ## Parameters
     ///
     /// - `predicate`: A function that takes a reference to a vertex and a mutable reference to its context,
-    ///   and returns a `std::ops::ControlFlow<(), ()>` value. Return `ControlFlow::Continue(())` to keep
-    ///   processing the current element and continue traversal, or `ControlFlow::Break(())` to stop traversal.
+    ///   and returns a `std::ops::ControlFlow<Option<VertexId>, Option<VertexId>>` value:
+    ///   - Return `ControlFlow::Continue(Some(vertex.id()))` to include the vertex and continue
+    ///   - Return `ControlFlow::Continue(None)` to skip the vertex and continue
+    ///   - Return `ControlFlow::Break(Some(vertex.id()))` to include the vertex and stop traversal
+    ///   - Return `ControlFlow::Break(None)` to stop traversal without including the vertex
     ///
     /// ## Return Value
     ///
@@ -173,22 +202,29 @@ where
     /// ## Example
     ///
     /// ```rust
-    /// // Example will be provided once implemented
+    #[doc = function_body!("examples/control_flow.rs", vertex_example, [])]
     /// ```
     ///
     /// ## Notes
     ///
-    /// - This step is similar to `filter()` but with the added ability to stop all traversal at any point
+    /// - This step is more powerful than `filter()` as it can both filter elements and control traversal flow
     /// - The predicate receives a mutable reference to the context, allowing you to update state during traversal
-    /// - Use this step when you need to conditionally stop traversal, such as when finding a specific condition
-    /// - Only elements that return `ControlFlow::Continue(())` will be included in the traversal
-    /// - When `ControlFlow::Break(())` is returned, the entire traversal stops immediately
+    /// - Use this step when you need a combination of filtering and conditional stopping of traversal
+    /// - Only elements where the predicate returns `Some` will be included in the traversal
+    /// - When `ControlFlow::Break` is returned, the entire traversal stops immediately
     pub fn control_flow<Predicate>(
         self,
         predicate: Predicate,
     ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexControlFlow<'graph, Walker, Predicate>>
     where
-        Predicate: Fn(&Graph::VertexReference<'_>, &mut Walker::Context) -> ControlFlow<(), ()>,
+        Walker: 'graph,
+        for<'a> Predicate: Fn(
+                &'a Graph::VertexReference<'graph>,
+                &mut Walker::Context,
+            ) -> ControlFlow<
+                Option<&'a Graph::VertexReference<'graph>>,
+                Option<&'a Graph::VertexReference<'graph>>,
+            > + 'graph,
     {
         VertexWalkerBuilder {
             _phantom: Default::default(),
@@ -206,36 +242,41 @@ where
     /// # ControlFlow Step
     ///
     /// The `control_flow` step allows you to evaluate each edge with a predicate function that returns a
-    /// `std::ops::ControlFlow` value. This gives precise control over traversal - you can either continue
-    /// processing the current element (ControlFlow::Continue) or stop the traversal completely (ControlFlow::Break).
+    /// `std::ops::ControlFlow` value. This gives precise control over traversal - you can either:
+    /// - Continue and include the element (ControlFlow::Continue(Some(id)))
+    /// - Continue but skip the element (ControlFlow::Continue(None))
+    /// - Stop traversal with an optional final element (ControlFlow::Break(option))
     ///
     /// ## Visual Diagram
     ///
     /// Before control_flow step (all edges in traversal):
     /// ```text
     ///   [Person A] --- knows* ---> [Person B] --- created* ---> [Project]
-    ///    ^                                         
-    ///    |                                         
-    ///   owns*                                       
-    ///    |                                         
-    ///   [Company]                                        
+    ///    ^
+    ///    |
+    ///   owns*
+    ///    |
+    ///   [Company]
     /// ```
     ///
-    /// After control_flow step that breaks on "knows" edges:
+    /// After control_flow step that only includes "knows" edges and breaks on old connections:
     /// ```text
-    ///   [Person A] --- knows ---> [Person B] --- created ---> [Project]
-    ///    ^                                         
-    ///    |                                         
-    ///   owns                                     
-    ///    |                                         
-    ///   [Company]                                        
+    ///   [Person A] --- knows* ---> [Person B] --- created ---> [Project]
+    ///    ^
+    ///    |
+    ///   owns
+    ///    |
+    ///   [Company]
     /// ```
     ///
     /// ## Parameters
     ///
     /// - `predicate`: A function that takes a reference to an edge and a mutable reference to its context,
-    ///   and returns a `std::ops::ControlFlow<(), ()>` value. Return `ControlFlow::Continue(())` to keep
-    ///   processing the current element and continue traversal, or `ControlFlow::Break(())` to stop traversal.
+    ///   and returns a `std::ops::ControlFlow<Option<EdgeId>, Option<EdgeId>>` value:
+    ///   - Return `ControlFlow::Continue(Some(edge.id()))` to include the edge and continue
+    ///   - Return `ControlFlow::Continue(None)` to skip the edge and continue
+    ///   - Return `ControlFlow::Break(Some(edge.id()))` to include the edge and stop traversal
+    ///   - Return `ControlFlow::Break(None)` to stop traversal without including the edge
     ///
     /// ## Return Value
     ///
@@ -244,22 +285,29 @@ where
     /// ## Example
     ///
     /// ```rust
-    /// // Example will be provided once implemented
+    #[doc = function_body!("examples/control_flow.rs", edge_example, [])]
     /// ```
     ///
     /// ## Notes
     ///
-    /// - This step is similar to `filter()` but with the added ability to stop all traversal at any point
+    /// - This step is more powerful than `filter()` as it can both filter elements and control traversal flow
     /// - The predicate receives a mutable reference to the context, allowing you to update state during traversal
-    /// - Use this step when you need to conditionally stop traversal, such as when encountering a specific edge type
-    /// - Only elements that return `ControlFlow::Continue(())` will be included in the traversal
-    /// - When `ControlFlow::Break(())` is returned, the entire traversal stops immediately
+    /// - Use this step when you need a combination of filtering and conditional stopping of traversal
+    /// - Only elements where the predicate returns `Some` will be included in the traversal
+    /// - When `ControlFlow::Break` is returned, the entire traversal stops immediately
     pub fn control_flow<Predicate>(
         self,
         predicate: Predicate,
     ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeControlFlow<'graph, Walker, Predicate>>
     where
-        Predicate: Fn(&Graph::EdgeReference<'_>, &mut Walker::Context) -> ControlFlow<(), ()>,
+        Walker: 'graph,
+        for<'a> Predicate: Fn(
+                &'a Graph::EdgeReference<'graph>,
+                &mut Walker::Context,
+            ) -> ControlFlow<
+                Option<&'a Graph::EdgeReference<'graph>>,
+                Option<&'a Graph::EdgeReference<'graph>>,
+            > + 'graph,
     {
         EdgeWalkerBuilder {
             _phantom: Default::default(),

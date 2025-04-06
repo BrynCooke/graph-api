@@ -22,6 +22,7 @@
         - [head](./user_guide/walker/steps/head.md)
         - [tail](./user_guide/walker/steps/tail.md)
         - [filter](./user_guide/walker/steps/filter.md)
+        - [control_flow](./user_guide/walker/steps/control_flow.md)
         - [map](./user_guide/walker/steps/map.md)
         - [take](./user_guide/walker/steps/take.md)
         - [first](./user_guide/walker/steps/first.md)

@@ -2,8 +2,9 @@ use crate::graph::Graph;
 use crate::search::vertex::VertexSearch;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder};
 use crate::walker::steps::{
-    Detour, EdgeContext, EdgeFilter, EdgeReduce, EdgeTake, Edges, End, Endpoints, VertexContext,
-    VertexFilter, VertexIter, VertexReduce, VertexTake, Vertices, Waypoint,
+    Detour, EdgeContext, EdgeControlFlow, EdgeFilter, EdgeReduce, EdgeTake, Edges, End, Endpoints,
+    VertexContext, VertexControlFlow, VertexFilter, VertexIter, VertexReduce, VertexTake, Vertices,
+    Waypoint,
 };
 use crate::{EdgeSearch, ElementId};
 
@@ -74,6 +75,23 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
         Predicate: Fn(&<Self::Graph as Graph>::VertexReference<'_>, &Self::Context) -> bool,
     {
         VertexFilter::new(self, predicate)
+    }
+
+    fn control_flow<Predicate>(
+        self,
+        predicate: Predicate,
+    ) -> VertexControlFlow<'graph, Self, Predicate>
+    where
+        Self: 'graph,
+        for<'a> Predicate: Fn(
+            &'a <Self::Graph as Graph>::VertexReference<'graph>,
+            &mut Self::Context,
+        ) -> std::ops::ControlFlow<
+            Option<&'a <Self::Graph as Graph>::VertexReference<'graph>>,
+            Option<&'a <Self::Graph as Graph>::VertexReference<'graph>>,
+        >,
+    {
+        VertexControlFlow::new(self, predicate)
     }
 
     fn take(self, n: usize) -> VertexTake<'graph, Self> {
@@ -154,6 +172,23 @@ pub trait EdgeWalker<'graph>: Walker<'graph> {
         Predicate: Fn(&<Self::Graph as Graph>::EdgeReference<'_>, &Self::Context) -> bool,
     {
         EdgeFilter::new(self, predicate)
+    }
+
+    fn control_flow<Predicate>(
+        self,
+        predicate: Predicate,
+    ) -> EdgeControlFlow<'graph, Self, Predicate>
+    where
+        Self: 'graph,
+        for<'a> Predicate: Fn(
+            &'a <Self::Graph as Graph>::EdgeReference<'graph>,
+            &mut Self::Context,
+        ) -> std::ops::ControlFlow<
+            Option<&'a <Self::Graph as Graph>::EdgeReference<'graph>>,
+            Option<&'a <Self::Graph as Graph>::EdgeReference<'graph>>,
+        >,
+    {
+        EdgeControlFlow::new(self, predicate)
     }
 
     fn head(self) -> Endpoints<'graph, Self> {
