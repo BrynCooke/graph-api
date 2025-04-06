@@ -25,19 +25,23 @@
         <text class="step-label" x="0" y="0" text-anchor="middle">Conceptual Graph Vertices</text>
         <!-- Represent vertices conceptually, stacked vertically -->
         <g class="node" transform="translate(0, 40)"> <!-- A -->
-            <circle r="15"></circle><text class="node-label">A</text>
+            <circle r="15"></circle>
+            <text class="node-label">A</text>
             <text class="property-text" y="25">Person</text>
         </g>
-        <g class="node" transform="translate(0, 90)"> <!-- B -->
-            <circle r="15"></circle><text class="node-label">B</text>
+        <g class="node" transform="translate(-50, 90)"> <!-- B -->
+            <circle r="15"></circle>
+            <text class="node-label">B</text>
             <text class="property-text" y="25">Product</text>
         </g>
         <g class="node" transform="translate(0, 140)"> <!-- C -->
-            <circle r="15"></circle><text class="node-label">C</text>
+            <circle r="15"></circle>
+            <text class="node-label">C</text>
             <text class="property-text" y="25">Person</text>
         </g>
-        <g class="node" transform="translate(0, 190)"> <!-- D -->
-            <circle r="15"></circle><text class="node-label">D</text>
+        <g class="node" transform="translate(-50, 190)"> <!-- D -->
+            <circle r="15"></circle>
+            <text class="node-label">D</text>
             <text class="property-text" y="25">Review</text>
         </g>
     </g>
@@ -46,15 +50,18 @@
     <g id="vertices-step-group" transform="translate(300, 140)"> <!-- Adjusted position -->
         <rect x="-100" y="-25" width="200" height="50" rx="5" ry="5"
               fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
-        <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">graph.walk().vertices</text>
-        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">
+        <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">
+            graph.walk().vertices
+        </text>
+        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)"
+              font-size="var(--font-size-small)">
             (Vertex::person())
         </text>
     </g>
 
     <!-- Pointers from Person Vertices (A, C) to Step Box -->
-    <path class="index-pointer" d="M 115 90 Q 200 110 200 125" marker-end="url(#arrowhead-pointer)"/> <!-- From A -->
-    <path class="index-pointer" d="M 115 190 Q 200 170 200 155" marker-end="url(#arrowhead-pointer)"/> <!-- From C -->
+    <path class="index-pointer" d="M 115 90 Q 180 110 200 125" marker-end="url(#arrowhead-pointer)"/> <!-- From A -->
+    <path class="index-pointer" d="M 115 190 Q 180 170 200 155" marker-end="url(#arrowhead-pointer)"/> <!-- From C -->
 
 
     <!-- Output Stream -->
