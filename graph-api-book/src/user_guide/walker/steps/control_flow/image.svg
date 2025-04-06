@@ -46,7 +46,7 @@
   <!-- Element C: Kept & Break -->
   <circle cx="470" cy="100" r="15" fill="#bf616a" stroke="#2e3440" stroke-width="1" />
   <text x="470" y="105" font-family="Arial" font-size="12" text-anchor="middle">C</text>
-  <text x="470" y="125" font-family="Arial" font-size="10" text-anchor="middle">Kept & Break</text>
+  <text x="470" y="125" font-family="Arial" font-size="10" text-anchor="middle">Kept &amp; Break</text>
   <text x="470" y="80" font-family="Arial" font-size="10" text-anchor="middle" fill="#bf616a">Break(Some)</text>
 
   <!-- Break Indicator -->
