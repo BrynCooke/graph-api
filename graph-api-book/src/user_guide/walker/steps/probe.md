@@ -1,19 +1,17 @@
 # Probe Step
 
-The `probe` step allows you to inspect or log vertices or edges during a traversal without affecting the traversal flow.
-It's perfect for debugging or monitoring what's happening in your traversal.
+The `probe` step allows you to execute a callback function for each element in the traversal, primarily for **side effects** like logging, metrics collection, or debugging, without altering the elements themselves or the flow of the traversal.
 
 <object type="image/svg+xml" data="probe/image.svg" title="Probe Step Diagram">
-Probe step diagram showing side effects being triggered without affecting traversal
+Probe step diagram showing elements flowing through, side effects, and unchanged output stream
 </object>
 
 In this diagram:
 
-- **Before `probe()`**: The walker contains highlighted elements **V1, V2, V3**.
-- The **code snippet** on the left shows the `.probe(|v, _| ...)` step being applied.
-- **After `probe()`**: The walker state remains **identical** to the "Before" state, with **V1, V2, V3** still highlighted.
-- A separate **Side Effect box** (e.g., representing console output) is shown, indicating the action performed by the `probe` function for each element.
-- The traversal continues to the next step, **unaffected** by the `probe`.
+- **Input Elements**: The walker starts with elements **A, B, C**.
+- The **`.probe(callback)`** step processes each element.
+- **Side Effect**: As each element (A, B, C) passes through, the provided callback function is executed. This is shown triggering actions like logging or updating metrics.
+- **Output Elements (Unchanged)**: The elements **A, B, C** continue to the next step in the traversal, completely unaffected by the `probe` operation.
 
 ## Syntax
 
