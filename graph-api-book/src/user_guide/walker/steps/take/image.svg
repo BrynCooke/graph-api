@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height for legend -->
     <title>Take Step Diagram</title>
     <desc>
         Diagram illustrating the 'take' step:
@@ -76,11 +76,35 @@
         <text class="node-label">D</text>
     </g>
 
+    <!-- Legend -->
+    <g transform="translate(0, 240)">
+        <rect class="index-box" x="25" y="0" width="550" height="70"/>
+        <text class="index-title" x="300" y="20">Legend</text>
+
+        <g transform="translate(60, 45)">
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Element in the stream / Output element
+            </text>
+        </g>
+
+        <g transform="translate(350, 45)">
+            <g class="node visited">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Element discarded by <tspan class="code">.take()</tspan>
+            </text>
+        </g>
+    </g>
+
     <!-- Explanation Text -->
-    <text class="property-text" x="300" y="260" text-anchor="middle">
+    <text class="property-text" x="300" y="330" text-anchor="middle"> <!-- Adjusted Y position -->
         The <tspan class="code">.take(2)</tspan> step allows only the first 2 elements (A, B) to pass.
     </text>
-    <text class="property-text" x="300" y="280" text-anchor="middle">
+    <text class="property-text" x="300" y="350" text-anchor="middle"> <!-- Adjusted Y position -->
         Subsequent elements (C, D) are discarded, and the traversal stops.
     </text>
 </svg>
