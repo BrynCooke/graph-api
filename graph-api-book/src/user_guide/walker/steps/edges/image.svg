@@ -1,88 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height -->
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height for legend -->
     <title>Edges Step Diagram</title>
     <desc>
         Diagram illustrating the 'edges' step:
-        - Shows the walker state positioned at vertex A, which is highlighted.
-        - Vertex A has outgoing edges to B (likes) and C (created).
-        - The 'edges()' step is applied.
-        - After the step, the walker is positioned on the edges A->B and A->C, which are now highlighted.
-        - Vertices A, B, and C are no longer highlighted.
+        - Shows an input stream containing vertex A.
+        - Vertex A has outgoing edges: A->B (likes) and A->C (created).
+        - The 'edges(EdgeSearch::scan())' step processes vertex A.
+        - The output stream contains the edges A->B and A->C.
     </desc>
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
-                orient="auto" markerUnits="strokeWidth">
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
         <marker id="arrowhead-highlighted" class="marker-arrowhead-highlighted marker-base" markerWidth="8"
-                markerHeight="6" refX="7" refY="3"
-                orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L8,3 L0,6 Z"/>
-        </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                markerHeight="6"
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
 
-    <!-- Step Representation (Left) -->
-    <g id="step-representation" class="step-label" transform="translate(30, 150)">
-        <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">graph</text>
-        <text x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">.vertices_by_id([A])</text>
-        <text class="code" x="10" y="30" text-anchor="start" font-size="var(--font-size-small)">
-            .edges(EdgeSearch::scan())
+    <!-- Input Stream -->
+    <text class="step-label" x="100" y="40" text-anchor="middle">Input Stream (Vertices)</text>
+    <line class="edge directed" x1="50" y1="100" x2="250" y2="100" marker-end="url(#arrowhead)"/>
+
+    <!-- Input Vertex -->
+    <g class="node highlighted" transform="translate(150, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">A</text>
+    </g>
+
+    <!-- Edges Step Box (Grouped) -->
+    <g id="edges-step-group" transform="translate(300, 100)"> <!-- Centered position for the group -->
+        <rect x="-80" y="-25" width="160" height="50" rx="5" ry="5"
+              fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+        <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">edges</text>
+        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">
+            (EdgeSearch::scan())
         </text>
     </g>
 
-    <!-- Before edges() step (Top Right) -->
-    <g id="before-step" transform="translate(200, 20)"> <!-- Shifted left -->
-        <text class="step-label" x="150" y="0" text-anchor="middle">Before edges()</text>
-        <g class="node highlighted" id="node-A-before" transform="translate(150, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">A</text>
+    <!-- Output Stream -->
+    <text class="step-label" x="450" y="40" text-anchor="middle">Output Stream (Edges)</text>
+    <line class="edge directed" x1="380" y1="100" x2="550" y2="100" marker-end="url(#arrowhead)"/>
+
+    <!-- Output Edges -->
+    <g transform="translate(420, 100)">
+        <g class="node">
+            <circle r="10"></circle><text class="node-label" font-size="10px">A</text>
         </g>
-        <g class="node" id="node-B-before" transform="translate(300, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">B</text>
+        <line class="edge directed highlighted" x1="10" y1="0" x2="40" y2="0" marker-end="url(#arrowhead-highlighted)"/>
+        <g class="node" transform="translate(50, 0)">
+            <circle r="10"></circle><text class="node-label" font-size="10px">B</text>
         </g>
-        <g class="node" id="node-C-before" transform="translate(300, 100)"> <!-- Moved C below B -->
-            <circle r="20"></circle>
-            <text class="node-label">C</text>
+        <text class="edge-label highlighted" x="25" y="-15" font-size="10px">likes</text>
+    </g>
+     <g transform="translate(490, 100)">
+        <g class="node">
+            <circle r="10"></circle><text class="node-label" font-size="10px">A</text>
         </g>
-        <g class="edge directed" id="edge-A-B-before">
-            <line x1="170" y1="50" x2="280" y2="50" marker-end="url(#arrowhead)"/>
-            <text x="225" y="40" class="edge-label">likes</text>
+        <line class="edge directed highlighted" x1="10" y1="0" x2="40" y2="0" marker-end="url(#arrowhead-highlighted)"/>
+        <g class="node" transform="translate(50, 0)">
+            <circle r="10"></circle><text class="node-label" font-size="10px">C</text>
         </g>
-        <g class="edge directed" id="edge-A-C-before">
-            <path d="M 170 65 q 65 40 110 40" marker-end="url(#arrowhead)" fill="none"/> <!-- Curved path A->C -->
-            <text x="235" y="95" class="edge-label">created</text> <!-- Adjusted label position -->
-        </g>
+        <text class="edge-label highlighted" x="25" y="-15" font-size="10px">created</text>
     </g>
 
-    <!-- After edges() step (Bottom Right) -->
-    <g id="after-step" transform="translate(200, 180)"> <!-- Shifted left and further down -->
-        <text class="step-label" x="150" y="0" text-anchor="middle">After edges()</text>
-        <g class="node" id="node-A-after" transform="translate(150, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">A</text>
+    <!-- Legend -->
+    <g transform="translate(0, 220)"> <!-- Adjusted Y position -->
+        <rect class="index-box" x="25" y="0" width="550" height="100"/>
+        <text class="index-title" x="300" y="20">Legend</text>
+
+        <g transform="translate(60, 45)">
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Vertex element in the input stream
+            </text>
         </g>
-        <g class="node" id="node-B-after" transform="translate(300, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">B</text>
-        </g>
-        <g class="node" id="node-C-after" transform="translate(300, 100)"> <!-- Moved C below B -->
-            <circle r="20"></circle>
-            <text class="node-label">C</text>
-        </g>
-        <g class="edge directed highlighted" id="edge-A-B-after">
-            <line x1="170" y1="50" x2="280" y2="50" marker-end="url(#arrowhead-highlighted)"/>
-            <text x="225" y="40" class="edge-label highlighted">likes</text>
-        </g>
-        <g class="edge directed highlighted" id="edge-A-C-after">
-            <path d="M 170 65 q 65 40 110 40" marker-end="url(#arrowhead-highlighted)"
-                  fill="none"/> <!-- Curved path A->C -->
-            <text x="235" y="95" class="edge-label highlighted">created</text> <!-- Adjusted label position -->
+
+        <g transform="translate(60, 75)">
+            <g class="node">
+                 <circle r="8"></circle><text class="node-label" font-size="8px">X</text>
+            </g>
+            <line class="edge directed highlighted" x1="10" y1="0" x2="30" y2="0" marker-end="url(#arrowhead-highlighted)"/>
+            <g class="node" transform="translate(40, 0)">
+                 <circle r="8"></circle><text class="node-label" font-size="8px">Y</text>
+            </g>
+            <text x="55" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Edge element in the output stream
+            </text>
         </g>
     </g>
 </svg>

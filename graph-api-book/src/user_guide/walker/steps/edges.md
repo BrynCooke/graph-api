@@ -1,7 +1,7 @@
 # Edges Step
 
 The `edges` step traverses from vertices to their connecting edges, allowing navigation along relationships in the
-graph. This step shifts the walker's position from vertices to their adjacent edges.
+graph. This step shifts the walker's position from vertices to their adjacent edges, transforming a stream of vertices into a stream of edges.
 
 <object type="image/svg+xml" data="edges/image.svg" title="Edges Step Diagram">
 Edges step diagram showing traversal from a vertex to its outgoing edges
@@ -9,9 +9,10 @@ Edges step diagram showing traversal from a vertex to its outgoing edges
 
 In this diagram:
 
-- **Before `edges()`**: The walker is positioned at vertex **A**, which is highlighted. Vertex A has outgoing edges to B and C.
-- The **`.edges()` step** is applied.
-- **After `edges()`**: The walker is now positioned on the **edges** originating from A (A->B and A->C), which are highlighted. The vertices are no longer highlighted.
+- An **Input Stream** contains vertex **A**.
+- Vertex **A** has outgoing edges: **A->B** (likes) and **A->C** (created).
+- The **`.edges(EdgeSearch::scan())`** step processes vertex **A**.
+- The **Output Stream** contains the edge elements **A->B** and **A->C** connected to vertex A.
 
 ## Syntax
 
