@@ -26,19 +26,23 @@
         <text class="step-label" x="0" y="0" text-anchor="middle">Conceptual Graph Vertices</text>
         <!-- Represent vertices conceptually, stacked vertically -->
         <g class="node" transform="translate(0, 40)"> <!-- V1 -->
-            <circle r="15"></circle><text class="node-label">V1</text>
+            <circle r="15"></circle>
+            <text class="node-label">V1</text>
             <text class="property-text" y="25">id: 1</text>
         </g>
-        <g class="node" transform="translate(0, 90)"> <!-- V2 -->
-            <circle r="15"></circle><text class="node-label">V2</text>
+        <g class="node" transform="translate(-50, 90)"> <!-- V2 -->
+            <circle r="15"></circle>
+            <text class="node-label">V2</text>
             <text class="property-text" y="25">id: 2</text>
         </g>
         <g class="node" transform="translate(0, 140)"> <!-- V3 -->
-            <circle r="15"></circle><text class="node-label">V3</text>
+            <circle r="15"></circle>
+            <text class="node-label">V3</text>
             <text class="property-text" y="25">id: 3</text>
         </g>
-        <g class="node" transform="translate(0, 190)"> <!-- V4 -->
-            <circle r="15"></circle><text class="node-label">V4</text>
+        <g class="node" transform="translate(-50, 190)"> <!-- V4 -->
+            <circle r="15"></circle>
+            <text class="node-label">V4</text>
             <text class="property-text" y="25">id: 4</text>
         </g>
     </g>
