@@ -1,18 +1,17 @@
 # Count Step
 
-The `count` step counts the number of elements in a traversal without collecting them. This is a terminal operation that
-consumes the walker and returns a single numeric value.
+The `count` step consumes the walker and efficiently counts the number of elements that have passed through the traversal up to that point. It is a **terminal** step that returns a single `usize` value representing the total count.
 
 <object type="image/svg+xml" data="count/image.svg" title="Count Step Diagram">
-Count step diagram showing walker state reducing to a single count value
+Count step diagram showing elements flowing into the step and a usize count as the output
 </object>
 
 In this diagram:
 
-- **Before `count()`**: The walker contains highlighted elements **V1, V2, V3, V4**.
-- The **code snippet** on the left shows the `.count()` step being applied.
-- **After `count()`**: The result is shown as a box containing the single numeric value **4**, representing the number of elements.
-- This step consumes the walker and **terminates the Graph API traversal**.
+- **Input Elements**: The walker starts with elements **A, B, C, D**.
+- The **`.count()`** step processes the stream and consumes the walker.
+- **Returns: usize**: The step returns a single `usize` value, which is the total number of elements processed (4 in this case).
+- **Terminates Walker**: This step ends the Graph API walker chain.
 
 ## Syntax
 
