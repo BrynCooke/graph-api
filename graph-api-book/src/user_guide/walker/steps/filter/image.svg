@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height for legend -->
+<svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height for legend -->
     <title>Filter Step Diagram</title>
     <desc>
         Diagram illustrating the 'filter' step:
@@ -47,7 +47,8 @@
         <rect x="-80" y="-25" width="160" height="50" rx="5" ry="5"
               fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
         <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">filter</text>
-        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">
+        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)"
+              font-size="var(--font-size-small)">
             (|v| v.age > 30)
         </text>
     </g>
@@ -83,7 +84,7 @@
     </g>
 
     <!-- Legend -->
-    <g transform="translate(0, 240)"> <!-- Adjusted Y position -->
+    <g transform="translate(0, 270)"> <!-- Adjusted Y position -->
         <rect class="index-box" x="25" y="0" width="550" height="100"/>
         <text class="index-title" x="300" y="20">Legend</text>
 
@@ -103,7 +104,8 @@
                 <line class="filtered-out-mark" x1="-5" y1="5" x2="5" y2="-5"/>
             </g>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
-                Element discarded by <tspan class="code">.filter()</tspan>
+                Element discarded by
+                <tspan class="code">.filter()</tspan>
             </text>
         </g>
     </g>
