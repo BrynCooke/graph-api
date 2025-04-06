@@ -1,19 +1,17 @@
 # Into Iterator
 
-The `into_iter` step converts a traversal into a standard Rust iterator, allowing you to use all of Rust's iterator
-methods directly with graph traversals. This bridges the gap between the Graph API's Walker and Rust's standard
-iterators.
+The `into_iter` step converts a walker traversal into a standard Rust iterator. This is a **terminal** step that consumes the walker and returns an iterator yielding the **IDs** of the vertices or edges that were in the traversal stream. It allows you to bridge the Graph API's walker system with Rust's standard iterator ecosystem.
 
 <object type="image/svg+xml" data="into_iter/image.svg" title="Into Iterator Step Diagram">
-Into Iterator step diagram showing walker state converting to a Rust iterator
+Into Iterator step diagram showing elements flowing into the step and a Rust iterator yielding IDs as the output
 </object>
 
 In this diagram:
 
-- **Before `into_iter()`**: The walker contains highlighted elements **V1, V2, V3**.
-- The **code snippet** on the left shows the `.into_iter()` step being applied.
-- **After `into_iter()`**: The result is shown as a box representing a standard **Rust Iterator** that will yield the IDs of the elements (V1, V2, V3).
-- This step consumes the walker and **terminates the Graph API traversal**.
+- **Input Elements**: The walker starts with elements **A, B, C**.
+- The **`.into_iter()`** step processes the stream and consumes the walker.
+- **Rust Iterator**: The step returns a standard Rust iterator. This iterator yields the unique identifiers (IDs) of the elements that were processed (ID(A), ID(B), ID(C)).
+- **Terminates Walker**: This step ends the Graph API walker chain. Subsequent operations must use standard Rust iterator methods.
 
 ## Syntax
 
