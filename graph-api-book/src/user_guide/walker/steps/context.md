@@ -5,15 +5,15 @@ previous steps while working with the current element. Context creates a typed v
 without changing its position.
 
 <object type="image/svg+xml" data="context/image.svg" title="Push Context Step Diagram">
-Context step diagram showing context value traveling with the walker
+Context step diagram showing a fixed context value being attached to elements
 </object>
 
 In this diagram:
 
-- **Before `push_context()`**: The walker is positioned at vertex **V1**.
-- The **code snippet** on the left shows the `.push_context(|v| v.id)` step being applied.
-- **After `push_context()`**: The walker is still at **V1**, but now has an associated **Context box** containing the value `"V1_ID"` (the result of the context function).
-- **Later (at V2)**: The walker has moved to vertex **V2**. The **Context box** (still containing `"V1_ID"`) remains associated with the walker, demonstrating that the context value travels along with the traversal state.
+- An **Input Stream** contains elements **A** and **B**.
+- The **`.push_context(|v| v.id())`** step is applied. The context function (e.g., `|v| v.id()`) is evaluated *once* when the step is encountered (conceptually, when element **A** is processed).
+- The resulting context value (e.g., `"A_ID"`) is then attached to **all** subsequent elements (**A** and **B**) in the **Output Stream**.
+- This demonstrates that the context value is determined when the `push_context` step is applied and remains fixed for the rest of that traversal segment.
 
 ## Methods for Adding Context
 

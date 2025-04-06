@@ -5,15 +5,17 @@ having to define custom context types. It automatically captures the current ver
 downstream steps.
 
 <object type="image/svg+xml" data="default_context/image.svg" title="Push Default Context Step Diagram">
-Default Context step diagram showing the current element being stored in context
+Default Context step diagram showing the context automatically tracking the current element
 </object>
 
 In this diagram:
 
-- **Before `push_default_context()`**: The walker is positioned at vertex **A**.
-- The **code snippet** on the left shows the `.push_default_context()` step being applied.
-- **After `push_default_context()`**: The walker is still at **A**, but now has an associated **Context box** containing `element: A`.
-- **Later (at B)**: The walker has moved to vertex **B**. The **Context box** automatically updates to contain `element: B`, demonstrating that the default context tracks the current element.
+- An **Input Stream** contains elements **A** and **B**.
+- The **`.push_default_context()`** step is applied.
+- In the **Output Stream**, each element is paired with a context that automatically contains *that specific element*.
+  - Element **A** is paired with `Context: A`.
+  - Element **B** is paired with `Context: B`.
+- This shows how the default context dynamically reflects the current element being processed.
 
 ## Syntax
 
