@@ -11,7 +11,7 @@ pub mod edges;
 pub mod filter;
 pub mod first;
 pub mod fold;
-pub mod head_tail;
+pub mod head;
 pub mod into_iter;
 pub mod map;
 pub mod mutate;

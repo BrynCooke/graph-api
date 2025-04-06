@@ -1,5 +1,6 @@
-use crate::standard_model::{standard_populated_graph, Edge, Vertex, VertexExt};
-use graph_api_lib::{EdgeSearch, Graph};
+use crate::standard_model::{Edge, Vertex, VertexExt, standard_populated_graph};
+use graph_api_lib::{EdgeSearch, Graph, VertexReference};
+use graph_api_test::EdgeExt;
 
 // ANCHOR: all
 pub fn head_example() {
@@ -22,26 +23,12 @@ pub fn head_example() {
         .edges(EdgeSearch::scan().outgoing()) // Follow outgoing edges from these people
         .filter_created() // Keep only 'Created' edges
         .head() // Move to the target vertices (projects created by known people)
-        .map(|project, _| {
-            // Extract project name
-            project
-                .project::<graph_api_test::Project<_>>()
-                .map(|p| p.name().to_string())
-                .unwrap_or_else(|| "Not a project".to_string())
-        })
         .collect();
 
     println!(
         "Projects created by people known by the starting person ({:?}):",
-        start_person_id
+        projects
     );
-    if projects.is_empty() {
-        println!("  No such projects found.");
-    } else {
-        for project_name in projects {
-            println!("  - {}", project_name);
-        }
-    }
     // ANCHOR_END: head_example
 }
 // ANCHOR_END: all
