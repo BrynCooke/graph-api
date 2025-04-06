@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
     <title>Count Step Diagram</title>
     <desc>
         Diagram illustrating the 'count' step:
@@ -16,7 +16,7 @@
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-         <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
@@ -39,7 +39,7 @@
         <circle r="15"></circle>
         <text class="node-label">C</text>
     </g>
-     <g class="node highlighted" transform="translate(230, 100)">
+    <g class="node highlighted" transform="translate(230, 100)">
         <circle r="15"></circle>
         <text class="node-label">D</text>
     </g>
@@ -51,7 +51,7 @@
 
     <!-- Output: usize Count -->
     <g transform="translate(450, 100)">
-         <rect x="-75" y="-25" width="150" height="50" rx="5" ry="5"
+        <rect x="-75" y="-25" width="150" height="50" rx="5" ry="5"
               fill="var(--accent-secondary)" fill-opacity="0.15"
               stroke="var(--accent-secondary)" stroke-width="1.5"/>
         <text x="0" y="0" text-anchor="middle" font-weight="bold" fill="var(--accent-secondary)">Returns: usize</text>
@@ -68,19 +68,22 @@
 
 
     <!-- Legend -->
-    <g transform="translate(0, 300)">
+    <g transform="translate(0, 180)">
         <rect class="index-box" x="25" y="0" width="550" height="80"/>
         <text class="index-title" x="300" y="20">Legend</text>
 
         <g transform="translate(60, 45)">
-            <g class="node highlighted"> <circle r="10"></circle> </g>
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
                 Element in traversal (e.g., A)
             </text>
         </g>
 
         <g transform="translate(320, 45)">
-             <rect x="-10" y="-5" width="20" height="10" fill="var(--accent-secondary)" fill-opacity="0.15" stroke="var(--accent-secondary)" rx="2"/>
+            <rect x="-10" y="-5" width="20" height="10" fill="var(--accent-secondary)" fill-opacity="0.15"
+                  stroke="var(--accent-secondary)" rx="2"/>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
                 Resulting count (usize)
             </text>
