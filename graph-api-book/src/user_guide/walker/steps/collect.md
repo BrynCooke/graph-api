@@ -1,18 +1,17 @@
 # Collect Step
 
-The `collect` step gathers all elements from a traversal into a collection, allowing you to materialize the results.
-This is a terminal operation that ends the traversal and returns the collected elements.
+The `collect` step gathers the **IDs** of all elements from a traversal into a specified Rust collection type (e.g., `Vec`, `HashSet`, `BTreeSet`). This is a **terminal** operation that consumes the walker and returns the populated collection.
 
 <object type="image/svg+xml" data="collect/image.svg" title="Collect Step Diagram">
-Collect step diagram showing walker state transforming into a collection
+Collect step diagram showing elements flowing into the step and a Rust collection of IDs as the output
 </object>
 
 In this diagram:
 
-- **Before `collect()`**: The walker contains highlighted elements **V1, V2, V3**.
-- The **code snippet** on the left shows the `.collect::<Vec<_>>()` step being applied.
-- **After `collect()`**: The result is shown as a box representing a standard **Rust Collection** (e.g., `Vec`) containing the elements `[V1, V2, V3]`.
-- This step consumes the walker and **terminates the Graph API traversal**.
+- **Input Elements**: The walker starts with elements **A, B, C**.
+- The **`.collect::<Vec<_>>()`** step processes the stream and consumes the walker. The type parameter (`Vec<_>`) specifies the desired collection type.
+- **Returns: Vec&lt;ID&gt;**: The step returns a Rust `Vec` containing the unique identifiers (IDs) of the elements that were processed (`[ID(A), ID(B), ID(C)]`).
+- **Terminates Walker**: This step ends the Graph API walker chain.
 
 ## Syntax
 
