@@ -24,6 +24,7 @@
         - [filter](./user_guide/walker/steps/filter.md)
         - [control_flow](./user_guide/walker/steps/control_flow.md)
         - [map](./user_guide/walker/steps/map.md)
+        - [fold](./user_guide/walker/steps/fold.md)
         - [take](./user_guide/walker/steps/take.md)
         - [first](./user_guide/walker/steps/first.md)
         - [context](./user_guide/walker/steps/context.md)
