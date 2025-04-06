@@ -45,7 +45,7 @@ where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
     // Use control_flow to skip edges (None), include them (Some), or stop traversal (Break)
-    let earliest_connection = graph
+    let early_connection = graph
         .walk()
         .vertices_by_id(vec![start_id])
         .edges(EdgeSearch::scan())
@@ -67,7 +67,7 @@ where
         })
         .first();
 
-    match earliest_connection {
+    match early_connection {
         Some(id) => println!("Old connection {:?}", id),
         None => println!("No connections found"),
     }
