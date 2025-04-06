@@ -6,7 +6,7 @@
         Diagram illustrating the 'first' step:
         - Shows an input stream of elements A, B, C, D.
         - The 'first' step consumes the walker, considering only the first element (A).
-        - The output is an Option<ID>, specifically Some(ID(A)).
+        - The output is an Option&lt;ID&gt;, specifically Some(ID(A)).
         - Indicates that the walker chain is terminated.
         - The legend explains the symbols.
     </desc>
