@@ -1,6 +1,6 @@
 use graph_api_lib::Graph;
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Edge, EdgeIndex, Vertex, populate_graph};
+use graph_api_test::{Edge, Vertex, populate_graph};
 
 type MyGraph = SimpleGraph<Vertex, Edge>;
 type MyGraphVertexId = <SimpleGraph<Vertex, Edge> as Graph>::VertexId;
@@ -19,7 +19,7 @@ fn example(graph: MyGraph, bryn_id: MyGraphVertexId) {
     let projects = graph
         .walk()
         .vertices_by_id(vec![bryn_id])
-        .edges(EdgeIndex::created())
+        .edges(Edge::created())
         .tail()
         .collect::<Vec<_>>();
 
@@ -30,7 +30,7 @@ fn example(graph: MyGraph, bryn_id: MyGraphVertexId) {
     let friends = graph
         .walk()
         .vertices_by_id(vec![bryn_id])
-        .edges(EdgeIndex::knows())
+        .edges(Edge::knows())
         .tail()
         .collect::<Vec<_>>();
 

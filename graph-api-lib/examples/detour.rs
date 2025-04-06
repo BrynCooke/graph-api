@@ -3,7 +3,7 @@ use graph_api_lib::SupportsEdgeLabelIndex;
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
 use graph_api_test::Vertex;
-use graph_api_test::{EdgeIndex, populate_graph};
+use graph_api_test::populate_graph;
 
 fn main() {
     // Create a new graph
@@ -26,7 +26,7 @@ where
         .detour(|waypoint| {
             // For each person, find outgoing created edges and count them
             waypoint
-                .edges(EdgeIndex::created().outgoing())
+                .edges(Edge::created().outgoing())
                 .probe(|_e, _ctx| todo!()) // Increment count for each created edge
         })
         .map(|_, count| *count)

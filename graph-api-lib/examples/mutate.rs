@@ -3,7 +3,6 @@ use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
 use graph_api_test::Project;
 use graph_api_test::Vertex;
-use graph_api_test::VertexIndex;
 use graph_api_test::populate_graph;
 
 fn main() {
@@ -27,7 +26,7 @@ where
     // Add 'Created' edges from people to a project using mutate
     let mutations_count = graph
         .walk_mut() // Must use walk_mut for mutations
-        .vertices(VertexIndex::person())
+        .vertices(Vertex::person())
         .mutate(|graph, person_id, _| {
             // Add a 'Created' edge from each person to the new project
             graph.add_edge(person_id, new_project_id, Edge::Created);

@@ -70,7 +70,7 @@ where
             // Query by age range (30..50)
             let results = graph
                 .walk()
-                .vertices(VertexIndex::person_by_age_range(30..50))
+                .vertices(Vertex::person_by_age_range(30..50))
                 .collect::<Vec<_>>();
 
             assert!(!results.is_empty());
@@ -88,7 +88,7 @@ where
             // Query by username range
             let results = graph
                 .walk()
-                .vertices(VertexIndex::person_by_username_range("user1".."user5"))
+                .vertices(Vertex::person_by_username_range("user1".."user5"))
                 .collect::<Vec<_>>();
 
             // This might be empty depending on usernames

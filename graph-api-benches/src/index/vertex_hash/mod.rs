@@ -81,7 +81,7 @@ where
             // Query by hash property (name)
             let results = graph
                 .walk()
-                .vertices(VertexIndex::person_by_name("Bryn"))
+                .vertices(Vertex::person_by_name("Bryn"))
                 .collect::<Vec<_>>();
 
             assert!(!results.is_empty());
@@ -99,7 +99,7 @@ where
             // Query by hash property (unique_id)
             let results = graph
                 .walk()
-                .vertices(VertexIndex::person_by_unique_id(bryn_id))
+                .vertices(Vertex::person_by_unique_id(bryn_id))
                 .collect::<Vec<_>>();
 
             assert!(!results.is_empty());

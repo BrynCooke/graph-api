@@ -1,13 +1,11 @@
 use crate::graph::Graph;
 use crate::search::vertex::VertexSearch;
 use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder};
-use crate::walker::steps::reduce::VertexReduce;
 use crate::walker::steps::{
-    Detour, EdgeContext, EdgeFilter, EdgeTake, Edges, End, Endpoints, VertexContext, VertexFilter,
-    VertexIter, VertexTake, Vertices, Waypoint,
+    Detour, EdgeContext, EdgeFilter, EdgeReduce, EdgeTake, Edges, End, Endpoints, VertexContext,
+    VertexFilter, VertexIter, VertexReduce, VertexTake, Vertices, Waypoint,
 };
 use crate::{EdgeSearch, ElementId};
-use steps::reduce::EdgeReduce;
 
 pub mod builder;
 mod iter;

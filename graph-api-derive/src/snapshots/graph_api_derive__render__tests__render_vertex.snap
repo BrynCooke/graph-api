@@ -59,7 +59,65 @@ pub enum VertexIndex {
     PersonUsername,
     PersonBiography,
 }
-impl VertexIndex {
+impl graph_api_lib::Index for VertexIndex {
+    fn ty(&self) -> core::any::TypeId {
+        match self {
+            VertexIndex::PersonName => core::any::TypeId::of::<String>(),
+            VertexIndex::PersonAge => core::any::TypeId::of::<u64>(),
+            VertexIndex::PersonUniqueId => core::any::TypeId::of::<Uuid>(),
+            VertexIndex::PersonUsername => core::any::TypeId::of::<String>(),
+            VertexIndex::PersonBiography => core::any::TypeId::of::<String>(),
+        }
+    }
+    fn ordinal(&self) -> usize {
+        match self {
+            VertexIndex::PersonName => 0usize,
+            VertexIndex::PersonAge => 1usize,
+            VertexIndex::PersonUniqueId => 2usize,
+            VertexIndex::PersonUsername => 3usize,
+            VertexIndex::PersonBiography => 4usize,
+        }
+    }
+    fn index_type(&self) -> graph_api_lib::IndexType {
+        match self {
+            VertexIndex::PersonName => graph_api_lib::IndexType::Hash,
+            VertexIndex::PersonAge => graph_api_lib::IndexType::Range,
+            VertexIndex::PersonUniqueId => graph_api_lib::IndexType::Hash,
+            VertexIndex::PersonUsername => graph_api_lib::IndexType::Range,
+            VertexIndex::PersonBiography => graph_api_lib::IndexType::FullText,
+        }
+    }
+}
+impl graph_api_lib::Element for Vertex {
+    type Label = VertexLabel;
+    fn label(&self) -> Self::Label {
+        match self {
+            Vertex::Person { .. } => VertexLabel::Person,
+            Vertex::Project(_) => VertexLabel::Project,
+            Vertex::Rust => VertexLabel::Rust,
+        }
+    }
+    fn value(
+        &self,
+        index: &<Self::Label as graph_api_lib::Label>::Index,
+    ) -> Option<graph_api_lib::Value> {
+        match (self, index) {
+            (Vertex::Person { name, .. }, VertexIndex::PersonName) => Some((name).into()),
+            (Vertex::Person { age, .. }, VertexIndex::PersonAge) => Some((age).into()),
+            (Vertex::Person { unique_id, .. }, VertexIndex::PersonUniqueId) => {
+                Some((unique_id).into())
+            }
+            (Vertex::Person { username, .. }, VertexIndex::PersonUsername) => {
+                Some((username).into())
+            }
+            (Vertex::Person { biography, .. }, VertexIndex::PersonBiography) => {
+                Some((biography).into())
+            }
+            (_, _) => None,
+        }
+    }
+}
+impl Vertex {
     pub fn person<'search, Graph>() -> graph_api_lib::VertexSearch<'search, Graph>
     where
         Graph: graph_api_lib::Graph<Vertex = Vertex>
@@ -143,64 +201,6 @@ impl VertexIndex {
             + graph_api_lib::SupportsVertexRangeIndex,
     {
         graph_api_lib::VertexSearch::range(VertexIndex::PersonUsername, range)
-    }
-}
-impl graph_api_lib::Index for VertexIndex {
-    fn ty(&self) -> core::any::TypeId {
-        match self {
-            VertexIndex::PersonName => core::any::TypeId::of::<String>(),
-            VertexIndex::PersonAge => core::any::TypeId::of::<u64>(),
-            VertexIndex::PersonUniqueId => core::any::TypeId::of::<Uuid>(),
-            VertexIndex::PersonUsername => core::any::TypeId::of::<String>(),
-            VertexIndex::PersonBiography => core::any::TypeId::of::<String>(),
-        }
-    }
-    fn ordinal(&self) -> usize {
-        match self {
-            VertexIndex::PersonName => 0usize,
-            VertexIndex::PersonAge => 1usize,
-            VertexIndex::PersonUniqueId => 2usize,
-            VertexIndex::PersonUsername => 3usize,
-            VertexIndex::PersonBiography => 4usize,
-        }
-    }
-    fn index_type(&self) -> graph_api_lib::IndexType {
-        match self {
-            VertexIndex::PersonName => graph_api_lib::IndexType::Hash,
-            VertexIndex::PersonAge => graph_api_lib::IndexType::Range,
-            VertexIndex::PersonUniqueId => graph_api_lib::IndexType::Hash,
-            VertexIndex::PersonUsername => graph_api_lib::IndexType::Range,
-            VertexIndex::PersonBiography => graph_api_lib::IndexType::FullText,
-        }
-    }
-}
-impl graph_api_lib::Element for Vertex {
-    type Label = VertexLabel;
-    fn label(&self) -> Self::Label {
-        match self {
-            Vertex::Person { .. } => VertexLabel::Person,
-            Vertex::Project(_) => VertexLabel::Project,
-            Vertex::Rust => VertexLabel::Rust,
-        }
-    }
-    fn value(
-        &self,
-        index: &<Self::Label as graph_api_lib::Label>::Index,
-    ) -> Option<graph_api_lib::Value> {
-        match (self, index) {
-            (Vertex::Person { name, .. }, VertexIndex::PersonName) => Some((name).into()),
-            (Vertex::Person { age, .. }, VertexIndex::PersonAge) => Some((age).into()),
-            (Vertex::Person { unique_id, .. }, VertexIndex::PersonUniqueId) => {
-                Some((unique_id).into())
-            }
-            (Vertex::Person { username, .. }, VertexIndex::PersonUsername) => {
-                Some((username).into())
-            }
-            (Vertex::Person { biography, .. }, VertexIndex::PersonBiography) => {
-                Some((biography).into())
-            }
-            (_, _) => None,
-        }
     }
 }
 pub use __vertex_projection_vertex_person::Person;

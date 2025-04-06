@@ -1,6 +1,6 @@
 use graph_api_lib::{Graph, SupportsVertexLabelIndex, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Vertex, VertexIndex, populate_graph};
+use graph_api_test::{Vertex, populate_graph};
 
 fn main() {
     let mut graph = SimpleGraph::new();
@@ -26,10 +26,7 @@ where
     assert!(!all_vertices.is_empty());
 
     // Get vertices with a specific label using an index
-    let people = graph
-        .walk()
-        .vertices(VertexIndex::person())
-        .collect::<Vec<_>>();
+    let people = graph.walk().vertices(Vertex::person()).collect::<Vec<_>>();
 
     // Should find person vertices
     assert!(!people.is_empty());

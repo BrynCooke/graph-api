@@ -47,26 +47,6 @@ impl graph_api_lib::Label for EdgeLabel {
 }
 #[derive(PartialEq, Eq, Clone, Copy, Hash, Debug)]
 pub enum EdgeIndex {}
-impl EdgeIndex {
-    pub fn knows<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
-    where
-        Graph: graph_api_lib::Graph<Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
-    {
-        graph_api_lib::EdgeSearch::label(EdgeLabel::Knows)
-    }
-    pub fn created<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
-    where
-        Graph: graph_api_lib::Graph<Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
-    {
-        graph_api_lib::EdgeSearch::label(EdgeLabel::Created)
-    }
-    pub fn language<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
-    where
-        Graph: graph_api_lib::Graph<Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
-    {
-        graph_api_lib::EdgeSearch::label(EdgeLabel::Language)
-    }
-}
 impl graph_api_lib::Index for EdgeIndex {
     fn ty(&self) -> core::any::TypeId {
         unreachable!("this index enum has no variants")
@@ -86,6 +66,26 @@ impl graph_api_lib::Element for Edge {
             Edge::Created => EdgeLabel::Created,
             Edge::Language(_) => EdgeLabel::Language,
         }
+    }
+}
+impl Edge {
+    pub fn knows<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
+    where
+        Graph: graph_api_lib::Graph<Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
+    {
+        graph_api_lib::EdgeSearch::label(EdgeLabel::Knows)
+    }
+    pub fn created<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
+    where
+        Graph: graph_api_lib::Graph<Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
+    {
+        graph_api_lib::EdgeSearch::label(EdgeLabel::Created)
+    }
+    pub fn language<'search, Graph>() -> graph_api_lib::EdgeSearch<'search, Graph>
+    where
+        Graph: graph_api_lib::Graph<Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
+    {
+        graph_api_lib::EdgeSearch::label(EdgeLabel::Language)
     }
 }
 pub use __edge_projection_edge_knows::Knows;

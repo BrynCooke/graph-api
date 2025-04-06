@@ -106,7 +106,7 @@ where
                 .walk()
                 .vertices(graph_api_lib::VertexSearch::scan())
                 .take(5)
-                .edges(EdgeIndex::knows())
+                .edges(Edge::knows())
                 .collect::<Vec<_>>();
 
             results
@@ -125,7 +125,7 @@ where
                 .walk()
                 .vertices(graph_api_lib::VertexSearch::scan())
                 .take(10)
-                .edges(EdgeIndex::created())
+                .edges(Edge::created())
                 .collect::<Vec<_>>();
 
             results

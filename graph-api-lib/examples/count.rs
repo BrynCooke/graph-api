@@ -3,7 +3,7 @@ use graph_api_lib::{
     VertexSearch,
 };
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Edge, EdgeIndex, Vertex, VertexExt, VertexIndex, populate_graph};
+use graph_api_test::{Edge, Vertex, VertexExt, populate_graph};
 
 fn main() {
     let mut graph = SimpleGraph::new();
@@ -34,7 +34,7 @@ where
     assert_eq!(person_count, 2); // bryn and julia
 
     // Count Project vertices
-    let project_count = graph.walk().vertices(VertexIndex::project()).count();
+    let project_count = graph.walk().vertices(Vertex::project()).count();
 
     assert_eq!(project_count, 2); // graph_api and rust
 
@@ -51,7 +51,7 @@ where
     let created_edge_count = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .edges(EdgeIndex::created())
+        .edges(Edge::created())
         .count();
 
     assert!(created_edge_count > 0);

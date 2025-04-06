@@ -10,12 +10,14 @@ pub use self::filter::{EdgeFilter, VertexFilter};
 pub use self::take::{EdgeTake, VertexTake};
 // No need to re-export the mutate_context types as they're not used externally
 pub use self::probe::{EdgeProbe, VertexProbe};
+pub use self::reduce::{EdgeReduce, VertexReduce};
 pub use self::vertices::Vertices;
 pub use self::vertices_by_id::VertexIter;
 
 // These are the implementations for the builder methods
 mod collect;
 mod context;
+mod control_flow;
 mod count;
 mod dbg;
 mod default_context;
@@ -32,7 +34,7 @@ mod map;
 mod mutate;
 mod mutate_context;
 mod probe;
-pub(crate) mod reduce;
+mod reduce;
 mod tail;
 mod take;
 mod vertices;

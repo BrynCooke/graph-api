@@ -1,6 +1,6 @@
 use graph_api_lib::{EdgeSearch, SupportsEdgeLabelIndex};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Edge, EdgeIndex, Vertex, populate_graph};
+use graph_api_test::{Edge, Vertex, populate_graph};
 
 fn main() {
     let mut graph = SimpleGraph::new();
@@ -37,7 +37,7 @@ where
     let bryn_created_edges = graph
         .walk()
         .vertices_by_id(vec![bryn_id])
-        .edges(EdgeIndex::created())
+        .edges(Edge::created())
         .collect::<Vec<_>>();
 
     // Bryn should have at least one `Created` edge
@@ -47,7 +47,7 @@ where
     let bryn_outgoing_created_edges = graph
         .walk()
         .vertices_by_id(vec![bryn_id])
-        .edges(EdgeIndex::created().outgoing())
+        .edges(Edge::created().outgoing())
         .collect::<Vec<_>>();
 
     // Bryn should have outgoing created edges
@@ -57,7 +57,7 @@ where
     let indexed_created_edges = graph
         .walk()
         .vertices_by_id(vec![bryn_id])
-        .edges(EdgeIndex::created())
+        .edges(Edge::created())
         .collect::<Vec<_>>();
 
     assert!(!indexed_created_edges.is_empty());

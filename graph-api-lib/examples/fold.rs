@@ -4,9 +4,7 @@ use graph_api_lib::VertexReference;
 use graph_api_lib::{SupportsEdgeLabelIndex, SupportsVertexLabelIndex};
 use graph_api_simplegraph::SimpleGraph;
 use graph_api_test::Edge;
-use graph_api_test::EdgeIndex;
 use graph_api_test::Vertex;
-use graph_api_test::VertexIndex;
 use graph_api_test::populate_graph;
 
 fn main() {
@@ -27,7 +25,7 @@ where
     let (total_age, person_count) =
         graph
             .walk()
-            .vertices(VertexIndex::person())
+            .vertices(Vertex::person())
             .fold((0, 0), |(total, count), vertex, _| {
                 if let Vertex::Person { age, .. } = vertex.weight() {
                     (total + age, count + 1)
@@ -53,8 +51,8 @@ where
     // Working with edges - find the earliest relationship year
     let earliest_relation = graph
         .walk()
-        .vertices(VertexIndex::person())
-        .edges(EdgeIndex::knows())
+        .vertices(Vertex::person())
+        .edges(Edge::knows())
         .fold(None, |earliest, edge, _| {
             if let Edge::Knows { since } = edge.weight() {
                 match earliest {

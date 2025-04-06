@@ -12,7 +12,7 @@ fn test() {
     // Find all people in the graph
     let people = graph
         .walk()
-        .vertices(VertexIndex::person())
+        .vertices(Vertex::person())
         .collect::<Vec<_>>();
 }
 ```

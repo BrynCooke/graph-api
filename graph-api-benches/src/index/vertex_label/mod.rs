@@ -74,7 +74,7 @@ where
             // Query by label (Person)
             let results = graph
                 .walk()
-                .vertices(VertexIndex::person())
+                .vertices(Vertex::person())
                 .take(10)
                 .collect::<Vec<_>>();
 

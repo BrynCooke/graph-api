@@ -131,10 +131,10 @@ To maintain index consistency, `SimpleGraph` uses a mutation listener system:
 ```rust
 // When a vertex property changes, the index is automatically updated
 graph.vertex_mut(vertex_id)
-    .unwrap()
-    .project_mut::<PersonMut<_>>()
-    .unwrap()
-    .set_name("New Name");
+.unwrap()
+.project_mut::<PersonMut<_ > > ()
+.unwrap()
+.set_name("New Name");
 ```
 
 ## Limitations
@@ -233,7 +233,7 @@ assert_eq!(developers.len(), 1);
 // Traversal
 let alices_creations = graph.walk()
     .vertices(Vertex::person_by_name("Alice"))
-    .edges(EdgeIndex::created().direction(Direction::Outgoing))
+    .edges(Edge::created().direction(Direction::Outgoing))
     .head()
     .collect::<Vec<_>>();
 assert_eq!(alices_creations.len(), 1);
@@ -268,14 +268,14 @@ When properties are modified, indexes are automatically updated:
 ```rust
 // Update an indexed property
 graph.vertex_mut(vertex_id)
-    .unwrap()
-    .project_mut::<PersonMut<_>>()
-    .unwrap()
-    .set_age(31);
+.unwrap()
+.project_mut::<PersonMut<_ > > ()
+.unwrap()
+.set_age(31);
 
 // The age index is automatically updated, so this query now works
 let people = graph.walk()
-    .vertices(Vertex::person_by_age(31..32))
-    .collect::<Vec<_>>();
+.vertices(Vertex::person_by_age(31..32))
+.collect::<Vec<_ > > ();
 assert_eq!(people.len(), 1);
 ```

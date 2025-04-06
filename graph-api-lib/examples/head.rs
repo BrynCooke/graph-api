@@ -1,6 +1,6 @@
 use graph_api_lib::{EdgeSearch, Graph, SupportsEdgeLabelIndex, SupportsVertexLabelIndex};
 use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Edge, EdgeIndex, Vertex, VertexIndex, populate_graph};
+use graph_api_test::{Edge, Vertex, populate_graph};
 
 fn main() {
     let mut graph = SimpleGraph::new();
@@ -17,8 +17,8 @@ where
     // The head() step returns the source vertices of edges
     let creators = graph
         .walk()
-        .vertices(VertexIndex::project())
-        .edges(EdgeIndex::created().incoming())
+        .vertices(Vertex::project())
+        .edges(Edge::created().incoming())
         .head()
         .collect::<Vec<_>>();
 

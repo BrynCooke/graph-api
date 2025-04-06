@@ -95,7 +95,7 @@ where
             // Query by biography text containing "graph"
             let results = graph
                 .walk()
-                .vertices(VertexIndex::person_by_biography("graph"))
+                .vertices(Vertex::person_by_biography("graph"))
                 .collect::<Vec<_>>();
 
             // Should find matches
@@ -113,7 +113,7 @@ where
             // Query by project description containing "database"
             let results = graph
                 .walk()
-                .vertices(VertexIndex::project_by_description("database"))
+                .vertices(Vertex::project_by_description("database"))
                 .collect::<Vec<_>>();
 
             // Should find matches
