@@ -2,15 +2,15 @@
 
 The `head` step navigates from edges to their **target** (destination) vertices, allowing traversal to where the edges point to. It transforms a stream of edges into a stream of vertices.
 
-<object type="image/svg+xml" data="tail/image_tail.svg" title="Head Step Diagram">
+<object type="image/svg+xml" data="head/image.svg" title="Head Step Diagram">
 Head step diagram showing traversal from edge to target vertex
 </object>
 
 In this diagram:
 
-- **Before `head()`**: The walker is positioned on the highlighted edge **A -> B**.
-- The **`.head()` step** is applied.
-- **After `head()`**: The walker moves to the **target vertex** of the edge, so vertex **B** is now highlighted. The edge and vertex A are no longer highlighted.
+- An **Input Stream** contains edge elements (e.g., **A->B**, **C->D**).
+- The **`.head()` step** processes each edge.
+- The **Output Stream** contains the corresponding **target (head) vertices** (**B**, **D**) for each input edge.
 
 ## Syntax
 
@@ -28,10 +28,10 @@ Returns a new walker positioned at the **target** vertices of the edges in the c
 
 ## Example
 
-Find projects created by following "created" edges to their target:
+Find projects created by people known by a starting person:
 
 ```rust,noplayground
-{{#include tail/head_tail_examples.rs:tail_example}}
+{{#include head/head_example.rs:head_example}}
 ```
 
 ## Best Practices
