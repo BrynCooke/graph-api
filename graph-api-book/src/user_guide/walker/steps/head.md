@@ -1,8 +1,8 @@
 # Head Step
 
-The `head` step navigates from edges to their **target** (destination) vertices, allowing traversal to where the edges point to.
+The `head` step navigates from edges to their **target** (destination) vertices, allowing traversal to where the edges point to. It transforms a stream of edges into a stream of vertices.
 
-<object type="image/svg+xml" data="head_tail/image_tail.svg" title="Head Step Diagram">
+<object type="image/svg+xml" data="tail/image_tail.svg" title="Head Step Diagram">
 Head step diagram showing traversal from edge to target vertex
 </object>
 
@@ -31,7 +31,7 @@ Returns a new walker positioned at the **target** vertices of the edges in the c
 Find projects created by following "created" edges to their target:
 
 ```rust,noplayground
-{{#include head_tail/head_tail_examples.rs:tail_example}}
+{{#include tail/head_tail_examples.rs:tail_example}}
 ```
 
 ## Best Practices

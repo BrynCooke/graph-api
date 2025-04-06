@@ -1,16 +1,16 @@
 # Tail Step
 
-The `tail` step navigates from edges to their **source** (origin) vertices, allowing traversal back to where the edges start from.
+The `tail` step navigates from edges to their **source** (origin) vertices, allowing traversal back to where the edges start from. It transforms a stream of edges into a stream of vertices.
 
-<object type="image/svg+xml" data="head_tail/image_head.svg" title="Tail Step Diagram">
+<object type="image/svg+xml" data="tail/image.svg" title="Tail Step Diagram">
 Tail step diagram showing traversal from edge to source vertex
 </object>
 
 In this diagram:
 
-- **Before `tail()`**: The walker is positioned on the highlighted edge **A -> B**.
-- The **`.tail()` step** is applied.
-- **After `tail()`**: The walker moves to the **source vertex** of the edge, so vertex **A** is now highlighted. The edge and vertex B are no longer highlighted.
+- An **Input Stream** contains edge elements (e.g., **A->B**, **C->D**).
+- The **`.tail()` step** processes each edge.
+- The **Output Stream** contains the corresponding **source (tail) vertices** (**A**, **C**) for each input edge.
 
 ## Syntax
 
@@ -33,17 +33,16 @@ Returns a new walker positioned at the **source** vertices of the edges in the c
 Find people who created projects by getting back to the source vertex:
 
 ```rust,noplayground
-{{#include head_tail/head_tail_examples.rs:head_example}}
+{{#include tail/head_tail_examples.rs:head_example}}
 ```
 
 ### Multi-Step Traversal
 
-Traverse multiple relationships to find indirect connections (example needs adjustment if logic depends on tail meaning source):
+Traverse multiple relationships to find indirect connections:
 
 ```rust,noplayground
-{{#include head_tail/head_tail_examples.rs:multi_step}}
+{{#include tail/head_tail_examples.rs:multi_step}}
 ```
-*(Note: The multi-step example might need logical review depending on the intended query, as `tail()` now means source)*
 
 ## Best Practices
 
