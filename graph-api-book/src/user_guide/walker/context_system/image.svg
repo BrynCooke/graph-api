@@ -81,7 +81,7 @@
         </text>
     </g>
     <!-- Arrow from Intermediate Stream to Map Step (Bezier Curve to Top) -->
-    <path class="edge directed" d="M 370 170 C 370 200 260 225 230 225" fill="none" marker-end="url(#arrowhead)"/>
+    <path class="edge directed" d="M 370 170 C 370 200 240 170 230 225" fill="none" marker-end="url(#arrowhead)"/>
 
 
     <!-- Final Output Stream -->
