@@ -1,92 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height -->
+<svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
     <title>Detour Step Diagram</title>
     <desc>
         Diagram illustrating the 'detour' step:
-        - Before: Shows the main walker path at vertex A.
-        - During: Shows the detour sub-walker exploring edges from A to find B and C.
-        - After: Shows the main walker resuming with B and C as the current elements.
+        - Shows an input stream with elements A and X.
+        - The 'detour' step processes each element.
+        - For A, a sub-walker starts, executes steps (e.g., edges().head()), and yields results B, C.
+        - For X, a sub-walker starts, executes steps, and yields result Y.
+        - The output stream contains the combined results B, C, Y, replacing A and X.
+        - The legend explains the symbols.
     </desc>
     <defs>
-        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
-                orient="auto" markerUnits="strokeWidth">
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+         <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
                 refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
 
-    <!-- Step Representation (Left) -->
-    <g id="step-representation" class="step-label" transform="translate(30, 220)"> <!-- Centered vertically -->
-        <text x="0" y="-10" text-anchor="start" font-size="var(--font-size-small)">walker</text>
-        <text class="code" x="10" y="10" text-anchor="start" font-size="var(--font-size-small)">
-            .detour(|sub| sub.edges().head())
-        </text>
+    <!-- Input Stream -->
+    <text class="step-label" x="100" y="40" text-anchor="middle">Input Elements</text>
+    <line class="edge directed" x1="50" y1="100" x2="250" y2="100" marker-end="url(#arrowhead)"/>
+
+    <!-- Input Elements -->
+    <g class="node highlighted" transform="translate(100, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">A</text>
+    </g>
+    <g class="node highlighted" transform="translate(180, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">X</text>
     </g>
 
-    <!-- Before detour() step (Top Right) -->
-    <g id="before-step" transform="translate(200, 20)">
-        <text class="step-label" x="150" y="0" text-anchor="middle">Before detour()</text>
-        <g class="node highlighted" id="node-A-before" transform="translate(150, 50)">
-            <circle r="20"></circle>
-            <text class="node-label">A</text>
+    <!-- Detour Step Box -->
+    <rect x="250" y="75" width="100" height="50" rx="5" ry="5"
+          fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+    <text class="step-label" x="300" y="105" text-anchor="middle" fill="var(--text-color-light)">detour</text>
+    <text class="property-text" x="300" y="130" text-anchor="middle">(|sub| ...)</text>
+
+    <!-- Sub-Walker Execution Visualization -->
+    <!-- Sub-Walker for A -->
+    <g transform="translate(100, 220)">
+        <rect class="index-box" x="-70" y="-50" width="140" height="100" stroke-dasharray="3 3"/>
+        <text class="index-title" y="-35">Sub-Walker (from A)</text>
+        <g class="node" transform="translate(0, -10)"> <!-- Start A -->
+             <circle r="10"></circle> <text class="node-label" font-size="10px">A</text>
         </g>
-        <g class="node" id="node-B-before" transform="translate(300, 30)"> <!-- B position -->
-            <circle r="20"></circle>
-            <text class="node-label">B</text>
+        <text class="property-text" y="5" font-size="10px">edges().head()</text>
+        <g class="node path" transform="translate(-30, 30)"> <!-- Result B -->
+             <circle r="10"></circle> <text class="node-label" font-size="10px">B</text>
         </g>
-        <g class="node" id="node-C-before" transform="translate(300, 90)"> <!-- C position -->
-            <circle r="20"></circle>
-            <text class="node-label">C</text>
+         <g class="node path" transform="translate(30, 30)"> <!-- Result C -->
+             <circle r="10"></circle> <text class="node-label" font-size="10px">C</text>
         </g>
-        <line class="edge directed path" x1="170" y1="50" x2="280" y2="35" marker-end="url(#arrowhead)"/> <!-- A->B -->
-        <line class="edge directed path" x1="170" y1="50" x2="280" y2="85" marker-end="url(#arrowhead)"/> <!-- A->C -->
+        <line class="edge directed path" x1="0" y1="0" x2="-30" y2="20" marker-end="url(#arrowhead-path)" stroke-width="1"/>
+        <line class="edge directed path" x1="0" y1="0" x2="30" y2="20" marker-end="url(#arrowhead-path)" stroke-width="1"/>
+    </g>
+    <line class="index-pointer" x1="100" y1="115" x2="100" y2="170" marker-end="url(#arrowhead-pointer)"/>
+
+    <!-- Sub-Walker for X -->
+     <g transform="translate(180, 220)">
+        <rect class="index-box" x="-70" y="-50" width="140" height="100" stroke-dasharray="3 3"/>
+        <text class="index-title" y="-35">Sub-Walker (from X)</text>
+         <g class="node" transform="translate(0, -10)"> <!-- Start X -->
+             <circle r="10"></circle> <text class="node-label" font-size="10px">X</text>
+        </g>
+        <text class="property-text" y="5" font-size="10px">edges().head()</text>
+        <g class="node path" transform="translate(0, 30)"> <!-- Result Y -->
+             <circle r="10"></circle> <text class="node-label" font-size="10px">Y</text>
+        </g>
+         <line class="edge directed path" x1="0" y1="0" x2="0" y2="20" marker-end="url(#arrowhead-path)" stroke-width="1"/>
+    </g>
+    <line class="index-pointer" x1="180" y1="115" x2="180" y2="170" marker-end="url(#arrowhead-pointer)"/>
+
+    <!-- Output Stream -->
+    <text class="step-label" x="450" y="40" text-anchor="middle">Output Elements (Results)</text>
+    <line class="edge directed" x1="350" y1="100" x2="550" y2="100" marker-end="url(#arrowhead)"/>
+
+    <!-- Output Elements (Results from Sub-Walkers) -->
+    <g class="node highlighted" transform="translate(400, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">B</text>
+    </g>
+    <g class="node highlighted" transform="translate(460, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">C</text>
+    </g>
+    <g class="node highlighted" transform="translate(520, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">Y</text>
     </g>
 
-    <!-- During detour() step (Middle Right) -->
-    <g id="during-step" transform="translate(200, 160)">
-        <text class="step-label" x="150" y="0" text-anchor="middle">During detour()</text>
-        <!-- Detour Sub-Walker Box -->
-        <g transform="translate(150, 50)">
-            <rect class="index-box" x="-120" y="-30" width="240" height="80" stroke-dasharray="5 3"/>
-            <text class="index-title" y="-15">Detour Sub-Walker</text>
-            <g class="node" transform="translate(-80, 15)"> <!-- A (start) -->
-                <circle r="15"></circle>
-                <text class="node-label" font-size="10px">A</text>
-            </g>
-            <g class="node highlighted" transform="translate(0, 15)"> <!-- B (result) -->
-                <circle r="15"></circle>
-                <text class="node-label" font-size="10px">B</text>
-            </g>
-            <g class="node highlighted" transform="translate(80, 15)"> <!-- C (result) -->
-                <circle r="15"></circle>
-                <text class="node-label" font-size="10px">C</text>
-            </g>
-            <line class="edge directed path" x1="-65" y1="15" x2="-15" y2="15" marker-end="url(#arrowhead)"/> <!-- A->B edge in sub -->
-            <line class="edge directed path" x1="-65" y1="15" x2="65" y2="15" marker-end="url(#arrowhead)"/> <!-- A->C edge in sub -->
-        </g>
-    </g>
+    <!-- Connection from Sub-Walkers to Output -->
+    <path class="index-pointer" d="M 100 270 q 150 10 300 -155" marker-end="url(#arrowhead-pointer)"/>
+    <path class="index-pointer" d="M 180 270 q 100 0 280 -155" marker-end="url(#arrowhead-pointer)"/>
 
-    <!-- After detour() step (Bottom Right) -->
-    <g id="after-step" transform="translate(200, 320)">
-        <text class="step-label" x="150" y="0" text-anchor="middle">After detour()</text>
-        <g class="node visited" id="node-A-after" transform="translate(150, 50)"> <!-- A visited -->
-            <circle r="20"></circle>
-            <text class="node-label">A</text>
+
+    <!-- Legend -->
+    <g transform="translate(0, 360)">
+        <rect class="index-box" x="25" y="0" width="550" height="120"/>
+        <text class="index-title" x="300" y="20">Legend</text>
+
+        <g transform="translate(60, 45)">
+            <g class="node highlighted"> <circle r="10"></circle> </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Element in main traversal stream
+            </text>
         </g>
-        <g class="node highlighted" id="node-B-after" transform="translate(300, 30)"> <!-- B highlighted -->
-            <circle r="20"></circle>
-            <text class="node-label">B</text>
+
+        <g transform="translate(60, 70)">
+             <rect x="-10" y="-5" width="20" height="10" class="index-box" stroke-dasharray="3 3"/>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Sub-walker execution (per input element)
+            </text>
         </g>
-        <g class="node highlighted" id="node-C-after" transform="translate(300, 90)"> <!-- C highlighted -->
-            <circle r="20"></circle>
-            <text class="node-label">C</text>
+         <g transform="translate(60, 95)">
+            <g class="node path"> <circle r="10"></circle> </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Result element from a sub-walker
+            </text>
         </g>
-        <line class="edge directed path" x1="170" y1="50" x2="280" y2="35" marker-end="url(#arrowhead)"/> <!-- A->B -->
-        <line class="edge directed path" x1="170" y1="50" x2="280" y2="85" marker-end="url(#arrowhead)"/> <!-- A->C -->
-        <text x="150" y="120" class="text-color-muted" font-size="12px" text-anchor="middle">Main walker resumes at B, C</text>
     </g>
 </svg>

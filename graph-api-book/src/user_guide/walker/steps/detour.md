@@ -1,38 +1,38 @@
 # Detour Step
 
-The `detour` step allows you to temporarily branch off from the main traversal to perform complex operations, and then
-continue with the results. It's like taking a side trip during your graph journey to explore or evaluate conditions
-before proceeding on your main path.
+The `detour` step is a powerful operation that allows you to execute a sub-traversal for *each* element currently in the main walker stream. The results yielded by each sub-traversal then *replace* the original element in the main stream. This enables complex conditional logic and exploration without losing the main traversal context.
 
 <object type="image/svg+xml" data="detour/image.svg" title="Detour Step Diagram">
-Detour step diagram showing main path branching into a sub-walker and returning results
+Detour step diagram showing input elements triggering sub-walkers, whose results form the output stream
 </object>
 
 In this diagram:
 
-- **Before `detour()`**: The main walker is positioned at vertex **A** (highlighted). Edges A->B and A->C exist.
-- **During `detour()`**: The code snippet on the left shows `.detour(|sub| sub.edges().head())`. A **Detour Sub-Walker** is initiated from A. It follows the outgoing edges and moves to their heads (target vertices), resulting in **B** and **C** (highlighted within the sub-walker box).
-- **After `detour()`**: The main walker's elements are replaced by the results of the sub-walker. The walker is now positioned at **B** and **C** (highlighted). Vertex A is shown as visited (faded). The main traversal resumes from B and C.
+- **Input Elements**: The main walker stream arrives at the `detour` step with elements **A** and **X**.
+- **`.detour(|sub| ...)`**: For each input element, a sub-walker is initiated:
+    - **Sub-Walker (from A)**: Starts at A, executes the steps defined in the closure (e.g., `edges().head()`), and yields results **B** and **C**.
+    - **Sub-Walker (from X)**: Starts at X, executes the same steps, and yields result **Y**.
+- **Output Elements (Results)**: The main walker stream continues, now containing the *combined results* from all sub-walkers (**B, C, Y**). The original elements (A, X) have been replaced.
 
 ## Syntax
 
 ```rust,noplayground
-walker.detour(|sub_walker| {
+walker.detour(|sub_walker_builder| {
     // Configure the sub-walker with additional steps
-    sub_walker
-        .edges(...)
-        .head()
-        .filter(...)
+    sub_walker_builder
+        .edges(...) // Example step
+        .head()     // Example step
+        // ... more steps ...
 })
 ```
 
 ## Parameters
 
-- `detour_fn`: A closure that takes the current walker at its current position and returns a modified walker.
+- `detour_fn`: A closure that receives a `StartWalkerBuilder` positioned at the current element from the main stream. This closure defines the steps for the sub-traversal.
 
 ## Return Value
 
-Returns a new walker that continues from where the detour ends with the results of the detour applied.
+Returns a new walker where the elements are the combined results of all the sub-traversals executed within the `detour`.
 
 ## Examples
 
