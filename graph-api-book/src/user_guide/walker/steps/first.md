@@ -1,19 +1,17 @@
 # First Step
 
-The `first` step retrieves only the first element from a traversal and immediately terminates. This is a terminal
-operation that short-circuits the traversal for efficiency.
+The `first` step consumes the walker and returns the **ID** of the very first element encountered in the traversal stream, wrapped in an `Option`. If the stream is empty, it returns `None`. This is a **terminal** operation that efficiently short-circuits the traversal as soon as the first element is found.
 
 <object type="image/svg+xml" data="first/image.svg" title="First Step Diagram">
-First step diagram showing retrieval of only the first element from a traversal
+First step diagram showing elements flowing into the step, only the first being considered, and an Option<ID> as the output
 </object>
 
 In this diagram:
 
-- **Before `first()`**: The walker contains highlighted elements **A, B, C, D**.
-- The **code snippet** on the left shows the `.first()` step being applied.
-- **After `first()`**: Only the first element, **A**, remains highlighted. Elements B, C, and D are faded, indicating they were discarded.
-- The result is indicated as `Some(A)`, representing the `Option` returned by `first()`.
-- This step **terminates the traversal**.
+- **Input Elements**: The walker starts with elements **A, B, C, D**.
+- The **`.first()`** step processes the stream, immediately takes element **A**, and consumes the walker. Elements B, C, and D are never processed or considered.
+- **Returns: Option&lt;ID&gt;**: The step returns `Some(ID(A))`, containing the ID of the first element found.
+- **Terminates Walker**: This step ends the Graph API walker chain.
 
 ## Syntax
 
