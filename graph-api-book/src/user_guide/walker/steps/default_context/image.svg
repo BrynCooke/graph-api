@@ -6,7 +6,8 @@
         Diagram illustrating the 'push_default_context' step:
         - Shows an input stream of elements A, B.
         - The 'push_default_context()' step is applied.
-        - The output stream shows elements A and B, each paired with a context containing that specific element (Context: A for element A, Context: B for element B).
+        - The output stream shows elements A and B, each paired with a context containing that specific element
+        (Context: A for element A, Context: B for element B).
     </desc>
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
@@ -34,13 +35,14 @@
     </g>
 
     <!-- Push Default Context Step -->
-    <rect x="250" y="75" width="100" height="50" rx="5" ry="5"
+    <rect x="180" y="75" width="160" height="50" rx="5" ry="5"
           fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
-    <text class="step-label" x="300" y="105" text-anchor="middle" fill="var(--text-color-light)">push_default_context</text>
+    <text class="step-label" x="260" y="105" text-anchor="middle" fill="var(--text-color-light)">push_default_context
+    </text>
 
     <!-- Output Stream -->
     <text class="step-label" x="450" y="40" text-anchor="middle">Output Stream (Element, Context)</text>
-    <line class="edge directed" x1="350" y1="100" x2="550" y2="100" marker-end="url(#arrowhead)"/>
+    <line class="edge directed" x1="340" y1="100" x2="550" y2="100" marker-end="url(#arrowhead)"/>
 
     <!-- Output Elements with Context -->
     <!-- Element A -->
@@ -50,12 +52,12 @@
             <text class="node-label">A</text>
         </g>
         <!-- Context Box -->
-        <g transform="translate(0, 40)">
+        <g transform="translate(0, 50)">
             <rect class="index-box" x="-45" y="-15" width="90" height="30"/>
-            <text class="index-value range" y="0" x="0" text-anchor="middle">Context: A</text>
+            <text class="index-value range" y="5" x="-42" text-anchor="middle">Context: A</text>
         </g>
         <!-- Link Context -->
-        <line class="index-pointer" x1="0" y1="15" x2="0" y2="25" marker-end="url(#arrowhead-pointer)"/>
+        <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
     </g>
 
     <!-- Element B -->
@@ -65,12 +67,12 @@
             <text class="node-label">B</text>
         </g>
         <!-- Context Box (Updated context) -->
-        <g transform="translate(0, 40)">
+        <g transform="translate(0, 50)">
             <rect class="index-box" x="-45" y="-15" width="90" height="30"/>
-            <text class="index-value range" y="0" x="0" text-anchor="middle">Context: B</text>
+            <text class="index-value range" y="5" x="-42" text-anchor="middle">Context: B</text>
         </g>
         <!-- Link Context -->
-        <line class="index-pointer" x1="0" y1="15" x2="0" y2="25" marker-end="url(#arrowhead-pointer)"/>
+        <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
     </g>
 
     <!-- Legend -->
@@ -89,7 +91,6 @@
 
         <g transform="translate(60, 75)">
             <rect class="index-box" x="-10" y="-10" width="20" height="20"/>
-            <text class="index-value range" x="0" y="0" text-anchor="middle" font-size="var(--font-size-small)">Ctx</text>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
                 Default context associated with the element (contains the element itself)
             </text>
