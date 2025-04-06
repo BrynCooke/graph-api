@@ -1,6 +1,7 @@
 # Tail Step
 
-The `tail` step navigates from edges to their **source** (origin) vertices, allowing traversal back to where the edges start from. It transforms a stream of edges into a stream of vertices.
+The `tail` step navigates from edges to their **source** (origin) vertices, allowing traversal back to where the edges
+start from. It transforms a stream of edges into a stream of vertices.
 
 <object type="image/svg+xml" data="tail/image.svg" title="Tail Step Diagram">
 Tail step diagram showing traversal from edge to source vertex
@@ -33,7 +34,7 @@ Returns a new walker positioned at the **source** vertices of the edges in the c
 Find people who created projects by getting back to the source vertex:
 
 ```rust,noplayground
-{{#include tail/head_tail_examples.rs:head_example}}
+{{#include tail/tail_example.rs:tail_example}}
 ```
 
 ### Multi-Step Traversal
@@ -41,7 +42,7 @@ Find people who created projects by getting back to the source vertex:
 Traverse multiple relationships to find indirect connections:
 
 ```rust,noplayground
-{{#include tail/head_tail_examples.rs:multi_step}}
+{{#include tail/tail_example.rs:multi_step}}
 ```
 
 ## Best Practices
@@ -56,4 +57,5 @@ Traverse multiple relationships to find indirect connections:
 - **Author identification**: Finding who created something by looking at edge sources (`tail()`).
 - **Relationship sources**: Identifying the initiators of connections (`tail()`).
 - **Backtracking**: Returning to source vertices after examining edges (`tail()`).
-- **Edge-based filtering**: Finding vertices that have specific *incoming* edges (by traversing the edge and using `tail()`).
+- **Edge-based filtering**: Finding vertices that have specific *incoming* edges (by traversing the edge and using
+  `tail()`).
