@@ -8,9 +8,10 @@ Filter step diagram showing elements being kept or discarded based on a predicat
 
 In this diagram:
 
-- **Before `filter()`**: The walker contains highlighted vertices **A** (age=35), **B** (age=25), and **C** (age=40).
-- The **`.filter(|v| v.age > 30)`** step is applied.
-- **After `filter()`**: Only vertices **A** and **C** remain highlighted, as their age is greater than 30. Vertex **B** is faded and marked with an 'X' to indicate it was removed by the filter.
+- An **Input Stream** contains elements **A** (age=35), **B** (age=25), and **C** (age=40).
+- The **`.filter(|v| v.age > 30)`** step processes each element, applying the predicate.
+- Elements **A** and **C** satisfy the predicate (age > 30) and pass through to the **Output Stream**.
+- Element **B** does not satisfy the predicate and is **Discarded**, marked with an 'X'.
 
 ## Syntax
 
