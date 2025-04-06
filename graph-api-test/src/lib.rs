@@ -299,6 +299,8 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, filter_derive_test_edges_filter, $crate::steps::filter_derive::test_edges_filter}
         $crate::general_test!{$setup, probe_test_vertices_probe, $crate::steps::probe::test_vertices_probe}
         $crate::general_test!{$setup, probe_test_edges_probe, $crate::steps::probe::test_edges_probe}
+        $crate::general_test!{$setup, control_flow_test_vertices_control_flow, $crate::steps::control_flow::test_vertices_control_flow}
+        $crate::general_test!{$setup, control_flow_test_edges_control_flow, $crate::steps::control_flow::test_edges_control_flow}
         $crate::edge_index_label_test!{$setup, index_edge_label_test_index, $crate::index::edge_label::test_index}
         $crate::edge_index_label_test!{$setup, index_edge_label_test_index_limit, $crate::index::edge_label::test_index_limit}
         $crate::vertex_index_label_test!{$setup, index_vertex_label_test_index, $crate::index::vertex_label::test_index}

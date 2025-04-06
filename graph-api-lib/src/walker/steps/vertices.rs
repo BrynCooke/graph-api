@@ -1,11 +1,11 @@
 use crate::graph::Graph;
 use crate::search::vertex::VertexSearch;
-use crate::walker::builder::VertexWalkerBuilder;
+use crate::walker::builder::{StartWalkerBuilder, VertexWalkerBuilder};
+use crate::walker::steps::Empty;
 use crate::walker::{VertexWalker, Walker};
 use crate::{ElementId, VertexReference};
 use include_doc::function_body;
 use std::marker::PhantomData;
-
 // ================ VERTICES IMPLEMENTATION ================
 
 pub struct Vertices<'search, 'graph, Parent>
@@ -86,32 +86,32 @@ where
     ///
     /// Before vertices step (empty traversal):
     /// ```text
-    ///   [A] --- edge1 ---> [B] --- edge2 ---> [C]  
-    ///    ^                                         
-    ///    |                                         
-    ///   edge3                                       
-    ///    |                                         
-    ///   [D]                                        
+    ///   [A] --- edge1 ---> [B] --- edge2 ---> [C]
+    ///    ^
+    ///    |
+    ///   edge3
+    ///    |
+    ///   [D]
     /// ```
     ///
     /// After vertices step (with VertexSearch::scan()):
     /// ```text
-    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*  
-    ///    ^                                         
-    ///    |                                         
-    ///   edge3                                       
-    ///    |                                         
-    ///   [D]*                                        
+    ///   [A]* --- edge1 ---> [B]* --- edge2 ---> [C]*
+    ///    ^
+    ///    |
+    ///   edge3
+    ///    |
+    ///   [D]*
     /// ```
     ///
     /// After vertices step (with VertexSearch::scan().with_label(Vertex::person_label())):
     /// ```text
-    ///   [Person A]* --- edge1 ---> [Project B]  --- edge2 ---> [Person C]*  
-    ///    ^                                         
-    ///    |                                         
-    ///   edge3                                       
-    ///    |                                         
-    ///   [Person D]*                                        
+    ///   [Person A]* --- edge1 ---> [Project B]  --- edge2 ---> [Person C]*
+    ///    ^
+    ///    |
+    ///   edge3
+    ///    |
+    ///   [Person D]*
     /// ```
     ///
     /// ## Parameters
@@ -145,6 +145,28 @@ where
         VertexWalkerBuilder {
             _phantom: Default::default(),
             walker: self.walker.vertices(vertex_search.into()),
+            graph: self.graph,
+        }
+    }
+}
+
+impl<'graph, Graph, Mutability, Context> StartWalkerBuilder<'graph, Mutability, Graph, Context>
+where
+    Graph: crate::graph::Graph,
+    Context: Clone + 'static,
+{
+    pub fn vertices<'search>(
+        self,
+        vertex_search: VertexSearch<'search, Graph>,
+    ) -> VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        Vertices<'search, 'graph, Empty<Graph, Context>>,
+    > {
+        VertexWalkerBuilder {
+            _phantom: Default::default(),
+            walker: self.empty.vertices(vertex_search),
             graph: self.graph,
         }
     }

@@ -158,7 +158,7 @@ pub trait Graph: Sized + Debug {
     }
 
     /// Returns an immutable walker builder for the graph.
-    fn walk(&self) -> StartWalkerBuilder<ImmutableMarker, Self>
+    fn walk(&self) -> StartWalkerBuilder<ImmutableMarker, Self, ()>
     where
         Self: Sized,
     {
@@ -166,7 +166,7 @@ pub trait Graph: Sized + Debug {
     }
 
     /// Returns a mutable walker builder for the graph.
-    fn walk_mut(&mut self) -> StartWalkerBuilder<MutableMarker, Self>
+    fn walk_mut(&mut self) -> StartWalkerBuilder<MutableMarker, Self, ()>
     where
         Self: Sized,
     {

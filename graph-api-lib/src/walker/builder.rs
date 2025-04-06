@@ -1,5 +1,4 @@
-use crate::search::vertex::VertexSearch;
-use crate::walker::steps::{Empty, VertexIter, Vertices};
+use crate::walker::steps::Empty;
 use crate::walker::{EdgeWalker, VertexWalker};
 use std::marker::PhantomData;
 
@@ -147,65 +146,32 @@ where
     // All step methods were moved to respective step files
 }
 
-pub(crate) fn new_start<Graph>(graph: &Graph) -> StartWalkerBuilder<'_, ImmutableMarker, Graph>
+pub(crate) fn new_start<Graph>(graph: &Graph) -> StartWalkerBuilder<'_, ImmutableMarker, Graph, ()>
 where
     Graph: crate::graph::Graph,
 {
     StartWalkerBuilder {
         _phantom: Default::default(),
         graph: GraphAccess::Immutable(graph),
+        empty: Empty::default(),
     }
 }
 
 pub(crate) fn new_start_mut<Graph>(
     graph: &mut Graph,
-) -> StartWalkerBuilder<'_, MutableMarker, Graph>
+) -> StartWalkerBuilder<'_, MutableMarker, Graph, ()>
 where
     Graph: crate::graph::Graph,
 {
     StartWalkerBuilder {
         _phantom: Default::default(),
         graph: GraphAccess::Mutable(graph),
+        empty: Empty::default(),
     }
 }
 
-pub struct StartWalkerBuilder<'graph, Mutability, Graph> {
-    _phantom: PhantomData<&'graph (Mutability, Graph)>,
-    graph: GraphAccess<'graph, Graph>,
-}
-
-impl<'graph, Graph, Mutability> StartWalkerBuilder<'graph, Mutability, Graph>
-where
-    Graph: crate::graph::Graph,
-{
-    pub fn vertices<'search>(
-        self,
-        vertex_search: VertexSearch<'search, Graph>,
-    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, Vertices<'search, 'graph, Empty<Graph>>>
-    {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: Empty::default().vertices(vertex_search),
-            graph: self.graph,
-        }
-    }
-
-    pub fn vertices_by_id<Iter>(
-        self,
-        vertex_ids: Iter,
-    ) -> VertexWalkerBuilder<
-        'graph,
-        Mutability,
-        Graph,
-        VertexIter<'graph, Empty<Graph>, Iter::IntoIter>,
-    >
-    where
-        Iter: IntoIterator<Item = Graph::VertexId>,
-    {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: Empty::default().vertices_by_id(vertex_ids),
-            graph: self.graph,
-        }
-    }
+pub struct StartWalkerBuilder<'graph, Mutability, Graph, Context> {
+    pub(crate) _phantom: PhantomData<&'graph (Mutability, Graph)>,
+    pub(crate) graph: GraphAccess<'graph, Graph>,
+    pub(crate) empty: Empty<Graph, Context>,
 }

@@ -15,7 +15,7 @@ book:
     cargo test -p graph-api-book --doc
     mdbook serve graph-api-book -o
 
-lint:
+lint: build test doc
     cargo fmt --check
     cargo clippy -- --deny warnings
 

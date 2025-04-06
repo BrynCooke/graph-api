@@ -1,10 +1,10 @@
 use crate::ElementId;
 use crate::graph::Graph;
-use crate::walker::builder::VertexWalkerBuilder;
+use crate::walker::builder::{StartWalkerBuilder, VertexWalkerBuilder};
+use crate::walker::steps::Empty;
 use crate::walker::{VertexWalker, Walker};
 use include_doc::function_body;
 use std::marker::PhantomData;
-
 // ================ VERTEX_ITER IMPLEMENTATION ================
 
 pub struct VertexIter<'graph, Parent, Iter>
@@ -125,6 +125,31 @@ where
         VertexWalkerBuilder {
             _phantom: Default::default(),
             walker: self.walker.vertices_by_id(vertex_ids),
+            graph: self.graph,
+        }
+    }
+}
+
+impl<'graph, Graph, Mutability, Context> StartWalkerBuilder<'graph, Mutability, Graph, Context>
+where
+    Graph: crate::graph::Graph,
+    Context: Clone + 'static,
+{
+    pub fn vertices_by_id<Iter>(
+        self,
+        vertex_ids: Iter,
+    ) -> VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        VertexIter<'graph, Empty<Graph, Context>, Iter::IntoIter>,
+    >
+    where
+        Iter: IntoIterator<Item = Graph::VertexId>,
+    {
+        VertexWalkerBuilder {
+            _phantom: Default::default(),
+            walker: self.empty.vertices_by_id(vertex_ids),
             graph: self.graph,
         }
     }

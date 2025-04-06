@@ -17,12 +17,12 @@ use std::marker::PhantomData;
 /// The empty walker produces no elements and has no context beyond an empty tuple.
 /// This serves as the foundation for building traversals that start with fixed elements
 /// like vertices_by_id or that pull elements from non-graph sources.
-pub struct Empty<G> {
-    _phantom: PhantomData<G>,
-    context: (),
+pub struct Empty<Graph, Context> {
+    _phantom: PhantomData<Graph>,
+    context: Context,
 }
 
-impl<G> Default for Empty<G> {
+impl<Graph> Default for Empty<Graph, ()> {
     fn default() -> Self {
         Self {
             _phantom: PhantomData,
@@ -31,9 +31,21 @@ impl<G> Default for Empty<G> {
     }
 }
 
-impl<'graph, G: Graph> Walker<'graph> for Empty<G> {
-    type Graph = G;
-    type Context = ();
+impl<Graph, Context> Empty<Graph, Context> {
+    pub(crate) fn with_context(context: Context) -> Self {
+        Self {
+            _phantom: PhantomData,
+            context,
+        }
+    }
+}
+
+impl<'graph, Graph: crate::Graph, Context> Walker<'graph> for Empty<Graph, Context>
+where
+    Context: Clone + 'static,
+{
+    type Graph = Graph;
+    type Context = Context;
 
     fn next_element(&mut self, _graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         None
@@ -48,7 +60,10 @@ impl<'graph, G: Graph> Walker<'graph> for Empty<G> {
     }
 }
 
-impl<'graph, G: Graph> VertexWalker<'graph> for Empty<G> {
+impl<'graph, G: Graph, Context> VertexWalker<'graph> for Empty<G, Context>
+where
+    Context: Clone + 'static,
+{
     fn next(&mut self, _graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
         None
     }

@@ -1,11 +1,11 @@
 use crate::ElementId;
 use crate::graph::Graph;
-use crate::walker::builder::{EdgeWalkerBuilder, VertexWalkerBuilder};
+use crate::walker::builder::{EdgeWalkerBuilder, StartWalkerBuilder, VertexWalkerBuilder};
+use crate::walker::steps::Empty;
 use crate::walker::{EdgeWalker, VertexWalker, Walker};
 use include_doc::function_body;
 use std::marker::PhantomData;
 use std::ops::{Deref, DerefMut};
-
 // ================ CONTEXT IMPLEMENTATION ================
 
 #[derive(Clone, Debug)]
@@ -387,6 +387,25 @@ where
                 ContextRef::new(callback(edge, context), context.clone())
             }),
             graph: self.graph,
+        }
+    }
+}
+
+impl<'graph, Graph, Mutability> StartWalkerBuilder<'graph, Mutability, Graph, ()>
+where
+    Graph: crate::graph::Graph,
+{
+    pub fn push_context<Context>(
+        self,
+        context: Context,
+    ) -> StartWalkerBuilder<'graph, Mutability, Graph, Context>
+    where
+        Context: Clone + 'static,
+    {
+        StartWalkerBuilder {
+            _phantom: Default::default(),
+            graph: self.graph,
+            empty: Empty::with_context(context),
         }
     }
 }

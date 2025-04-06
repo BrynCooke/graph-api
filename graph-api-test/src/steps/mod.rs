@@ -1,5 +1,6 @@
 pub mod collect;
 pub mod context;
+pub mod control_flow;
 pub mod count;
 pub mod detour;
 pub mod edges;
