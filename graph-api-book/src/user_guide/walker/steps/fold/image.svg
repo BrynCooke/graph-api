@@ -28,15 +28,18 @@
 
     <!-- Input Elements -->
     <g class="node highlighted" transform="translate(80, 100)">
-        <circle r="15"></circle><text class="node-label">A</text>
+        <circle r="15"></circle>
+        <text class="node-label">A</text>
         <text class="property-text" y="25">age=30</text>
     </g>
     <g class="node highlighted" transform="translate(130, 100)">
-        <circle r="15"></circle><text class="node-label">B</text>
+        <circle r="15"></circle>
+        <text class="node-label">B</text>
         <text class="property-text" y="25">age=25</text>
     </g>
     <g class="node highlighted" transform="translate(180, 100)">
-        <circle r="15"></circle><text class="node-label">C</text>
+        <circle r="15"></circle>
+        <text class="node-label">C</text>
         <text class="property-text" y="25">age=40</text>
     </g>
 
@@ -45,7 +48,8 @@
         <rect x="-100" y="-25" width="200" height="50" rx="5" ry="5"
               fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
         <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">fold</text>
-        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">
+        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)"
+              font-size="var(--font-size-small)">
             (0, |acc, v| acc + v.age())
         </text>
     </g>
@@ -54,31 +58,31 @@
     <g transform="translate(300, 180)">
         <text class="step-label" text-anchor="middle">Accumulator (acc)</text>
         <!-- Initial Value -->
-        <rect class="index-box" x="-25" y="20" width="50" height="30"/>
-        <text class="index-value range" x="0" y="35" text-anchor="middle">0</text>
-        <text class="property-text" x="0" y="55" text-anchor="middle">Initial</text>
+        <rect class="index-box" x="-15" y="20" width="30" height="30"/>
+        <text class="index-value range" x="-5" y="40" text-anchor="middle">0</text>
+        <text class="property-text" x="-40" y="30" text-anchor="middle">Initial</text>
 
         <!-- Processing A -->
-        <line class="index-pointer" x1="25" y1="35" x2="75" y2="35" marker-end="url(#arrowhead-pointer)"/>
-        <text class="property-text" x="50" y="25" text-anchor="middle">+ A(30)</text>
-        <rect class="index-box" x="75" y="20" width="50" height="30"/>
-        <text class="index-value range" x="100" y="35" text-anchor="middle">30</text>
+        <line class="index-pointer" x1="25" y1="35" x2="70" y2="35" marker-end="url(#arrowhead-pointer)"/>
+        <text class="property-text" x="45" y="45" text-anchor="middle">+ A(30)</text>
+        <rect class="index-box" x="70" y="20" width="30" height="30"/>
+        <text class="index-value range" x="77" y="40" text-anchor="middle">30</text>
 
         <!-- Processing B -->
-        <line class="index-pointer" x1="125" y1="35" x2="175" y2="35" marker-end="url(#arrowhead-pointer)"/>
-        <text class="property-text" x="150" y="25" text-anchor="middle">+ B(25)</text>
-        <rect class="index-box" x="175" y="20" width="50" height="30"/>
-        <text class="index-value range" x="200" y="35" text-anchor="middle">55</text>
+        <line class="index-pointer" x1="105" y1="35" x2="155" y2="35" marker-end="url(#arrowhead-pointer)"/>
+        <text class="property-text" x="128" y="45" text-anchor="middle">+ B(25)</text>
+        <rect class="index-box" x="155" y="20" width="30" height="30"/>
+        <text class="index-value range" x="162" y="40" text-anchor="middle">55</text>
 
         <!-- Processing C -->
-        <line class="index-pointer" x1="225" y1="35" x2="275" y2="35" marker-end="url(#arrowhead-pointer)"/>
-        <text class="property-text" x="250" y="25" text-anchor="middle">+ C(40)</text>
-        <rect class="index-box" x="275" y="20" width="50" height="30"/>
-        <text class="index-value range" x="300" y="35" text-anchor="middle">95</text>
+        <line class="index-pointer" x1="190" y1="35" x2="235" y2="35" marker-end="url(#arrowhead-pointer)"/>
+        <text class="property-text" x="210" y="45" text-anchor="middle">+ C(40)</text>
+        <rect class="index-box" x="235" y="20" width="30" height="30"/>
+        <text class="index-value range" x="242" y="40" text-anchor="middle">95</text>
     </g>
 
     <!-- Arrow from Step to Accumulator -->
-     <path class="edge directed" d="M 300 125 V 160" fill="none" marker-end="url(#arrowhead)"/>
+    <path class="edge directed" d="M 300 125 V 160" fill="none" marker-end="url(#arrowhead)"/>
 
     <!-- Final Result Box -->
     <g id="final-result-group" transform="translate(300, 280)"> <!-- Positioned below accumulator -->
@@ -88,7 +92,9 @@
         <text x="0" y="-5" text-anchor="middle" font-weight="bold" fill="var(--accent-secondary)">Result</text>
         <text x="0" y="15" text-anchor="middle" font-family="monospace" fill="var(--accent-secondary)">95</text>
     </g>
-    <text x="300" y="330" class="text-color-muted" font-size="var(--font-size-small)" text-anchor="middle">Terminates Walker</text>
+    <text x="300" y="330" class="text-color-muted" font-size="var(--font-size-small)" text-anchor="middle">Terminates
+        Walker
+    </text>
     <!-- Arrow from Accumulator to Final Result -->
     <line class="edge directed" x1="300" y1="230" x2="300" y2="260" marker-end="url(#arrowhead)"/>
 
@@ -98,15 +104,18 @@
         <rect class="index-box" x="25" y="0" width="550" height="70"/> <!-- Reduced height -->
         <text class="index-title" x="300" y="20">Legend</text>
         <g transform="translate(60, 45)">
-            <g class="node highlighted"><circle r="10"></circle></g>
-            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">Element in input stream</text>
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">Element in input stream
+            </text>
         </g>
         <g transform="translate(280, 45)">
             <rect class="index-box" x="-10" y="-10" width="20" height="20"/>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">Accumulator value</text>
         </g>
-         <g transform="translate(450, 45)">
-             <rect x="-10" y="-10" width="20" height="20" rx="3" ry="3"
+        <g transform="translate(450, 45)">
+            <rect x="-10" y="-10" width="20" height="20" rx="3" ry="3"
                   fill="var(--accent-secondary)" fill-opacity="0.15"
                   stroke="var(--accent-secondary)" stroke-width="1"/>
             <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">Final result</text>
