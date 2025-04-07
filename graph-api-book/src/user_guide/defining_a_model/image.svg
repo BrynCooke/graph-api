@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450"> <!-- Adjusted height -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480"> <!-- Increased height -->
     <title>Graph Model Example</title>
     <desc>Diagram showing a graph model with Person and Project vertices and Follows, Created, Liked, Contributes edges. Layout prioritizes avoiding edge crossings and uses consistent styling.</desc>
     <defs>
@@ -15,29 +15,29 @@
     <g class="node" id="node-bryn" transform="translate(150, 100)">
         <circle r="25"></circle> <!-- Slightly smaller radius for consistency -->
         <text class="node-label">Person</text>
-        <text class="property-text" y="20">name: Bryn</text>
-        <text class="property-text" y="35">age: 28</text>
+        <text class="property-text" y="28">name: Bryn</text> <!-- Moved down -->
+        <text class="property-text" y="43">age: 28</text> <!-- Moved down -->
     </g>
     <g class="node" id="node-julia" transform="translate(450, 100)">
         <circle r="25"></circle>
         <text class="node-label">Person</text>
-        <text class="property-text" y="20">name: Julia</text>
-        <text class="property-text" y="35">age: 34</text>
+        <text class="property-text" y="28">name: Julia</text> <!-- Moved down -->
+        <text class="property-text" y="43">age: 34</text> <!-- Moved down -->
     </g>
     <g class="node" id="node-graphapi" transform="translate(150, 230)">
         <circle r="25"></circle>
         <text class="node-label">Project</text>
-        <text class="property-text" y="20">name: GraphApi</text>
+        <text class="property-text" y="28">name: GraphApi</text> <!-- Moved down -->
     </g>
     <g class="node" id="node-alpaca" transform="translate(450, 230)">
         <circle r="25"></circle>
         <text class="node-label">Project</text>
-        <text class="property-text" y="20">name: Alpaca</text>
+        <text class="property-text" y="28">name: Alpaca</text> <!-- Moved down -->
     </g>
-    <g class="node" id="node-rust" transform="translate(300, 360)"> <!-- Adjusted Y position -->
+    <g class="node" id="node-rust" transform="translate(300, 380)"> <!-- Adjusted Y position further -->
         <circle r="25"></circle>
         <text class="node-label">Project</text>
-        <text class="property-text" y="20">name: Rust</text>
+        <text class="property-text" y="28">name: Rust</text> <!-- Moved down -->
     </g>
 
     <!-- Edges -->
@@ -72,13 +72,13 @@
     <!-- Contributes Edges -->
     <g class="edge directed" id="edge-bryn-rust-contributes">
         <!-- Adjusted path start/end points for new node positions -->
-        <line x1="170" y1="245" x2="280" y2="340" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="210" y="300">Contributes</text>
+        <line x1="170" y1="255" x2="280" y2="360" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
+        <text class="edge-label" x="210" y="315">Contributes</text> <!-- Adjusted Y coord -->
     </g>
     <g class="edge directed" id="edge-julia-rust-contributes">
         <!-- Adjusted path start/end points for new node positions -->
-        <line x1="430" y1="245" x2="320" y2="340" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="390" y="300">Contributes</text>
+        <line x1="430" y1="255" x2="320" y2="360" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
+        <text class="edge-label" x="390" y="315">Contributes</text> <!-- Adjusted Y coord -->
     </g>
 
 </svg>
