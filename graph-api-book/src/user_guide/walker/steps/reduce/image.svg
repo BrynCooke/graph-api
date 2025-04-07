@@ -154,27 +154,15 @@
     <path class="edge directed" d="M 450 125 V 150" fill="none"
           marker-end="url(#arrowhead)"/> <!-- Corrected target: Reduce Box -> Viz Start -->
 
-    <!-- Final Result Box -->
-    <g id="final-result-group" transform="translate(450, 400)"> <!-- Moved right by 100 -->
-        <rect x="-40" y="-20" width="80" height="40" rx="5" ry="5"
-              fill="var(--accent-secondary)" fill-opacity="0.15"
-              stroke="var(--accent-secondary)" stroke-width="1.5"/>
-        <text x="0" y="-5" text-anchor="middle" font-weight="bold" fill="var(--accent-secondary)">Result</text>
-        <g class="node highlighted" transform="translate(0, 15)">
-            <circle r="10"></circle>
-            <text class="node-label" font-size="10px">C</text>
-        </g>
-    </g>
-    <text x="450" y="450" class="text-color-muted" font-size="var(--font-size-small)" text-anchor="middle">Terminates
-        Walker
-    </text> <!-- Moved right by 100 -->
-    <!-- Arrow from Reduction Process (Result C) to Final Result Box -->
-    <path class="edge directed" d="M 450 345 V 380" fill="none"
-          marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
+    <!-- Arrow indicating continuation -->
+    <path class="edge directed" d="M 450 330 V 360" fill="none" marker-end="url(#arrowhead)"/>
+    <text x="450" y="380" class="text-color-muted" font-size="var(--font-size-small)" text-anchor="middle">Walker
+        Continues with Result (C)
+    </text>
 
 
     <!-- Legend -->
-    <g transform="translate(75, 470)"> <!-- Adjusted X position for centering -->
+    <g transform="translate(75, 370)"> <!-- Adjusted Y position -->
         <rect class="index-box" x="25" y="0" width="675" height="70"/> <!-- Adjusted width by +100 -->
         <text class="index-title" x="375" y="20">Legend</text> <!-- Centered in new viewbox -->
         <g transform="translate(135, 45)"> <!-- Adjusted X position -->

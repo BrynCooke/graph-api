@@ -13,8 +13,7 @@ In this diagram:
 - The **Reduction Process** visualization shows the pairwise comparisons:
     - **A vs B**: Element **A** is kept (30 > 25), **B** is discarded.
     - **(A) vs C**: Element **C** is kept (40 > 30), **A** is discarded.
-- The **Final Result** box shows the single remaining element (**C**).
-- This step **Terminates Walker**, meaning no further Graph API steps can be chained after `reduce`.
+- The **Result** of the reduction process is the single remaining element (**C**), which continues in the walker chain.
 
 ## Syntax
 
@@ -48,7 +47,7 @@ Returns an `Option` containing the result element if the traversal is not empty,
 - Handle empty traversals by checking for None in the result
 - The reducer can only select one of the elements, not create new ones
 - Use `ControlFlow::Continue` to keep reducing, and `ControlFlow::Break` to halt early
-- Consider fold instead when you need to build a new value rather than select among elements
+- Consider `fold` instead when you need to build a new value rather than select among elements (note: `fold` terminates the walker)
 - Remember that unlike the old API, the context is immutable in the reducer function
 
 ## Common Use Cases
