@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>mutate - graph-api</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../favicon.png">
+        <link rel="stylesheet" href="../../../css/variables.css">
+        <link rel="stylesheet" href="../../../css/general.css">
+        <link rel="stylesheet" href="../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">graph-api</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="mutate-step"><a class="header" href="#mutate-step">Mutate Step</a></h1>
+<p>The <code>mutate</code> step iterates over elements in the traversal, applying a callback function to each one. This callback receives mutable access to the graph, allowing for <strong>in-place modification</strong> of vertices or edges. <code>mutate</code> is a terminal step that consumes the walker and returns the total count (<code>usize</code>) of elements processed.</p>
+<object type="image/svg+xml" data="mutate/image.svg" title="Mutate Step Diagram">
+Mutate step diagram showing elements being modified in-place and the step returning a count
+</object>
+<p>In this diagram:</p>
+<ul>
+<li><strong>Input Elements</strong>: The walker starts with elements <strong>A, B, C</strong>, each having an initial value (e.g., <code>val=1</code>).</li>
+<li>The <strong><code>.mutate(callback)</code></strong> step processes each element. The callback function has access to modify the graph.</li>
+<li><strong>Mutated Elements (In Graph)</strong>: The diagram shows the state of the elements <em>after</em> the mutation callback has been applied (e.g., <strong>A'</strong> with <code>val=10</code>). This highlights the in-place nature of the operation.</li>
+<li><strong>Returns: usize</strong>: The step completes and returns the count of elements processed (3 in this case), terminating the walker chain.</li>
+</ul>
+<h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
+<pre><code class="language-rust noplayground">walker.mutate(|element, context, graph| {
+    // mutation logic using graph access
+})</code></pre>
+<h2 id="parameters"><a class="header" href="#parameters">Parameters</a></h2>
+<ul>
+<li><code>callback</code>: A function that takes:
+<ul>
+<li>A reference to the current element (vertex or edge) - Note: Direct mutable access to the <em>element itself</em> might vary; mutation often happens via the <code>graph</code> reference using the element's ID.</li>
+<li>The element's context</li>
+<li>A mutable reference to the graph (<code>&amp;mut G</code>)</li>
+<li>Performs modifications using the mutable graph reference (e.g., <code>graph.vertex_mut(element.id())</code>).</li>
+</ul>
+</li>
+</ul>
+<h2 id="return-value"><a class="header" href="#return-value">Return Value</a></h2>
+<p>Returns a <code>usize</code> representing the number of elements processed by the <code>mutate</code> step.</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<pre><code class="language-rust noplayground">    // Example 1: Update all person vertices to increment their age
+    println!("Incrementing age of all people:");
+
+    // Print original ages
+    graph
+        .walk()
+        .vertices(Vertex::person())
+        .probe(|vertex, _| {
+            if let Some(person) = vertex.project::&lt;Person&lt;_&gt;&gt;() {
+                println!("  Before: {} is {} years old", person.name(), person.age());
+            }
+        })
+        .count();
+
+    // Perform the mutation - increment everyone's age by 1
+    let updated_count = graph
+        .walk_mut() // Must use walk_mut() for mutations
+        .vertices(Vertex::person())
+        .mutate(|graph, vertex_id, _| {
+            // Note: updating requires cloning and replacing due to Rust's ownership model
+            if let Some(mut vertex) = graph.vertex_mut(vertex_id) {
+                if let Some(mut person) = vertex.project_mut::&lt;PersonMut&lt;_, _&gt;&gt;() {
+                    // Increment the person age
+                    person.set_age(person.age() + 1);
+                }
+            }
+        });
+
+    println!("  Updated {} person vertices", updated_count);</code></pre>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<ul>
+<li>Use <code>mutate</code> specifically for modifying graph elements based on traversal results.</li>
+<li>Access mutable elements via the provided <code>graph</code> reference and the element's ID (e.g., <code>graph.vertex_mut(id)</code>).</li>
+<li>Be mindful that mutations are applied directly and immediately to the graph state.</li>
+<li>Consider using <code>filter</code> or <code>control_flow</code> <em>before</em> <code>mutate</code> to precisely target which elements should be modified.</li>
+<li>Understand the graph implementation's behavior regarding mutations during iteration (e.g., adding/removing elements might invalidate iterators in some graph types).</li>
+</ul>
+<h2 id="common-use-cases"><a class="header" href="#common-use-cases">Common Use Cases</a></h2>
+<ul>
+<li><strong>Updating properties</strong>: Modifying attributes of vertices or edges (e.g., incrementing age, changing status).</li>
+<li><strong>Graph cleaning</strong>: Standardizing data or fixing inconsistencies found during traversal.</li>
+<li><strong>State transitions</strong>: Updating element states based on workflow logic during traversal.</li>
+<li><strong>Bulk updates</strong>: Applying a change to a set of elements identified by prior traversal steps.</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../user_guide/walker/steps/probe.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../../user_guide/walker/steps/dbg.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../user_guide/walker/steps/probe.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../../user_guide/walker/steps/dbg.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../../elasticlunr.min.js"></script>
+        <script src="../../../mark.min.js"></script>
+        <script src="../../../searcher.js"></script>
+
+        <script src="../../../clipboard.min.js"></script>
+        <script src="../../../highlight.js"></script>
+        <script src="../../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

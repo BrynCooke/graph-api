@@ -1,0 +1,119 @@
+<?xml-stylesheet type="text/css" href="../../../theme/custom.css"?>
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"
+> <!-- Removed width/height -->
+    <title>Graph Scan Without Index</title>
+    <desc>Diagram illustrating that finding nodes (e.g., name='Alice') without an index requires scanning every node (A,
+        B, C, D, E). Matching nodes A and C are highlighted.
+    </desc>
+
+    <defs>
+        <!-- Styles are now external -->
+
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Unselected Pointer arrowhead marker -->
+        <marker id="arrowhead-pointer-unselected" class="marker-arrowhead-pointer-unselected marker-base"
+                markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Include other standard markers -->
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-active" class="marker-arrowhead-active marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-visited" class="marker-arrowhead-visited marker-base" markerWidth="10" markerHeight="7"
+                refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
+                refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+    </defs>
+
+    <!-- === Graph Structure === -->
+    <g id="graph" transform="translate(150, 100)"> <!-- Shifted graph down/right -->
+
+        <!-- === Scan Pointers (Rendered First) === -->
+        <g id="scan-pointers">
+            <!-- Originating near Query text (relative x=-50, y=-30) -->
+            <!-- Pointing towards center of each node (relative coordinates) -->
+            <!-- Using index-pointer-unselected style for consistency -->
+            <line class="index-pointer" x1="-50" y1="-30" x2="87" y2="37"
+                  marker-end="url(#arrowhead-pointer)"/> <!-- -> A -->
+            <line class="index-pointer-unselected" x1="-50" y1="-30" x2="287" y2="37"
+                  marker-end="url(#arrowhead-pointer-unselected)"/> <!-- -> B -->
+            <line class="index-pointer" x1="-50" y1="-30" x2="37" y2="167"
+                  marker-end="url(#arrowhead-pointer)"/> <!-- -> C -->
+            <line class="index-pointer-unselected" x1="-50" y1="-30" x2="237" y2="167"
+                  marker-end="url(#arrowhead-pointer-unselected)"/> <!-- -> D -->
+            <line class="index-pointer-unselected" x1="-50" y1="-30" x2="387" y2="167"
+                  marker-end="url(#arrowhead-pointer-unselected)"/> <!-- -> E -->
+        </g>
+
+        <!-- === Edges (Rendered After Scan Pointers, Before Nodes) === -->
+        <g class="edge directed" id="edge-A-B">
+            <line x1="120" y1="50" x2="280" y2="50" marker-end="url(#arrowhead)"></line>
+        </g>
+        <g class="edge directed" id="edge-A-C">
+            <path d="M 95 70 Q 70 120 65 160" marker-end="url(#arrowhead)"/>
+        </g>
+        <g class="edge directed" id="edge-B-D">
+            <path d="M 295 70 Q 275 120 265 160" marker-end="url(#arrowhead)"/>
+        </g>
+        <g class="edge directed" id="edge-C-D">
+            <line x1="70" y1="180" x2="230" y2="180" marker-end="url(#arrowhead)"></line>
+        </g>
+        <g class="edge directed" id="edge-D-E">
+            <line x1="270" y1="180" x2="380" y2="180" marker-end="url(#arrowhead)"></line>
+        </g>
+
+        <!-- === Nodes (Rendered After Lines) === -->
+        <!-- Node elements ordered: shape, label -->
+        <g class="node highlighted" id="node-A" transform="translate(100, 50)"> <!-- Center abs (250, 150) -->
+            <circle r="20"></circle>
+            <text class="node-label">A</text>
+        </g>
+        <g class="node" id="node-B" transform="translate(300, 50)"> <!-- Center abs (450, 150) -->
+            <circle r="20"></circle>
+            <text class="node-label">B</text>
+        </g>
+        <g class="node highlighted" id="node-C" transform="translate(50, 180)"> <!-- Center abs (200, 280) -->
+            <circle r="20"></circle>
+            <text class="node-label">C</text>
+        </g>
+        <g class="node" id="node-D" transform="translate(250, 180)"> <!-- Center abs (400, 280) -->
+            <circle r="20"></circle>
+            <text class="node-label">D</text>
+        </g>
+        <g class="node" id="node-E" transform="translate(400, 180)"> <!-- Center abs (550, 280) -->
+            <circle r="20"></circle>
+            <text class="node-label">E</text>
+        </g>
+
+        <!-- === Property Text (Rendered Last within Graph Group) === -->
+        <g id="property-texts">
+            <!-- Coordinates are relative to graph group origin (150, 100) -->
+            <!-- Original node centers + y offset -->
+            <text class="property-text" x="100" y="75">{name: "Alice"}</text>  <!-- Node A: 100, 50+25 -->
+            <text class="property-text" x="300" y="75">{name: "Bob"}</text>    <!-- Node B: 300, 50+25 -->
+            <text class="property-text" x="50" y="205">{name: "Alice"}</text>  <!-- Node C: 50, 180+25 -->
+            <text class="property-text" x="250" y="205">{name: "Charlie"}</text><!-- Node D: 250, 180+25 -->
+            <text class="property-text" x="400" y="205">{name: "Bob"}</text>    <!-- Node E: 400, 180+25 -->
+        </g>
+
+    </g> <!-- End of graph group -->
+
+    <!-- === Query Text (Rendered Last Overall) === -->
+    <!-- Positioned top-left -->
+    <text class="query-text" x="100" y="50">Query: name = "Alice"</text>
+
+</svg>

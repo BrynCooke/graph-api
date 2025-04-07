@@ -1,0 +1,488 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Derive Macros - graph-api</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">graph-api</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="derive-macros"><a class="header" href="#derive-macros">Derive Macros</a></h1>
+<p>Graph API's derive macros automatically generate code that integrates your custom types with the Graph API framework,
+making your graph operations type-safe and ergonomic. This section explains the types that are generated and how to use
+them effectively.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>Graph API provides two primary derive macros:</p>
+<ol>
+<li><code>VertexExt</code> - For vertex enum types</li>
+<li><code>EdgeExt</code> - For edge enum types</li>
+</ol>
+<pre><code class="language-rust noplayground">    // Create a new graph with our model
+    let mut graph = SimpleGraph::&lt;Vertex, Edge&gt;::new();
+
+    // Add vertices of different types
+    let alice = graph.add_vertex(Vertex::Person {
+        name: "Alice".to_string(),
+        username: "alice_dev".to_string(),
+        biography: "Software engineer and graph enthusiast".to_string(),
+        age: 29,
+    });
+
+    let project = graph.add_vertex(Vertex::Project {
+        name: "GraphDB".to_string(),
+    });
+
+    // Add edges connecting vertices
+    graph.add_edge(alice, project, Edge::Created);
+
+    // Use type-safe projections for property access
+    let person_info = graph
+        .walk()
+        .vertices(VertexSearch::scan())
+        .filter_person() // Generated helper method
+        .map(|v, _| {
+            // Use type-safe projection
+            let person = v.project::&lt;Person&lt;_&gt;&gt;().unwrap();
+
+            // Return formatted string with person information
+            format!(
+                "Person: {} (@{})\n  Bio: {}\n  Age: {}",
+                person.name(),
+                person.username(),
+                person.biography(),
+                person.age()
+            )
+        })
+        .collect::&lt;Vec&lt;_&gt;&gt;();
+
+    // Print the collected information
+    for info in person_info {
+        println!("{}", info);
+    }</code></pre>
+<h2 id="generated-types-for-vertexext"><a class="header" href="#generated-types-for-vertexext">Generated Types for VertexExt</a></h2>
+<p>When you apply <code>#[derive(VertexExt)]</code> to an enum, several useful types are generated:</p>
+<h3 id="1-label-enum-vertexlabel"><a class="header" href="#1-label-enum-vertexlabel">1. Label Enum (VertexLabel)</a></h3>
+<p>A type-safe enum representing the variants of your vertex enum:</p>
+<pre><code class="language-rust noplayground">// Given this vertex definition
+#[derive(VertexExt)]
+enum Vertex {
+    Person { /* fields */ },
+    Project { /* fields */ },
+    Comment { /* fields */ },
+}
+
+// This is generated
+pub enum VertexLabel {
+    Person,
+    Project,
+    Comment,
+}</code></pre>
+<p><strong>Purpose</strong>: Provides type-safe representations of vertex types, used for label-based indexing and filtering.</p>
+<h3 id="2-index-selectors"><a class="header" href="#2-index-selectors">2. Index selectors</a></h3>
+<p>Selectors to make querying easier:</p>
+<pre><code class="language-rust noplayground">impl Vertex {
+    // Find all Person vertices
+    pub fn person() -&gt; VertexSearch { /* ... */ }
+    
+    // Find Person vertices by indexed properties
+    pub fn person_by_username(username: &amp;str) -&gt; VertexSearch { /* ... */ }
+    pub fn person_by_biography(text: &amp;str) -&gt; VertexSearch { /* ... */ }
+    pub fn person_by_age_range(range: Range&lt;u8&gt;) -&gt; VertexSearch { /* ... */ }
+}</code></pre>
+<p><strong>Purpose</strong>: Enables efficient querying of vertices by label and properties.</p>
+<h3 id="3-projection-types"><a class="header" href="#3-projection-types">3. Projection Types</a></h3>
+<p>For each variant with fields, two projection structs are generated:</p>
+<pre><code class="language-rust noplayground">// For Person variant
+pub struct Person&lt;'a, V&gt; {
+    // Immutable references to fields
+    name: &amp;'a String,
+    username: &amp;'a String,
+    biography: &amp;'a String,
+    age: &amp;'a u8,
+    unique_id: &amp;'a Uuid,
+}
+
+pub struct PersonMut&lt;'a, V&gt; {
+    // Mutable references to fields
+    name: &amp;'a mut String,
+    username: &amp;'a mut String,
+    biography: &amp;'a mut String,
+    age: &amp;'a mut u8,
+    unique_id: &amp;'a mut Uuid,
+}</code></pre>
+<p><strong>Purpose</strong>: Provides type-safe access to variant fields without manually matching on enum variants.</p>
+<h3 id="4-filter-extension-traits"><a class="header" href="#4-filter-extension-traits">4. Filter Extension Traits</a></h3>
+<p>Extension methods for the walker builder to filter by vertex type:</p>
+<pre><code class="language-rust noplayground">// On WalkerBuilder
+// For all Person vertices
+fn filter_person(self) -&gt; Self;
+
+// For Person vertices with custom criteria
+fn filter_by_person&lt;F&gt;(self, filter: F) -&gt; Self
+where
+    F: Fn(Person&lt;Vertex&gt;, &amp;Context) -&gt; bool;</code></pre>
+<p><strong>Purpose</strong>: Enables type-safe filtering of vertices during traversals.</p>
+<h2 id="generated-types-for-edgeext"><a class="header" href="#generated-types-for-edgeext">Generated Types for EdgeExt</a></h2>
+<p>When you apply <code>#[derive(EdgeExt)]</code> to an enum, similar types are generated:</p>
+<h3 id="1-label-enum-edgelabel"><a class="header" href="#1-label-enum-edgelabel">1. Label Enum (EdgeLabel)</a></h3>
+<pre><code class="language-rust noplayground">// Given this edge definition
+#[derive(EdgeExt)]
+enum Edge {
+    Created,
+    Follows,
+    Liked { timestamp: String },
+    Commented { timestamp: String },
+}
+
+// This is generated
+pub enum EdgeLabel {
+    Created,
+    Follows,
+    Liked,
+    Commented,
+}</code></pre>
+<p><strong>Purpose</strong>: Provides type-safe representations of edge types, used for label-based indexing and filtering.</p>
+<h3 id="2-index-selectors-1"><a class="header" href="#2-index-selectors-1">2. Index selectors</a></h3>
+<p>Selectors to make querying easier</p>
+<pre><code class="language-rust noplayground">impl Edge {
+    // Find all Created edges
+    pub fn created() -&gt; EdgeSearch { /* ... */ }
+    
+    // Find all Follows edges
+    pub fn follows() -&gt; EdgeSearch { /* ... */ }
+    
+    // Find all Liked edges
+    pub fn liked() -&gt; EdgeSearch { /* ... */ }
+    
+    // Find all Commented edges
+    pub fn commented() -&gt; EdgeSearch { /* ... */ }
+}</code></pre>
+<p><strong>Purpose</strong>: Enables efficient querying of edges by label.</p>
+<h3 id="3-projection-types-1"><a class="header" href="#3-projection-types-1">3. Projection Types</a></h3>
+<p>For each variant with fields, projection structs are generated:</p>
+<pre><code class="language-rust noplayground">// For Liked variant
+pub struct Liked&lt;'a, E&gt; {
+    timestamp: &amp;'a String,
+}
+
+pub struct LikedMut&lt;'a, E&gt; {
+    timestamp: &amp;'a mut String,
+}</code></pre>
+<p><strong>Purpose</strong>: Provides type-safe access to edge properties.</p>
+<h3 id="4-filter-extension-traits-1"><a class="header" href="#4-filter-extension-traits-1">4. Filter Extension Traits</a></h3>
+<p>Extension methods for the walker builder to filter by edge type:</p>
+<pre><code class="language-rust noplayground">// On WalkerBuilder
+// For all Liked edges
+fn filter_liked(self) -&gt; Self;
+
+// For Liked edges with custom criteria
+fn filter_by_liked&lt;F&gt;(self, filter: F) -&gt; Self
+where
+    F: Fn(Liked&lt;Edge&gt;, &amp;Context) -&gt; bool;</code></pre>
+<p><strong>Purpose</strong>: Enables type-safe filtering of edges during traversals.</p>
+<h2 id="using-the-generated-types"><a class="header" href="#using-the-generated-types">Using the Generated Types</a></h2>
+<h3 id="vertex-querying"><a class="header" href="#vertex-querying">Vertex Querying</a></h3>
+<pre><code class="language-rust noplayground">// Find all Person vertices
+let people = graph
+    .walk()
+    .vertices(Vertex::person())
+    .collect::&lt;Vec&lt;_&gt;&gt;();
+
+// Find Person vertices with a specific username
+let user = graph
+    .walk()
+    .vertices(Vertex::person_by_username("bryn123"))
+    .first()
+    .unwrap();
+
+// Find Person vertices in an age range
+let adults = graph
+    .walk()
+    .vertices(Vertex::person_by_age_range(18..65))
+    .collect::&lt;Vec&lt;_&gt;&gt;();</code></pre>
+<h3 id="edge-traversal"><a class="header" href="#edge-traversal">Edge Traversal</a></h3>
+<pre><code class="language-rust noplayground">// Find outgoing Created edges from a person
+let created_projects = graph
+    .walk()
+    .vertices_by_id([person_id])
+    .edges(Edge::created().outgoing())
+    .tail()  // Follow edges to target vertices
+    .collect::&lt;Vec&lt;_&gt;&gt;();</code></pre>
+<h3 id="type-safe-filtering"><a class="header" href="#type-safe-filtering">Type-Safe Filtering</a></h3>
+<pre><code class="language-rust noplayground">// Find Person vertices that match specific criteria
+let experienced_devs = graph
+    .walk()
+    .vertices(Vertex::person())
+    .filter_by_person(|person, _| {
+        person.age() &gt; 25 &amp;&amp; person.biography().contains("developer")
+    })
+    .collect::&lt;Vec&lt;_&gt;&gt;();</code></pre>
+<h3 id="projection-for-type-safety"><a class="header" href="#projection-for-type-safety">Projection for Type Safety</a></h3>
+<pre><code class="language-rust noplayground">// Working with a vertex reference
+if let Some(vertex_ref) = graph.vertex(vertex_id) {
+    // Project to Person variant
+    if let Some(person) = vertex_ref.project::&lt;Person&lt;_&gt;&gt;() {
+        println!("Name: {}, Age: {}", person.name(), person.age());
+    }
+}</code></pre>
+<h2 id="index-attributes"><a class="header" href="#index-attributes">Index Attributes</a></h2>
+<p>You can apply these attributes to fields to control indexing behavior:</p>
+<ul>
+<li><code>#[index]</code> - Standard index for exact match queries</li>
+<li><code>#[index(range)]</code> - Range index for range queries</li>
+<li><code>#[index(full_text)]</code> - Full-text index for text search (String fields only)</li>
+</ul>
+<pre><code class="language-rust noplayground">#[derive(VertexExt)]
+enum User {
+    Profile {
+        #[index]  // Standard index
+        username: String,
+        
+        #[index(range)]  // Range queries possible
+        age: u32,
+        
+        #[index(full_text)]  // Text search possible
+        bio: String,
+        
+        // Not indexed
+        email: String,
+    }
+}</code></pre>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<ol>
+<li>
+<p><strong>Selective Indexing</strong>: Only add indexes to fields you'll frequently query, as each index increases memory usage.</p>
+</li>
+<li>
+<p><strong>Choose Appropriate Index Types</strong>:</p>
+<ul>
+<li>Use <code>#[index]</code> for exact match lookups</li>
+<li>Use <code>#[index(range)]</code> for numeric fields that need range queries</li>
+<li>Use <code>#[index(full_text)]</code> for text fields that need substring or keyword search</li>
+</ul>
+</li>
+<li>
+<p><strong>Use Type-Safe Methods</strong>:</p>
+<ul>
+<li>Prefer <code>filter_by_person()</code> over generic <code>filter()</code> with manual pattern matching</li>
+<li>Use the generated search methods (<code>person_by_username()</code>, etc.) for efficient queries</li>
+</ul>
+</li>
+<li>
+<p><strong>Leverage Projections</strong>:</p>
+<ul>
+<li>Use the projection types to safely access variant fields without repetitive pattern matching</li>
+<li>This makes your code more maintainable and less error-prone</li>
+</ul>
+</li>
+<li>
+<p><strong>Consider Query Performance</strong>:</p>
+<ul>
+<li>Using an indexed search in the initial <code>vertices()</code> step is typically more efficient than scanning and then
+filtering</li>
+<li>The more you can narrow your search using indexes, the better your graph traversal performance</li>
+</ul>
+</li>
+</ol>
+<p>For more detailed information on the derive macros, see the <a href="../reference/derive_macros.html">API Reference</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../user_guide/property_graphs/full_text_index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../user_guide/basic_operations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../user_guide/property_graphs/full_text_index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../user_guide/basic_operations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

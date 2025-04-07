@@ -1,0 +1,377 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Context System - graph-api</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">graph-api</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="context-system"><a class="header" href="#context-system">Context System</a></h1>
+<p>The context system is a powerful feature of the Graph API that enriches your traversals by carrying data alongside the stream of elements (vertices or edges). This allows you to maintain state, collect information, and make decisions based on previously processed elements as you explore the graph.</p>
+<h2 id="what-is-context"><a class="header" href="#what-is-context">What is Context?</a></h2>
+<object type="image/svg+xml" data="context_system/image.svg">
+Diagram illustrating how context is added, travels with the stream, and is used by subsequent steps
+</object>
+<p>In this diagram:</p>
+<ul>
+<li>An <strong>Input Stream</strong> contains elements <strong>A</strong> and <strong>B</strong>.</li>
+<li>The <strong><code>push_context</code></strong> step is applied. It calculates a context value (e.g., <code>"Ctx_A"</code>) based on the first element encountered (A) and attaches this <em>fixed</em> context to all subsequent elements.</li>
+<li>The <strong>Stream with Context</strong> now contains pairs of <code>(Element, Context)</code>: <code>(A, "Ctx_A")</code>, <code>(B, "Ctx_A")</code>.</li>
+<li>A subsequent <strong><code>map</code></strong> step receives both the current element and its associated context, allowing it to perform transformations using both pieces of information.</li>
+<li>The <strong>Final Output</strong> shows the results produced by the <code>map</code> step.</li>
+</ul>
+<p>Context allows you to:</p>
+<ul>
+<li><strong>Carry information</strong> from previous steps to later steps in the traversal</li>
+<li><strong>Transform data</strong> as you move through the graph</li>
+<li><strong>Make decisions</strong> based on a combination of current and past elements</li>
+<li><strong>Build complex data structures</strong> by accumulating information during traversal</li>
+<li><strong>Maintain state</strong> without changing the traversal position</li>
+</ul>
+<h2 id="context-methods"><a class="header" href="#context-methods">Context Methods</a></h2>
+<p>The Graph API provides two primary methods for managing context:</p>
+<h3 id="push_context"><a class="header" href="#push_context">push_context</a></h3>
+<pre><code class="language-rust noplayground">// Add or transform context
+walker.push_context(|element, current_context| {
+    // Extract data from the current element
+    // Optionally use the existing context
+    // Return a new context value
+})</code></pre>
+<p>This method creates or transforms context based on the current element and any existing context.</p>
+<h3 id="push_default_context"><a class="header" href="#push_default_context">push_default_context</a></h3>
+<pre><code class="language-rust noplayground">// Add the current vertex or edge as context
+walker.push_default_context()</code></pre>
+<p>This method stores the current vertex or edge in context, making it available in later steps.</p>
+<h2 id="basic-context-usage"><a class="header" href="#basic-context-usage">Basic Context Usage</a></h2>
+<p>Here's a simple example of storing information in context and using it later:</p>
+<pre><code class="language-rust noplayground">pub fn basic_context_example() {
+    let graph = standard_populated_graph();
+
+    // Store person name in context and use it later
+    let person_projects = graph
+        .walk()
+        .vertices()
+        .filter_person() // Type-safe filter using generated helper
+        .push_context(|v, _| {
+            // Extract and store person's name
+            v.project::&lt;Person&lt;_&gt;&gt;().unwrap().name().to_string()
+        })
+        .edges(EdgeSearch::scan().outgoing())
+        .filter_created() // Type-safe filter using generated helper
+        .vertices()
+        .filter_project() // Type-safe filter using generated helper
+        .map(|project, ctx| {
+            // Format using project name and person name from context
+            format!(
+                "{} created the {} project",
+                ctx,
+                project.project::&lt;Project&lt;_&gt;&gt;().unwrap().name()
+            )
+        })
+        .collect::&lt;Vec&lt;_&gt;&gt;();
+}</code></pre>
+<h2 id="nested-context-with-detours"><a class="header" href="#nested-context-with-detours">Nested Context with Detours</a></h2>
+<p>When using the <code>detour</code> step, context becomes nested, allowing you to access the parent context:</p>
+<pre><code class="language-rust noplayground">pub fn nested_context_example() {
+    let graph = standard_populated_graph();
+
+    // Use nested context to track relationships
+    let follows_ages = graph
+        .walk()
+        .vertices()
+        .filter_person() // Type-safe filter using generated helper
+        .push_context(|v, _| {
+            // Store source person's age in context
+            v.project::&lt;Person&lt;_&gt;&gt;().unwrap().age()
+        })
+        .detour(|w| {
+            // Start a sub-traversal that keeps parent context
+            w.edges(EdgeSearch::scan().outgoing())
+                .filter_follows() // Type-safe filter using generated helper
+                .vertices()
+                .filter_person() // Type-safe filter using generated helper
+                .map(|target, ctx| {
+                    // Access source's age from context
+                    let source_age = *ctx;
+                    let target_age = target.project::&lt;Person&lt;_&gt;&gt;().unwrap().age();
+
+                    // Calculate and return age difference
+                    let diff = target_age as i32 - source_age as i32;
+
+                    if diff &gt; 0 {
+                        "follows someone older"
+                    } else if diff &lt; 0 {
+                        "follows someone younger"
+                    } else {
+                        "follows someone the same age"
+                    }
+                })
+        })
+        .collect::&lt;Vec&lt;_&gt;&gt;();
+}</code></pre>
+<h2 id="default-context"><a class="header" href="#default-context">Default Context</a></h2>
+<p>The Graph API provides a built-in default context that simplifies common patterns:</p>
+<pre><code class="language-rust noplayground">pub fn default_context_example() {
+    let graph = standard_populated_graph();
+
+    // Use the built-in default context to access source vertex
+    let relationships = graph
+        .walk()
+        .vertices()
+        .filter_person() // Type-safe filter using generated helper
+        .push_default_context() // Store current vertex in default context
+        .edges(EdgeSearch::scan().outgoing())
+        .vertices()
+        .map(|target, ctx| {
+            // Access the source vertex from context
+            let source = ctx.vertex();
+            let source_name = source
+                .project::&lt;Person&lt;_&gt;&gt;()
+                .map(|p| p.name())
+                .unwrap_or("Unknown");
+
+            // Format the relationship based on target type
+            match target.weight() {
+                Vertex::Person { name, .. } =&gt; format!("{} is connected to {}", source_name, name),
+                Vertex::Project { name, .. } =&gt; format!("{} works on {}", source_name, name),
+                _ =&gt; "Unknown relationship".to_string(),
+            }
+        })
+        .collect::&lt;Vec&lt;_&gt;&gt;();
+}</code></pre>
+<h2 id="type-safety"><a class="header" href="#type-safety">Type Safety</a></h2>
+<p>The context system is fully type-safe:</p>
+<ul>
+<li>Each context value has a specific type determined by your context function</li>
+<li>The compiler enforces correct handling of context types</li>
+<li>Context functions must return values compatible with downstream operations</li>
+<li>Errors in context type handling are caught at compile time, not runtime</li>
+</ul>
+<h2 id="context-lifecycle"><a class="header" href="#context-lifecycle">Context Lifecycle</a></h2>
+<ol>
+<li><strong>Creation</strong>: Context is created when you first call a context method</li>
+<li><strong>Transformation</strong>: Context can be transformed at any step in the traversal</li>
+<li><strong>Access</strong>: Any step that accepts a closure can access the context</li>
+<li><strong>Nesting</strong>: Detours create nested contexts with access to parent contexts</li>
+<li><strong>Immutability</strong>: Context is immutable; transformations create new contexts</li>
+</ol>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<ul>
+<li><strong>Keep context small</strong>: Large contexts can impact performance</li>
+<li><strong>Use immutable data structures</strong>: Create new contexts rather than modifying existing ones</li>
+<li><strong>Leverage type safety</strong>: Let the compiler ensure your context manipulations are valid</li>
+<li><strong>Consider cloning costs</strong>: For large data, use <code>Arc</code> or similar for cheap cloning</li>
+<li><strong>Use default context</strong>: For simple cases, <code>push_default_context()</code> is cleaner than custom context</li>
+<li><strong>Chain context operations</strong>: Build complex data structures through multiple context steps</li>
+<li><strong>Document context types</strong>: When using complex context chains, document the context type at each step</li>
+</ul>
+<h2 id="common-use-cases"><a class="header" href="#common-use-cases">Common Use Cases</a></h2>
+<ul>
+<li><strong>Path tracking</strong>: Record the path taken through the graph</li>
+<li><strong>Property collection</strong>: Gather properties from different vertices/edges</li>
+<li><strong>Decision making</strong>: Use information from earlier elements to influence traversal decisions</li>
+<li><strong>Aggregation</strong>: Build composite results during traversal</li>
+<li><strong>Statistical analysis</strong>: Calculate metrics as you traverse the graph</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../user_guide/walker/steps/dbg.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../user_guide/walker/best_practices.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../user_guide/walker/steps/dbg.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../user_guide/walker/best_practices.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+    <title>Depth-First Traversal Order</title>
+    <desc>
+        Diagram illustrating the Depth-First Search (DFS) order of graph traversal:
+        - Shows a simple directed graph with nodes A through F.
+        - Highlights the traversal path using the 'path' edge class.
+        - Indicates the order of node visits with numerical labels (1-6).
+        - The traversal order shown is A(1) -> B(2) -> D(3) -> E(4) -> C(5) -> F(6).
+    </desc>
+
+    <defs>
+        <!-- Standard arrowhead marker -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Path arrowhead marker -->
+        <marker id="arrowhead-path" class="marker-arrowhead-path marker-base" markerWidth="10" markerHeight="7" refX="9"
+                refY="3.5" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L10,3.5 L0,7 Z"/>
+        </marker>
+    </defs>
+
+    <!-- Graph Structure -->
+    <g id="graph-group" transform="translate(50, 50)">
+
+        <!-- Edges (Rendered Before Nodes) -->
+        <!-- Edges forming the DFS path -->
+        <g class="edge directed path" id="edge-A-B">
+            <line x1="100" y1="70" x2="100" y2="130" marker-end="url(#arrowhead-path)"/> <!-- A -> B -->
+        </g>
+        <g class="edge directed path" id="edge-B-D">
+            <line x1="80" y1="170" x2="30" y2="230" marker-end="url(#arrowhead-path)"/> <!-- B -> D -->
+        </g>
+        <g class="edge directed path" id="edge-B-E">
+            <line x1="120" y1="170" x2="170" y2="230" marker-end="url(#arrowhead-path)"/> <!-- B -> E -->
+        </g>
+        <g class="edge directed path" id="edge-A-C">
+            <line x1="120" y1="50" x2="280" y2="50" marker-end="url(#arrowhead-path)"/> <!-- A -> C -->
+        </g>
+        <g class="edge directed path" id="edge-C-F">
+            <line x1="300" y1="70" x2="300" y2="130" marker-end="url(#arrowhead-path)"/> <!-- C -> F -->
+        </g>
+
+        <!-- Nodes (Rendered After Edges) -->
+        <!-- Node A (Start) -->
+        <g class="node" id="node-A" transform="translate(100, 50)">
+            <circle r="20"/>
+            <text class="node-label">A</text>
+            <text class="traversal-order-label" x="10" y="-25">(1)</text>
+        </g>
+        <!-- Node B -->
+        <g class="node" id="node-B" transform="translate(100, 150)">
+            <circle r="20"/>
+            <text class="node-label">B</text>
+            <text class="traversal-order-label" x="10" y="-25">(2)</text>
+        </g>
+        <!-- Node C -->
+        <g class="node" id="node-C" transform="translate(300, 50)">
+            <circle r="20"/>
+            <text class="node-label">C</text>
+            <text class="traversal-order-label" x="10" y="-25">(5)</text>
+        </g>
+        <!-- Node D -->
+        <g class="node" id="node-D" transform="translate(30, 250)">
+            <circle r="20"/>
+            <text class="node-label">D</text>
+            <text class="traversal-order-label" x="10" y="-25">(3)</text>
+        </g>
+        <!-- Node E -->
+        <g class="node" id="node-E" transform="translate(170, 250)">
+            <circle r="20"/>
+            <text class="node-label">E</text>
+            <text class="traversal-order-label" x="10" y="-25">(4)</text>
+        </g>
+        <!-- Node F -->
+        <g class="node" id="node-F" transform="translate(300, 150)">
+            <circle r="20"/>
+            <text class="node-label">F</text>
+            <text class="traversal-order-label" x="10" y="-25">(6)</text>
+        </g>
+
+    </g> <!-- End of graph-group -->
+
+    <!-- Explanation Text -->
+    <text class="step-label" x="300" y="350" text-anchor="middle">Traversal Order: A → B → D → E → C → F</text>
+
+</svg>

@@ -1,0 +1,380 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Testing Your Implementation - graph-api</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">graph-api</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="testing-your-implementation"><a class="header" href="#testing-your-implementation">Testing Your Implementation</a></h1>
+<p>Testing a graph implementation thoroughly is essential to ensure correctness, reliability, and performance. The Graph API provides a comprehensive test suite to verify that your implementation meets all the requirements of the Graph API traits.</p>
+<h2 id="using-the-test-suite"><a class="header" href="#using-the-test-suite">Using the Test Suite</a></h2>
+<p>The <code>graph-api-test</code> crate provides a test suite that can be used to verify your graph implementation. The test suite covers:</p>
+<ol>
+<li>Basic graph operations (adding/removing vertices and edges)</li>
+<li>Graph traversal and walker steps</li>
+<li>Index functionality</li>
+<li>Edge cases and error handling</li>
+<li>Fuzzing tests for robustness</li>
+</ol>
+<h3 id="setting-up-the-test-suite"><a class="header" href="#setting-up-the-test-suite">Setting Up the Test Suite</a></h3>
+<p>To test your implementation:</p>
+<ol>
+<li>Add <code>graph-api-test</code> as a dev-dependency in your <code>Cargo.toml</code>:</li>
+</ol>
+<pre><code class="language-toml">[dev-dependencies]
+graph-api-test = { version = "0.1.0", path = "../graph-api-test" }
+</code></pre>
+<ol start="2">
+<li>Create a test module in your crate:</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[cfg(test)]
+mod test {
+    use crate::MyGraph;
+    use graph_api_test::test_suite;
+
+    test_suite!(MyGraph::new());
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The <code>test_suite!</code> macro generates test cases for all the functionality supported by the Graph API.</p>
+<h2 id="understanding-test-coverage"><a class="header" href="#understanding-test-coverage">Understanding Test Coverage</a></h2>
+<p>The test suite covers several areas:</p>
+<h3 id="basic-graph-operations"><a class="header" href="#basic-graph-operations">Basic Graph Operations</a></h3>
+<ul>
+<li>Adding vertices and edges</li>
+<li>Removing vertices and edges</li>
+<li>Retrieving vertices and edges by ID</li>
+<li>Modifying vertex and edge properties</li>
+</ul>
+<h3 id="walker-steps"><a class="header" href="#walker-steps">Walker Steps</a></h3>
+<p>Tests for all walker steps:</p>
+<ul>
+<li><code>vertices</code>, <code>vertices_by_id</code>, <code>edges</code></li>
+<li><code>filter</code>, <code>map</code>, <code>limit</code>, <code>first</code></li>
+<li><code>head</code>, <code>tail</code>, <code>detour</code></li>
+<li><code>collect</code>, <code>count</code>, <code>into_iter</code></li>
+<li><code>probe</code>, <code>mutate</code>, <code>dbg</code></li>
+<li>Context operations</li>
+</ul>
+<h3 id="index-tests"><a class="header" href="#index-tests">Index Tests</a></h3>
+<p>If your graph supports indexes, tests for:</p>
+<ul>
+<li>Vertex and edge label indexes</li>
+<li>Hash indexes</li>
+<li>Range indexes</li>
+<li>Full-text indexes</li>
+</ul>
+<h3 id="conditional-feature-testing"><a class="header" href="#conditional-feature-testing">Conditional Feature Testing</a></h3>
+<p>The test suite adapts to the features your graph implementation supports. For example, if your graph doesn't support range indexes, those tests will be skipped.</p>
+<h2 id="writing-additional-tests"><a class="header" href="#writing-additional-tests">Writing Additional Tests</a></h2>
+<p>While the test suite covers most functionality, you should write additional tests for:</p>
+<ol>
+<li><strong>Implementation-specific features</strong>: Any custom functionality your graph provides.</li>
+<li><strong>Edge cases</strong>: Unusual usage patterns specific to your implementation.</li>
+<li><strong>Performance tests</strong>: Verify that your implementation meets performance requirements.</li>
+</ol>
+<h3 id="example-testing-a-custom-feature"><a class="header" href="#example-testing-a-custom-feature">Example: Testing a Custom Feature</a></h3>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[test]
+fn test_my_custom_feature() {
+    let mut graph = MyGraph::new();
+    
+    // Test setup
+    let vertex = graph.add_vertex(Vertex::Person { name: "Test".to_string(), ... });
+    
+    // Test the custom feature
+    let result = graph.my_custom_feature(vertex);
+    
+    // Assertions
+    assert_eq!(result, expected_value);
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="fuzzing-tests"><a class="header" href="#fuzzing-tests">Fuzzing Tests</a></h2>
+<p>The test suite includes fuzzing tests that apply random sequences of operations to your graph to find edge cases and bugs. These tests help ensure your implementation is robust against unexpected usage patterns.</p>
+<p>To run the fuzzing tests with extended iterations:</p>
+<pre><code class="language-bash">PROPTEST_CASES=1000 cargo test fuzz_test
+</code></pre>
+<h2 id="testing-performance"><a class="header" href="#testing-performance">Testing Performance</a></h2>
+<p>Performance testing is crucial for graph implementations. The test suite includes basic performance tests, but you should also write specific benchmarks:</p>
+<ol>
+<li>Add a benchmarking framework like <code>criterion</code>:</li>
+</ol>
+<pre><code class="language-toml">[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "my_graph_benchmarks"
+harness = false
+</code></pre>
+<ol start="2">
+<li>Create benchmarks for performance-critical operations:</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use my_graph::{MyGraph, Vertex, Edge};
+use graph_api_lib::{Graph, VertexSearch};
+
+fn vertex_insertion_benchmark(c: &amp;mut Criterion) {
+    c.bench_function("insert_vertices_1000", |b| {
+        b.iter(|| {
+            let mut graph = MyGraph::new();
+            for i in 0..1000 {
+                graph.add_vertex(Vertex::Person {
+                    name: format!("Person {}", i),
+                    // Other fields...
+                });
+            }
+        })
+    });
+}
+
+criterion_group!(benches, vertex_insertion_benchmark);
+criterion_main!(benches);
+<span class="boring">}</span></code></pre></pre>
+<ol start="3">
+<li>Use the benchmarking utilities provided by <code>graph-api-benches</code>:</li>
+</ol>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use criterion::{Criterion, criterion_group, criterion_main};
+use graph_api_benches::bench_suite;
+use my_graph::MyGraph;
+
+fn criterion_benchmark(c: &amp;mut Criterion) {
+    bench_suite!(c, || MyGraph::new());
+}
+
+criterion_group!(benches, criterion_benchmark);
+criterion_main!(benches);
+<span class="boring">}</span></code></pre></pre>
+<h2 id="debugging-test-failures"><a class="header" href="#debugging-test-failures">Debugging Test Failures</a></h2>
+<p>When a test fails, the test suite provides detailed error messages to help diagnose the issue:</p>
+<ol>
+<li><strong>Element mismatches</strong>: Shows which elements were expected but missing, and which extra elements were found.</li>
+<li><strong>Type errors</strong>: Indicates when type constraints are not satisfied.</li>
+<li><strong>Panic information</strong>: Provides context when your implementation panics.</li>
+</ol>
+<h3 id="common-test-failure-causes"><a class="header" href="#common-test-failure-causes">Common Test Failure Causes</a></h3>
+<ol>
+<li><strong>Incorrect Iterator Implementation</strong>: Many failures stem from incorrect iterator implementations for <code>VertexIter</code> and <code>EdgeIter</code>.</li>
+<li><strong>Index Inconsistencies</strong>: Failures in index tests often indicate that indexes are not being updated correctly during mutations.</li>
+<li><strong>Missing Direction Handling</strong>: Edge traversal tests may fail if direction filtering isn't correctly implemented.</li>
+<li><strong>Lifetime Issues</strong>: Reference handling problems can cause compiler errors in tests.</li>
+</ol>
+<h2 id="test-driven-development-approach"><a class="header" href="#test-driven-development-approach">Test-Driven Development Approach</a></h2>
+<p>A recommended approach for implementing a graph backend:</p>
+<ol>
+<li>Start with a minimal implementation that passes basic vertex and edge tests.</li>
+<li>Add traversal capabilities and ensure walker step tests pass.</li>
+<li>Implement indexes one at a time, testing each thoroughly before moving on.</li>
+<li>Run the fuzzing tests to catch any edge cases.</li>
+<li>Optimize and benchmark once functionality is correct.</li>
+</ol>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>Thorough testing is essential for a robust graph implementation. Use the provided test suite as your primary testing tool, but also write custom tests for implementation-specific features and performance characteristics. A well-tested implementation will be more reliable and easier to maintain as the Graph API evolves.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../implementation/graphs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../implementation/features.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../implementation/graphs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../implementation/features.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

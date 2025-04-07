@@ -1,0 +1,511 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Derive Macros - graph-api</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">graph-api</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="derive-macros"><a class="header" href="#derive-macros">Derive Macros</a></h1>
+<p>The Graph API provides derive macros to make working with your graph model types straightforward and type-safe. These
+macros generate code that integrates your custom types with the Graph API framework.</p>
+<h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
+<p>There are two primary derive macros:</p>
+<ol>
+<li><code>VertexExt</code> - For vertex enum types</li>
+<li><code>EdgeExt</code> - For edge enum types</li>
+</ol>
+<p>These macros generate:</p>
+<ul>
+<li>Label enums for type-safe queries</li>
+<li>Index enums for efficient property lookups</li>
+<li>Helper methods for traversing and querying the graph</li>
+<li>Projection types for type-safe access to variant fields</li>
+<li>Walker builder filter extensions for type-safe filtering</li>
+</ul>
+<h2 id="vertexext-derive-macro"><a class="header" href="#vertexext-derive-macro">VertexExt Derive Macro</a></h2>
+<h3 id="generated-types"><a class="header" href="#generated-types">Generated Types</a></h3>
+<p>When you apply <code>#[derive(VertexExt)]</code> to an enum, the following types are generated:</p>
+<ol>
+<li><strong>VertexLabel</strong> enum - Contains variants matching your enum's variants</li>
+<li><strong>VertexIndex</strong> enum - Contains variants for each indexed field</li>
+<li><strong>Projection</strong> structs - For accessing fields in a type-safe way</li>
+</ol>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<pre><code class="language-rust noplayground">use graph_api_derive::VertexExt;
+use uuid::Uuid;
+
+#[derive(Debug, Clone, VertexExt)]
+pub enum Vertex {
+    Person {
+        #[index]
+        name: String,
+
+        #[index(range)]
+        age: u64,
+
+        #[index(full_text)]
+        biography: String,
+
+        unique_id: Uuid, // Not indexed
+    },
+    Project {
+        name: String,
+    },
+    Tag, // Unit variant
+}</code></pre>
+<p>This generates:</p>
+<pre><code class="language-rust noplayground">// Label enum
+pub enum VertexLabel {
+    Person,
+    Project,
+    Tag,
+}
+
+// Index enum with methods
+pub enum VertexIndex {
+    PersonName,
+    PersonAge,
+    PersonBiography,
+}
+
+// Projection structs (simplified)
+pub struct Person&lt;'a, V&gt; {
+    name: &amp;'a String,
+    age: &amp;'a u64,
+    biography: &amp;'a String,
+    unique_id: &amp;'a Uuid,
+}
+
+pub struct PersonMut&lt;'a, V, L&gt; {
+    name: &amp;'a mut String,
+    age: &amp;'a mut u64,
+    biography: &amp;'a mut String,
+    unique_id: &amp;'a mut Uuid,
+}</code></pre>
+<h3 id="generated-methods"><a class="header" href="#generated-methods">Generated Methods</a></h3>
+<p>The derive macro generates several methods on the <code>VertexIndex</code> enum:</p>
+<h4 id="label-based-querying"><a class="header" href="#label-based-querying">Label-based Querying</a></h4>
+<p>For each enum variant, a method is generated to query by label:</p>
+<pre><code class="language-rust noplayground">// Query for all Person vertices
+Vertex::person() -&gt; VertexSearch&lt;'_, Graph&gt;</code></pre>
+<h4 id="property-based-querying"><a class="header" href="#property-based-querying">Property-based Querying</a></h4>
+<p>For each indexed field, methods are generated for exact matching:</p>
+<pre><code class="language-rust noplayground">// Query for Person vertices with a specific name
+Vertex::person_by_name(value: &amp; str) -&gt; VertexSearch&lt;'_, Graph&gt;
+
+// Query for Person vertices with a specific age
+Vertex::person_by_age(value: u64) -&gt; VertexSearch&lt;'_, Graph&gt;</code></pre>
+<h4 id="range-based-querying"><a class="header" href="#range-based-querying">Range-based Querying</a></h4>
+<p>For fields with the <code>#[index(range)]</code> attribute:</p>
+<pre><code class="language-rust noplayground">// Query for Person vertices with age in a range
+Vertex::person_by_age_range(range: Range&lt;u64&gt;) -&gt; VertexSearch&lt;'_, Graph&gt;</code></pre>
+<h4 id="full-text-querying"><a class="header" href="#full-text-querying">Full-text Querying</a></h4>
+<p>For fields with the <code>#[index(full_text)]</code> attribute:</p>
+<pre><code class="language-rust noplayground">// Query for Person vertices with matching text in biography
+Vertex::person_by_biography(search: &amp; str) -&gt; VertexSearch&lt;'_, Graph&gt;</code></pre>
+<h2 id="edgeext-derive-macro"><a class="header" href="#edgeext-derive-macro">EdgeExt Derive Macro</a></h2>
+<h3 id="generated-types-1"><a class="header" href="#generated-types-1">Generated Types</a></h3>
+<p>When you apply <code>#[derive(EdgeExt)]</code> to an enum, similar types are generated:</p>
+<ol>
+<li><strong>EdgeLabel</strong> enum - Contains variants matching your enum's variants</li>
+<li><strong>EdgeIndex</strong> enum - Contains variants for each indexed field</li>
+<li>Projection structs - For accessing fields in a type-safe way</li>
+</ol>
+<h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
+<pre><code class="language-rust noplayground">use graph_api_derive::EdgeExt;
+
+#[derive(Debug, Clone, EdgeExt)]
+pub enum Edge {
+    Knows {
+        since: u32,
+    },
+    Created,
+    Rated(Rating),
+}</code></pre>
+<p>This generates:</p>
+<pre><code class="language-rust noplayground">// Label enum
+pub enum EdgeLabel {
+    Knows,
+    Created,
+    Rated,
+}
+
+// Index enum with methods
+pub enum EdgeIndex {
+    // EdgeIndex variants (if indexed fields exist)
+}</code></pre>
+<h3 id="generated-methods-1"><a class="header" href="#generated-methods-1">Generated Methods</a></h3>
+<p>The EdgeIndex enum offers methods for edge traversal:</p>
+<pre><code class="language-rust noplayground">// Query for all Knows edges
+EdgeIndex::knows() -&gt; EdgeSearch&lt;'_, Graph&gt;
+
+// Specify outgoing direction
+EdgeIndex::knows().outgoing()
+
+// Specify incoming direction
+EdgeIndex::knows().incoming()
+
+// Limit result count
+EdgeIndex::knows().limit(n)</code></pre>
+<h2 id="walker-builder-filter-extensions"><a class="header" href="#walker-builder-filter-extensions">Walker Builder Filter Extensions</a></h2>
+<p>The derive macros also generate filter extension methods on the walker builders to simplify filtering based on
+vertex/edge types.</p>
+<h3 id="for-unit-variants"><a class="header" href="#for-unit-variants">For Unit Variants</a></h3>
+<p>For unit variants (without fields), a single filter method is generated:</p>
+<pre><code class="language-rust noplayground">// Filter for all instances of the unit variant
+fn filter_tag(self) -&gt; /* walker builder */</code></pre>
+<p>Usage example:</p>
+<pre><code class="language-rust noplayground">// Get all Tag vertices
+let tags = graph
+.walk()
+.vertices(VertexSearch::scan())
+.filter_tag()
+.collect::&lt;Vec&lt;_ &gt; &gt; ();</code></pre>
+<h3 id="for-named-fields-variants"><a class="header" href="#for-named-fields-variants">For Named Fields Variants</a></h3>
+<p>For variants with named fields, two filter methods are generated:</p>
+<pre><code class="language-rust noplayground">// 1. Filter for all instances of this variant
+fn filter_person(self) -&gt; /* walker builder */
+
+// 2. Filter with custom logic using the projected fields
+fn filter_by_person&lt;F&gt;(self, filter: F) -&gt; /* walker builder */
+where
+    F: Fn(Person&lt;Graph::Vertex&gt;, &amp;Context) -&gt; bool</code></pre>
+<p>Usage example:</p>
+<pre><code class="language-rust noplayground">// Get all Person vertices
+let all_persons = graph
+.walk()
+.vertices(VertexSearch::scan())
+.filter_person()
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
+
+// Get Person vertices with specific criteria
+let adults = graph
+.walk()
+.vertices(VertexSearch::scan())
+.filter_by_person( | person, _ | person.age() &gt; = 18)
+.collect::&lt;Vec&lt;_ &gt; &gt; ();</code></pre>
+<h3 id="for-tuple-variants"><a class="header" href="#for-tuple-variants">For Tuple Variants</a></h3>
+<p>For tuple variants, similar filter methods are generated:</p>
+<pre><code class="language-rust noplayground">// 1. Filter for all instances of this variant
+fn filter_rated(self) -&gt; /* walker builder */
+
+// 2. Filter with custom logic using the tuple fields
+fn filter_by_rated&lt;F&gt;(self, filter: F) -&gt; /* walker builder */
+where
+    F: Fn(&amp;Rating, &amp;Context) -&gt; bool</code></pre>
+<p>Usage example:</p>
+<pre><code class="language-rust noplayground">// Get edges with high ratings
+let high_ratings = graph
+.walk()
+.vertices_by_id([person_id])
+.edges(EdgeSearch::scan())
+.filter_by_rated( | rating, _ | rating.stars &gt; = 4)
+.collect::&lt;Vec&lt;_ &gt; &gt; ();</code></pre>
+<h3 id="benefits-of-filter-extensions"><a class="header" href="#benefits-of-filter-extensions">Benefits of Filter Extensions</a></h3>
+<p>These filter extensions provide several advantages:</p>
+<ol>
+<li><strong>Type Safety</strong> - The closures receive strongly typed projections</li>
+<li><strong>Code Clarity</strong> - Filters are expressive and self-documenting</li>
+<li><strong>IDE Support</strong> - Better autocompletion for variant fields</li>
+<li><strong>Context Access</strong> - Access to the walker's context object</li>
+<li><strong>Pattern Matching</strong> - No need for manual pattern matching</li>
+</ol>
+<h2 id="using-generated-types"><a class="header" href="#using-generated-types">Using Generated Types</a></h2>
+<h3 id="in-graph-queries"><a class="header" href="#in-graph-queries">In Graph Queries</a></h3>
+<p>The generated types integrate with the Graph walker pattern:</p>
+<pre><code class="language-rust noplayground">// Find all person vertices
+let people = graph
+.walk()
+.vertices(Vertex::person())
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
+
+// Find people with a specific name
+let named_people = graph
+.walk()
+.vertices(Vertex::person_by_name("Bryn"))
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
+
+// Find people in an age range
+let adults = graph
+.walk()
+.vertices(Vertex::person_by_age_range(18..65))
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
+
+// Find outgoing 'knows' edges from a vertex
+let friends = graph
+.walk()
+.vertices_by_id([person_id])
+.edges(EdgeIndex::knows().outgoing())
+.collect::&lt;Vec&lt;_ &gt; &gt; ();</code></pre>
+<h3 id="combined-with-filter-extensions"><a class="header" href="#combined-with-filter-extensions">Combined with Filter Extensions</a></h3>
+<p>Filter extensions can be combined with other walker steps:</p>
+<pre><code class="language-rust noplayground">// Find adults named "Bryn" with a complex filter
+let result = graph
+.walk()
+.vertices(Vertex::person())
+.filter_by_person( | person, _ | {
+person.age() &gt; = 18 &amp; &amp; person.name().contains("Bryn")
+})
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
+
+// Find friendship edges created before 2000
+let old_friendships = graph
+.walk()
+.vertices_by_id([person_id])
+.edges(EdgeIndex::knows().outgoing())
+.filter_by_knows( | knows, _ | knows.since() &lt; 2000)
+.collect::&lt;Vec&lt;_ &gt; &gt; ();</code></pre>
+<h3 id="type-constraints"><a class="header" href="#type-constraints">Type Constraints</a></h3>
+<p>When using these types, your Graph type needs to implement appropriate support:</p>
+<pre><code class="language-rust noplayground">fn example&lt;G&gt;(graph: &amp;G)
+where
+    G: Graph&lt;Vertex=Vertex, Edge=Edge&gt;,
+    G::SupportsVertexLabelIndex: Supported,
+{
+    // Now you can use label-based indexes
+    graph.walk().vertices(Vertex::person())...
+}</code></pre>
+<h2 id="index-attributes"><a class="header" href="#index-attributes">Index Attributes</a></h2>
+<p>You can use these attributes on struct fields:</p>
+<ul>
+<li><code>#[index]</code> - Basic indexing for efficient lookups</li>
+<li><code>#[index(range)]</code> - Enables range queries</li>
+<li><code>#[index(full_text)]</code> - Enables text search (String fields only)</li>
+</ul>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<ol>
+<li>
+<p>Use the appropriate index type for your query pattern:</p>
+<ul>
+<li>Use label index for type filtering</li>
+<li>Use property index for exact matches</li>
+<li>Use range index for numeric ranges</li>
+<li>Use full-text for searching text content</li>
+</ul>
+</li>
+<li>
+<p>Apply indexes sparingly:</p>
+<ul>
+<li>Each index adds memory overhead</li>
+<li>Only index fields you'll query frequently, it's OK to filter once you are on the graph.</li>
+</ul>
+</li>
+<li>
+<p>Consider the query planner:</p>
+<ul>
+<li>Using an index in a vertices() step is typically more efficient than filtering the entire graph</li>
+<li>Combining indices with other walker steps can create efficient traversal patterns</li>
+</ul>
+</li>
+<li>
+<p>Use filter extensions for type-safety:</p>
+<ul>
+<li>Prefer <code>filter_by_person()</code> over <code>filter()</code> with manual pattern matching</li>
+<li>Leverage the projection types for field access</li>
+<li>Use specific filter methods for clearer, more maintainable code</li>
+</ul>
+</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../reference/support_traits.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../reference/implementations.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../reference/support_traits.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../reference/implementations.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

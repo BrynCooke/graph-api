@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480"> <!-- Increased height -->
+    <title>Graph Model Example</title>
+    <desc>Diagram showing a graph model with Person and Project vertices and Follows, Created, Liked, Contributes edges. Layout prioritizes avoiding edge crossings and uses consistent styling.</desc>
+    <defs>
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+    </defs>
+    <text x="300" y="25" class="index-title" text-anchor="middle">Graph Model Example</text>
+
+    <!-- Vertices -->
+    <g class="node" id="node-bryn" transform="translate(150, 100)">
+        <circle r="25"></circle> <!-- Slightly smaller radius for consistency -->
+        <text class="node-label">Person</text>
+        <text class="property-text" y="28">name: Bryn</text> <!-- Moved down -->
+        <text class="property-text" y="43">age: 28</text> <!-- Moved down -->
+    </g>
+    <g class="node" id="node-julia" transform="translate(450, 100)">
+        <circle r="25"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="28">name: Julia</text> <!-- Moved down -->
+        <text class="property-text" y="43">age: 34</text> <!-- Moved down -->
+    </g>
+    <g class="node" id="node-graphapi" transform="translate(150, 230)">
+        <circle r="25"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="28">name: GraphApi</text> <!-- Moved down -->
+    </g>
+    <g class="node" id="node-alpaca" transform="translate(450, 230)">
+        <circle r="25"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="28">name: Alpaca</text> <!-- Moved down -->
+    </g>
+    <g class="node" id="node-rust" transform="translate(300, 380)"> <!-- Adjusted Y position further -->
+        <circle r="25"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="28">name: Rust</text> <!-- Moved down -->
+    </g>
+
+    <!-- Edges -->
+    <!-- Follows Edges -->
+    <g class="edge directed" id="edge-bryn-julia-follows">
+        <line x1="175" y1="100" x2="425" y2="100" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="90">Follows</text>
+    </g>
+    <g class="edge directed" id="edge-julia-bryn-follows">
+        <!-- Curved path slightly offset -->
+        <path d="M 425 110 q -137.5 30 -275 0" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="130">Follows</text>
+    </g>
+
+    <!-- Created Edges -->
+    <g class="edge directed" id="edge-bryn-graphapi-created">
+        <line x1="150" y1="125" x2="150" y2="205" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="165" y="165" text-anchor="start">Created</text>
+    </g>
+    <g class="edge directed" id="edge-julia-alpaca-created">
+        <line x1="450" y1="125" x2="450" y2="205" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="435" y="165" text-anchor="end">Created</text>
+    </g>
+
+    <!-- Liked Edge -->
+    <g class="edge directed" id="edge-bryn-alpaca-liked">
+        <!-- Slightly adjusted curve -->
+        <path d="M 175 115 Q 312.5 172.5 425 215" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="175">Liked</text>
+    </g>
+
+    <!-- Contributes Edges -->
+    <g class="edge directed" id="edge-bryn-rust-contributes">
+        <!-- Adjusted path start/end points for new node positions -->
+        <line x1="170" y1="255" x2="280" y2="360" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
+        <text class="edge-label" x="210" y="315">Contributes</text> <!-- Adjusted Y coord -->
+    </g>
+    <g class="edge directed" id="edge-julia-rust-contributes">
+        <!-- Adjusted path start/end points for new node positions -->
+        <line x1="430" y1="255" x2="320" y2="360" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
+        <text class="edge-label" x="390" y="315">Contributes</text> <!-- Adjusted Y coord -->
+    </g>
+
+</svg>
