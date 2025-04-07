@@ -25,6 +25,8 @@
 
     <!-- Input Stream -->
     <text class="step-label" x="100" y="40" text-anchor="middle">Input Stream</text>
+    <!-- Reduction Process Title (Moved) -->
+    <text class="step-label" x="300" y="40" text-anchor="middle">Reduction Process (Max Age)</text>
     <line class="edge directed" x1="50" y1="100" x2="250" y2="100" marker-end="url(#arrowhead)"/>
 
     <!-- Input Elements -->
@@ -53,7 +55,6 @@
 
     <!-- Reduction Process Visualization -->
     <g transform="translate(300, 150)"> <!-- Start visualization lower -->
-        <text class="step-label" text-anchor="middle">Reduction Process (Max Age)</text>
 
         <!-- Arrows from Input Stream Elements to Step 1 -->
         <path class="edge directed" d="M 80 125 C 80 145 200 155 250 185" fill="none" marker-end="url(#arrowhead)"/> <!-- A to Step 1 Left -->
