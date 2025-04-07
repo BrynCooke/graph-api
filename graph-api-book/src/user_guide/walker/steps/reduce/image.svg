@@ -73,7 +73,7 @@
             <!-- Arrow down from comparison -->
             <line class="index-pointer" x1="0" y1="20" x2="0" y2="40" marker-end="url(#arrowhead-pointer)"/>
             <!-- Discarded B -->
-            <g class="node visited" transform="translate(50, 20)">
+            <g class="node visited" transform="translate(50, 0)"> <!-- Centered over B -->
                  <line class="filtered-out-mark" x1="-8" y1="-8" x2="8" y2="8"/>
                  <line class="filtered-out-mark" x1="-8" y1="8" x2="8" y2="-8"/>
             </g>
@@ -100,7 +100,7 @@
              <!-- Arrow down from comparison -->
              <line class="index-pointer" x1="0" y1="20" x2="0" y2="40" marker-end="url(#arrowhead-pointer)"/>
              <!-- Discarded A -->
-             <g class="node visited" transform="translate(-50, 20)">
+             <g class="node visited" transform="translate(-50, 0)"> <!-- Centered over A -->
                  <line class="filtered-out-mark" x1="-8" y1="-8" x2="8" y2="8"/>
                  <line class="filtered-out-mark" x1="-8" y1="8" x2="8" y2="-8"/>
              </g>
