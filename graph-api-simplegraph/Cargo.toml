@@ -2,8 +2,15 @@
 name = "graph-api-simplegraph"
 version = "0.1.0"
 edition = "2024"
+description = "A simple, efficient graph implementation for the graph-api ecosystem with support for indexing"
+authors = ["Bryn Cooke"]
+license = "Apache-2.0"
+repository = "https://github.com/BrynCooke/graph-api"
+documentation = "https://bryncooke.github.io/graph-api/"
+readme = "README.md"
+keywords = ["graph", "database", "in-memory", "data-structure", "indexed"]
+categories = ["data-structures", "memory-management"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
 bench = false

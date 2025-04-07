@@ -2,8 +2,15 @@
 name = "graph-api-petgraph"
 version = "0.1.0"
 edition = "2024"
+description = "Integration between graph-api and petgraph - use graph-api's traversal system with petgraph structures"
+authors = ["Bryn Cooke"]
+license = "Apache-2.0"
+repository = "https://github.com/BrynCooke/graph-api"
+documentation = "https://bryncooke.github.io/graph-api/"
+readme = "README.md"
+keywords = ["graph", "database", "petgraph", "adapter", "traversal"]
+categories = ["data-structures", "algorithms"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
 bench = false
 

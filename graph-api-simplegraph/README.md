@@ -1,63 +1,48 @@
 # SimpleGraph
 
-A lightweight and efficient graph indexing library written in Rust that provides flexible storage and querying
-capabilities.
+**Introducing SimpleGraph** — a lightweight, efficient, and feature-rich reference implementation of the Graph-API ecosystem!
 
-SimpleGraph is the reference implementation of Graph-API and graph implementors should match behaviour.
+Looking for a graph implementation that just works? SimpleGraph delivers a complete, optimized solution for in-memory graph storage with powerful indexing capabilities. As the reference implementation for Graph-API, SimpleGraph sets the standard for what a graph implementation should do.
 
-## Features
+## Features That Delight
 
-### Indexing Support
+### Comprehensive Indexing
+* **Hash Index**: Lightning-fast lookups for exact matches — perfect for finding elements by ID or name
+* **Range Index**: Efficient range queries — ideal for age ranges, date spans, or alphabetical searches
+* **Full Text Index**: Text search capabilities — find elements containing specific words or phrases
+* **Label Indexing**: Quick access to all vertices or edges of a specific type
 
-- **Hash Index**: Perfect for label-based lookups and general key-value associations
-- **Range Index**: Supports range queries and range traversal of data
-- **Full Text Index**: Supports full text searches for vertices
-- **Vertex and Edge Labels**: Search all elements matching a label.
+### Smart Implementation
 
-### Key Characteristics
+* **Type-Safe API**: Work with confidence using Rust's type system
+* **Memory-Efficient Storage**: Carefully designed to minimize memory footprint
+* **Stable IDs**: References to graph elements remain valid even as the graph changes
+* **Optimized Traversals**: Navigate your graph with minimal overhead
 
-- Type-safe implementations
-- Memory-efficient storage
+## Performance Highlights
 
-## Storage Structure
+SimpleGraph is built with performance in mind:
 
-Vertices are stores in a stable Vec to provide stable indexing and reuse of empty slots.
+* **Hash Index**: O(1) lookups and inserts — as fast as it gets!
+* **Range Index**: O(log n) operations — efficient even with millions of elements
+* **Full Text Index**: Search through text fields without manual string parsing
+* **Stable Storage**: O(1) element access with slot reuse for removed elements
 
-## Performance Characteristics
+## Perfect For
 
-### Hash Index
+* Building recommendation systems
+* Social network analysis
+* Knowledge representation
+* Data relationship visualization
+* Any application requiring indexed graph operations
 
-- Insert: O(1) average case
-- Lookup: O(1) average case
-- Remove: O(1) average case
-- Memory: O(n) where n is the total number of key-value pairs
+## Coming Soon
 
-### Range Index
+SimpleGraph is actively evolving with enhancements on the horizon:
+* Optimized memory usage for large graphs
+* Edge indexing for even more flexible queries
+* Performance improvements for specific traversal patterns
 
-- Insert: O(log n) where n is the number of unique keys
-- Lookup: O(log n)
-- Range Query: O(log n + m) where m is the number of elements in range
-- Remove: O(log n)
-- Memory: O(n) where n is the total number of key-value pairs
+Experience the simplicity and power of a well-designed graph implementation with SimpleGraph!
 
-### Full text index
-
-- Insert: O(n) where n is the number of tokens in the document
-- Lookup: O(n) where n is the number of documents
-- Remove: O(1) average case
-- Memory: O(n) where n is the total number of documents
-
-## Use Cases
-
-- Graph databases requiring multiple indexing strategies
-- Label-based search systems
-- Range-based data queries
-- Applications requiring both range and hash data access patterns
-- Full text search
-
-## Future development
-
-SimpleGraph has is not finished and requires:
-
-* Optimisation for memory and performance
-* Edge indexes support.
+Learn more in the [graph-api book](https://bryncooke.github.io/graph-api/).

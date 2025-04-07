@@ -1,127 +1,67 @@
-# Testing your graph
+# Graph-API Test Suite
 
-This crate contains a test suite to ensure that your graph behaves as expected.
+**Welcome to graph-api-test** — your friendly companion for ensuring your graph implementation behaves exactly as expected!
 
-Simply include the following code in your library:
+Implementing the Graph-API traits for your custom graph structure? This comprehensive test suite takes the guesswork out of compatibility testing, giving you confidence that your graph behaves correctly.
+
+## Effortless Testing
+
+Testing your graph implementation couldn't be easier:
 
 ```rust
 #[cfg(test)]
 mod test {
     use graph_api_test::test_suite;
+    
+    // One line to test everything!
     test_suite!(YourGraph::new());
 }
 ```
 
-The `test_suite!` macro will expand to cover all basic operations and traversals.
+With this simple macro, you'll validate that your graph implementation properly supports all the operations and behaviors expected by the Graph-API ecosystem. No need to write tedious test cases for each feature!
 
-When importing this crate make sure to use the features that match your graph implementation.
+## Feature-Specific Testing
 
-For instance:
+Implementing only a subset of Graph-API's optional capabilities? No problem! Simply include the features that match your implementation:
 
-```rust
-impl Graph for MyGraph {
-    type SupportsVertexLabelIndex: Supported;
-}
+```toml
+[dev-dependencies]
+graph-api-test = { version = "0.1.0", features = [
+    "vertex-label-index",
+    "edge-label-index",
+    "vertex-range-index"
+]}
 ```
 
-make sure to include feature `vertex-label-index`
+## Available Feature Tests
 
-The full list of features are:
+* `vertex-label-index`: Label-based vertex lookups
+* `edge-label-index`: Label-based edge traversals
+* `vertex-hash-index`: Hash-indexed vertex properties
+* `edge-hash-index`: Hash-indexed edge properties
+* `vertex-range-index`: Range queries for vertex properties
+* `edge-range-index`: Range queries for edge properties
+* `vertex-full-text-index`: Full-text search for vertex properties
+* `graph-clear`: Graph clearing operations
 
-* `SupportsVertexLabelIndex`: `vertex-label-index`
-* `SupportsEdgeLabelIndex`: `edge-label-index`
-* `SupportsVertexIndex`: `vertex-index`
-* `SupportsEdgeIndex`: `edge-index`
-* `SupportsVertexRangeIndex`: `vertex-range-index`
-* `SupportsEdgeRangeIndex`: `edge-range-index`
-* `SupportsVertexFullTextIndex`: `vertex-full-text-index`
+## Standard Test Graph
 
-# Writing Tests for graph-api
+Most tests use a consistent, well-defined graph with:
 
-This document explains how to write tests for the graph-api library using the test utilities provided in this package.
+* **Vertices**: People (Bryn, Julia), Projects (GraphApi), and Technologies (Rust)
+* **Edges**: Knowledge relationships, creation attribution, and technology connections
 
-## Test Graph Structure
+This standardized structure ensures that all graph implementations are tested against the same scenarios.
 
-Most tests in this library use a standard test graph created by the `populate_graph` function. This function creates a
-small graph with the following elements:
+## Writing Custom Tests
 
-### Vertices
+Need to test specific aspects of your implementation? The suite provides helpful utilities:
 
-- **Bryn**: A Person vertex with age 45, username "bryn", and biography "Did some graph stuff"
-- **Julia**: A Person vertex with age 48, username "julia", and biography "Mastered the English language"
-- **GraphApi**: A Project vertex with name "GraphApi"
-- **Rust**: A Rust vertex (no properties)
+* Ready-to-use test graph population
+* Element comparison helpers
+* Reference tracking for standard test elements
+* Test patterns for different graph features
 
-### Edges
+Make your graph implementation rock-solid with graph-api-test!
 
-- **bryn_knows_julia**: Bryn knows Julia (since 1999)
-- **julia_knows_bryn**: Julia knows Bryn (since 1999)
-- **bryn_created_graph_api**: Bryn created GraphApi
-- **graph_api_language_rust**: GraphApi is written in Rust
-
-The `populate_graph` function returns a `Refs` struct containing IDs for all these elements, which you can use in your
-tests.
-
-## Writing a Test
-
-Tests in graph-api follow a standard pattern:
-
-1. Create a test function that accepts a generic graph type
-2. Use `populate_graph` to create the standard test graph and get references
-3. Perform operations on the graph and assert expected results
-
-Here's a simple example based on `first.rs`:
-
-```rust
-pub fn test_my_feature<T>(graph: &mut T)
-where
-    T: Graph<Vertex = Vertex, Edge = Edge>,
-{
-    // Populate the graph and get references to elements
-    let refs = populate_graph(graph);
-    
-    // Test your functionality
-    assert_eq!(
-        graph
-            .walk_mut()
-            .vertices_by_id(vec![refs.bryn, refs.julia])
-            .my_operation(),
-        expected_result
-    );
-}
-```
-
-## Using the Test Macros
-
-The library provides several macros to make test creation easier:
-
-### General tests
-
-```rust
-general_test!{$setup, test_name, path::to::test_function}
-```
-
-### Feature-specific tests
-
-For features that might not be supported in all implementations:
-
-```rust
-vertex_index_label_test!{$setup, test_name, path::to::test_function}
-edge_index_label_test!{$setup, test_name, path::to::test_function}
-```
-
-### Running the Full Test Suite
-
-To run all standard tests for a graph implementation:
-
-```rust
-test_suite!{my_graph_setup_function()}
-```
-
-## Assertion Helpers
-
-The library provides helper functions for comparing collections of elements:
-
-- `assert_elements_eq!($graph, $actual, $expected)`: Assert that two collections contain the same elements
-- `assert_elements_one_of!($graph, $actual, $expected)`: Assert that a collection contains exactly one element from the
-  expected collection
+Learn more in the [graph-api book](https://bryncooke.github.io/graph-api/).

@@ -2,6 +2,14 @@
 name = "graph-api-test"
 version = "0.1.0"
 edition = "2024"
+description = "Test utilities and property-based testing for the graph-api ecosystem"
+authors = ["Bryn Cooke"]
+license = "Apache-2.0"
+repository = "https://github.com/BrynCooke/graph-api"
+documentation = "https://bryncooke.github.io/graph-api/"
+readme = "README.md"
+keywords = ["graph", "database", "testing", "property-testing", "fuzzing"]
+categories = ["data-structures", "development-tools::testing"]
 
 [features]
 default = []

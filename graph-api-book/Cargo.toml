@@ -2,8 +2,16 @@
 name = "graph-api-book"
 version = "0.1.0"
 edition = "2024"
+description = "Documentation and examples for the graph-api ecosystem as an mdBook"
+authors = ["Bryn Cooke"]
+license = "Apache-2.0"
+repository = "https://github.com/BrynCooke/graph-api"
+documentation = "https://bryncooke.github.io/graph-api/"
+readme = "SPEC.md"
+keywords = ["graph", "database", "documentation", "examples", "mdbook"]
+categories = ["data-structures", "development-tools::documentation"]
+publish = false
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 graph-api-derive = { path = "../graph-api-derive" }

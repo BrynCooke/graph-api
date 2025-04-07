@@ -11,5 +11,14 @@ members = [
 
 resolver = "2"
 
+[workspace.package]
+version = "0.1.0"
+authors = ["Bryn Cooke"]
+license = "Apache-2.0"
+repository = "https://github.com/BrynCooke/graph-api"
+documentation = "https://bryncooke.github.io/graph-api/"
+edition = "2024"
+rust-version = "1.80"
+
 [workspace.dependencies]
 petgraph = "0.7.1"
