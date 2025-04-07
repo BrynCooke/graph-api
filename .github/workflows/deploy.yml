@@ -22,7 +22,30 @@ jobs:
         with:
           mdbook-version: 'latest'
 
-      - run: mdbook build graph-api-book
+      - name: Build mdBook
+        run: mdbook build graph-api-book
+
+      - name: Relativize SVG Stylesheet Paths
+        run: |
+          find ./graph-api-book/book -name '*.svg' -exec bash -c '
+            file="$1"
+            # Remove the book directory prefix and the filename to get the path relative to book dir
+            relative_path_to_file=$(dirname "${file#./graph-api-book/book/}")
+            # Calculate depth
+            if [ "$relative_path_to_file" = "." ]; then
+              depth=0
+            else
+              # Count slashes to determine depth
+              depth=$(echo "$relative_path_to_file" | grep -o / | wc -l)
+              # Add 1 because depth is number of directories, not slashes
+              depth=$((depth + 1))
+            fi
+            # Construct relative path to theme dir
+            relative_css_path=$(printf "../%.0s" $(seq 1 $depth))theme/custom.css
+            # Perform replacement using pipe as separator to avoid issues with slashes
+            sed -i "s|href=\"/theme/custom.css\"|href=\"${relative_css_path}\"|g" "$file"
+            echo "Updated stylesheet path in $file to $relative_css_path"
+          ' bash {} \;
       
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
