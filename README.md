@@ -24,16 +24,6 @@ and ergonomic usage patterns. It includes features for graph traversal, modifica
 ## Example usage
 
 ```rust
-# use graph_api_derive::VertexExt;
-# use graph_api_derive::EdgeExt;
-# use uuid::Uuid;
-# use graph_api_simplegraph::SimpleGraph;
-# use graph_api_lib::Graph;
-# use graph_api_lib::VertexReference;
-# use std::ops::Deref;
-# use graph_api_lib::VertexSearch;
-# use graph_api_lib::Direction;
-
 #[derive(Debug, Clone, VertexExt)]
 pub enum Vertex {
     Person {
@@ -63,7 +53,7 @@ pub enum Edge {
     },
 }
 
-# fn main() {
+fn main() {
     // Create a new graph
     let mut graph = SimpleGraph::new();
 
@@ -99,7 +89,6 @@ pub enum Edge {
         })
         .map(|v, ctx| **ctx.parent() + *ctx) // Add the ages collected during the traversal 
         .collect::<Vec<_>>();
-    #
 }
 
 ```
