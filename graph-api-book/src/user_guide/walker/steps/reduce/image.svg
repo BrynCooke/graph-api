@@ -58,9 +58,9 @@
 
         <!-- Arrows from Input Stream Elements to Step 1 -->
         <!-- A to Step 1 Left -->
-        <path class="edge directed" d="M 80 125 C 80 160 400 160 400 190" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted control points -->
+        <path class="edge directed" d="M 80 115 C 80 175, 400 175, 400 175" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
         <!-- B to Step 1 Right -->
-        <path class="edge directed" d="M 130 125 C 130 160 500 160 500 190" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted control points -->
+        <path class="edge directed" d="M 130 115 C 130 175, 500 175, 500 175" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
 
         <!-- Step 1: A vs B -->
         <g transform="translate(0, 40)"> <!-- Position first comparison -->
@@ -116,9 +116,9 @@
 
         <!-- Connecting Lines -->
         <!-- Arrow from Result A (Step 1) down to Step 2 Left -->
-        <path class="edge directed" d="M 450 240 C 450 260 400 260 400 280" fill="none" marker-end="url(#arrowhead)"/> <!-- Changed to curve -->
+        <path class="edge directed" d="M 450 255 C 450 265, 400 265, 400 265" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
         <!-- Arrow from Input C down to Step 2 Right -->
-        <path class="edge directed" d="M 180 125 C 180 200 500 200 500 280" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted control points -->
+        <path class="edge directed" d="M 180 115 C 180 265, 500 265, 500 265" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
 
     </g>
 
@@ -137,7 +137,7 @@
     </g>
     <text x="450" y="450" class="text-color-muted" font-size="var(--font-size-small)" text-anchor="middle">Terminates Walker</text> <!-- Moved right by 100 -->
     <!-- Arrow from Reduction Process (Result C) to Final Result Box -->
-    <path class="edge directed" d="M 450 330 V 380" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected target: Step 2 Result -> Final Box -->
+    <path class="edge directed" d="M 450 345 V 380" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
 
 
     <!-- Legend -->
