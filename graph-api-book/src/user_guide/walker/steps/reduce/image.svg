@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 550" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height significantly -->
+<svg viewBox="0 0 650 550" xmlns="http://www.w3.org/2000/svg"> <!-- Increased width and height -->
     <title>Reduce Step Diagram</title>
     <desc>
         Diagram illustrating the 'reduce' step:
@@ -26,7 +26,7 @@
     <!-- Input Stream -->
     <text class="step-label" x="100" y="40" text-anchor="middle">Input Stream</text>
     <!-- Reduction Process Title (Moved) -->
-    <text class="step-label" x="300" y="40" text-anchor="middle">Reduction Process (Max Age)</text>
+    <text class="step-label" x="350" y="40" text-anchor="middle">Reduction Process (Max Age)</text> <!-- Moved right -->
     <line class="edge directed" x1="50" y1="100" x2="250" y2="100" marker-end="url(#arrowhead)"/>
 
     <!-- Input Elements -->
@@ -44,8 +44,8 @@
     </g>
 
     <!-- Reduce Step Box (Grouped) -->
-    <g id="reduce-step-group" transform="translate(300, 100)"> <!-- Centered position for the group -->
-        <rect x="-100" y="-25" width="200" height="50" rx="5" ry="5"
+    <g id="reduce-step-group" transform="translate(350, 100)"> <!-- Moved right -->
+        <rect x="-120" y="-25" width="240" height="50" rx="5" ry="5" <!-- Widened -->
               fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
         <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">reduce</text>
         <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">
@@ -54,11 +54,13 @@
     </g>
 
     <!-- Reduction Process Visualization -->
-    <g transform="translate(300, 150)"> <!-- Start visualization lower -->
+    <g transform="translate(350, 150)"> <!-- Moved right -->
 
         <!-- Arrows from Input Stream Elements to Step 1 -->
-        <path class="edge directed" d="M 80 125 C 80 145 200 155 250 185" fill="none" marker-end="url(#arrowhead)"/> <!-- A to Step 1 Left -->
-        <path class="edge directed" d="M 130 125 C 130 145 250 155 300 185" fill="none" marker-end="url(#arrowhead)"/> <!-- B to Step 1 Right -->
+        <!-- A to Step 1 Left -->
+        <path class="edge directed" d="M 80 125 C 80 145 200 155 300 190" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted target -->
+        <!-- B to Step 1 Right -->
+        <path class="edge directed" d="M 130 125 C 130 145 300 155 400 190" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted target -->
 
         <!-- Step 1: A vs B -->
         <g transform="translate(0, 40)"> <!-- Position first comparison -->
@@ -114,17 +116,17 @@
 
         <!-- Connecting Lines -->
         <!-- Arrow from Result A (Step 1) down to Step 2 Left -->
-        <path class="edge directed" d="M 300 260 V 280" fill="none" marker-end="url(#arrowhead)"/>
+        <path class="edge directed" d="M 350 240 C 350 260 300 260 300 280" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted path -->
         <!-- Arrow from Input C down to Step 2 Right -->
-        <path class="edge directed" d="M 180 125 C 180 180 300 200 350 270" fill="none" marker-end="url(#arrowhead)"/>
+        <path class="edge directed" d="M 180 125 C 180 180 350 200 400 280" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted path -->
 
     </g>
 
      <!-- Arrow from Step Box to Reduction Start -->
-     <path class="edge directed" d="M 300 125 V 150" fill="none" marker-end="url(#arrowhead)"/>
+     <path class="edge directed" d="M 350 125 V 150" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted position -->
 
     <!-- Final Result Box -->
-    <g id="final-result-group" transform="translate(300, 400)"> <!-- Positioned further down -->
+    <g id="final-result-group" transform="translate(350, 400)"> <!-- Moved right -->
         <rect x="-40" y="-20" width="80" height="40" rx="5" ry="5"
               fill="var(--accent-secondary)" fill-opacity="0.15"
               stroke="var(--accent-secondary)" stroke-width="1.5"/>
