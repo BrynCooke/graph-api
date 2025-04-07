@@ -7,13 +7,8 @@ contributing.
 
 Issues are welcome to be filed. They **must** include a minimal reproduction using SimpleGraph.
 
-Issue resolution can happen in one of two ways:
-
-1. You provide a contribution using the guidelines below.
-2. I [Bryn Cooke](https://github.com/bryncooke) fix the issue in my own time at a moment that is convenient to me. I
-   generally don't work for free so if the issue is a bug it may get fixed, but feature requests will almost
-   certainly not happen without contribution or compensation. I have a full time job not working on this library and a
-   family to spend time with.
+I have a full time job not working on this library, so if you want to see things
+happen then please make a contribution. I work for cold hard cash ;-).
 
 ## Requirements for Code Contributions
 
@@ -36,12 +31,14 @@ All contributions **must** include:
 ### 3. Documentation Guidelines
 
 #### General Documentation
+
 - Keep documentation clear, concise, and accurate
 - Use examples to illustrate concepts
 - Update existing documentation when changing functionality
 - All public APIs should have documentation
 
 #### Walker Documentation
+
 - Each walker step must include visual diagrams to help users understand what the step does
 - Diagrams should clearly illustrate the before and after state of the traversal
 - Use consistent notation across all walker step documentation
