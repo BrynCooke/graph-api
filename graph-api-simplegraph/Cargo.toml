@@ -16,7 +16,7 @@ categories = ["data-structures", "memory-management"]
 bench = false
 
 [dependencies]
-graph-api-lib = { path = "../graph-api-lib" }
+graph-api-lib = { version = "0.1.0", path = "../graph-api-lib" }
 paste = "1.0.15"
 fastbloom = "0.8.0"
 rphonetic = "3.0.1"
@@ -24,9 +24,9 @@ smallbox = "0.8.6"
 uuid = { version = "1.11.0", features = ["v4"] }
 
 [dev-dependencies]
-graph-api-test = { path = "../graph-api-test", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
-graph-api-benches = { path = "../graph-api-benches", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
-graph-api-derive = { path = "../graph-api-derive" }
+graph-api-test = { version = "0.1.0", path = "../graph-api-test", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-benches = { version = "0.1.0", path = "../graph-api-benches", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-derive = { version = "0.1.0", path = "../graph-api-derive" }
 criterion = { version = "0.5", features = ["html_reports"] }
 rand = "0.8"
 
