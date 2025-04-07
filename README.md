@@ -6,6 +6,8 @@ An ergonomic API for working with **in memory** graphs in Rust that provides a f
 with graph data
 structures.
 
+Check out the [graph-api book](https://bryncooke.github.io/graph-api/) for more information.
+
 ## Overview
 
 This library offers a unified interface for working with different types of graphs while maintaining strong type safety
@@ -104,16 +106,7 @@ pub enum Edge {
 
 ## Documentation
 
-### For API Users
-
-- [Getting Started](docs/users/getting_started)
-- [Defining A Model](docs/users/defining_a_model)
-- [Basic Operations](docs/users/basic_operations)
-- [Graph Traversal](docs/users/traversal.md)
-
-### For Graph Implementors
-
-- [Implementation Guide](docs/implementors/guide.md)
+Head over to the [graph-api book](https://bryncooke.github.io/graph-api/).
 
 ## License
 
