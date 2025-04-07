@@ -13,6 +13,9 @@ doc:
 
 book:
     cargo test -p graph-api-book --doc
+    mdbook build graph-api-book
+
+serve-book: book
     mdbook serve graph-api-book -o
 
 lint: build test doc
