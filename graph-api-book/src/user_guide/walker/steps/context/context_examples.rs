@@ -3,10 +3,7 @@ use graph_api_lib::EdgeSearch;
 use graph_api_lib::Graph;
 use graph_api_lib::SupportsEdgeLabelIndex;
 use graph_api_lib::VertexReference;
-use graph_api_test::Edge;
-use graph_api_test::EdgeExt;
-use graph_api_test::Person;
-use graph_api_test::Vertex;
+use crate::standard_model::{Edge, EdgeExt, Person, Vertex};
 
 // ANCHOR: all
 
@@ -21,12 +18,12 @@ where
         .vertices_by_id(vec![bryn_id, julia_id])
         .push_default_context()
         .edges(EdgeSearch::scan().outgoing())
-        .filter_knows()
+        .filter_follows()
         .head()
         .map(|target, ctx| {
             if let Vertex::Person { name, .. } = ctx.vertex() {
                 format!(
-                    "{} knows {}",
+                    "{} follows {}",
                     name,
                     target.project::<Person<_>>().unwrap().name()
                 )
@@ -59,8 +56,9 @@ where
             // Determine edge type based on the edge type
             let edge_type = match edge.weight() {
                 Edge::Created => "Created",
-                Edge::Knows { .. } => "Knows",
-                Edge::Language(_) => "Language",
+                Edge::Follows => "Follows",
+                Edge::Liked { .. } => "Liked",
+                Edge::Commented { .. } => "Commented",
             };
 
             // Return the edge type as context
@@ -89,9 +87,9 @@ where
                 _ => "Unknown".to_string(),
             }]
         })
-        // Follow outgoing knows edges
+        // Follow outgoing follows edges
         .edges(EdgeSearch::scan().outgoing())
-        .filter_knows()
+        .filter_follows()
         .tail()
         // Add each person to the path
         .push_context(|v, ctx| {

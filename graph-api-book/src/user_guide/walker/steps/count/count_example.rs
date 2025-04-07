@@ -1,5 +1,5 @@
 use graph_api_lib::{Graph, SupportsEdgeLabelIndex, SupportsVertexLabelIndex, VertexSearch};
-use graph_api_test::{Edge, Vertex, VertexExt};
+use crate::standard_model::{Edge, Vertex, VertexExt};
 
 // ANCHOR: all
 // Function demonstrating the count step
@@ -26,29 +26,29 @@ where
     // ANCHOR_END: filtered_count
 
     // ANCHOR: edge_count
-    // Count relationships - how many 'knows' relationships exist?
+    // Count relationships - how many 'follows' relationships exist?
     let knows_count = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .edges(Edge::knows())
+        .edges(Edge::follows())
         .count();
 
-    println!("Total 'knows' relationships: {}", knows_count);
+    println!("Total 'follows' relationships: {}", knows_count);
     // ANCHOR_END: edge_count
 
     // ANCHOR: analytics
-    // Count for analytics - average number of people known per person
+    // Count for analytics - average number of people followed per person
     let person_count = graph.walk().vertices(Vertex::person()).count();
 
     if person_count > 0 {
         let knows_count = graph
             .walk()
             .vertices(Vertex::person())
-            .edges(Edge::knows().incoming())
+            .edges(Edge::follows().incoming())
             .count();
 
         let avg_known = knows_count as f64 / person_count as f64;
-        println!("Average people known per person: {:.2}", avg_known);
+        println!("Average people followed per person: {:.2}", avg_known);
     }
     // ANCHOR_END: analytics
 }

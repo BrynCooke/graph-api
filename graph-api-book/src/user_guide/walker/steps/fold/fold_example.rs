@@ -1,12 +1,10 @@
 use graph_api_lib::{Graph, VertexReference, VertexSearch};
-use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Person, VertexExt, populate_graph};
+use crate::standard_model::{standard_populated_graph, Person, VertexExt};
 
 // ANCHOR: all
 pub fn fold_example() {
-    // Create a graph and populate it with test data
-    let mut graph = SimpleGraph::new();
-    let _refs = populate_graph(&mut graph);
+    // Create a graph with standard test data
+    let graph = standard_populated_graph();
 
     // Calculate the sum of ages of all people using fold
     let total_age = graph
@@ -15,7 +13,11 @@ pub fn fold_example() {
         .filter_person()
         .fold(0, |acc, vertex, _ctx| {
             // Add the person's age to the accumulator
-            acc + vertex.project::<Person<_>>().unwrap().age()
+            if let Some(person) = vertex.project::<Person<_>>() {
+                acc + person.age() as u32
+            } else {
+                acc
+            }
         });
 
     println!("Total age of all people: {}", total_age);
@@ -28,10 +30,11 @@ pub fn fold_example() {
         .filter_person()
         .push_context(|_, _| initial_age_threshold) // Push the threshold as context
         .fold(Vec::new(), |mut names, vertex, ctx| {
-            let person = vertex.project::<Person<_>>().unwrap();
-            // Use context (threshold) in the fold logic
-            if person.age() > *ctx {
-                names.push(person.name().to_string());
+            if let Some(person) = vertex.project::<Person<_>>() {
+                // Use context (threshold) in the fold logic
+                if person.age() as u32 > **ctx {
+                    names.push(person.name().to_string());
+                }
             }
             names
         });

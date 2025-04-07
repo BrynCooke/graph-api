@@ -17,6 +17,7 @@ pub mod map;
 pub mod mutate;
 pub mod probe;
 pub mod reduce;
+mod tail;
 pub mod take;
 pub mod vertices;
 pub mod vertices_by_id;

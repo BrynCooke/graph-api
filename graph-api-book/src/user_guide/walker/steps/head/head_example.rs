@@ -1,6 +1,5 @@
-use crate::standard_model::{Edge, Vertex, VertexExt, standard_populated_graph};
-use graph_api_lib::{EdgeSearch, Graph, VertexReference};
-use graph_api_test::EdgeExt;
+use crate::standard_model::{EdgeExt, Vertex, standard_populated_graph};
+use graph_api_lib::{EdgeSearch, Graph};
 
 // ANCHOR: all
 pub fn head_example() {
@@ -13,20 +12,20 @@ pub fn head_example() {
     };
 
     // ANCHOR: head_example
-    // Find the projects created by people known by the starting person
+    // Find the projects created by people followed by the starting person
     let projects: Vec<_> = graph
         .walk()
         .vertices_by_id([start_person_id]) // Start at a specific person
         .edges(EdgeSearch::scan().outgoing()) // Follow outgoing edges
-        .filter_knows() // Keep only 'Knows' edges
-        .head() // Move to the target vertices (people known by the start person)
+        .filter_follows() // Keep only 'Follows' edges
+        .head() // Move to the target vertices (people followed by the start person)
         .edges(EdgeSearch::scan().outgoing()) // Follow outgoing edges from these people
         .filter_created() // Keep only 'Created' edges
         .head() // Move to the target vertices (projects created by known people)
         .collect();
 
     println!(
-        "Projects created by people known by the starting person ({:?}):",
+        "Projects created by people followed by the starting person ({:?}):",
         projects
     );
     // ANCHOR_END: head_example

@@ -1,7 +1,7 @@
 use graph_api_lib::{
     EdgeReference, EdgeSearch, Graph, SupportsEdgeLabelIndex, VertexReference, VertexSearch,
 };
-use graph_api_test::{Edge, Vertex};
+use crate::standard_model::{Edge, Vertex};
 use std::ops::ControlFlow;
 
 pub fn vertex_context_example<G>(graph: &G, start_id: G::VertexId)
@@ -14,9 +14,9 @@ where
         .walk()
         .vertices(VertexSearch::scan())
         .control_flow(|vertex, _| {
-            if let Vertex::Project(project) = vertex.weight() {
+            if let Vertex::Project { name } = vertex.weight() {
                 // If we find a project with "Graph" in the name, stop traversal
-                if project.name.contains("Graph") {
+                if name.contains("Graph") {
                     return ControlFlow::Break(Some(vertex));
                 }
                 // Include other project vertices
@@ -35,15 +35,11 @@ where
         .vertices_by_id(vec![start_id])
         .edges(EdgeSearch::scan())
         .control_flow(|edge, _| {
-            if let Edge::Knows { since } = edge.weight() {
-                // If we found a connection from before 2010, stop traversal
-                if *since < 2010 {
-                    return ControlFlow::Break(Some(edge));
-                }
-                // Include 'knows' edges
-                return ControlFlow::Continue(Some(edge));
+            if let Edge::Follows = edge.weight() {
+                // With Follows edge type, always break
+                return ControlFlow::Break(Some(edge));
             }
-            // Skip non-'knows' edges
+            // Skip non-'follows' edges
             ControlFlow::Continue(None)
         })
         .first();

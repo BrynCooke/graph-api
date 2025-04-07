@@ -1,9 +1,6 @@
 use graph_api_lib::{EdgeReference, EdgeSearch};
 use graph_api_lib::{Graph, VertexReference};
-use graph_api_test::Edge;
-use graph_api_test::EdgeExt;
-use graph_api_test::Person;
-use graph_api_test::Vertex;
+use crate::standard_model::{Edge, EdgeExt, Person, Vertex};
 
 // ANCHOR: all
 // ANCHOR: knows_example
@@ -17,7 +14,7 @@ where
         .vertices_by_id(vec![bryn_id, julia_id])
         .push_default_context()
         .edges(EdgeSearch::scan().outgoing())
-        .filter_knows()
+        .filter_follows()
         .head()
         .map(|target_vertex, ctx| {
             // Access source person name from context
@@ -61,14 +58,17 @@ where
 
             // Format based on edge type
             match edge.weight() {
-                Edge::Knows { since } => {
-                    format!("{} has known someone since {}", source_name, since)
+                Edge::Follows => {
+                    format!("{} follows someone", source_name)
                 }
                 Edge::Created => {
                     format!("{} created something", source_name)
                 }
-                Edge::Language(lang) => {
-                    format!("{} knows the {:?} language", source_name, lang)
+                Edge::Liked { timestamp } => {
+                    format!("{} liked something at {}", source_name, timestamp)
+                }
+                Edge::Commented { timestamp } => {
+                    format!("{} commented on something at {}", source_name, timestamp)
                 }
             }
         })

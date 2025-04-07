@@ -1,6 +1,6 @@
 use graph_api_lib::Graph;
 use graph_api_lib::{VertexReference, VertexSearch};
-use graph_api_test::Vertex;
+use crate::standard_model::Vertex;
 
 // ANCHOR: all
 pub fn into_iter_example<G>(graph: G)
@@ -47,7 +47,7 @@ where
         .vertices(VertexSearch::scan())
         .map(|vertex, _ctx| match vertex.weight() {
             Vertex::Person { name, .. } => name.clone(),
-            Vertex::Project(project) => project.name.clone(),
+            Vertex::Project { name } => name.clone(),
             _ => "Unknown".to_string(),
         })
         .collect::<Vec<_>>();

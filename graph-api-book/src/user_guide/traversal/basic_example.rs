@@ -1,5 +1,5 @@
 use graph_api_lib::{Graph, SupportsEdgeLabelIndex, SupportsVertexLabelIndex};
-use graph_api_test::{Edge, Vertex, VertexExt};
+use crate::standard_model::{Edge, Vertex, VertexExt};
 
 // ANCHOR: all
 // Basic traversal example showing a complex path through the graph
@@ -11,7 +11,7 @@ where
     let _results = graph
         .walk()
         .vertices(Vertex::person()) // Start with Person vertices
-        .edges(Edge::knows()) // Follow "knows" edges
+        .edges(Edge::follows()) // Follow "follows" edges
         .tail() // Move to the target Person
         .edges(Edge::created()) // Follow "created" edges
         .tail() // Move to the Project

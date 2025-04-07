@@ -1,12 +1,10 @@
 // ANCHOR: all
 use graph_api_lib::{Graph, VertexReference, VertexSearch};
-use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Person, VertexExt, populate_graph};
+use crate::standard_model::{standard_populated_graph, Person, VertexExt};
 
 pub fn reduce_example() {
-    // Create a graph and populate it with test data
-    let mut graph = SimpleGraph::new();
-    let _refs = populate_graph(&mut graph);
+    // Create a graph with standard test data
+    let graph = standard_populated_graph();
 
     // Find the oldest person in the graph using reduce
     let oldest = graph
@@ -14,15 +12,18 @@ pub fn reduce_example() {
         .vertices(VertexSearch::scan())
         .filter_person()
         .reduce(|acc, vertex, _ctx| {
-            let acc_age = acc.project::<Person<_>>().unwrap().age();
-            let vertex_age = vertex.project::<Person<_>>().unwrap().age();
+            let acc_age = if let Some(person) = acc.project::<Person<_>>() { person.age() } else { 0 };
+            let vertex_age = if let Some(person) = vertex.project::<Person<_>>() { person.age() } else { 0 };
 
             // Return the person with higher age
             if vertex_age > acc_age { vertex } else { acc }
         })
         .map(|vertex, _ctx| {
-            let age = vertex.project::<Person<_>>().unwrap().age();
-            format!("The oldest person is {:?}, age {}", vertex.id(), age)
+            if let Some(person) = vertex.project::<Person<_>>() {
+                format!("The oldest person is {:?}, age {}", vertex.id(), person.age())
+            } else {
+                format!("Unexpected non-person vertex: {:?}", vertex.id())
+            }
         })
         .next()
         .expect("Should find at least one person");

@@ -416,9 +416,7 @@ version = "0.1.0"
 dependencies = [
  "graph-api-derive",
  "graph-api-lib",
- "graph-api-petgraph",
  "graph-api-simplegraph",
- "graph-api-test",
  "uuid",
 ]
 

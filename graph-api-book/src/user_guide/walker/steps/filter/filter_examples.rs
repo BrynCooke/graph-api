@@ -1,14 +1,11 @@
 use graph_api_lib::{Graph, VertexReference};
-use graph_api_simplegraph::SimpleGraph;
-use graph_api_test::{Vertex, VertexExt, populate_graph};
+use crate::standard_model::{Vertex, standard_populated_graph, VertexExt, Person};
 
 // ANCHOR: all
 // Function demonstrating various ways to use the filter step
 pub fn filter_examples() {
-    // Create a new graph
-    let mut graph = SimpleGraph::new();
-    // Populate the graph with test data
-    let _refs = populate_graph(&mut graph);
+    // Create a graph with standard test data
+    let graph = standard_populated_graph();
 
     // ANCHOR: basic_filter
     // Basic filter using a closure
@@ -62,8 +59,8 @@ pub fn filter_examples() {
         .vertices(Vertex::person())
         .push_context(|v, _| {
             // Store original vertex in context
-            if let Vertex::Person { name, .. } = v.weight() {
-                name.clone()
+            if let Some(person) = v.project::<Person<_>>() {
+                person.name().to_string()
             } else {
                 String::new()
             }
