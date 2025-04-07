@@ -21,9 +21,10 @@
         </marker>
     </defs>
 
+    <text class="step-label" x="120" y="40" text-anchor="middle">Conceptual Graph Vertices</text>
+
     <!-- Conceptual Graph Representation (Input - Vertical Layout) -->
     <g id="graph-input" transform="translate(100, 50)"> <!-- Adjusted position -->
-        <text class="step-label" x="0" y="0" text-anchor="middle">Conceptual Graph Vertices</text>
         <!-- Represent vertices conceptually, stacked vertically -->
         <g class="node" transform="translate(0, 40)"> <!-- V1 -->
             <circle r="15"></circle>
