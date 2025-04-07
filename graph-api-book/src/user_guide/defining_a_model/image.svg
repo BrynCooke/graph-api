@@ -1,73 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450"> <!-- Adjusted height -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480"> <!-- Increased height slightly -->
+    <title>Graph Model Example</title>
+    <desc>Diagram showing a graph model with Person and Project vertices and Follows, Created, Liked, Contributes edges. Layout prioritizes avoiding edge crossings.</desc>
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
                 orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
-        <!-- No bi-directional marker needed for this layout -->
     </defs>
-    <text x="300" y="25" class="step-label" text-anchor="middle">Graph Model Example</text>
+    <text x="300" y="25" class="index-title" text-anchor="middle">Graph Model Example</text>
 
     <!-- Vertices -->
-    <g class="node" id="node-bryn" transform="translate(150, 100)">
-        <circle r="30"></circle> <!-- Slightly larger radius -->
+    <g class="node" id="node-bryn" transform="translate(150, 80)">
+        <circle r="30"></circle>
         <text class="node-label">Person</text>
         <text class="property-text" y="25">name: Bryn</text>
         <text class="property-text" y="40">age: 28</text>
     </g>
-    <g class="node" id="node-julia" transform="translate(450, 100)">
+    <g class="node" id="node-julia" transform="translate(450, 80)">
         <circle r="30"></circle>
         <text class="node-label">Person</text>
         <text class="property-text" y="25">name: Julia</text>
         <text class="property-text" y="40">age: 34</text>
     </g>
-    <g class="node" id="node-graphapi" transform="translate(150, 250)">
+    <g class="node" id="node-graphapi" transform="translate(150, 230)">
         <circle r="30"></circle>
         <text class="node-label">Project</text>
         <text class="property-text" y="25">name: GraphApi</text>
     </g>
-    <g class="node" id="node-alpaca" transform="translate(450, 250)">
+    <g class="node" id="node-alpaca" transform="translate(450, 230)">
         <circle r="30"></circle>
         <text class="node-label">Project</text>
         <text class="property-text" y="25">name: Alpaca</text>
     </g>
-    <g class="node" id="node-rust" transform="translate(300, 380)"> <!-- Added Rust Project -->
+    <g class="node" id="node-rust" transform="translate(300, 380)">
         <circle r="30"></circle>
         <text class="node-label">Project</text>
         <text class="property-text" y="25">name: Rust</text>
     </g>
 
     <!-- Edges -->
-    <g class="edge directed" id="edge-bryn-julia">
-        <line x1="180" y1="100" x2="420" y2="100" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="90">Follows</text>
+    <!-- Follows Edges -->
+    <g class="edge directed" id="edge-bryn-julia-follows">
+        <line x1="180" y1="80" x2="420" y2="80" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="70">Follows</text>
     </g>
-    <g class="edge directed" id="edge-julia-bryn">
-        <!-- Slightly curved path back -->
-        <path d="M 420 115 q -150 30 -240 0" fill="none" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="135">Follows</text>
+    <g class="edge directed" id="edge-julia-bryn-follows">
+        <path d="M 420 95 q -150 30 -240 0" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="115">Follows</text>
     </g>
-    <g class="edge directed" id="edge-bryn-graphapi">
-        <line x1="150" y1="130" x2="150" y2="220" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="160" y="175">Created</text>
+
+    <!-- Created Edges -->
+    <g class="edge directed" id="edge-bryn-graphapi-created">
+        <line x1="150" y1="110" x2="150" y2="200" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="165" y="155" text-anchor="start">Created</text>
     </g>
-    <g class="edge directed" id="edge-julia-alpaca">
-        <line x1="450" y1="130" x2="450" y2="220" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="460" y="175">Created</text>
+    <g class="edge directed" id="edge-julia-alpaca-created">
+        <line x1="450" y1="110" x2="450" y2="200" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="435" y="155" text-anchor="end">Created</text>
     </g>
-    <g class="edge directed" id="edge-bryn-alpaca">
-        <line x1="180" y1="115" x2="420" y2="235" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="165">Liked</text>
+
+    <!-- Liked Edge -->
+    <g class="edge directed" id="edge-bryn-alpaca-liked">
+        <!-- Curved path to avoid crossing Julia->Rust -->
+        <path d="M 180 95 q 135 70 240 120" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="150">Liked</text>
     </g>
-    <g class="edge directed" id="edge-bryn-rust"> <!-- Added Bryn -> Rust -->
-        <line x1="175" y1="125" x2="280" y2="360" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="220" y="240">Contributes</text>
+
+    <!-- Contributes Edges -->
+    <g class="edge directed" id="edge-bryn-rust-contributes">
+        <!-- Adjusted path start/end points -->
+        <line x1="175" y1="255" x2="280" y2="355" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="210" y="310">Contributes</text>
     </g>
-    <g class="edge directed" id="edge-julia-rust"> <!-- Added Julia -> Rust -->
-        <line x1="425" y1="125" x2="320" y2="360" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="380" y="240">Contributes</text>
+    <g class="edge directed" id="edge-julia-rust-contributes">
+        <!-- Adjusted path start/end points -->
+        <line x1="425" y1="255" x2="320" y2="355" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="390" y="310">Contributes</text>
     </g>
 
 </svg>
