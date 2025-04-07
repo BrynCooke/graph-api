@@ -45,8 +45,8 @@
 
     <!-- Reduce Step Box (Grouped) -->
     <g id="reduce-step-group" transform="translate(450, 100)"> <!-- Moved right by 100 -->
-        <rect x="-170" y="-25" width="340" height="50" rx="5" ry="5" <!-- Widened by 100, adjusted x -->
-              fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+        <rect x="-170" y="-25" width="340" height="50" rx="5" ry="5"
+              fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/> <!-- Widened by 100, adjusted x -->
         <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">reduce</text>
         <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">
             (|acc, v| if v.age() > acc.age() { v } else { acc })
