@@ -58,9 +58,9 @@
 
         <!-- Arrows from Input Stream Elements to Step 1 -->
         <!-- A to Step 1 Left -->
-        <path class="edge directed" d="M 80 125 C 80 150 350 160 400 190" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected target: A -> Step 1 Left -->
+        <path class="edge directed" d="M 80 125 C 80 160 400 160 400 190" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted control points -->
         <!-- B to Step 1 Right -->
-        <path class="edge directed" d="M 130 125 C 130 150 450 160 500 190" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected target: B -> Step 1 Right -->
+        <path class="edge directed" d="M 130 125 C 130 160 500 160 500 190" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted control points -->
 
         <!-- Step 1: A vs B -->
         <g transform="translate(0, 40)"> <!-- Position first comparison -->
@@ -116,9 +116,9 @@
 
         <!-- Connecting Lines -->
         <!-- Arrow from Result A (Step 1) down to Step 2 Left -->
-        <path class="edge directed" d="M 450 240 V 280 L 400 280" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected target: Step 1 Result -> Step 2 Left -->
+        <path class="edge directed" d="M 450 240 C 450 260 400 260 400 280" fill="none" marker-end="url(#arrowhead)"/> <!-- Changed to curve -->
         <!-- Arrow from Input C down to Step 2 Right -->
-        <path class="edge directed" d="M 180 125 C 180 180 450 200 500 280" fill="none" marker-end="url(#arrowhead)"/> <!-- Corrected target: C -> Step 2 Right -->
+        <path class="edge directed" d="M 180 125 C 180 200 500 200 500 280" fill="none" marker-end="url(#arrowhead)"/> <!-- Adjusted control points -->
 
     </g>
 
