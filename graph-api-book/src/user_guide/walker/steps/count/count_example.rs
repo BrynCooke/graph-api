@@ -1,5 +1,5 @@
-use graph_api_lib::{Graph, SupportsEdgeLabelIndex, SupportsVertexLabelIndex, VertexSearch};
 use crate::standard_model::{Edge, Vertex, VertexExt};
+use graph_api_lib::{Graph, SupportsEdgeLabelIndex, SupportsVertexLabelIndex, VertexSearch};
 
 // ANCHOR: all
 // Function demonstrating the count step

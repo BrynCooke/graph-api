@@ -1,6 +1,6 @@
+use crate::standard_model::Vertex;
 use graph_api_lib::Graph;
 use graph_api_lib::{VertexReference, VertexSearch};
-use crate::standard_model::Vertex;
 
 // ANCHOR: all
 pub fn into_iter_example<G>(graph: G)

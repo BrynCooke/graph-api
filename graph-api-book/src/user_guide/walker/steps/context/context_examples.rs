@@ -1,9 +1,9 @@
+use crate::standard_model::{Edge, EdgeExt, Person, Vertex};
 use graph_api_lib::EdgeReference;
 use graph_api_lib::EdgeSearch;
 use graph_api_lib::Graph;
 use graph_api_lib::SupportsEdgeLabelIndex;
 use graph_api_lib::VertexReference;
-use crate::standard_model::{Edge, EdgeExt, Person, Vertex};
 
 // ANCHOR: all
 

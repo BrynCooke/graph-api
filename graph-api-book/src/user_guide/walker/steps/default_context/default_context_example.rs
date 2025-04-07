@@ -1,6 +1,6 @@
+use crate::standard_model::{Edge, EdgeExt, Person, Vertex};
 use graph_api_lib::{EdgeReference, EdgeSearch};
 use graph_api_lib::{Graph, VertexReference};
-use crate::standard_model::{Edge, EdgeExt, Person, Vertex};
 
 // ANCHOR: all
 // ANCHOR: knows_example

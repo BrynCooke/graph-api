@@ -1,5 +1,5 @@
-use graph_api_lib::{Graph, SupportsEdgeLabelIndex, SupportsVertexLabelIndex};
 use crate::standard_model::{Edge, Vertex, VertexExt};
+use graph_api_lib::{Graph, SupportsEdgeLabelIndex, SupportsVertexLabelIndex};
 
 // ANCHOR: all
 // Basic traversal example showing a complex path through the graph

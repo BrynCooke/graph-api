@@ -1,7 +1,7 @@
+use crate::standard_model::{Edge, Vertex};
 use graph_api_lib::{
     EdgeReference, EdgeSearch, Graph, SupportsEdgeLabelIndex, VertexReference, VertexSearch,
 };
-use crate::standard_model::{Edge, Vertex};
 use std::ops::ControlFlow;
 
 pub fn vertex_context_example<G>(graph: &G, start_id: G::VertexId)

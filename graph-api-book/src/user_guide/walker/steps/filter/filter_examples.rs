@@ -1,5 +1,5 @@
+use crate::standard_model::{Person, Vertex, VertexExt, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference};
-use crate::standard_model::{Vertex, standard_populated_graph, VertexExt, Person};
 
 // ANCHOR: all
 // Function demonstrating various ways to use the filter step

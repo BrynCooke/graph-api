@@ -1,5 +1,5 @@
+use crate::standard_model::{Person, VertexExt, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference, VertexSearch};
-use crate::standard_model::{standard_populated_graph, Person, VertexExt};
 
 // ANCHOR: all
 pub fn fold_example() {

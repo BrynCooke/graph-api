@@ -1,5 +1,5 @@
-use graph_api_lib::{Graph, SupportsEdgeLabelIndex, VertexReference};
 use crate::standard_model::{Edge, Person, Vertex, VertexExt};
+use graph_api_lib::{Graph, SupportsEdgeLabelIndex, VertexReference};
 use std::ops::Deref;
 
 // ANCHOR: all
