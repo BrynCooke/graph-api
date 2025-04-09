@@ -2667,8 +2667,7 @@ Reduce step diagram showing pairwise comparison reducing elements to a single re
 <li><strong>(A) vs C</strong>: Element <strong>C</strong> is kept (40 &gt; 30), <strong>A</strong> is discarded.</li>
 </ul>
 </li>
-<li>The <strong>Final Result</strong> box shows the single remaining element (<strong>C</strong>).</li>
-<li>This step <strong>Terminates Walker</strong>, meaning no further Graph API steps can be chained after <code>reduce</code>.</li>
+<li>The <strong>Result</strong> of the reduction process is the single remaining element (<strong>C</strong>), which continues in the walker chain.</li>
 </ul>
 <h2 id="syntax-9"><a class="header" href="#syntax-9">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.reduce(|accumulated, next_element, context| {
@@ -2737,7 +2736,7 @@ pub fn reduce_example() {
 <li>Handle empty traversals by checking for None in the result</li>
 <li>The reducer can only select one of the elements, not create new ones</li>
 <li>Use <code>ControlFlow::Continue</code> to keep reducing, and <code>ControlFlow::Break</code> to halt early</li>
-<li>Consider fold instead when you need to build a new value rather than select among elements</li>
+<li>Consider <code>fold</code> instead when you need to build a new value rather than select among elements (note: <code>fold</code> terminates the walker)</li>
 <li>Remember that unlike the old API, the context is immutable in the reducer function</li>
 </ul>
 <h2 id="common-use-cases-9"><a class="header" href="#common-use-cases-9">Common Use Cases</a></h2>
