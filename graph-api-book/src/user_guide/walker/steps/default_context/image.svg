@@ -53,7 +53,7 @@
         </g>
         <!-- Context Box -->
         <g transform="translate(0, 50)">
-            <rect class="index-box" x="-45" y="-15" width="90" height="30"/>
+            <rect class="index-box" x="-47" y="-15" width="94" height="30"/>
             <text class="index-value range" y="5" x="-42" text-anchor="middle">Context: A</text>
         </g>
         <!-- Link Context -->
@@ -68,7 +68,7 @@
         </g>
         <!-- Context Box (Updated context) -->
         <g transform="translate(0, 50)">
-            <rect class="index-box" x="-45" y="-15" width="90" height="30"/>
+            <rect class="index-box" x="-47" y="-15" width="94" height="30"/>
             <text class="index-value range" y="5" x="-42" text-anchor="middle">Context: B</text>
         </g>
         <!-- Link Context -->

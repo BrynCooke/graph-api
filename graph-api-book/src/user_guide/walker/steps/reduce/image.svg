@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg"> <!-- Reduced height -->
+<svg viewBox="0 0 600 550" xmlns="http://www.w3.org/2000/svg"> <!-- Reduced height -->
     <title>Reduce Step Diagram</title>
     <desc>
         Diagram illustrating the 'reduce' step:
@@ -23,149 +23,131 @@
         </marker>
     </defs>
 
-    <!-- Input Stream -->
-    <text class="step-label" x="100" y="40" text-anchor="middle">Input Stream</text>
-    <!-- Reduction Process Title (Moved) -->
-    <text class="step-label" x="450" y="40" text-anchor="middle">Reduction Process (Max Age)
-    </text> <!-- Moved right by 100 -->
-    <line class="edge directed" x1="50" y1="100" x2="250" y2="100" marker-end="url(#arrowhead)"/>
+    <g transform="translate(-20, 0)">
+        <!-- Input Stream -->
+        <text class="step-label" x="100" y="40" text-anchor="middle">Input Stream</text>
+        <!-- Reduction Process Title (Moved) -->
+        <text class="step-label" x="400" y="40" text-anchor="middle">Reduction Process (Max Age)
+        </text> <!-- Moved right by 100 -->
+        <line class="edge directed" x1="50" y1="100" x2="220" y2="100" marker-end="url(#arrowhead)"/>
+        <line class="edge directed" x1="500" y1="100" x2="570" y2="100" marker-end="url(#arrowhead)"/>
 
-    <!-- Input Elements -->
-    <g class="node highlighted" transform="translate(80, 100)">
-        <circle r="15"></circle>
-        <text class="node-label">A</text>
-        <text class="property-text" y="25">age=30</text>
-    </g>
-    <g class="node highlighted" transform="translate(130, 100)">
-        <circle r="15"></circle>
-        <text class="node-label">B</text>
-        <text class="property-text" y="25">age=25</text>
-    </g>
-    <g class="node highlighted" transform="translate(180, 100)">
-        <circle r="15"></circle>
-        <text class="node-label">C</text>
-        <text class="property-text" y="25">age=40</text>
-    </g>
-
-    <!-- Reduce Step Box (Grouped) -->
-    <g id="reduce-step-group" transform="translate(450, 100)"> <!-- Moved right by 100 -->
-        <rect x="-170" y="-25" width="340" height="50" rx="5" ry="5"
-              fill="var(--accent-primary)" stroke="var(--node-stroke)"
-              stroke-width="var(--stroke-width-normal)"/> <!-- Widened by 100, adjusted x -->
-        <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">reduce</text>
-        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)"
-              font-size="var(--font-size-small)">
-            (|acc, v| if v.age() > acc.age() { v } else { acc })
-        </text>
-    </g>
-
-    <!-- Reduction Process Visualization -->
-    <g transform="translate(450, 150)"> <!-- Moved right by 100 -->
-
-        <!-- Arrows from Input Stream Elements to Step 1 -->
-        <!-- A to Step 1 Left -->
-        <path class="edge directed" d="M 80 115 C 80 175, 400 175, 400 175" fill="none"
-              marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
-        <!-- B to Step 1 Right -->
-        <path class="edge directed" d="M 130 115 C 130 175, 500 175, 500 175" fill="none"
-              marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
-
-        <!-- Step 1: A vs B -->
-        <g transform="translate(0, 40)"> <!-- Position first comparison -->
-            <g transform="translate(-50, 0)"> <!-- Element A -->
-                <g class="node highlighted">
-                    <circle r="15"></circle>
-                    <text class="node-label">A</text>
-                </g>
-                <text class="property-text" y="20" text-anchor="middle">age=30</text>
-            </g>
-            <g transform="translate(50, 0)"> <!-- Element B -->
-                <g class="node highlighted">
-                    <circle r="15"></circle>
-                    <text class="node-label">B</text>
-                </g>
-                <text class="property-text" y="20" text-anchor="middle">age=25</text>
-            </g>
-            <text class="property-text" x="0" y="5" text-anchor="middle">vs</text>
-            <!-- Arrow down from comparison -->
-            <line class="index-pointer" x1="0" y1="20" x2="0" y2="40" marker-end="url(#arrowhead-pointer)"/>
-            <!-- Discarded B -->
-            <g class="node visited" transform="translate(50, 0)"> <!-- Centered over B -->
-                <line class="filtered-out-mark" x1="-8" y1="-8" x2="8" y2="8"/>
-                <line class="filtered-out-mark" x1="-8" y1="8" x2="8" y2="-8"/>
-            </g>
-            <!-- Result A -->
-            <g transform="translate(0, 50)">
-                <g class="node highlighted">
-                    <circle r="15"></circle>
-                    <text class="node-label">A</text>
-                </g>
-                <text class="property-text" y="20" text-anchor="middle">Kept (30 > 25)</text>
-            </g>
+        <!-- Input Elements -->
+        <g class="node highlighted" transform="translate(80, 100)">
+            <circle r="15"></circle>
+            <text class="node-label">A</text>
+            <text class="property-text" y="25">age=30</text>
+        </g>
+        <g class="node highlighted" transform="translate(130, 100)">
+            <circle r="15"></circle>
+            <text class="node-label">B</text>
+            <text class="property-text" y="25">age=25</text>
+        </g>
+        <g class="node highlighted" transform="translate(180, 100)">
+            <circle r="15"></circle>
+            <text class="node-label">C</text>
+            <text class="property-text" y="25">age=40</text>
         </g>
 
-        <!-- Step 2: (A) vs C -->
-        <g transform="translate(0, 130)"> <!-- Position second comparison lower -->
-            <!-- Element C coming down -->
-            <g transform="translate(50, 0)">
-                <g class="node highlighted">
-                    <circle r="15"></circle>
-                    <text class="node-label">C</text>
-                </g>
-                <text class="property-text" y="20" text-anchor="middle">age=40</text>
-            </g>
-            <!-- Result A coming down -->
-            <g transform="translate(-50, 0)">
-                <g class="node highlighted">
-                    <circle r="15"></circle>
-                    <text class="node-label">A</text>
-                </g>
-                <text class="property-text" y="20" text-anchor="middle">From Step 1</text>
-            </g>
-            <text class="property-text" x="0" y="5" text-anchor="middle">vs</text>
-            <!-- Arrow down from comparison -->
-            <line class="index-pointer" x1="0" y1="20" x2="0" y2="40" marker-end="url(#arrowhead-pointer)"/>
-            <!-- Discarded A -->
-            <g class="node visited" transform="translate(-50, 0)"> <!-- Centered over A -->
-                <line class="filtered-out-mark" x1="-8" y1="-8" x2="8" y2="8"/>
-                <line class="filtered-out-mark" x1="-8" y1="8" x2="8" y2="-8"/>
-            </g>
-            <!-- Result C -->
-            <g transform="translate(0, 50)">
-                <g class="node highlighted">
-                    <circle r="15"></circle>
-                    <text class="node-label">C</text>
-                </g>
-                <text class="property-text" y="20" text-anchor="middle">Kept (40 > 30)</text>
-            </g>
+        <!-- Output Elements -->
+        <g class="node highlighted" transform="translate(530, 100)">
+            <circle r="15"></circle>
+            <text class="node-label">C</text>
+            <text class="property-text" y="25">age=40</text>
+        </g>
+        <!-- Reduce Step Box (Grouped) -->
+        <g id="reduce-step-group" transform="translate(360, 100)"> <!-- Moved right by 100 -->
+            <rect x="-140" y="-25" width="280" height="50" rx="5" ry="5"
+                  fill="var(--accent-primary)" stroke="var(--node-stroke)"
+                  stroke-width="var(--stroke-width-normal)"/> <!-- Widened by 100, adjusted x -->
+            <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">reduce</text>
+            <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)"
+                  font-size="var(--font-size-small)">
+                (|acc, v| if v.age() > acc.age() { v } else { acc })
+            </text>
         </g>
 
-        <!-- Connecting Lines -->
-        <!-- Arrow from Result A (Step 1) down to Step 2 Left -->
-        <path class="edge directed" d="M 450 255 C 450 265, 400 265, 400 265" fill="none"
-              marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
-        <!-- Arrow from Input C down to Step 2 Right -->
-        <path class="edge directed" d="M 180 115 C 180 265, 500 265, 500 265" fill="none"
-              marker-end="url(#arrowhead)"/> <!-- Corrected coords considering transforms -->
+        <!-- Reduction Process Visualization -->
+        <g transform="translate(360, 150)"> <!-- Moved right by 100 -->
+            <!-- Step 1: A vs B -->
+            <g transform="translate(0, 10)"> <!-- Position first comparison -->
+                <g transform="translate(-50, 0)"> <!-- Element A -->
+                    <g class="node highlighted">
+                        <circle r="15"></circle>
+                        <text class="node-label">A</text>
+                    </g>
+                    <text class="property-text" y="20" text-anchor="middle">age=30</text>
+                </g>
+                <g transform="translate(50, 0)"> <!-- Element B -->
+                    <g class="node visited">
+                        <circle r="15"></circle>
+                        <text class="node-label">B</text>
+                    </g>
+                    <text class="property-text" y="20" text-anchor="middle">age=25</text>
+                </g>
+                <text class="property-text" x="0" y="-5" text-anchor="middle">vs</text>
+                <!-- Arrow down from comparison -->
+                <line class="index-pointer" x1="0" y1="10" x2="0" y2="40" marker-end="url(#arrowhead-pointer)"/>
+                <!-- Discarded B -->
+                <g class="node visited" transform="translate(50, 0)"> <!-- Centered over B -->
+                    <line class="filtered-out-mark" x1="-8" y1="-8" x2="8" y2="8"/>
+                    <line class="filtered-out-mark" x1="-8" y1="8" x2="8" y2="-8"/>
+                </g>
+                <!-- Result A -->
+                <g transform="translate(0, 60)">
+                    <g class="node highlighted">
+                        <circle r="15"></circle>
+                        <text class="node-label">A</text>
+                    </g>
+                    <text class="property-text" y="20" text-anchor="middle">Kept (30 > 25)</text>
+                </g>
+            </g>
 
+            <!-- Step 2: (A) vs C -->
+            <g transform="translate(0, 130)"> <!-- Position second comparison lower -->
+                <!-- Element C coming down -->
+                <g transform="translate(50, 0)">
+                    <g class="node highlighted">
+                        <circle r="15"></circle>
+                        <text class="node-label">C</text>
+                    </g>
+                    <text class="property-text" y="20" text-anchor="middle">age=40</text>
+                </g>
+                <!-- Result A coming down -->
+                <g transform="translate(-50, 0)">
+                    <g class="node visited">
+                        <circle r="15"></circle>
+                        <text class="node-label">A</text>
+                    </g>
+                    <text class="property-text" y="20" text-anchor="middle">From Step 1</text>
+                </g>
+                <text class="property-text" x="0" y="-5" text-anchor="middle">vs</text>
+                <!-- Arrow down from comparison -->
+                <line class="index-pointer" x1="0" y1="10" x2="0" y2="40" marker-end="url(#arrowhead-pointer)"/>
+                <!-- Discarded A -->
+                <g class="node visited" transform="translate(-50, 0)"> <!-- Centered over A -->
+                    <line class="filtered-out-mark" x1="-8" y1="-8" x2="8" y2="8"/>
+                    <line class="filtered-out-mark" x1="-8" y1="8" x2="8" y2="-8"/>
+                </g>
+                <!-- Result C -->
+                <g transform="translate(0, 60)">
+                    <g class="node highlighted">
+                        <circle r="15"></circle>
+                        <text class="node-label">C</text>
+                    </g>
+                    <text class="property-text" y="20" text-anchor="middle">Kept (40 > 30)</text>
+                </g>
+            </g>
+
+        </g>
     </g>
-
-    <!-- Arrow from Step Box to Reduction Start -->
-    <path class="edge directed" d="M 450 125 V 150" fill="none"
-          marker-end="url(#arrowhead)"/> <!-- Corrected target: Reduce Box -> Viz Start -->
-
-    <!-- Arrow indicating continuation -->
-    <path class="edge directed" d="M 450 330 V 360" fill="none" marker-end="url(#arrowhead)"/>
-    <text x="450" y="380" class="text-color-muted" font-size="var(--font-size-small)" text-anchor="middle">Walker
-        Continues with Result (C)
-    </text>
 
 
     <!-- Legend -->
-    <g transform="translate(75, 370)"> <!-- Adjusted Y position -->
-        <rect class="index-box" x="25" y="0" width="675" height="70"/> <!-- Adjusted width by +100 -->
-        <text class="index-title" x="375" y="20">Legend</text> <!-- Centered in new viewbox -->
-        <g transform="translate(135, 45)"> <!-- Adjusted X position -->
+    <g transform="translate(0, 400)"> <!-- Adjusted Y position -->
+        <rect class="index-box" x="25" y="0" width="550" height="70"/> <!-- Adjusted width by +100 -->
+        <text class="index-title" x="295" y="20">Legend</text> <!-- Centered in new viewbox -->
+        <g transform="translate(50, 45)"> <!-- Adjusted X position -->
             <g class="node highlighted">
                 <circle r="10"></circle>
             </g>
@@ -173,7 +155,7 @@
                 reduction
             </text>
         </g>
-        <g transform="translate(425, 45)"> <!-- Adjusted X position -->
+        <g transform="translate(320, 45)"> <!-- Adjusted X position -->
             <g class="node visited">
                 <circle r="10"></circle>
                 <line class="filtered-out-mark" x1="-5" y1="-5" x2="5" y2="5"/>
