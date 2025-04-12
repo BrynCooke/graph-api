@@ -30,6 +30,7 @@
         - [first](./user_guide/walker/steps/first.md)
         - [context](./user_guide/walker/steps/context.md)
         - [default_context](./user_guide/walker/steps/default_context.md)
+        - [mutate_context](./user_guide/walker/steps/mutate_context.md)
         - [detour](./user_guide/walker/steps/detour.md)
         - [collect](./user_guide/walker/steps/collect.md)
         - [count](./user_guide/walker/steps/count.md)
