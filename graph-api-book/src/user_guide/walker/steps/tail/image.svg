@@ -55,7 +55,7 @@
     <g id="tail-step-group" transform="translate(300, 100)"> <!-- Centered position for the group -->
         <rect x="-40" y="-25" width="80" height="50" rx="5" ry="5"
               fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
-        <text class="step-label" x="0" y="0" text-anchor="middle" fill="var(--text-color-light)">.tail()</text>
+        <text class="step-label" x="0" y="5" text-anchor="middle" fill="var(--text-color-light)">tail</text>
     </g>
 
     <!-- Output Stream -->
