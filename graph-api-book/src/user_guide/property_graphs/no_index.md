@@ -32,11 +32,7 @@ Let's consider a simple social network model without any indexes:
 
 ## Scanning the Entire Graph
 
-Without indexes, the only way to find vertices matching specific criteria is to scan the entire graph:
-
-```rust,noplayground
-{{#include no_index/no_index_example.rs:non_indexed_fields}}
-```
+Without indexes, the only way to find vertices matching specific criteria is to scan the entire graph.
 
 ### Finding by Name (Without Index)
 
