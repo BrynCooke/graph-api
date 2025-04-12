@@ -214,50 +214,43 @@ impl&lt;Vertex, Edge&gt; SupportsVertexLabelIndex for MyGraph&lt;Vertex, Edge&gt
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsEdgeLabelIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsVertexHashIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsEdgeHashIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsVertexRangeIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsEdgeRangeIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsVertexFullTextIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 <span class="boring">}</span></code></pre></pre>
 <h2 id="implementing-label-indexes"><a class="header" href="#implementing-label-indexes">Implementing Label Indexes</a></h2>
 <p>Label indexes allow for quickly finding all vertices or edges of a specific label (enum variant).</p>
@@ -286,7 +279,7 @@ impl LabelIndex {
         self.indexes[label].remove(id);
     }
 
-    fn get(&amp;self, label: usize) -&gt; impl Iterator&lt;Item = VertexId&gt; + '_ {
+    fn get(&amp;self, label: usize) -&gt; impl Iterator&lt;Item=VertexId&gt; + '_ {
         self.indexes[label].iter().copied()
     }
 }
@@ -298,10 +291,10 @@ impl LabelIndex {
 </span>fn add_vertex(&amp;mut self, vertex: Self::Vertex) -&gt; Self::VertexId {
     let label_idx = vertex.label().ordinal();
     let vertex_id = // create a new vertex ID
-    
-    // Add to label index
-    self.label_index.insert(label_idx, vertex_id);
-    
+
+        // Add to label index
+        self.label_index.insert(label_idx, vertex_id);
+
     // Rest of implementation
     // ...
 }
@@ -336,7 +329,7 @@ impl&lt;K: Hash + Eq, V: Copy + Eq + Hash&gt; HashIndex&lt;K, V&gt; {
         }
     }
 
-    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item = V&gt; + '_ {
+    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item=V&gt; + '_ {
         self.map
             .get(key)
             .into_iter()
@@ -354,14 +347,14 @@ impl&lt;K: Hash + Eq, V: Copy + Eq + Hash&gt; HashIndex&lt;K, V&gt; {
 }
 
 impl&lt;'reference, Element&gt; MutationListener&lt;'reference, Element&gt;
-    for MyMutationListener&lt;'reference, Element&gt;
+for MyMutationListener&lt;'reference, Element&gt;
 where
     Element: Element,
 {
     fn update(&amp;mut self, index: &lt;Element::Label as Label&gt;::Index, before: Value, after: Value) {
         // Remove the old value from the index
         self.indexes[index.ordinal()].remove(&amp;before, self.id);
-        
+
         // Add the new value to the index
         self.indexes[index.ordinal()].insert(after, self.id);
     }
@@ -397,14 +390,14 @@ impl&lt;K: Ord, V: Copy + Eq + Hash&gt; RangeIndex&lt;K, V&gt; {
         }
     }
 
-    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item = V&gt; + '_ {
+    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item=V&gt; + '_ {
         self.map
             .get(key)
             .into_iter()
             .flat_map(|values| values.iter().copied())
     }
 
-    fn range&lt;'a, R&gt;(&amp;'a self, range: R) -&gt; impl Iterator&lt;Item = V&gt; + 'a
+    fn range&lt;'a, R&gt;(&amp;'a self, range: R) -&gt; impl Iterator&lt;Item=V&gt; + 'a
     where
         R: RangeBounds&lt;K&gt; + 'a,
         K: 'a,
@@ -424,7 +417,7 @@ impl&lt;K: Ord, V: Copy + Eq + Hash&gt; RangeIndex&lt;K, V&gt; {
     search: &amp;VertexSearch&lt;'search, Self&gt;,
 ) -&gt; Self::VertexIter&lt;'search, '_&gt; {
     // ...other search handling
-    
+
     if let VertexSearch::Range { index, range, .. } = search {
         let index_storage = &amp;self.indexes[index.ordinal()];
         return VertexIter {
@@ -432,7 +425,7 @@ impl&lt;K: Ord, V: Copy + Eq + Hash&gt; RangeIndex&lt;K, V&gt; {
             // ...other fields
         };
     }
-    
+
     // ...default handling
 }
 <span class="boring">}</span></code></pre></pre>
@@ -461,10 +454,10 @@ impl&lt;V: Copy + Eq + Hash&gt; FullTextIndex&lt;V&gt; {
     fn insert(&amp;mut self, id: V, text: &amp;str) {
         // Remove old content if it exists
         self.remove(&amp;id);
-        
+
         // Store the full text
         self.contents.insert(id, text.to_string());
-        
+
         // Tokenize the text and add to inverted index
         for token in tokenize(text) {
             self.tokens.entry(token).or_default().insert(id);
@@ -485,10 +478,10 @@ impl&lt;V: Copy + Eq + Hash&gt; FullTextIndex&lt;V&gt; {
         }
     }
 
-    fn search(&amp;self, query: &amp;str) -&gt; impl Iterator&lt;Item = V&gt; + '_ {
+    fn search(&amp;self, query: &amp;str) -&gt; impl Iterator&lt;Item=V&gt; + '_ {
         // Tokenize the query
         let query_tokens: Vec&lt;_&gt; = tokenize(query).collect();
-        
+
         // Find matches
         query_tokens
             .into_iter()
@@ -501,7 +494,7 @@ impl&lt;V: Copy + Eq + Hash&gt; FullTextIndex&lt;V&gt; {
 }
 
 // Helper function to tokenize text
-fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item = String&gt; + '_ {
+fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item=String&gt; + '_ {
     text.to_lowercase()
         .split_whitespace()
         .map(|s| s.to_string())
@@ -524,12 +517,12 @@ fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item = String&gt; + '_ {
 </span>fn remove_vertex(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::Vertex&gt; {
     // Fetch the vertex
     let vertex = self.vertices.get(id.index())?;
-    
+
     // Only update indexes if the vertex exists
     for index in vertex.label().indexes() {
         self.indexes[index.ordinal()].remove(&amp;self.get_value(vertex, index), id.index());
     }
-    
+
     // Remove the vertex
     // ...
 }
@@ -541,23 +534,23 @@ fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item = String&gt; + '_ {
 </span>fn add_vertices_batch(&amp;mut self, vertices: Vec&lt;Self::Vertex&gt;) -&gt; Vec&lt;Self::VertexId&gt; {
     let mut ids = Vec::with_capacity(vertices.len());
     let mut index_updates = Vec::new();
-    
+
     // First pass: add vertices and collect index updates
     for vertex in vertices {
         let id = self.add_vertex_no_index(vertex);
         ids.push(id);
-        
+
         // Collect index updates
         for index in vertex.label().indexes() {
             index_updates.push((index, self.get_value(&amp;vertex, index), id));
         }
     }
-    
+
     // Second pass: apply all index updates
     for (index, value, id) in index_updates {
         self.indexes[index.ordinal()].insert(value, id);
     }
-    
+
     ids
 }
 <span class="boring">}</span></code></pre></pre>
@@ -585,42 +578,42 @@ fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item = String&gt; + '_ {
 </span>#[test]
 fn test_hash_index() {
     let mut graph = MyGraph::new();
-    
+
     // Add vertices with indexed properties
     let v1 = graph.add_vertex(Vertex::Person {
         name: "Alice".to_string(),
         age: 30,
         // ...other fields
     });
-    
+
     let v2 = graph.add_vertex(Vertex::Person {
         name: "Bob".to_string(),
         age: 25,
         // ...other fields
     });
-    
+
     // Test index lookup
     let results = graph.walk()
         .vertices(Vertex::person_by_name("Alice"))
         .collect::&lt;Vec&lt;_&gt;&gt;();
-    
+
     assert_eq!(results.len(), 1);
     assert_eq!(results[0].id(), v1);
-    
+
     // Test index update after mutation
     graph.vertex_mut(v1).unwrap()
         .project_mut::&lt;PersonMut&lt;_&gt;&gt;().unwrap()
         .set_name("Alicia");
-    
+
     let results = graph.walk()
         .vertices(Vertex::person_by_name("Alicia"))
         .collect::&lt;Vec&lt;_&gt;&gt;();
-    
+
     assert_eq!(results.len(), 1);
     assert_eq!(results[0].id(), v1);
 }
 <span class="boring">}</span></code></pre></pre>
-<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
 <p>Implementing efficient indexes is key to building a high-performance graph backend. By carefully designing index
 structures and ensuring proper updates during mutations, you can provide fast lookup capabilities while maintaining
 reasonable memory usage. Remember that different use cases may require different indexing strategies, so consider the
@@ -634,7 +627,7 @@ expected query patterns when deciding which indexes to implement and how to opti
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../implementation/performance.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../implementation/benchmarks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -648,7 +641,7 @@ expected query patterns when deciding which indexes to implement and how to opti
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../implementation/performance.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../implementation/benchmarks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

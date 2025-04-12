@@ -109,6 +109,17 @@ svg {
     user-select: none;
 }
 
+
+.node text.node-property-text {
+    fill: var(--text-color-light);
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-normal);
+    pointer-events: none;
+    user-select: none;
+}
+
 /* Explicit dark mode for node labels if node fill changes significantly */
 @media (prefers-color-scheme: dark) {
     .node text.node-label {

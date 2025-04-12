@@ -157,9 +157,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="testing-your-implementation"><a class="header" href="#testing-your-implementation">Testing Your Implementation</a></h1>
-<p>Testing a graph implementation thoroughly is essential to ensure correctness, reliability, and performance. The Graph API provides a comprehensive test suite to verify that your implementation meets all the requirements of the Graph API traits.</p>
+<p>Testing a graph implementation thoroughly is essential to ensure correctness, reliability, and performance. The Graph
+API provides a comprehensive test suite to verify that your implementation meets all the requirements of the Graph API
+traits.</p>
 <h2 id="using-the-test-suite"><a class="header" href="#using-the-test-suite">Using the Test Suite</a></h2>
-<p>The <code>graph-api-test</code> crate provides a test suite that can be used to verify your graph implementation. The test suite covers:</p>
+<p>The <code>graph-api-test</code> crate provides a test suite that can be used to verify your graph implementation. The test suite
+covers:</p>
 <ol>
 <li>Basic graph operations (adding/removing vertices and edges)</li>
 <li>Graph traversal and walker steps</li>
@@ -173,7 +176,8 @@
 <li>Add <code>graph-api-test</code> as a dev-dependency in your <code>Cargo.toml</code>:</li>
 </ol>
 <pre><code class="language-toml">[dev-dependencies]
-graph-api-test = { version = "0.1.0", path = "../graph-api-test" }
+graph-api-test = { version = "0.1.0", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+
 </code></pre>
 <ol start="2">
 <li>Create a test module in your crate:</li>
@@ -217,7 +221,8 @@ mod test {
 <li>Full-text indexes</li>
 </ul>
 <h3 id="conditional-feature-testing"><a class="header" href="#conditional-feature-testing">Conditional Feature Testing</a></h3>
-<p>The test suite adapts to the features your graph implementation supports. For example, if your graph doesn't support range indexes, those tests will be skipped.</p>
+<p>The test suite adapts to the features your graph implementation supports. For example, if your graph doesn't support
+range indexes, those tests will be skipped.</p>
 <h2 id="writing-additional-tests"><a class="header" href="#writing-additional-tests">Writing Additional Tests</a></h2>
 <p>While the test suite covers most functionality, you should write additional tests for:</p>
 <ol>
@@ -231,101 +236,20 @@ mod test {
 </span>#[test]
 fn test_my_custom_feature() {
     let mut graph = MyGraph::new();
-    
+
     // Test setup
     let vertex = graph.add_vertex(Vertex::Person { name: "Test".to_string(), ... });
-    
+
     // Test the custom feature
     let result = graph.my_custom_feature(vertex);
-    
+
     // Assertions
     assert_eq!(result, expected_value);
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="fuzzing-tests"><a class="header" href="#fuzzing-tests">Fuzzing Tests</a></h2>
-<p>The test suite includes fuzzing tests that apply random sequences of operations to your graph to find edge cases and bugs. These tests help ensure your implementation is robust against unexpected usage patterns.</p>
-<p>To run the fuzzing tests with extended iterations:</p>
-<pre><code class="language-bash">PROPTEST_CASES=1000 cargo test fuzz_test
-</code></pre>
-<h2 id="testing-performance"><a class="header" href="#testing-performance">Testing Performance</a></h2>
-<p>Performance testing is crucial for graph implementations. The test suite includes basic performance tests, but you should also write specific benchmarks:</p>
-<ol>
-<li>Add a benchmarking framework like <code>criterion</code>:</li>
-</ol>
-<pre><code class="language-toml">[dev-dependencies]
-criterion = "0.5"
-
-[[bench]]
-name = "my_graph_benchmarks"
-harness = false
-</code></pre>
-<ol start="2">
-<li>Create benchmarks for performance-critical operations:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use my_graph::{MyGraph, Vertex, Edge};
-use graph_api_lib::{Graph, VertexSearch};
-
-fn vertex_insertion_benchmark(c: &amp;mut Criterion) {
-    c.bench_function("insert_vertices_1000", |b| {
-        b.iter(|| {
-            let mut graph = MyGraph::new();
-            for i in 0..1000 {
-                graph.add_vertex(Vertex::Person {
-                    name: format!("Person {}", i),
-                    // Other fields...
-                });
-            }
-        })
-    });
-}
-
-criterion_group!(benches, vertex_insertion_benchmark);
-criterion_main!(benches);
-<span class="boring">}</span></code></pre></pre>
-<ol start="3">
-<li>Use the benchmarking utilities provided by <code>graph-api-benches</code>:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use criterion::{Criterion, criterion_group, criterion_main};
-use graph_api_benches::bench_suite;
-use my_graph::MyGraph;
-
-fn criterion_benchmark(c: &amp;mut Criterion) {
-    bench_suite!(c, || MyGraph::new());
-}
-
-criterion_group!(benches, criterion_benchmark);
-criterion_main!(benches);
-<span class="boring">}</span></code></pre></pre>
-<h2 id="debugging-test-failures"><a class="header" href="#debugging-test-failures">Debugging Test Failures</a></h2>
-<p>When a test fails, the test suite provides detailed error messages to help diagnose the issue:</p>
-<ol>
-<li><strong>Element mismatches</strong>: Shows which elements were expected but missing, and which extra elements were found.</li>
-<li><strong>Type errors</strong>: Indicates when type constraints are not satisfied.</li>
-<li><strong>Panic information</strong>: Provides context when your implementation panics.</li>
-</ol>
-<h3 id="common-test-failure-causes"><a class="header" href="#common-test-failure-causes">Common Test Failure Causes</a></h3>
-<ol>
-<li><strong>Incorrect Iterator Implementation</strong>: Many failures stem from incorrect iterator implementations for <code>VertexIter</code> and <code>EdgeIter</code>.</li>
-<li><strong>Index Inconsistencies</strong>: Failures in index tests often indicate that indexes are not being updated correctly during mutations.</li>
-<li><strong>Missing Direction Handling</strong>: Edge traversal tests may fail if direction filtering isn't correctly implemented.</li>
-<li><strong>Lifetime Issues</strong>: Reference handling problems can cause compiler errors in tests.</li>
-</ol>
-<h2 id="test-driven-development-approach"><a class="header" href="#test-driven-development-approach">Test-Driven Development Approach</a></h2>
-<p>A recommended approach for implementing a graph backend:</p>
-<ol>
-<li>Start with a minimal implementation that passes basic vertex and edge tests.</li>
-<li>Add traversal capabilities and ensure walker step tests pass.</li>
-<li>Implement indexes one at a time, testing each thoroughly before moving on.</li>
-<li>Run the fuzzing tests to catch any edge cases.</li>
-<li>Optimize and benchmark once functionality is correct.</li>
-</ol>
-<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
-<p>Thorough testing is essential for a robust graph implementation. Use the provided test suite as your primary testing tool, but also write custom tests for implementation-specific features and performance characteristics. A well-tested implementation will be more reliable and easier to maintain as the Graph API evolves.</p>
+<p>The test suite includes fuzzing tests that apply random sequences of operations to your graph to find edge cases and
+bugs. These tests help ensure your implementation is robust against unexpected usage patterns.</p>
 
                     </main>
 

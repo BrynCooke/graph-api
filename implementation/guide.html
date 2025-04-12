@@ -157,9 +157,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="implementation-guide-for-graph-backends"><a class="header" href="#implementation-guide-for-graph-backends">Implementation Guide for Graph Backends</a></h1>
-<p>This guide will walk you through the process of implementing a new graph backend for the Graph API. While the Graph API provides several ready-to-use implementations (like <code>SimpleGraph</code> and <code>PetGraph</code>), you might want to build your own implementation to support specific requirements or optimize for particular use cases.</p>
+<p>This guide will walk you through the process of implementing a new graph backend for the Graph API. While the Graph API
+provides several ready-to-use implementations (like <code>SimpleGraph</code> and <code>PetGraph</code>), you might want to build your own
+implementation to support specific requirements or optimize for particular use cases.</p>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>Implementing a graph backend involves satisfying the requirements of the <code>Graph</code> trait and its associated types. This guide will walk you through:</p>
+<p>Implementing a graph backend involves satisfying the requirements of the <code>Graph</code> trait and its associated types. This
+guide will walk you through:</p>
 <ol>
 <li>Understanding the core components needed for a graph implementation</li>
 <li>Creating the fundamental data structures</li>
@@ -195,7 +198,7 @@ pub struct MyEdgeId {
 
 // Import the necessary traits
 use graph_api_lib::{
-    Graph, Element, EdgeSearch, VertexSearch, 
+    Graph, Element, EdgeSearch, VertexSearch,
     SupportsVertexLabelIndex, SupportsEdgeLabelIndex, SupportsVertexHashIndex,
     SupportsVertexRangeIndex, SupportsEdgeRangeIndex, SupportsVertexFullTextIndex,
     SupportsEdgeAdjacentLabelIndex, SupportsClear
@@ -210,7 +213,7 @@ where
     // Your internal storage goes here
     // Example:
     vertices: Vec&lt;YourVertexStorage&lt;Vertex&gt;&gt;,
-    edges: Vec&lt;YourEdgeStorage&lt;Edge&gt;&gt;, 
+    edges: Vec&lt;YourEdgeStorage&lt;Edge&gt;&gt;,
     // More fields as needed (indexes, etc.)
 }
 <span class="boring">}</span></code></pre></pre>
@@ -288,7 +291,7 @@ where
 
 impl&lt;'graph, Graph&gt; Iterator for MyVertexIter&lt;'_, 'graph, Graph&gt;
 where
-    Graph: graph_api_lib::Graph&lt;VertexId = MyVertexId&gt; + 'graph,
+    Graph: graph_api_lib::Graph&lt;VertexId=MyVertexId&gt; + 'graph,
 {
     type Item = MyVertexReference&lt;'graph, Graph&gt;;
 
@@ -315,16 +318,28 @@ where
     type Edge = Edge;
     type VertexId = MyVertexId;
     type EdgeId = MyEdgeId;
-    
+
     // Reference types
-    type VertexReference&lt;'graph&gt; = MyVertexReference&lt;'graph, Self&gt; where Self: 'graph;
-    type VertexReferenceMut&lt;'graph&gt; = MyVertexReferenceMut&lt;'graph, Self&gt; where Self: 'graph;
-    type EdgeReference&lt;'graph&gt; = MyEdgeReference&lt;'graph, Self&gt; where Self: 'graph;
-    type EdgeReferenceMut&lt;'graph&gt; = MyEdgeReferenceMut&lt;'graph, Self&gt; where Self: 'graph;
-    
+    type VertexReference&lt;'graph&gt; = MyVertexReference&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type VertexReferenceMut&lt;'graph&gt; = MyVertexReferenceMut&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type EdgeReference&lt;'graph&gt; = MyEdgeReference&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type EdgeReferenceMut&lt;'graph&gt; = MyEdgeReferenceMut&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+
     // Iterator types
-    type EdgeIter&lt;'search, 'graph&gt; = MyEdgeIter&lt;'search, 'graph, Self&gt; where Self: 'graph;
-    type VertexIter&lt;'search, 'graph&gt; = MyVertexIter&lt;'search, 'graph, Self&gt; where Self: 'graph;
+    type EdgeIter&lt;'search, 'graph&gt; = MyEdgeIter&lt;'search, 'graph, Self&gt;
+    where
+        Self: 'graph;
+    type VertexIter&lt;'search, 'graph&gt; = MyVertexIter&lt;'search, 'graph, Self&gt;
+    where
+        Self: 'graph;
 
     // Implement the core graph operations
     fn add_vertex(&amp;mut self, vertex: Self::Vertex) -&gt; Self::VertexId {
@@ -437,7 +452,7 @@ pub struct MyVertexMutationListener&lt;'reference, Element&gt; {
 }
 
 impl&lt;'reference, Element&gt; graph_api_lib::MutationListener&lt;'reference, Element&gt;
-    for MyVertexMutationListener&lt;'reference, Element&gt;
+for MyVertexMutationListener&lt;'reference, Element&gt;
 where
     Element: graph_api_lib::Element,
 {
@@ -494,9 +509,12 @@ struct EdgeData&lt;E&gt; {
 
 // Implement the necessary traits...
 <span class="boring">}</span></code></pre></pre>
-<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
-<p>Implementing a graph backend requires careful attention to detail, but the Graph API's trait system provides a clear structure to follow. By implementing the core traits and considering performance implications, you can create a specialized graph backend that perfectly fits your use case.</p>
-<p>Remember to check the source code of existing implementations like <code>SimpleGraph</code> for more detailed examples of how to handle complex scenarios like indexing and traversal.</p>
+<h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
+<p>Implementing a graph backend requires careful attention to detail, but the Graph API's trait system provides a clear
+structure to follow. By implementing the core traits and considering performance implications, you can create a
+specialized graph backend that perfectly fits your use case.</p>
+<p>Remember to check the source code of existing implementations like <code>SimpleGraph</code> for more detailed examples of how to
+handle complex scenarios like indexing and traversal.</p>
 
                     </main>
 

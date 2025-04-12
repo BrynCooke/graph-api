@@ -412,6 +412,9 @@ pub enum Edge {
 them.</p>
 <h2 id="creating-instances"><a class="header" href="#creating-instances">Creating Instances</a></h2>
 <p>Once you've defined your model, you can create instances of vertices and edges:</p>
+<object type="image/svg+xml" data="defining_a_model/graph_instance.svg">
+Diagram showing the specific graph instance created by the code
+</object>
 <pre><code class="language-rust noplayground">    let mut graph = SimpleGraph::new();
 
     // Create vertices
@@ -4322,9 +4325,12 @@ let (sum, count) = graph.walk()
     
 let average_age = if count &gt; 0 { sum as f64 / count as f64 } else { 0.0 };</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="implementation-guide-for-graph-backends"><a class="header" href="#implementation-guide-for-graph-backends">Implementation Guide for Graph Backends</a></h1>
-<p>This guide will walk you through the process of implementing a new graph backend for the Graph API. While the Graph API provides several ready-to-use implementations (like <code>SimpleGraph</code> and <code>PetGraph</code>), you might want to build your own implementation to support specific requirements or optimize for particular use cases.</p>
+<p>This guide will walk you through the process of implementing a new graph backend for the Graph API. While the Graph API
+provides several ready-to-use implementations (like <code>SimpleGraph</code> and <code>PetGraph</code>), you might want to build your own
+implementation to support specific requirements or optimize for particular use cases.</p>
 <h2 id="overview-6"><a class="header" href="#overview-6">Overview</a></h2>
-<p>Implementing a graph backend involves satisfying the requirements of the <code>Graph</code> trait and its associated types. This guide will walk you through:</p>
+<p>Implementing a graph backend involves satisfying the requirements of the <code>Graph</code> trait and its associated types. This
+guide will walk you through:</p>
 <ol>
 <li>Understanding the core components needed for a graph implementation</li>
 <li>Creating the fundamental data structures</li>
@@ -4360,7 +4366,7 @@ pub struct MyEdgeId {
 
 // Import the necessary traits
 use graph_api_lib::{
-    Graph, Element, EdgeSearch, VertexSearch, 
+    Graph, Element, EdgeSearch, VertexSearch,
     SupportsVertexLabelIndex, SupportsEdgeLabelIndex, SupportsVertexHashIndex,
     SupportsVertexRangeIndex, SupportsEdgeRangeIndex, SupportsVertexFullTextIndex,
     SupportsEdgeAdjacentLabelIndex, SupportsClear
@@ -4375,7 +4381,7 @@ where
     // Your internal storage goes here
     // Example:
     vertices: Vec&lt;YourVertexStorage&lt;Vertex&gt;&gt;,
-    edges: Vec&lt;YourEdgeStorage&lt;Edge&gt;&gt;, 
+    edges: Vec&lt;YourEdgeStorage&lt;Edge&gt;&gt;,
     // More fields as needed (indexes, etc.)
 }
 <span class="boring">}</span></code></pre></pre>
@@ -4453,7 +4459,7 @@ where
 
 impl&lt;'graph, Graph&gt; Iterator for MyVertexIter&lt;'_, 'graph, Graph&gt;
 where
-    Graph: graph_api_lib::Graph&lt;VertexId = MyVertexId&gt; + 'graph,
+    Graph: graph_api_lib::Graph&lt;VertexId=MyVertexId&gt; + 'graph,
 {
     type Item = MyVertexReference&lt;'graph, Graph&gt;;
 
@@ -4480,16 +4486,28 @@ where
     type Edge = Edge;
     type VertexId = MyVertexId;
     type EdgeId = MyEdgeId;
-    
+
     // Reference types
-    type VertexReference&lt;'graph&gt; = MyVertexReference&lt;'graph, Self&gt; where Self: 'graph;
-    type VertexReferenceMut&lt;'graph&gt; = MyVertexReferenceMut&lt;'graph, Self&gt; where Self: 'graph;
-    type EdgeReference&lt;'graph&gt; = MyEdgeReference&lt;'graph, Self&gt; where Self: 'graph;
-    type EdgeReferenceMut&lt;'graph&gt; = MyEdgeReferenceMut&lt;'graph, Self&gt; where Self: 'graph;
-    
+    type VertexReference&lt;'graph&gt; = MyVertexReference&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type VertexReferenceMut&lt;'graph&gt; = MyVertexReferenceMut&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type EdgeReference&lt;'graph&gt; = MyEdgeReference&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type EdgeReferenceMut&lt;'graph&gt; = MyEdgeReferenceMut&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+
     // Iterator types
-    type EdgeIter&lt;'search, 'graph&gt; = MyEdgeIter&lt;'search, 'graph, Self&gt; where Self: 'graph;
-    type VertexIter&lt;'search, 'graph&gt; = MyVertexIter&lt;'search, 'graph, Self&gt; where Self: 'graph;
+    type EdgeIter&lt;'search, 'graph&gt; = MyEdgeIter&lt;'search, 'graph, Self&gt;
+    where
+        Self: 'graph;
+    type VertexIter&lt;'search, 'graph&gt; = MyVertexIter&lt;'search, 'graph, Self&gt;
+    where
+        Self: 'graph;
 
     // Implement the core graph operations
     fn add_vertex(&amp;mut self, vertex: Self::Vertex) -&gt; Self::VertexId {
@@ -4602,7 +4620,7 @@ pub struct MyVertexMutationListener&lt;'reference, Element&gt; {
 }
 
 impl&lt;'reference, Element&gt; graph_api_lib::MutationListener&lt;'reference, Element&gt;
-    for MyVertexMutationListener&lt;'reference, Element&gt;
+for MyVertexMutationListener&lt;'reference, Element&gt;
 where
     Element: graph_api_lib::Element,
 {
@@ -4659,9 +4677,12 @@ struct EdgeData&lt;E&gt; {
 
 // Implement the necessary traits...
 <span class="boring">}</span></code></pre></pre>
-<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
-<p>Implementing a graph backend requires careful attention to detail, but the Graph API's trait system provides a clear structure to follow. By implementing the core traits and considering performance implications, you can create a specialized graph backend that perfectly fits your use case.</p>
-<p>Remember to check the source code of existing implementations like <code>SimpleGraph</code> for more detailed examples of how to handle complex scenarios like indexing and traversal.</p>
+<h2 id="next-steps-3"><a class="header" href="#next-steps-3">Next Steps</a></h2>
+<p>Implementing a graph backend requires careful attention to detail, but the Graph API's trait system provides a clear
+structure to follow. By implementing the core traits and considering performance implications, you can create a
+specialized graph backend that perfectly fits your use case.</p>
+<p>Remember to check the source code of existing implementations like <code>SimpleGraph</code> for more detailed examples of how to
+handle complex scenarios like indexing and traversal.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="creating-a-graph-implementation"><a class="header" href="#creating-a-graph-implementation">Creating a Graph Implementation</a></h1>
 <p>This chapter provides detailed guidance for implementing a new Graph API backend. It expands on the concepts introduced
 in the <a href="implementation/./guide">Implementation Guide for Graph Backends</a>.</p>
@@ -4861,7 +4882,7 @@ where
 └── tests/
     └── integration.rs  # Integration tests using test_suite!
 </code></pre>
-<h2 id="next-steps-3"><a class="header" href="#next-steps-3">Next Steps</a></h2>
+<h2 id="next-steps-4"><a class="header" href="#next-steps-4">Next Steps</a></h2>
 <p>After implementing the basic graph functionality:</p>
 <ol>
 <li>Review the <a href="implementation/./testing.html">Testing Your Implementation</a> chapter for testing strategies.</li>
@@ -4871,9 +4892,12 @@ where
 <p>Remember that implementing a graph backend is an iterative process. Start with a minimal working implementation, test it
 thoroughly, and then add more features incrementally.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="testing-your-implementation"><a class="header" href="#testing-your-implementation">Testing Your Implementation</a></h1>
-<p>Testing a graph implementation thoroughly is essential to ensure correctness, reliability, and performance. The Graph API provides a comprehensive test suite to verify that your implementation meets all the requirements of the Graph API traits.</p>
+<p>Testing a graph implementation thoroughly is essential to ensure correctness, reliability, and performance. The Graph
+API provides a comprehensive test suite to verify that your implementation meets all the requirements of the Graph API
+traits.</p>
 <h2 id="using-the-test-suite"><a class="header" href="#using-the-test-suite">Using the Test Suite</a></h2>
-<p>The <code>graph-api-test</code> crate provides a test suite that can be used to verify your graph implementation. The test suite covers:</p>
+<p>The <code>graph-api-test</code> crate provides a test suite that can be used to verify your graph implementation. The test suite
+covers:</p>
 <ol>
 <li>Basic graph operations (adding/removing vertices and edges)</li>
 <li>Graph traversal and walker steps</li>
@@ -4887,7 +4911,8 @@ thoroughly, and then add more features incrementally.</p>
 <li>Add <code>graph-api-test</code> as a dev-dependency in your <code>Cargo.toml</code>:</li>
 </ol>
 <pre><code class="language-toml">[dev-dependencies]
-graph-api-test = { version = "0.1.0", path = "../graph-api-test" }
+graph-api-test = { version = "0.1.0", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+
 </code></pre>
 <ol start="2">
 <li>Create a test module in your crate:</li>
@@ -4931,7 +4956,8 @@ mod test {
 <li>Full-text indexes</li>
 </ul>
 <h3 id="conditional-feature-testing"><a class="header" href="#conditional-feature-testing">Conditional Feature Testing</a></h3>
-<p>The test suite adapts to the features your graph implementation supports. For example, if your graph doesn't support range indexes, those tests will be skipped.</p>
+<p>The test suite adapts to the features your graph implementation supports. For example, if your graph doesn't support
+range indexes, those tests will be skipped.</p>
 <h2 id="writing-additional-tests"><a class="header" href="#writing-additional-tests">Writing Additional Tests</a></h2>
 <p>While the test suite covers most functionality, you should write additional tests for:</p>
 <ol>
@@ -4945,101 +4971,20 @@ mod test {
 </span>#[test]
 fn test_my_custom_feature() {
     let mut graph = MyGraph::new();
-    
+
     // Test setup
     let vertex = graph.add_vertex(Vertex::Person { name: "Test".to_string(), ... });
-    
+
     // Test the custom feature
     let result = graph.my_custom_feature(vertex);
-    
+
     // Assertions
     assert_eq!(result, expected_value);
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="fuzzing-tests"><a class="header" href="#fuzzing-tests">Fuzzing Tests</a></h2>
-<p>The test suite includes fuzzing tests that apply random sequences of operations to your graph to find edge cases and bugs. These tests help ensure your implementation is robust against unexpected usage patterns.</p>
-<p>To run the fuzzing tests with extended iterations:</p>
-<pre><code class="language-bash">PROPTEST_CASES=1000 cargo test fuzz_test
-</code></pre>
-<h2 id="testing-performance"><a class="header" href="#testing-performance">Testing Performance</a></h2>
-<p>Performance testing is crucial for graph implementations. The test suite includes basic performance tests, but you should also write specific benchmarks:</p>
-<ol>
-<li>Add a benchmarking framework like <code>criterion</code>:</li>
-</ol>
-<pre><code class="language-toml">[dev-dependencies]
-criterion = "0.5"
-
-[[bench]]
-name = "my_graph_benchmarks"
-harness = false
-</code></pre>
-<ol start="2">
-<li>Create benchmarks for performance-critical operations:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use my_graph::{MyGraph, Vertex, Edge};
-use graph_api_lib::{Graph, VertexSearch};
-
-fn vertex_insertion_benchmark(c: &amp;mut Criterion) {
-    c.bench_function("insert_vertices_1000", |b| {
-        b.iter(|| {
-            let mut graph = MyGraph::new();
-            for i in 0..1000 {
-                graph.add_vertex(Vertex::Person {
-                    name: format!("Person {}", i),
-                    // Other fields...
-                });
-            }
-        })
-    });
-}
-
-criterion_group!(benches, vertex_insertion_benchmark);
-criterion_main!(benches);
-<span class="boring">}</span></code></pre></pre>
-<ol start="3">
-<li>Use the benchmarking utilities provided by <code>graph-api-benches</code>:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use criterion::{Criterion, criterion_group, criterion_main};
-use graph_api_benches::bench_suite;
-use my_graph::MyGraph;
-
-fn criterion_benchmark(c: &amp;mut Criterion) {
-    bench_suite!(c, || MyGraph::new());
-}
-
-criterion_group!(benches, criterion_benchmark);
-criterion_main!(benches);
-<span class="boring">}</span></code></pre></pre>
-<h2 id="debugging-test-failures"><a class="header" href="#debugging-test-failures">Debugging Test Failures</a></h2>
-<p>When a test fails, the test suite provides detailed error messages to help diagnose the issue:</p>
-<ol>
-<li><strong>Element mismatches</strong>: Shows which elements were expected but missing, and which extra elements were found.</li>
-<li><strong>Type errors</strong>: Indicates when type constraints are not satisfied.</li>
-<li><strong>Panic information</strong>: Provides context when your implementation panics.</li>
-</ol>
-<h3 id="common-test-failure-causes"><a class="header" href="#common-test-failure-causes">Common Test Failure Causes</a></h3>
-<ol>
-<li><strong>Incorrect Iterator Implementation</strong>: Many failures stem from incorrect iterator implementations for <code>VertexIter</code> and <code>EdgeIter</code>.</li>
-<li><strong>Index Inconsistencies</strong>: Failures in index tests often indicate that indexes are not being updated correctly during mutations.</li>
-<li><strong>Missing Direction Handling</strong>: Edge traversal tests may fail if direction filtering isn't correctly implemented.</li>
-<li><strong>Lifetime Issues</strong>: Reference handling problems can cause compiler errors in tests.</li>
-</ol>
-<h2 id="test-driven-development-approach"><a class="header" href="#test-driven-development-approach">Test-Driven Development Approach</a></h2>
-<p>A recommended approach for implementing a graph backend:</p>
-<ol>
-<li>Start with a minimal implementation that passes basic vertex and edge tests.</li>
-<li>Add traversal capabilities and ensure walker step tests pass.</li>
-<li>Implement indexes one at a time, testing each thoroughly before moving on.</li>
-<li>Run the fuzzing tests to catch any edge cases.</li>
-<li>Optimize and benchmark once functionality is correct.</li>
-</ol>
-<h2 id="conclusion-1"><a class="header" href="#conclusion-1">Conclusion</a></h2>
-<p>Thorough testing is essential for a robust graph implementation. Use the provided test suite as your primary testing tool, but also write custom tests for implementation-specific features and performance characteristics. A well-tested implementation will be more reliable and easier to maintain as the Graph API evolves.</p>
+<p>The test suite includes fuzzing tests that apply random sequences of operations to your graph to find edge cases and
+bugs. These tests help ensure your implementation is robust against unexpected usage patterns.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="features-and-extensions"><a class="header" href="#features-and-extensions">Features and Extensions</a></h1>
 <p>This chapter covers how to extend your graph implementation with additional features and capabilities beyond the basic
 Graph API requirements.</p>
@@ -5134,7 +5079,7 @@ impl&lt;K: Hash + Eq, V: Copy + Eq + Hash&gt; HashIndex&lt;K, V&gt; {
         }
     }
 
-    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item = V&gt; + '_ {
+    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item=V&gt; + '_ {
         self.map
             .get(key)
             .into_iter()
@@ -5169,36 +5114,6 @@ where
     }
 }
 <span class="boring">}</span></code></pre></pre>
-<h3 id="custom-traversal-steps"><a class="header" href="#custom-traversal-steps">Custom Traversal Steps</a></h3>
-<p>While not part of the core API, you can add custom traversal steps for your graph implementation:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Example: Custom extension trait for your graph
-pub trait MyGraphExt&lt;'g&gt; {
-    // A custom traversal step for efficient path finding
-    fn shortest_path(
-        &amp;self, 
-        from: Self::VertexId, 
-        to: Self::VertexId
-    ) -&gt; Option&lt;Vec&lt;Self::EdgeId&gt;&gt;;
-}
-
-// Implement for your graph
-impl&lt;'g, V, E&gt; MyGraphExt&lt;'g&gt; for MyGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    fn shortest_path(
-        &amp;self, 
-        from: Self::VertexId, 
-        to: Self::VertexId
-    ) -&gt; Option&lt;Vec&lt;Self::EdgeId&gt;&gt; {
-        // Efficient path-finding algorithm implementation
-        // ...
-    }
-}
-<span class="boring">}</span></code></pre></pre>
 <h2 id="extending-the-walker-api"><a class="header" href="#extending-the-walker-api">Extending the Walker API</a></h2>
 <p>You can extend the Walker API for your graph implementation by creating custom steps:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -5218,6 +5133,8 @@ impl&lt;'g, G: Graph&gt; CustomStepExt&lt;'g, G&gt; for VertexWalker&lt;'g, G&gt
     }
 }
 <span class="boring">}</span></code></pre></pre>
+<p>See <a href="https://github.com/BrynCooke/graph-api/blob/main/graph-api-lib/examples/custom_step.rs">custom_step.rs</a> for a full
+example.</p>
 <h2 id="integration-with-external-systems"><a class="header" href="#integration-with-external-systems">Integration with External Systems</a></h2>
 <p>You might want to integrate your graph implementation with external systems:</p>
 <h3 id="serializationdeserialization"><a class="header" href="#serializationdeserialization">Serialization/Deserialization</a></h3>
@@ -5258,34 +5175,7 @@ where
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="feature-compatibility"><a class="header" href="#feature-compatibility">Feature Compatibility</a></h2>
-<p>When implementing optional features, consider compatibility issues:</p>
-<ol>
-<li><strong>Compile-time Feature Flags</strong>: Use Cargo features to make certain capabilities optional:</li>
-</ol>
-<pre><code class="language-toml"># In Cargo.toml
-[features]
-full-text-index = []
-persistence = ["dep:serde"]
-</code></pre>
-<ol start="2">
-<li><strong>Runtime Feature Detection</strong>: Allow clients to check for feature support at runtime:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl&lt;V, E&gt; MyGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    pub fn supports_full_text_index(&amp;self) -&gt; bool {
-        // Check if feature is supported using trait objects
-        self as &amp;dyn Any
-            .downcast_ref::&lt;dyn SupportsVertexFullTextIndex&gt;()
-            .is_some()
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<p>Or simply use trait bounds in your API:</p>
+<p>When implementing optional features, use trait bounds in your API:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn search_full_text&lt;G&gt;(graph: &amp;G, text: &amp;str) -&gt; Vec&lt;G::VertexId&gt;
@@ -5298,49 +5188,6 @@ where
         .collect()
 }
 <span class="boring">}</span></code></pre></pre>
-<h2 id="performance-extensions"><a class="header" href="#performance-extensions">Performance Extensions</a></h2>
-<p>Consider adding performance-focused extensions:</p>
-<ol>
-<li><strong>Bulk Operations</strong>: Methods for efficient batch operations:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl&lt;V, E&gt; MyGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element, 
-{
-    pub fn add_vertices_batch(&amp;mut self, vertices: Vec&lt;V&gt;) -&gt; Vec&lt;Self::VertexId&gt; {
-        // Optimized batch insertion
-    }
-    
-    pub fn add_edges_batch(
-        &amp;mut self,
-        edges: Vec&lt;(Self::VertexId, Self::VertexId, E)&gt;,
-    ) -&gt; Vec&lt;Self::EdgeId&gt; {
-        // Optimized batch insertion
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<ol start="2">
-<li><strong>Specialized Algorithms</strong>: Graph algorithms optimized for your implementation:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl&lt;V, E&gt; MyGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    pub fn connected_components(&amp;self) -&gt; Vec&lt;Vec&lt;Self::VertexId&gt;&gt; {
-        // Efficient connected components algorithm
-    }
-    
-    pub fn pagerank(&amp;self, damping: f64, iterations: usize) -&gt; HashMap&lt;Self::VertexId, f64&gt; {
-        // PageRank implementation
-    }
-}
-<span class="boring">}</span></code></pre></pre>
 <h2 id="best-practices-for-extensions"><a class="header" href="#best-practices-for-extensions">Best Practices for Extensions</a></h2>
 <p>When adding features and extensions, follow these best practices:</p>
 <ol>
@@ -5348,12 +5195,7 @@ where
 <li><strong>Document Extensions Thoroughly</strong>: Clearly document what extensions are available and how to use them.</li>
 <li><strong>Test Extensions Separately</strong>: Write dedicated tests for extended features.</li>
 <li><strong>Consider Performance Impact</strong>: Ensure extensions don't negatively impact core operations.</li>
-<li><strong>Graceful Degradation</strong>: When a feature isn't supported, provide helpful error messages.</li>
 </ol>
-<h2 id="conclusion-2"><a class="header" href="#conclusion-2">Conclusion</a></h2>
-<p>Extending your graph implementation with additional features can make it more powerful and useful for specific use
-cases. By carefully designing extensions that complement the core Graph API, you can create a versatile graph
-implementation that meets a wide range of needs while maintaining compatibility with the broader ecosystem.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="implementing-indexes"><a class="header" href="#implementing-indexes">Implementing Indexes</a></h1>
 <p>Indexes are a critical component for efficient graph operations, allowing for quick lookups of elements based on
 property values. This chapter guides you through implementing different types of indexes in your graph backend.</p>
@@ -5412,50 +5254,43 @@ impl&lt;Vertex, Edge&gt; SupportsVertexLabelIndex for MyGraph&lt;Vertex, Edge&gt
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsEdgeLabelIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsVertexHashIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsEdgeHashIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsVertexRangeIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsEdgeRangeIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl&lt;Vertex, Edge&gt; SupportsVertexFullTextIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 <span class="boring">}</span></code></pre></pre>
 <h2 id="implementing-label-indexes"><a class="header" href="#implementing-label-indexes">Implementing Label Indexes</a></h2>
 <p>Label indexes allow for quickly finding all vertices or edges of a specific label (enum variant).</p>
@@ -5484,7 +5319,7 @@ impl LabelIndex {
         self.indexes[label].remove(id);
     }
 
-    fn get(&amp;self, label: usize) -&gt; impl Iterator&lt;Item = VertexId&gt; + '_ {
+    fn get(&amp;self, label: usize) -&gt; impl Iterator&lt;Item=VertexId&gt; + '_ {
         self.indexes[label].iter().copied()
     }
 }
@@ -5496,10 +5331,10 @@ impl LabelIndex {
 </span>fn add_vertex(&amp;mut self, vertex: Self::Vertex) -&gt; Self::VertexId {
     let label_idx = vertex.label().ordinal();
     let vertex_id = // create a new vertex ID
-    
-    // Add to label index
-    self.label_index.insert(label_idx, vertex_id);
-    
+
+        // Add to label index
+        self.label_index.insert(label_idx, vertex_id);
+
     // Rest of implementation
     // ...
 }
@@ -5534,7 +5369,7 @@ impl&lt;K: Hash + Eq, V: Copy + Eq + Hash&gt; HashIndex&lt;K, V&gt; {
         }
     }
 
-    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item = V&gt; + '_ {
+    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item=V&gt; + '_ {
         self.map
             .get(key)
             .into_iter()
@@ -5552,14 +5387,14 @@ impl&lt;K: Hash + Eq, V: Copy + Eq + Hash&gt; HashIndex&lt;K, V&gt; {
 }
 
 impl&lt;'reference, Element&gt; MutationListener&lt;'reference, Element&gt;
-    for MyMutationListener&lt;'reference, Element&gt;
+for MyMutationListener&lt;'reference, Element&gt;
 where
     Element: Element,
 {
     fn update(&amp;mut self, index: &lt;Element::Label as Label&gt;::Index, before: Value, after: Value) {
         // Remove the old value from the index
         self.indexes[index.ordinal()].remove(&amp;before, self.id);
-        
+
         // Add the new value to the index
         self.indexes[index.ordinal()].insert(after, self.id);
     }
@@ -5595,14 +5430,14 @@ impl&lt;K: Ord, V: Copy + Eq + Hash&gt; RangeIndex&lt;K, V&gt; {
         }
     }
 
-    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item = V&gt; + '_ {
+    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item=V&gt; + '_ {
         self.map
             .get(key)
             .into_iter()
             .flat_map(|values| values.iter().copied())
     }
 
-    fn range&lt;'a, R&gt;(&amp;'a self, range: R) -&gt; impl Iterator&lt;Item = V&gt; + 'a
+    fn range&lt;'a, R&gt;(&amp;'a self, range: R) -&gt; impl Iterator&lt;Item=V&gt; + 'a
     where
         R: RangeBounds&lt;K&gt; + 'a,
         K: 'a,
@@ -5622,7 +5457,7 @@ impl&lt;K: Ord, V: Copy + Eq + Hash&gt; RangeIndex&lt;K, V&gt; {
     search: &amp;VertexSearch&lt;'search, Self&gt;,
 ) -&gt; Self::VertexIter&lt;'search, '_&gt; {
     // ...other search handling
-    
+
     if let VertexSearch::Range { index, range, .. } = search {
         let index_storage = &amp;self.indexes[index.ordinal()];
         return VertexIter {
@@ -5630,7 +5465,7 @@ impl&lt;K: Ord, V: Copy + Eq + Hash&gt; RangeIndex&lt;K, V&gt; {
             // ...other fields
         };
     }
-    
+
     // ...default handling
 }
 <span class="boring">}</span></code></pre></pre>
@@ -5659,10 +5494,10 @@ impl&lt;V: Copy + Eq + Hash&gt; FullTextIndex&lt;V&gt; {
     fn insert(&amp;mut self, id: V, text: &amp;str) {
         // Remove old content if it exists
         self.remove(&amp;id);
-        
+
         // Store the full text
         self.contents.insert(id, text.to_string());
-        
+
         // Tokenize the text and add to inverted index
         for token in tokenize(text) {
             self.tokens.entry(token).or_default().insert(id);
@@ -5683,10 +5518,10 @@ impl&lt;V: Copy + Eq + Hash&gt; FullTextIndex&lt;V&gt; {
         }
     }
 
-    fn search(&amp;self, query: &amp;str) -&gt; impl Iterator&lt;Item = V&gt; + '_ {
+    fn search(&amp;self, query: &amp;str) -&gt; impl Iterator&lt;Item=V&gt; + '_ {
         // Tokenize the query
         let query_tokens: Vec&lt;_&gt; = tokenize(query).collect();
-        
+
         // Find matches
         query_tokens
             .into_iter()
@@ -5699,7 +5534,7 @@ impl&lt;V: Copy + Eq + Hash&gt; FullTextIndex&lt;V&gt; {
 }
 
 // Helper function to tokenize text
-fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item = String&gt; + '_ {
+fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item=String&gt; + '_ {
     text.to_lowercase()
         .split_whitespace()
         .map(|s| s.to_string())
@@ -5722,12 +5557,12 @@ fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item = String&gt; + '_ {
 </span>fn remove_vertex(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::Vertex&gt; {
     // Fetch the vertex
     let vertex = self.vertices.get(id.index())?;
-    
+
     // Only update indexes if the vertex exists
     for index in vertex.label().indexes() {
         self.indexes[index.ordinal()].remove(&amp;self.get_value(vertex, index), id.index());
     }
-    
+
     // Remove the vertex
     // ...
 }
@@ -5739,23 +5574,23 @@ fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item = String&gt; + '_ {
 </span>fn add_vertices_batch(&amp;mut self, vertices: Vec&lt;Self::Vertex&gt;) -&gt; Vec&lt;Self::VertexId&gt; {
     let mut ids = Vec::with_capacity(vertices.len());
     let mut index_updates = Vec::new();
-    
+
     // First pass: add vertices and collect index updates
     for vertex in vertices {
         let id = self.add_vertex_no_index(vertex);
         ids.push(id);
-        
+
         // Collect index updates
         for index in vertex.label().indexes() {
             index_updates.push((index, self.get_value(&amp;vertex, index), id));
         }
     }
-    
+
     // Second pass: apply all index updates
     for (index, value, id) in index_updates {
         self.indexes[index.ordinal()].insert(value, id);
     }
-    
+
     ids
 }
 <span class="boring">}</span></code></pre></pre>
@@ -5783,508 +5618,56 @@ fn tokenize(text: &amp;str) -&gt; impl Iterator&lt;Item = String&gt; + '_ {
 </span>#[test]
 fn test_hash_index() {
     let mut graph = MyGraph::new();
-    
+
     // Add vertices with indexed properties
     let v1 = graph.add_vertex(Vertex::Person {
         name: "Alice".to_string(),
         age: 30,
         // ...other fields
     });
-    
+
     let v2 = graph.add_vertex(Vertex::Person {
         name: "Bob".to_string(),
         age: 25,
         // ...other fields
     });
-    
+
     // Test index lookup
     let results = graph.walk()
         .vertices(Vertex::person_by_name("Alice"))
         .collect::&lt;Vec&lt;_&gt;&gt;();
-    
+
     assert_eq!(results.len(), 1);
     assert_eq!(results[0].id(), v1);
-    
+
     // Test index update after mutation
     graph.vertex_mut(v1).unwrap()
         .project_mut::&lt;PersonMut&lt;_&gt;&gt;().unwrap()
         .set_name("Alicia");
-    
+
     let results = graph.walk()
         .vertices(Vertex::person_by_name("Alicia"))
         .collect::&lt;Vec&lt;_&gt;&gt;();
-    
+
     assert_eq!(results.len(), 1);
     assert_eq!(results[0].id(), v1);
 }
 <span class="boring">}</span></code></pre></pre>
-<h2 id="conclusion-3"><a class="header" href="#conclusion-3">Conclusion</a></h2>
+<h2 id="next-steps-5"><a class="header" href="#next-steps-5">Next Steps</a></h2>
 <p>Implementing efficient indexes is key to building a high-performance graph backend. By carefully designing index
 structures and ensuring proper updates during mutations, you can provide fast lookup capabilities while maintaining
 reasonable memory usage. Remember that different use cases may require different indexing strategies, so consider the
 expected query patterns when deciding which indexes to implement and how to optimize them.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="performance-considerations-1"><a class="header" href="#performance-considerations-1">Performance Considerations</a></h1>
-<p>Performance is a critical aspect of any graph implementation. This chapter covers strategies and techniques for optimizing your graph backend for speed, memory efficiency, and scalability.</p>
-<h2 id="performance-goals"><a class="header" href="#performance-goals">Performance Goals</a></h2>
-<p>When optimizing a graph implementation, consider these common performance goals:</p>
-<ol>
-<li><strong>Query Speed</strong>: Fast traversal and lookup operations</li>
-<li><strong>Mutation Efficiency</strong>: Quick adds, updates, and deletes</li>
-<li><strong>Memory Usage</strong>: Efficient use of memory</li>
-<li><strong>Scalability</strong>: Handling large graphs without degradation</li>
-<li><strong>Latency</strong>: Consistent response times even under load</li>
-</ol>
-<h2 id="memory-layout-optimization"><a class="header" href="#memory-layout-optimization">Memory Layout Optimization</a></h2>
-<h3 id="data-locality"><a class="header" href="#data-locality">Data Locality</a></h3>
-<p>Improving data locality can significantly boost performance:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Poor locality: Elements scattered across memory
-struct VertexCollection {
-    vertices: HashMap&lt;VertexId, Box&lt;Vertex&gt;&gt;,
-}
-
-// Better locality: Elements stored contiguously
-struct VertexCollection {
-    vertices: Vec&lt;Option&lt;Vertex&gt;&gt;, // Using None for deleted vertices
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="memory-efficient-id-types"><a class="header" href="#memory-efficient-id-types">Memory-Efficient ID Types</a></h3>
-<p>ID types should be compact and efficient:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Inefficient ID (16 bytes)
-struct VerboseVertexId {
-    label_name: String,
-    index: usize,
-}
-
-// Efficient ID (6 bytes)
-#[repr(C)]
-struct CompactVertexId {
-    label: u16,
-    index: u32,
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="smart-pointers-and-indirection"><a class="header" href="#smart-pointers-and-indirection">Smart Pointers and Indirection</a></h3>
-<p>Choose appropriate pointer types:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Excessive indirection
-type VertexStore = HashMap&lt;VertexId, Box&lt;Rc&lt;Vertex&gt;&gt;&gt;;
-
-// More efficient
-type VertexStore = Vec&lt;Option&lt;Vertex&gt;&gt;;
-<span class="boring">}</span></code></pre></pre>
-<h2 id="algorithmic-optimizations"><a class="header" href="#algorithmic-optimizations">Algorithmic Optimizations</a></h2>
-<h3 id="efficient-traversal"><a class="header" href="#efficient-traversal">Efficient Traversal</a></h3>
-<p>Optimize traversal operations:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Naive traversal: Creates intermediate collections
-fn find_neighbors(&amp;self, vertex_id: VertexId) -&gt; Vec&lt;VertexId&gt; {
-    let edges = self.edges(vertex_id, EdgeSearch::scan());
-    let mut neighbors = Vec::new();
-    
-    for edge in edges {
-        neighbors.push(edge.head());
-    }
-    
-    neighbors
-}
-
-// Efficient traversal: Uses iterators
-fn find_neighbors&lt;'a&gt;(&amp;'a self, vertex_id: VertexId) 
-    -&gt; impl Iterator&lt;Item = VertexId&gt; + 'a 
-{
-    self.edges(vertex_id, EdgeSearch::scan())
-        .map(|edge| edge.head())
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="lazy-evaluation"><a class="header" href="#lazy-evaluation">Lazy Evaluation</a></h3>
-<p>Use lazy evaluation where appropriate:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Eager evaluation
-fn find_paths(&amp;self, start: VertexId, end: VertexId) -&gt; Vec&lt;Vec&lt;EdgeId&gt;&gt; {
-    // Compute all possible paths upfront
-    // ...
-}
-
-// Lazy evaluation
-fn find_paths&lt;'a&gt;(&amp;'a self, start: VertexId, end: VertexId) 
-    -&gt; impl Iterator&lt;Item = Vec&lt;EdgeId&gt;&gt; + 'a 
-{
-    // Return an iterator that computes paths on demand
-    // ...
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="index-optimizations"><a class="header" href="#index-optimizations">Index Optimizations</a></h3>
-<p>Optimize index selection and usage:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn vertices&lt;'search&gt;(
-    &amp;self,
-    search: &amp;VertexSearch&lt;'search, Self&gt;,
-) -&gt; Self::VertexIter&lt;'search, '_&gt; {
-    // Use the most selective index first
-    match search {
-        VertexSearch::Index { index, value, .. } =&gt; {
-            // Hash index lookup (most selective)
-            // ...
-        }
-        VertexSearch::Range { index, range, .. } =&gt; {
-            // Range index lookup
-            // ...
-        }
-        VertexSearch::Label { label, .. } =&gt; {
-            // Label index lookup
-            // ...
-        }
-        VertexSearch::Scan { .. } =&gt; {
-            // Full scan (least selective)
-            // ...
-        }
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<h2 id="data-structure-choices"><a class="header" href="#data-structure-choices">Data Structure Choices</a></h2>
-<h3 id="collection-types"><a class="header" href="#collection-types">Collection Types</a></h3>
-<p>Choose appropriate collection types for your use case:</p>
-<div class="table-wrapper"><table><thead><tr><th>Collection Type</th><th>Best For</th><th>Trade-offs</th></tr></thead><tbody>
-<tr><td><code>Vec&lt;T&gt;</code></td><td>Dense, stable IDs, fast iteration</td><td>Deletion can be costly</td></tr>
-<tr><td><code>HashMap&lt;K, V&gt;</code></td><td>Sparse data, arbitrary keys</td><td>Less memory efficient</td></tr>
-<tr><td><code>BTreeMap&lt;K, V&gt;</code></td><td>Ordered data, range queries</td><td>Operations slightly slower than Hash</td></tr>
-<tr><td><code>SmallVec&lt;T&gt;</code></td><td>Very small collections (1-8 items)</td><td>Avoids heap allocation</td></tr>
-<tr><td><code>tombstone_vec::TombstoneVec&lt;T&gt;</code></td><td>Stable IDs with frequent deletion</td><td>Extra indirection</td></tr>
-</tbody></table>
-</div>
-<h3 id="specialized-structures"><a class="header" href="#specialized-structures">Specialized Structures</a></h3>
-<p>Consider specialized data structures:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// For very small sets with stack allocation
-use smallbox::SmallBox;
-type SmallSet&lt;T&gt; = SmallBox&lt;dyn Iterator&lt;Item = T&gt; + '_, smallbox::space::S8&gt;;
-
-// For bit-packed adjacency representation
-use bitvec::prelude::*;
-type AdjacencyBits = BitVec&lt;u64, Lsb0&gt;;
-<span class="boring">}</span></code></pre></pre>
-<h2 id="batch-operations"><a class="header" href="#batch-operations">Batch Operations</a></h2>
-<p>Implement efficient batch operations:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl&lt;V, E&gt; MyGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    // Efficient batch vertex addition
-    pub fn add_vertices_batch(&amp;mut self, vertices: Vec&lt;V&gt;) -&gt; Vec&lt;Self::VertexId&gt; {
-        // Pre-allocate space
-        let mut result = Vec::with_capacity(vertices.len());
-        
-        // Reserve capacity in internal structures
-        for (label_idx, count) in Self::count_by_label(&amp;vertices) {
-            self.vertices[label_idx].reserve(count);
-        }
-        
-        // Add all vertices
-        for vertex in vertices {
-            result.push(self.add_vertex(vertex));
-        }
-        
-        result
-    }
-    
-    // Helper to count vertices by label
-    fn count_by_label(vertices: &amp;[V]) -&gt; Vec&lt;(usize, usize)&gt; {
-        // Count vertices by label
-        // ...
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<h2 id="concurrency-strategies"><a class="header" href="#concurrency-strategies">Concurrency Strategies</a></h2>
-<p>For concurrent graph implementations:</p>
-<h3 id="read-write-locks"><a class="header" href="#read-write-locks">Read-Write Locks</a></h3>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use parking_lot::{RwLock, RwLockReadGuard, RwLockWriteGuard};
-
-pub struct ConcurrentGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    inner: RwLock&lt;MyGraph&lt;V, E&gt;&gt;,
-}
-
-impl&lt;V, E&gt; ConcurrentGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    pub fn read&lt;F, R&gt;(&amp;self, f: F) -&gt; R
-    where
-        F: FnOnce(&amp;MyGraph&lt;V, E&gt;) -&gt; R,
-    {
-        let guard = self.inner.read();
-        f(&amp;guard)
-    }
-    
-    pub fn write&lt;F, R&gt;(&amp;self, f: F) -&gt; R
-    where
-        F: FnOnce(&amp;mut MyGraph&lt;V, E&gt;) -&gt; R,
-    {
-        let mut guard = self.inner.write();
-        f(&amp;mut guard)
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="lock-free-data-structures"><a class="header" href="#lock-free-data-structures">Lock-Free Data Structures</a></h3>
-<p>For advanced concurrency, consider lock-free data structures:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use crossbeam_skiplist::SkipMap;
-
-struct ConcurrentIndex&lt;K, V&gt; {
-    map: SkipMap&lt;K, HashSet&lt;V&gt;&gt;,
-}
-
-impl&lt;K: Ord, V: Copy + Eq + Hash&gt; ConcurrentIndex&lt;K, V&gt; {
-    // Implement concurrent index operations
-    // ...
-}
-<span class="boring">}</span></code></pre></pre>
-<h2 id="memory-management"><a class="header" href="#memory-management">Memory Management</a></h2>
-<h3 id="reusing-memory"><a class="header" href="#reusing-memory">Reusing Memory</a></h3>
-<p>Reuse memory for deleted elements:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>struct VertexSlotManager {
-    slots: Vec&lt;Option&lt;VertexData&gt;&gt;,
-    free_list: Vec&lt;usize&gt;,
-}
-
-impl VertexSlotManager {
-    fn allocate(&amp;mut self, data: VertexData) -&gt; usize {
-        if let Some(slot) = self.free_list.pop() {
-            // Reuse a freed slot
-            self.slots[slot] = Some(data);
-            slot
-        } else {
-            // Allocate a new slot
-            let slot = self.slots.len();
-            self.slots.push(Some(data));
-            slot
-        }
-    }
-    
-    fn free(&amp;mut self, slot: usize) -&gt; Option&lt;VertexData&gt; {
-        let data = self.slots[slot].take();
-        if data.is_some() {
-            self.free_list.push(slot);
-        }
-        data
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="custom-allocators"><a class="header" href="#custom-allocators">Custom Allocators</a></h3>
-<p>For advanced cases, consider custom allocators:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use bumpalo::Bump;
-
-struct BumpAllocatedGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    allocator: Bump,
-    // Other fields...
-}
-
-impl&lt;V, E&gt; BumpAllocatedGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    pub fn add_vertex(&amp;mut self, vertex: V) -&gt; VertexId {
-        // Allocate vertex in the bump allocator
-        let vertex_ptr = self.allocator.alloc(vertex);
-        // Create ID and store reference
-        // ...
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<h2 id="common-performance-bottlenecks"><a class="header" href="#common-performance-bottlenecks">Common Performance Bottlenecks</a></h2>
-<p>Watch out for these common performance issues:</p>
-<h3 id="1-excessive-cloning"><a class="header" href="#1-excessive-cloning">1. Excessive Cloning</a></h3>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Poor: Clones data unnecessarily
-fn vertex_labels(&amp;self) -&gt; Vec&lt;String&gt; {
-    self.vertices.iter()
-        .map(|v| v.label().name().to_string())
-        .collect()
-}
-
-// Better: Returns references
-fn vertex_labels(&amp;self) -&gt; Vec&lt;&amp;'static str&gt; {
-    self.vertices.iter()
-        .map(|v| v.label().name())
-        .collect()
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="2-unnecessary-allocations"><a class="header" href="#2-unnecessary-allocations">2. Unnecessary Allocations</a></h3>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Poor: Allocates a new vector for each vertex
-fn process_vertices(&amp;self) {
-    for vertex_id in self.vertex_ids() {
-        let mut data = Vec::new();
-        // Process vertex
-        // ...
-    }
-}
-
-// Better: Reuses allocation
-fn process_vertices(&amp;self) {
-    let mut data = Vec::with_capacity(100);
-    for vertex_id in self.vertex_ids() {
-        data.clear();
-        // Process vertex using data
-        // ...
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="3-inefficient-index-updates"><a class="header" href="#3-inefficient-index-updates">3. Inefficient Index Updates</a></h3>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Poor: Updates indexes for unmodified fields
-fn update_vertex(&amp;mut self, id: VertexId, vertex: Vertex) {
-    // Remove all indexes for old vertex
-    self.remove_all_indexes(id);
-    
-    // Update vertex
-    *self.vertices.get_mut(id.index()) = vertex;
-    
-    // Add all indexes for new vertex
-    self.add_all_indexes(id);
-}
-
-// Better: Updates only changed indexes
-fn update_vertex(&amp;mut self, id: VertexId, vertex: Vertex) {
-    let old_vertex = self.vertices.get(id.index());
-    
-    // Update only changed indexes
-    for index in vertex.label().indexes() {
-        let old_value = self.get_value(old_vertex, index);
-        let new_value = self.get_value(&amp;vertex, index);
-        
-        if old_value != new_value {
-            self.update_index(index, id, old_value, new_value);
-        }
-    }
-    
-    // Update vertex
-    *self.vertices.get_mut(id.index()) = vertex;
-}
-<span class="boring">}</span></code></pre></pre>
-<h2 id="profiling-and-benchmarking"><a class="header" href="#profiling-and-benchmarking">Profiling and Benchmarking</a></h2>
-<p>Use these tools to identify performance issues:</p>
-<h3 id="benchmarking-with-criterion"><a class="header" href="#benchmarking-with-criterion">Benchmarking with Criterion</a></h3>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>use criterion::{black_box, criterion_group, criterion_main, Criterion};
-
-fn vertex_insertion_benchmark(c: &amp;mut Criterion) {
-    c.bench_function("insert_1000_vertices", |b| {
-        b.iter(|| {
-            let mut graph = MyGraph::new();
-            for i in 0..1000 {
-                graph.add_vertex(Vertex::Person {
-                    name: format!("Person {}", i),
-                    // Other fields...
-                });
-            }
-        })
-    });
-}
-
-criterion_group!(benches, vertex_insertion_benchmark);
-criterion_main!(benches);
-<span class="boring">}</span></code></pre></pre>
-<h3 id="flame-graphs"><a class="header" href="#flame-graphs">Flame Graphs</a></h3>
-<p>Generate flame graphs to visualize performance bottlenecks:</p>
-<pre><code class="language-bash"># Using cargo-flamegraph
-cargo flamegraph --bin my-graph-benchmark
-
-# Using perf and inferno
-perf record -g ./target/release/my-graph-benchmark
-perf script | inferno-collapse-perf | inferno-flamegraph &gt; flamegraph.svg
-</code></pre>
-<h2 id="real-world-optimization-strategies"><a class="header" href="#real-world-optimization-strategies">Real-World Optimization Strategies</a></h2>
-<h3 id="1-progressive-optimization"><a class="header" href="#1-progressive-optimization">1. Progressive Optimization</a></h3>
-<p>Start with a simple implementation and optimize incrementally:</p>
-<ol>
-<li><strong>Measure</strong>: Establish performance baselines</li>
-<li><strong>Identify</strong>: Find the most significant bottlenecks</li>
-<li><strong>Optimize</strong>: Focus on the biggest issues first</li>
-<li><strong>Verify</strong>: Confirm improvements with benchmarks</li>
-<li><strong>Repeat</strong>: Continue until performance goals are met</li>
-</ol>
-<h3 id="2-specialized-implementations"><a class="header" href="#2-specialized-implementations">2. Specialized Implementations</a></h3>
-<p>Create specialized implementations for different use cases:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// For small graphs (few vertices/edges)
-pub struct SmallGraph&lt;V, E&gt; { /* ... */ }
-
-// For large graphs with many queries
-pub struct QueryOptimizedGraph&lt;V, E&gt; { /* ... */ }
-
-// For graphs with frequent mutations
-pub struct MutationOptimizedGraph&lt;V, E&gt; { /* ... */ }
-<span class="boring">}</span></code></pre></pre>
-<h3 id="3-feature-based-optimizations"><a class="header" href="#3-feature-based-optimizations">3. Feature-Based Optimizations</a></h3>
-<p>Use Cargo features to enable/disable optimizations:</p>
-<pre><code class="language-toml"># In Cargo.toml
-[features]
-default = ["parallel-traversal"]
-parallel-traversal = ["rayon"]
-memory-optimized = []
-</code></pre>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>#[cfg(feature = "parallel-traversal")]
-fn process_vertices(&amp;self) {
-    use rayon::prelude::*;
-    self.vertex_ids()
-        .par_iter()
-        .for_each(|id| {
-            // Parallel processing
-        });
-}
-
-#[cfg(not(feature = "parallel-traversal"))]
-fn process_vertices(&amp;self) {
-    // Sequential processing
-}
-<span class="boring">}</span></code></pre></pre>
-<h2 id="conclusion-4"><a class="header" href="#conclusion-4">Conclusion</a></h2>
-<p>Optimizing a graph implementation requires careful attention to data structures, algorithms, and memory management. By focusing on the most critical performance aspects for your use case and employing targeted optimization strategies, you can create a graph backend that delivers excellent performance while maintaining code clarity and correctness.</p>
-<p>Remember that premature optimization can lead to unnecessary complexity. Always profile first to identify actual bottlenecks, then optimize the parts that will deliver the most significant improvements.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="benchmarking"><a class="header" href="#benchmarking">Benchmarking</a></h1>
-<p>Benchmarking is essential for measuring and comparing the performance of your graph implementation. This chapter covers how to set up and run benchmarks, interpret results, and use benchmarking to guide optimization.</p>
+<p>Benchmarking is essential for measuring and comparing the performance of your graph implementation. This chapter covers
+how to set up and run benchmarks, interpret results, and use benchmarking to guide optimization.</p>
 <h2 id="setting-up-benchmarks"><a class="header" href="#setting-up-benchmarks">Setting Up Benchmarks</a></h2>
 <p>The Graph API provides built-in benchmarking tools to help you evaluate your implementation's performance.</p>
 <h3 id="adding-benchmarking-dependencies"><a class="header" href="#adding-benchmarking-dependencies">Adding Benchmarking Dependencies</a></h3>
 <p>First, add the necessary dependencies to your <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[dev-dependencies]
 criterion = "0.5"
-graph-api-benches = { path = "../graph-api-benches" }
+graph-api-benches = { version = "0.1.0", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 [[bench]]
 name = "my_graph_benchmarks"
@@ -6354,323 +5737,7 @@ cargo bench
 
 # Run a specific benchmark
 cargo bench -- vertex_insertion
-
-# Run benchmarks with more iterations for higher precision
-CRITERION_SAMPLE_SIZE=100 cargo bench
 </code></pre>
-<h2 id="custom-benchmarks"><a class="header" href="#custom-benchmarks">Custom Benchmarks</a></h2>
-<p>While the standard suite covers many scenarios, you should also create custom benchmarks for your implementation's specific features.</p>
-<h3 id="example-custom-benchmark"><a class="header" href="#example-custom-benchmark">Example: Custom Benchmark</a></h3>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn custom_benchmarks(c: &amp;mut Criterion) {
-    // Benchmark for a specialized lookup method
-    c.bench_function("custom_lookup", |b| {
-        let mut graph = MyGraph::new();
-        
-        // Setup: Create a graph with test data
-        let vertices = setup_test_graph(&amp;mut graph);
-        
-        b.iter(|| {
-            // Benchmark your custom operation
-            for vertex_id in &amp;vertices {
-                graph.my_custom_lookup(*vertex_id);
-            }
-        })
-    });
-    
-    // Benchmark for batch operations
-    c.bench_function("batch_add_vertices", |b| {
-        b.iter(|| {
-            let mut graph = MyGraph::new();
-            
-            // Create test data
-            let vertices = create_test_vertices(1000);
-            
-            // Benchmark the batch add operation
-            graph.add_vertices_batch(vertices);
-        })
-    });
-}
-
-criterion_group!(custom_benches, custom_benchmarks);
-<span class="boring">}</span></code></pre></pre>
-<h2 id="comparative-benchmarking"><a class="header" href="#comparative-benchmarking">Comparative Benchmarking</a></h2>
-<p>To compare your implementation against other graph implementations:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn comparison_benchmarks(c: &amp;mut Criterion) {
-    let mut group = c.benchmark_group("vertex_insertion");
-    
-    // Benchmark your implementation
-    group.bench_function("my_graph", |b| {
-        b.iter(|| {
-            let mut graph = MyGraph::new();
-            for i in 0..1000 {
-                graph.add_vertex(create_test_vertex(i));
-            }
-        })
-    });
-    
-    // Benchmark SimpleGraph
-    group.bench_function("simple_graph", |b| {
-        b.iter(|| {
-            let mut graph = SimpleGraph::new();
-            for i in 0..1000 {
-                graph.add_vertex(create_test_vertex(i));
-            }
-        })
-    });
-    
-    // Benchmark PetGraph
-    group.bench_function("pet_graph", |b| {
-        b.iter(|| {
-            let mut graph = PetGraph::new();
-            for i in 0..1000 {
-                graph.add_vertex(create_test_vertex(i));
-            }
-        })
-    });
-    
-    group.finish();
-}
-
-criterion_group!(comparison_benches, comparison_benchmarks);
-<span class="boring">}</span></code></pre></pre>
-<h2 id="interpreting-benchmark-results"><a class="header" href="#interpreting-benchmark-results">Interpreting Benchmark Results</a></h2>
-<p>Criterion provides detailed statistics for each benchmark:</p>
-<ul>
-<li><strong>Mean time</strong>: Average execution time</li>
-<li><strong>Median time</strong>: Middle value of all measurements</li>
-<li><strong>Standard deviation</strong>: Variation in measurements</li>
-<li><strong>Throughput</strong>: Operations per second (for parameterized benchmarks)</li>
-</ul>
-<h3 id="sample-output-analysis"><a class="header" href="#sample-output-analysis">Sample Output Analysis</a></h3>
-<pre><code>Benchmarking vertex_insertion: Collecting 100 samples in estimated 5.2684 s (10k iterations)
-vertex_insertion           time:   [524.44 µs 525.30 µs 526.33 µs]
-                           thrpt:  [1.9000 Melem/s 1.9037 Melem/s 1.9068 Melem/s]
-</code></pre>
-<p>This output shows:</p>
-<ul>
-<li>The benchmark took around 525 microseconds per iteration</li>
-<li>It processes about 1.9 million elements per second</li>
-</ul>
-<h3 id="comparing-results"><a class="header" href="#comparing-results">Comparing Results</a></h3>
-<p>When comparing benchmark results:</p>
-<ol>
-<li><strong>Focus on relative differences</strong>: A 5-10% difference might be noise; look for larger gaps</li>
-<li><strong>Consider operation complexity</strong>: Some operations naturally scale differently</li>
-<li><strong>Check variance</strong>: High standard deviation suggests inconsistent performance</li>
-<li><strong>Look at throughput</strong>: For scale benchmarks, throughput may be more meaningful than raw time</li>
-</ol>
-<h2 id="advanced-benchmarking-techniques"><a class="header" href="#advanced-benchmarking-techniques">Advanced Benchmarking Techniques</a></h2>
-<h3 id="parameterized-benchmarks"><a class="header" href="#parameterized-benchmarks">Parameterized Benchmarks</a></h3>
-<p>Test how performance scales with input size:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn parameterized_bench(c: &amp;mut Criterion) {
-    let mut group = c.benchmark_group("vertex_count_scaling");
-    
-    for size in [10, 100, 1000, 10000].iter() {
-        group.throughput(criterion::Throughput::Elements(*size as u64));
-        group.bench_with_input(format!("vertices_{}", size), size, |b, &amp;size| {
-            b.iter(|| {
-                let mut graph = MyGraph::new();
-                for i in 0..size {
-                    graph.add_vertex(create_test_vertex(i));
-                }
-            });
-        });
-    }
-    
-    group.finish();
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="profiling-during-benchmarks"><a class="header" href="#profiling-during-benchmarks">Profiling During Benchmarks</a></h3>
-<p>Use profiling tools with benchmarks:</p>
-<pre><code class="language-bash"># Generate a flame graph during benchmark execution
-cargo flamegraph --bench my_graph_benchmarks -- --bench vertex_insertion
-
-# Use perf for detailed profiling
-perf record -g cargo bench -- vertex_insertion
-perf report
-</code></pre>
-<h2 id="real-world-benchmark-examples"><a class="header" href="#real-world-benchmark-examples">Real-World Benchmark Examples</a></h2>
-<h3 id="memory-usage-benchmarking"><a class="header" href="#memory-usage-benchmarking">Memory Usage Benchmarking</a></h3>
-<p>Measure memory consumption:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn memory_benchmark(c: &amp;mut Criterion) {
-    c.bench_function("memory_usage_1M_vertices", |b| {
-        b.iter_custom(|iters| {
-            let mut total_duration = std::time::Duration::new(0, 0);
-            
-            for _ in 0..iters {
-                // Record baseline memory
-                let baseline = get_current_memory_usage();
-                
-                // Start timing
-                let start = std::time::Instant::now();
-                
-                // Create a large graph
-                let graph = create_large_graph(1_000_000);
-                
-                // Force graph to stay alive until measurement
-                std::hint::black_box(&amp;graph);
-                
-                // Measure memory increase
-                let peak = get_current_memory_usage();
-                let memory_used = peak - baseline;
-                
-                // Log memory usage (not part of timing)
-                println!("Memory used: {} MB", memory_used / (1024 * 1024));
-                
-                // End timing
-                total_duration += start.elapsed();
-            }
-            
-            total_duration
-        });
-    });
-}
-
-// Helper function to get memory usage
-fn get_current_memory_usage() -&gt; usize {
-    // Use platform-specific APIs to get memory usage
-    // For example, using the `psutil` crate
-    // ...
-}
-<span class="boring">}</span></code></pre></pre>
-<h3 id="concurrent-access-benchmarking"><a class="header" href="#concurrent-access-benchmarking">Concurrent Access Benchmarking</a></h3>
-<p>For graph implementations supporting concurrency:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn concurrent_benchmark(c: &amp;mut Criterion) {
-    let mut group = c.benchmark_group("concurrent_access");
-    
-    for threads in [1, 2, 4, 8, 16].iter() {
-        group.bench_function(format!("read_threads_{}", threads), |b| {
-            // Create a shared graph
-            let graph = Arc::new(MyGraph::new());
-            populate_test_graph(&amp;graph);
-            
-            b.iter(|| {
-                let mut handles = Vec::new();
-                
-                // Spawn reader threads
-                for _ in 0..*threads {
-                    let graph_clone = Arc::clone(&amp;graph);
-                    handles.push(std::thread::spawn(move || {
-                        // Perform concurrent read operations
-                        for _ in 0..1000 {
-                            let _ = graph_clone.walk()
-                                .vertices(VertexSearch::scan())
-                                .collect::&lt;Vec&lt;_&gt;&gt;();
-                        }
-                    }));
-                }
-                
-                // Wait for all threads
-                for handle in handles {
-                    handle.join().unwrap();
-                }
-            });
-        });
-    }
-    
-    group.finish();
-}
-<span class="boring">}</span></code></pre></pre>
-<h2 id="using-benchmarks-to-guide-optimization"><a class="header" href="#using-benchmarks-to-guide-optimization">Using Benchmarks to Guide Optimization</a></h2>
-<p>Benchmarks are most valuable when used as part of your optimization process:</p>
-<ol>
-<li><strong>Establish a baseline</strong>: Run benchmarks before making any changes</li>
-<li><strong>Identify bottlenecks</strong>: Use results to find which operations are slowest</li>
-<li><strong>Make targeted improvements</strong>: Change one thing at a time</li>
-<li><strong>Measure impact</strong>: Run benchmarks after each change</li>
-<li><strong>Validate trade-offs</strong>: Ensure optimizations don't degrade other aspects</li>
-</ol>
-<h3 id="example-optimization-workflow"><a class="header" href="#example-optimization-workflow">Example Optimization Workflow</a></h3>
-<pre><code>1. Initial benchmark:
-   vertex_insertion: 525.30 µs
-
-2. Profiling shows excessive allocations in vertex insertion
-   - Modify implementation to reduce allocations
-
-3. After optimization:
-   vertex_insertion: 320.15 µs (39% improvement)
-
-4. Check if other operations are affected:
-   vertex_removal: 212.40 µs (unchanged)
-   edge_insertion: 187.30 µs (5% improvement)
-</code></pre>
-<h2 id="benchmark-driven-development"><a class="header" href="#benchmark-driven-development">Benchmark-Driven Development</a></h2>
-<p>Consider adopting benchmark-driven development for performance-critical components:</p>
-<ol>
-<li><strong>Write benchmarks first</strong>: Define performance expectations</li>
-<li><strong>Implement the feature</strong>: Focus on correctness first</li>
-<li><strong>Run benchmarks</strong>: Measure initial performance</li>
-<li><strong>Optimize iteratively</strong>: Improve performance until targets are met</li>
-<li><strong>Document results</strong>: Record performance characteristics</li>
-</ol>
-<h2 id="common-pitfalls-in-benchmarking"><a class="header" href="#common-pitfalls-in-benchmarking">Common Pitfalls in Benchmarking</a></h2>
-<p>Watch out for these benchmarking issues:</p>
-<ol>
-<li><strong>Measurement noise</strong>: External factors affecting results</li>
-<li><strong>Microbenchmark traps</strong>: Optimizing operations that don't matter in real use</li>
-<li><strong>Compiler optimizations</strong>: Dead code elimination skewing results</li>
-<li><strong>Benchmark bias</strong>: Testing only favorable scenarios</li>
-<li><strong>Invalid comparisons</strong>: Comparing different operations as if they were equivalent</li>
-</ol>
-<h3 id="avoiding-benchmarking-mistakes"><a class="header" href="#avoiding-benchmarking-mistakes">Avoiding Benchmarking Mistakes</a></h3>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// BAD: Allows dead code elimination
-c.bench_function("ineffective_bench", |b| {
-    b.iter(|| {
-        let mut graph = MyGraph::new();
-        for i in 0..1000 {
-            graph.add_vertex(create_test_vertex(i));
-        }
-        // Results never used, may be optimized away
-    })
-});
-
-// GOOD: Prevents optimization with black_box
-c.bench_function("effective_bench", |b| {
-    b.iter(|| {
-        let mut graph = MyGraph::new();
-        for i in 0..1000 {
-            graph.add_vertex(create_test_vertex(i));
-        }
-        // Force evaluation
-        criterion::black_box(&amp;graph);
-    })
-});
-<span class="boring">}</span></code></pre></pre>
-<h2 id="benchmarking-checklist"><a class="header" href="#benchmarking-checklist">Benchmarking Checklist</a></h2>
-<p>Use this checklist when creating benchmarks:</p>
-<ul>
-<li><input disabled="" type="checkbox"/>
-Include representative operations</li>
-<li><input disabled="" type="checkbox"/>
-Test a range of input sizes</li>
-<li><input disabled="" type="checkbox"/>
-Include setup code outside timed sections</li>
-<li><input disabled="" type="checkbox"/>
-Use <code>black_box</code> to prevent dead code elimination</li>
-<li><input disabled="" type="checkbox"/>
-Run multiple iterations for statistical significance</li>
-<li><input disabled="" type="checkbox"/>
-Test on the target hardware when possible</li>
-<li><input disabled="" type="checkbox"/>
-Include comparison benchmarks against similar implementations</li>
-<li><input disabled="" type="checkbox"/>
-Document benchmark configurations and results</li>
-</ul>
-<h2 id="conclusion-5"><a class="header" href="#conclusion-5">Conclusion</a></h2>
-<p>Effective benchmarking is crucial for developing high-performance graph implementations. By creating comprehensive benchmarks, accurately measuring performance, and using results to guide optimization, you can ensure your graph implementation meets its performance requirements.</p>
-<p>Remember that benchmarks are most valuable when they reflect real-world usage patterns. Focus on benchmarking operations that will be common in actual applications, and be cautious about optimizing solely for benchmark performance at the expense of code clarity or maintainability.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="support-traits"><a class="header" href="#support-traits">Support Traits</a></h1>
 <p>The Graph API uses a trait-based approach to indicate which optional features a graph implementation supports. This
@@ -7156,19 +6223,20 @@ where
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="existing-implementations"><a class="header" href="#existing-implementations">Existing Implementations</a></h1>
-<p>The Graph API ecosystem includes several ready-to-use graph implementations that cater to different use cases and
+<p>The Graph API ecosystem includes two ready-to-use graph implementations that cater to different use cases and
 performance requirements. This section provides an overview of the existing implementations, their features, and
 suitability for different applications.</p>
 <h2 id="core-implementations"><a class="header" href="#core-implementations">Core Implementations</a></h2>
 <p>The Graph API project provides two main graph implementations:</p>
 <ol>
 <li>
-<p><strong><a href="reference/./implementations/simple_graph.html">SimpleGraph</a></strong>: A custom-built graph implementation designed specifically for
-the Graph API, with full support for all index types and optimized for property graph use cases.</p>
+<p><strong><a href="reference/./implementations/simple_graph.html">SimpleGraph</a></strong>: A reference graph implementation designed specifically for
+the Graph API, with full support for all index types.</p>
 </li>
 <li>
 <p><strong><a href="reference/./implementations/pet_graph.html">PetGraph</a></strong>: An adapter implementation for the
-popular <a href="https://crates.io/crates/petgraph">petgraph</a> crate, providing Graph API compatibility with an established
+popular <a href="https://crates.io/crates/petgraph">petgraph</a> crate, demonstrating Graph API compatibility with an
+established
 Rust graph library.</p>
 </li>
 </ol>
@@ -7191,13 +6259,13 @@ Rust graph library.</p>
 <h3 id="performance-characteristics"><a class="header" href="#performance-characteristics">Performance Characteristics</a></h3>
 <p>Performance varies between implementations:</p>
 <ul>
-<li><strong>SimpleGraph</strong>: Optimized for property graph operations with fast index lookups</li>
-<li><strong>PetGraph</strong>: Leverages petgraph's established graph algorithms but lacks index support</li>
+<li><strong>SimpleGraph</strong>: Supports all of GraphApi's features, but has not been optimized</li>
+<li><strong>PetGraph</strong>: Established graph library that is widely used</li>
 </ul>
 <h3 id="memory-usage"><a class="header" href="#memory-usage">Memory Usage</a></h3>
 <ul>
-<li><strong>SimpleGraph</strong>: Uses a specialized data structure with efficient memory layout</li>
-<li><strong>PetGraph</strong>: Uses petgraph's memory model, which may be more memory-efficient for specific use cases</li>
+<li><strong>SimpleGraph</strong>: Supports all of GraphApi's features, but has not been optimized</li>
+<li><strong>PetGraph</strong>: Uses petgraph's memory model, which may be more memory-efficient</li>
 </ul>
 <h3 id="integration"><a class="header" href="#integration">Integration</a></h3>
 <ul>
@@ -7208,13 +6276,7 @@ Rust graph library.</p>
 <p>If the existing implementations don't meet your needs, you can create your own by implementing the <code>Graph</code> trait. See
 the <a href="reference/../implementation/guide">Implementation Guide</a> for detailed instructions on creating a custom graph implementation.</p>
 <h2 id="future-implementations"><a class="header" href="#future-implementations">Future Implementations</a></h2>
-<p>The Graph API is designed to support a variety of graph implementations. Future versions may include additional
-implementations for:</p>
-<ul>
-<li><strong>Disk-backed graphs</strong>: For handling graphs larger than memory</li>
-<li><strong>Distributed graphs</strong>: For processing very large graphs across multiple machines</li>
-<li><strong>Specialized graphs</strong>: For domain-specific optimization (e.g., social networks, knowledge graphs)</li>
-</ul>
+<p>The Graph API is designed to support a variety of graph implementations.</p>
 <p>Community contributions of new graph implementations are welcomed and encouraged!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="simplegraph"><a class="header" href="#simplegraph">SimpleGraph</a></h1>
 <p><code>SimpleGraph</code> is the flagship implementation of the Graph API, designed specifically for property graphs with full

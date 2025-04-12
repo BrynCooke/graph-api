@@ -250,7 +250,7 @@ impl&lt;K: Hash + Eq, V: Copy + Eq + Hash&gt; HashIndex&lt;K, V&gt; {
         }
     }
 
-    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item = V&gt; + '_ {
+    fn get(&amp;self, key: &amp;K) -&gt; impl Iterator&lt;Item=V&gt; + '_ {
         self.map
             .get(key)
             .into_iter()
@@ -285,36 +285,6 @@ where
     }
 }
 <span class="boring">}</span></code></pre></pre>
-<h3 id="custom-traversal-steps"><a class="header" href="#custom-traversal-steps">Custom Traversal Steps</a></h3>
-<p>While not part of the core API, you can add custom traversal steps for your graph implementation:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>// Example: Custom extension trait for your graph
-pub trait MyGraphExt&lt;'g&gt; {
-    // A custom traversal step for efficient path finding
-    fn shortest_path(
-        &amp;self, 
-        from: Self::VertexId, 
-        to: Self::VertexId
-    ) -&gt; Option&lt;Vec&lt;Self::EdgeId&gt;&gt;;
-}
-
-// Implement for your graph
-impl&lt;'g, V, E&gt; MyGraphExt&lt;'g&gt; for MyGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    fn shortest_path(
-        &amp;self, 
-        from: Self::VertexId, 
-        to: Self::VertexId
-    ) -&gt; Option&lt;Vec&lt;Self::EdgeId&gt;&gt; {
-        // Efficient path-finding algorithm implementation
-        // ...
-    }
-}
-<span class="boring">}</span></code></pre></pre>
 <h2 id="extending-the-walker-api"><a class="header" href="#extending-the-walker-api">Extending the Walker API</a></h2>
 <p>You can extend the Walker API for your graph implementation by creating custom steps:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -334,6 +304,8 @@ impl&lt;'g, G: Graph&gt; CustomStepExt&lt;'g, G&gt; for VertexWalker&lt;'g, G&gt
     }
 }
 <span class="boring">}</span></code></pre></pre>
+<p>See <a href="https://github.com/BrynCooke/graph-api/blob/main/graph-api-lib/examples/custom_step.rs">custom_step.rs</a> for a full
+example.</p>
 <h2 id="integration-with-external-systems"><a class="header" href="#integration-with-external-systems">Integration with External Systems</a></h2>
 <p>You might want to integrate your graph implementation with external systems:</p>
 <h3 id="serializationdeserialization"><a class="header" href="#serializationdeserialization">Serialization/Deserialization</a></h3>
@@ -374,34 +346,7 @@ where
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="feature-compatibility"><a class="header" href="#feature-compatibility">Feature Compatibility</a></h2>
-<p>When implementing optional features, consider compatibility issues:</p>
-<ol>
-<li><strong>Compile-time Feature Flags</strong>: Use Cargo features to make certain capabilities optional:</li>
-</ol>
-<pre><code class="language-toml"># In Cargo.toml
-[features]
-full-text-index = []
-persistence = ["dep:serde"]
-</code></pre>
-<ol start="2">
-<li><strong>Runtime Feature Detection</strong>: Allow clients to check for feature support at runtime:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl&lt;V, E&gt; MyGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    pub fn supports_full_text_index(&amp;self) -&gt; bool {
-        // Check if feature is supported using trait objects
-        self as &amp;dyn Any
-            .downcast_ref::&lt;dyn SupportsVertexFullTextIndex&gt;()
-            .is_some()
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<p>Or simply use trait bounds in your API:</p>
+<p>When implementing optional features, use trait bounds in your API:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub fn search_full_text&lt;G&gt;(graph: &amp;G, text: &amp;str) -&gt; Vec&lt;G::VertexId&gt;
@@ -414,49 +359,6 @@ where
         .collect()
 }
 <span class="boring">}</span></code></pre></pre>
-<h2 id="performance-extensions"><a class="header" href="#performance-extensions">Performance Extensions</a></h2>
-<p>Consider adding performance-focused extensions:</p>
-<ol>
-<li><strong>Bulk Operations</strong>: Methods for efficient batch operations:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl&lt;V, E&gt; MyGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element, 
-{
-    pub fn add_vertices_batch(&amp;mut self, vertices: Vec&lt;V&gt;) -&gt; Vec&lt;Self::VertexId&gt; {
-        // Optimized batch insertion
-    }
-    
-    pub fn add_edges_batch(
-        &amp;mut self,
-        edges: Vec&lt;(Self::VertexId, Self::VertexId, E)&gt;,
-    ) -&gt; Vec&lt;Self::EdgeId&gt; {
-        // Optimized batch insertion
-    }
-}
-<span class="boring">}</span></code></pre></pre>
-<ol start="2">
-<li><strong>Specialized Algorithms</strong>: Graph algorithms optimized for your implementation:</li>
-</ol>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>impl&lt;V, E&gt; MyGraph&lt;V, E&gt;
-where
-    V: Element,
-    E: Element,
-{
-    pub fn connected_components(&amp;self) -&gt; Vec&lt;Vec&lt;Self::VertexId&gt;&gt; {
-        // Efficient connected components algorithm
-    }
-    
-    pub fn pagerank(&amp;self, damping: f64, iterations: usize) -&gt; HashMap&lt;Self::VertexId, f64&gt; {
-        // PageRank implementation
-    }
-}
-<span class="boring">}</span></code></pre></pre>
 <h2 id="best-practices-for-extensions"><a class="header" href="#best-practices-for-extensions">Best Practices for Extensions</a></h2>
 <p>When adding features and extensions, follow these best practices:</p>
 <ol>
@@ -464,12 +366,7 @@ where
 <li><strong>Document Extensions Thoroughly</strong>: Clearly document what extensions are available and how to use them.</li>
 <li><strong>Test Extensions Separately</strong>: Write dedicated tests for extended features.</li>
 <li><strong>Consider Performance Impact</strong>: Ensure extensions don't negatively impact core operations.</li>
-<li><strong>Graceful Degradation</strong>: When a feature isn't supported, provide helpful error messages.</li>
 </ol>
-<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
-<p>Extending your graph implementation with additional features can make it more powerful and useful for specific use
-cases. By carefully designing extensions that complement the core Graph API, you can create a versatile graph
-implementation that meets a wide range of needs while maintaining compatibility with the broader ecosystem.</p>
 
                     </main>
 

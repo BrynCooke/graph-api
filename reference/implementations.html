@@ -157,19 +157,20 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="existing-implementations"><a class="header" href="#existing-implementations">Existing Implementations</a></h1>
-<p>The Graph API ecosystem includes several ready-to-use graph implementations that cater to different use cases and
+<p>The Graph API ecosystem includes two ready-to-use graph implementations that cater to different use cases and
 performance requirements. This section provides an overview of the existing implementations, their features, and
 suitability for different applications.</p>
 <h2 id="core-implementations"><a class="header" href="#core-implementations">Core Implementations</a></h2>
 <p>The Graph API project provides two main graph implementations:</p>
 <ol>
 <li>
-<p><strong><a href="./implementations/simple_graph.html">SimpleGraph</a></strong>: A custom-built graph implementation designed specifically for
-the Graph API, with full support for all index types and optimized for property graph use cases.</p>
+<p><strong><a href="./implementations/simple_graph.html">SimpleGraph</a></strong>: A reference graph implementation designed specifically for
+the Graph API, with full support for all index types.</p>
 </li>
 <li>
 <p><strong><a href="./implementations/pet_graph.html">PetGraph</a></strong>: An adapter implementation for the
-popular <a href="https://crates.io/crates/petgraph">petgraph</a> crate, providing Graph API compatibility with an established
+popular <a href="https://crates.io/crates/petgraph">petgraph</a> crate, demonstrating Graph API compatibility with an
+established
 Rust graph library.</p>
 </li>
 </ol>
@@ -192,13 +193,13 @@ Rust graph library.</p>
 <h3 id="performance-characteristics"><a class="header" href="#performance-characteristics">Performance Characteristics</a></h3>
 <p>Performance varies between implementations:</p>
 <ul>
-<li><strong>SimpleGraph</strong>: Optimized for property graph operations with fast index lookups</li>
-<li><strong>PetGraph</strong>: Leverages petgraph's established graph algorithms but lacks index support</li>
+<li><strong>SimpleGraph</strong>: Supports all of GraphApi's features, but has not been optimized</li>
+<li><strong>PetGraph</strong>: Established graph library that is widely used</li>
 </ul>
 <h3 id="memory-usage"><a class="header" href="#memory-usage">Memory Usage</a></h3>
 <ul>
-<li><strong>SimpleGraph</strong>: Uses a specialized data structure with efficient memory layout</li>
-<li><strong>PetGraph</strong>: Uses petgraph's memory model, which may be more memory-efficient for specific use cases</li>
+<li><strong>SimpleGraph</strong>: Supports all of GraphApi's features, but has not been optimized</li>
+<li><strong>PetGraph</strong>: Uses petgraph's memory model, which may be more memory-efficient</li>
 </ul>
 <h3 id="integration"><a class="header" href="#integration">Integration</a></h3>
 <ul>
@@ -209,13 +210,7 @@ Rust graph library.</p>
 <p>If the existing implementations don't meet your needs, you can create your own by implementing the <code>Graph</code> trait. See
 the <a href="../implementation/guide">Implementation Guide</a> for detailed instructions on creating a custom graph implementation.</p>
 <h2 id="future-implementations"><a class="header" href="#future-implementations">Future Implementations</a></h2>
-<p>The Graph API is designed to support a variety of graph implementations. Future versions may include additional
-implementations for:</p>
-<ul>
-<li><strong>Disk-backed graphs</strong>: For handling graphs larger than memory</li>
-<li><strong>Distributed graphs</strong>: For processing very large graphs across multiple machines</li>
-<li><strong>Specialized graphs</strong>: For domain-specific optimization (e.g., social networks, knowledge graphs)</li>
-</ul>
+<p>The Graph API is designed to support a variety of graph implementations.</p>
 <p>Community contributions of new graph implementations are welcomed and encouraged!</p>
 
                     </main>
