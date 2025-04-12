@@ -14,47 +14,18 @@
     </defs>
     <text x="300" y="25" class="index-title" text-anchor="middle">Graph Instance Example</text>
 
-    <!-- Vertices -->
-    <g class="node" id="node-bryn" transform="translate(150, 250)">
-        <circle r="25"></circle>
-        <text class="node-label">Person</text>
-        <text class="property-text" y="28">name: Bryn</text>
-        <text class="property-text" y="43">age: 28</text>
-    </g>
-    <g class="node" id="node-julia" transform="translate(450, 250)">
-        <circle r="25"></circle>
-        <text class="node-label">Person</text>
-        <text class="property-text" y="28">name: Julia</text>
-        <text class="property-text" y="43">age: 34</text>
-    </g>
-    <g class="node" id="node-eve" transform="translate(450, 100)"> <!-- Positioned Eve lower -->
-        <circle r="25"></circle>
-        <text class="node-label">Person</text>
-        <text class="property-text" y="28">name: Eve</text>
-        <text class="property-text" y="43">age: 31</text>
-    </g>
-    <g class="node" id="node-graphapi" transform="translate(150, 400)">
-        <circle r="25"></circle>
-        <text class="node-label">Project</text>
-        <text class="property-text" y="28">name: GraphApi</text>
-    </g>
-    <g class="node" id="node-alpaca" transform="translate(450, 400)">
-        <circle r="25"></circle>
-        <text class="node-label">Project</text>
-        <text class="property-text" y="28">name: Alpaca</text>
-    </g>
 
     <!-- Edges -->
     <!-- Follows Edges -->
     <g class="edge directed" id="edge-julia-bryn-follows">
         <!-- Path from Julia (450, 250) to Bryn (150, 250), curved upwards -->
-        <path d="M 425 250 Q 300 200 175 250" fill="none" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="220">Follows</text>
+        <path d="M 425 250 Q 300 250 175 250" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="240">Follows</text>
     </g>
     <g class="edge directed" id="edge-eve-julia-follows">
         <!-- Line from Eve (450, 100) to Julia (450, 250) -->
         <line x1="450" y1="125" x2="450" y2="225" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="460" y="175" text-anchor="start">Follows</text>
+        <text class="edge-label" x="450" y="175" text-anchor="start">Follows</text>
     </g>
     <g class="edge directed" id="edge-bryn-eve-follows">
         <!-- Line from Bryn (150, 250) to Eve (450, 100) -->
@@ -66,20 +37,20 @@
     <g class="edge directed" id="edge-bryn-graphapi-created">
         <!-- Line from Bryn (150, 250) to GraphApi (150, 400) -->
         <line x1="150" y1="275" x2="150" y2="375" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="160" y="325" text-anchor="start">Created</text>
+        <text class="edge-label" x="150" y="325" text-anchor="start">Created</text>
     </g>
     <g class="edge directed" id="edge-julia-alpaca-created">
         <!-- Line from Julia (450, 250) to Alpaca (450, 400) -->
         <line x1="450" y1="275" x2="450" y2="375" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="440" y="325" text-anchor="end">Created</text>
+        <text class="edge-label" x="450" y="325" text-anchor="end">Created</text>
     </g>
 
     <!-- Liked Edge -->
     <g class="edge directed" id="edge-bryn-alpaca-liked">
         <!-- Path from Bryn (150, 250) to Alpaca (450, 400), curved downwards -->
-        <path d="M 175 260 Q 300 350 425 390" fill="none" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="330">Liked</text>
-        <text class="property-text halo" x="300" y="345">ts: 2023-01-01</text>
+        <path d="M 175 260 Q 300 290 425 390" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="290">Liked</text>
+        <text class="property-text halo" x="300" y="305">ts: 2023-01-01</text>
     </g>
 
     <!-- Commented Edge -->
@@ -88,6 +59,37 @@
         <path d="M 175 270 Q 300 380 425 395" fill="none" marker-end="url(#arrowhead)"/>
         <text class="edge-label" x="300" y="360">Commented</text>
         <text class="property-text halo" x="300" y="375">ts: 2023-01-02</text>
+    </g>
+
+
+    <!-- Vertices -->
+    <g class="node" id="node-bryn" transform="translate(150, 250)">
+        <circle r="25"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="28">name: Bryn</text>
+        <text class="property-text" y="43">age: 28</text>
+    </g>
+    <g class="node" id="node-julia" transform="translate(500, 250)">
+        <circle r="25"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="28">name: Julia</text>
+        <text class="property-text" y="43">age: 34</text>
+    </g>
+    <g class="node" id="node-eve" transform="translate(450, 100)"> <!-- Positioned Eve lower -->
+        <circle r="25"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="28">name: Eve</text>
+        <text class="property-text" y="43">age: 31</text>
+    </g>
+    <g class="node" id="node-graphapi" transform="translate(100, 400)">
+        <circle r="25"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="30">name: GraphApi</text>
+    </g>
+    <g class="node" id="node-alpaca" transform="translate(450, 400)">
+        <circle r="25"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="30">name: Alpaca</text>
     </g>
 
 </svg>
