@@ -258,6 +258,7 @@ where
 <h3 id="traversal-position-steps"><a class="header" href="#traversal-position-steps">Traversal Position Steps</a></h3>
 <ul>
 <li><a href="./walker/steps/vertices.html">vertices</a> - Start traversal from vertices</li>
+<li><a href="./walker/steps/vertices_by_id.html">vertices_by_id</a> - Start traversal from vertices by their IDs</li>
 <li><a href="./walker/steps/edges.html">edges</a> - Move to edges</li>
 <li><a href="./walker/steps/head.html">head</a> - Move to source vertices of edges</li>
 <li><a href="./walker/steps/tail.html">tail</a> - Move to target vertices of edges</li>
@@ -272,19 +273,30 @@ where
 <ul>
 <li><a href="./walker/steps/context.html">context</a> - Store data in context</li>
 <li><a href="./walker/steps/default_context.html">default_context</a> - Set default context</li>
+<li><a href="./walker/steps/mutate_context.html">mutate_context</a> - Modify context during traversal</li>
 </ul>
-<h3 id="collection-steps"><a class="header" href="#collection-steps">Collection Steps</a></h3>
+<h3 id="collection-and-transformation-steps"><a class="header" href="#collection-and-transformation-steps">Collection and Transformation Steps</a></h3>
 <ul>
 <li><a href="./walker/steps/collect.html">collect</a> - Collect elements into a collection</li>
 <li><a href="./walker/steps/count.html">count</a> - Count elements</li>
 <li><a href="./walker/steps/into_iter.html">into_iter</a> - Iterate over elements</li>
-</ul>
-<h3 id="advanced-steps"><a class="header" href="#advanced-steps">Advanced Steps</a></h3>
-<ul>
-<li><a href="./walker/steps/detour.html">detour</a> - Create sub-traversals</li>
-<li><a href="./walker/steps/mutate.html">mutate</a> - Modify the graph during traversal</li>
-<li><a href="./walker/steps/probe.html">probe</a> - Debug traversal state</li>
 <li><a href="./walker/steps/map.html">map</a> - Transform elements during traversal</li>
+<li><a href="./walker/steps/reduce.html">reduce</a> - Reduce elements to a single value</li>
+<li><a href="./walker/steps/fold.html">fold</a> - Fold elements with a provided function</li>
+</ul>
+<h3 id="flow-control-steps"><a class="header" href="#flow-control-steps">Flow Control Steps</a></h3>
+<ul>
+<li><a href="./walker/steps/control_flow.html">control_flow</a> - Control traversal flow</li>
+<li><a href="./walker/steps/detour.html">detour</a> - Create sub-traversals</li>
+</ul>
+<h3 id="modification-steps"><a class="header" href="#modification-steps">Modification Steps</a></h3>
+<ul>
+<li><a href="./walker/steps/mutate.html">mutate</a> - Modify the graph during traversal</li>
+</ul>
+<h3 id="debugging-steps"><a class="header" href="#debugging-steps">Debugging Steps</a></h3>
+<ul>
+<li><a href="./walker/steps/probe.html">probe</a> - Debug traversal state</li>
+<li><a href="./walker/steps/dbg.html">dbg</a> - Print debug information during traversal</li>
 </ul>
 <h2 id="advanced-usage"><a class="header" href="#advanced-usage">Advanced Usage</a></h2>
 <p>The context system is particularly useful for:</p>
