@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 550"> <!-- Increased height for Comment -->
-    <title>Graph Model Example (with Comment)</title>
-    <desc>Diagram showing a graph model with Person, Project, and Comment vertices and Follows, Created, Liked, Contributes, and CommentedOn edges. Layout prioritizes avoiding edge crossings and uses consistent styling.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450"> <!-- Reduced height after removing Rust/Contributes -->
+    <title>Graph Model Example (Person, Project, Comment)</title>
+    <desc>Diagram showing a graph model with Person, Project, and Comment vertices and Follows, Created, Liked, and CommentedOn edges. Layout prioritizes avoiding edge crossings and uses consistent styling.</desc>
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
                 orient="auto" markerUnits="strokeWidth">
@@ -24,6 +24,12 @@
         <text class="property-text" y="28">name: Julia</text> <!-- Moved down -->
         <text class="property-text" y="43">age: 34</text> <!-- Moved down -->
     </g>
+    <g class="node" id="node-eve" transform="translate(300, 100)"> <!-- New Eve Node -->
+        <circle r="25"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="28">name: Eve</text>
+        <text class="property-text" y="43">age: 42</text>
+    </g>
     <g class="node" id="node-graphapi" transform="translate(150, 230)">
         <circle r="25"></circle>
         <text class="node-label">Project</text>
@@ -39,11 +45,7 @@
         <text class="node-label">Comment</text>
         <text class="property-text" y="28">text: "Great API!"</text>
     </g>
-    <g class="node" id="node-rust" transform="translate(300, 480)"> <!-- Adjusted Y position further down -->
-        <circle r="25"></circle>
-        <text class="node-label">Project</text>
-        <text class="property-text" y="28">name: Rust</text> <!-- Moved down -->
-    </g>
+    <!-- Removed Rust node -->
 
     <!-- Edges -->
     <!-- Follows Edges -->
@@ -81,16 +83,6 @@
         <text class="edge-label" x="100" y="230">CommentedOn</text>
     </g>
 
-    <!-- Contributes Edges -->
-    <g class="edge directed" id="edge-bryn-rust-contributes">
-        <!-- Adjusted path start/end points for new node positions -->
-        <line x1="175" y1="245" x2="285" y2="460" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
-        <text class="edge-label" x="215" y="360">Contributes</text> <!-- Adjusted Y coord -->
-    </g>
-    <g class="edge directed" id="edge-julia-rust-contributes">
-        <!-- Adjusted path start/end points for new node positions -->
-        <line x1="425" y1="245" x2="315" y2="460" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
-        <text class="edge-label" x="385" y="360">Contributes</text> <!-- Adjusted Y coord -->
-    </g>
+    <!-- Removed Contributes Edges -->
 
 </svg>
