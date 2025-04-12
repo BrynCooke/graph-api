@@ -32,10 +32,10 @@
             <line x1="100" y1="70" x2="100" y2="130" marker-end="url(#arrowhead-path)"/> <!-- A -> B -->
         </g>
         <g class="edge directed path" id="edge-B-D">
-            <line x1="80" y1="170" x2="30" y2="230" marker-end="url(#arrowhead-path)"/> <!-- B -> D -->
+            <line x1="80" y1="170" x2="45" y2="230" marker-end="url(#arrowhead-path)"/> <!-- B -> D -->
         </g>
         <g class="edge directed path" id="edge-B-E">
-            <line x1="120" y1="170" x2="170" y2="230" marker-end="url(#arrowhead-path)"/> <!-- B -> E -->
+            <line x1="120" y1="170" x2="160" y2="230" marker-end="url(#arrowhead-path)"/> <!-- B -> E -->
         </g>
         <g class="edge directed path" id="edge-A-C">
             <line x1="120" y1="50" x2="280" y2="50" marker-end="url(#arrowhead-path)"/> <!-- A -> C -->
@@ -64,10 +64,10 @@
             <text class="traversal-order-label" x="10" y="-25">(5)</text>
         </g>
         <!-- Node D -->
-        <g class="node" id="node-D" transform="translate(30, 250)">
+        <g class="node" id="node-D" transform="translate(40, 250)">
             <circle r="20"/>
             <text class="node-label">D</text>
-            <text class="traversal-order-label" x="10" y="-25">(3)</text>
+            <text class="traversal-order-label" x="25" y="-25">(3)</text>
         </g>
         <!-- Node E -->
         <g class="node" id="node-E" transform="translate(170, 250)">
