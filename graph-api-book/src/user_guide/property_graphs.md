@@ -7,17 +7,19 @@ intuitive way. Graph API leverages Rust's type system to provide a strongly-type
 
 Property graphs consist of two primary elements:
 
-1.  **Vertices** (nodes): Represent entities in your data model. Each vertex has a type (label) and can hold multiple key-value properties.
+1. **Vertices** (nodes): Represent entities in your data model. Each vertex has a type (label) and can hold multiple
+   key-value properties.
 
-    <object type="image/svg+xml" data="property_graphs/vertex_with_properties.svg">
-    Diagram showing a single vertex with properties
-    </object>
+   <object type="image/svg+xml" data="property_graphs/vertex_with_properties.svg">
+   Diagram showing a single vertex with properties
+   </object>
 
-2.  **Edges** (relationships): Connect vertices to express relationships. Edges are directed, have a type (label), and can also hold properties.
+2. **Edges** (relationships): Connect vertices to express relationships. Edges are directed, have a type (label), and
+   can also hold properties.
 
-    <object type="image/svg+xml" data="property_graphs/edge_with_properties.svg">
-    Diagram showing two vertices connected by an edge with properties
-    </object>
+   <object type="image/svg+xml" data="property_graphs/edge_with_properties.svg">
+   Diagram showing two vertices connected by an edge with properties
+   </object>
 
 Both vertices and edges can have properties (attributes) that store additional information. In Graph API, these
 properties are represented using Rust's enum types, giving you full type safety.
@@ -54,7 +56,7 @@ Graph API uses Rust's strong type system to create a safe, ergonomic property gr
 Here's a simple example of how Graph API models a property graph:
 
 ```rust,noplayground
-#![function_body!("property_graphs/basic_model.rs", define_basic_model, [SocialVertex, SocialEdge])]
+{{#include ../standard_model.rs:model_definition}}
 ```
 
 ## Understanding Indexes
