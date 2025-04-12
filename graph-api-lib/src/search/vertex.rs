@@ -6,6 +6,7 @@ use std::ops::Range;
 /// A search to apply to vertices when querying a graph.
 #[derive(Derivative)]
 #[derivative(Clone(bound = ""))]
+#[non_exhaustive]
 pub enum VertexSearch<'search, Graph>
 where
     Graph: crate::Graph,

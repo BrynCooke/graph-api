@@ -609,6 +609,7 @@ where
                 let index_storage = &self.indexes[index.ordinal()];
                 index_storage.get(search, index)
             }
+            _ => unreachable!("Non-exhaustive enum, but all cases covered"),
         };
 
         VertexIter {
@@ -702,7 +703,7 @@ where
             range_iter,
             current_iter: None,
             count: 0,
-            limit: search.limit.unwrap_or(usize::MAX),
+            limit: search.limit(),
         }
     }
 

@@ -3,24 +3,24 @@ use crate::walker::{EdgeWalker, VertexWalker};
 use std::marker::PhantomData;
 
 /// A marker trait for types that can be mutated.
-/// 
+///
 /// This trait is used to differentiate between mutable and immutable graph walkers.
 pub trait Mutable {}
 
 /// A marker type that indicates mutability.
-/// 
+///
 /// Used as a type parameter in walker builders to enable mutable graph operations.
 pub struct MutableMarker;
 
 impl Mutable for MutableMarker {}
 
 /// A marker type that indicates immutability.
-/// 
+///
 /// Used as a type parameter in walker builders to restrict operations to immutable ones.
 pub struct ImmutableMarker;
 
 /// Manages access to a graph during traversal operations.
-/// 
+///
 /// This enum represents the three states of graph access:
 /// - Immutable: A shared reference to the graph
 /// - Mutable: An exclusive reference to the graph
@@ -38,10 +38,10 @@ pub enum GraphAccess<'graph, Graph> {
 
 impl<'graph, Graph> GraphAccess<'graph, Graph> {
     /// Takes the graph reference, leaving the enum in the `Taken` state.
-    /// 
+    ///
     /// # Returns
     /// A shared reference to the graph.
-    /// 
+    ///
     /// # Panics
     /// Panics if the graph reference has already been taken.
     pub fn take(&mut self) -> &'graph Graph {
@@ -53,10 +53,10 @@ impl<'graph, Graph> GraphAccess<'graph, Graph> {
     }
 
     /// Takes the graph reference for mutation, leaving the enum in the `Taken` state.
-    /// 
+    ///
     /// # Returns
     /// An exclusive reference to the graph.
-    /// 
+    ///
     /// # Panics
     /// Panics if the graph reference has already been taken or if it's an immutable reference.
     pub fn take_mut(&mut self) -> &'graph mut Graph {
@@ -192,7 +192,7 @@ where
     pub fn graph(&mut self) -> &'graph Graph {
         self.graph.take()
     }
-    
+
     /// Returns a mutable reference to the graph being traversed.
     ///
     /// This consumes the graph reference, leaving the builder in a state
@@ -308,7 +308,7 @@ where
     pub fn graph(&mut self) -> &'graph Graph {
         self.graph.take()
     }
-    
+
     /// Returns a mutable reference to the graph being traversed.
     ///
     /// This consumes the graph reference, leaving the builder in a state
@@ -322,7 +322,7 @@ where
     pub fn graph_mut(&mut self) -> &'graph mut Graph {
         self.graph.take_mut()
     }
-    
+
     /// Consumes the builder and returns the underlying walker.
     ///
     /// This extracts the walker from the builder, allowing it to be used directly.

@@ -260,7 +260,7 @@ where
     type Item = EdgeReferenceWrapper<'graph, Graph, Ix>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.count >= self.edge_search.limit.unwrap_or(usize::MAX) {
+        if self.count >= self.edge_search.limit() {
             return None;
         }
         for edges in &mut self.edges {

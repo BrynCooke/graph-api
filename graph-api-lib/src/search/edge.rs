@@ -4,6 +4,7 @@ use crate::element::Element;
 /// A search to apply to edges when querying a graph.
 /// This allows graph implementations to support vertex centric indexes.
 /// In the future, this will be expanded to support more complex filters than just label and direction.
+#[non_exhaustive]
 pub struct EdgeSearch<'search, Graph>
 where
     Graph: crate::Graph,
@@ -114,13 +115,12 @@ where
 
     /// Returns the maximum number of edges to return from this search.
     ///
-    /// Unlike vertex search limits, edge search limits return an Option<usize>,
-    /// with None indicating no limit.
+    /// If no limit was set, returns usize::MAX (effectively no limit).
     ///
     /// # Returns
-    /// Some(limit) if a limit was set, or None if no limit is applied
-    pub fn limit(&self) -> Option<usize> {
-        self.limit
+    /// The edge limit, or usize::MAX if no limit was set
+    pub fn limit(&self) -> usize {
+        self.limit.unwrap_or(usize::MAX)
     }
 
     /// Adjacent vertex label must match

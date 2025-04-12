@@ -33,7 +33,7 @@ where
     Self: Sized + Copy + Eq + Hash + Debug,
 {
     /// Returns the TypeId of the element being indexed.
-    /// 
+    ///
     /// Supported types are graph dependent, but all graph implementations support
     /// basic Rust types and strings.
     fn ty(&self) -> TypeId;
