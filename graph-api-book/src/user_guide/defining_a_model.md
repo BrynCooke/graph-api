@@ -33,15 +33,13 @@ them.
 
 Once you've defined your model, you can create instances of vertices and edges:
 
-```rust,noplayground
-{{#include ../standard_model.rs:setup}}
-```
-
-This code creates the following graph instance:
-
 <object type="image/svg+xml" data="defining_a_model/graph_instance.svg">
 Diagram showing the specific graph instance created by the code
 </object>
+
+```rust,noplayground
+{{#include ../standard_model.rs:setup}}
+```
 
 ## Using Derive Macros
 

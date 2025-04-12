@@ -48,9 +48,9 @@
     <!-- Liked Edge -->
     <g class="edge directed" id="edge-bryn-alpaca-liked">
         <!-- Path from Bryn (150, 250) to Alpaca (450, 400), curved downwards -->
-        <path d="M 170 260 Q 300 350 430 390" fill="none" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="330">Liked</text>
-        <text class="property-text halo" x="300" y="345">ts: 2023-01-01</text>
+        <path d="M 170 260 Q 300 280 430 390" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="290">Liked</text>
+        <text class="property-text halo" x="300" y="305">ts: 2023-01-01</text>
     </g>
 
     <!-- Commented Edge -->
