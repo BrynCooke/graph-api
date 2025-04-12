@@ -2,7 +2,10 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450">
     <title>Graph Instance Example</title>
-    <desc>Diagram showing a specific instance of a graph with Person and Project vertices (Bryn, Julia, Eve, GraphApi, Alpaca) and their connecting edges (Follows, Created, Liked, Commented) based on the standard_populated_graph function.</desc>
+    <desc>Diagram showing a specific instance of a graph with Person and Project vertices (Bryn, Julia, Eve, GraphApi,
+        Alpaca) and their connecting edges (Follows, Created, Liked, Commented) based on the standard_populated_graph
+        function.
+    </desc>
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
                 orient="auto" markerUnits="strokeWidth">
@@ -12,30 +15,30 @@
     <text x="300" y="25" class="index-title" text-anchor="middle">Graph Instance Example</text>
 
     <!-- Vertices -->
-    <g class="node" id="node-bryn" transform="translate(150, 100)">
+    <g class="node" id="node-bryn" transform="translate(150, 250)">
         <circle r="25"></circle>
         <text class="node-label">Person</text>
         <text class="property-text" y="28">name: Bryn</text>
         <text class="property-text" y="43">age: 28</text>
     </g>
-    <g class="node" id="node-julia" transform="translate(450, 100)">
+    <g class="node" id="node-julia" transform="translate(450, 250)">
         <circle r="25"></circle>
         <text class="node-label">Person</text>
         <text class="property-text" y="28">name: Julia</text>
         <text class="property-text" y="43">age: 34</text>
     </g>
-    <g class="node" id="node-eve" transform="translate(300, 200)"> <!-- Positioned Eve lower -->
+    <g class="node" id="node-eve" transform="translate(450, 100)"> <!-- Positioned Eve lower -->
         <circle r="25"></circle>
         <text class="node-label">Person</text>
         <text class="property-text" y="28">name: Eve</text>
         <text class="property-text" y="43">age: 31</text>
     </g>
-    <g class="node" id="node-graphapi" transform="translate(150, 300)">
+    <g class="node" id="node-graphapi" transform="translate(150, 400)">
         <circle r="25"></circle>
         <text class="node-label">Project</text>
         <text class="property-text" y="28">name: GraphApi</text>
     </g>
-    <g class="node" id="node-alpaca" transform="translate(450, 300)">
+    <g class="node" id="node-alpaca" transform="translate(450, 400)">
         <circle r="25"></circle>
         <text class="node-label">Project</text>
         <text class="property-text" y="28">name: Alpaca</text>
