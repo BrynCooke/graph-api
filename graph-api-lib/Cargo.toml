@@ -25,5 +25,5 @@ graph-api-derive = { version = "0.1.0", path = "../graph-api-derive" }
 include-doc = "0.2.1"
 
 [dev-dependencies]
-graph-api-simplegraph = { version = "0.1.0", path = "../graph-api-simplegraph" }
-graph-api-test = { version = "0.1.0", path = "../graph-api-test" }
+graph-api-simplegraph = { path = "../graph-api-simplegraph" }
+graph-api-test = { path = "../graph-api-test" }
