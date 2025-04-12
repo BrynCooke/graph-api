@@ -22,6 +22,14 @@ pub enum Direction {
 }
 
 impl Direction {
+    /// Returns the reverse of this direction.
+    ///
+    /// - `Outgoing` becomes `Incoming`
+    /// - `Incoming` becomes `Outgoing`
+    /// - `All` remains `All`
+    ///
+    /// # Returns
+    /// The reversed direction.
     pub fn reverse(&self) -> Self {
         match self {
             Direction::Outgoing => Direction::Incoming,
@@ -257,20 +265,53 @@ where
     ) -> Option<T>;
 }
 
+/// Enables projecting a graph element weight to a specific type.
+///
+/// This trait provides a mechanism to safely convert a generic graph element
+/// (vertex or edge) to a specific, strongly-typed representation.
+///
+/// # Type Parameters
+/// - `'reference`: The lifetime of the reference to the weight
+/// - `Weight`: The type of the element weight being projected
 pub trait Project<'reference, Weight>
 where
     Weight: Element,
     Self: Sized,
 {
+    /// Attempts to convert a weight to this specific type.
+    ///
+    /// # Parameters
+    /// - `weight`: The element weight to project
+    ///
+    /// # Returns
+    /// `Some(Self)` if the weight can be projected to this type, `None` otherwise.
     fn project(weight: &'reference Weight) -> Option<Self>;
 }
 
+/// Enables projecting a graph element weight to a mutable specific type.
+///
+/// This trait provides a mechanism to safely convert a generic graph element
+/// (vertex or edge) to a specific, strongly-typed mutable representation.
+/// Changes to the projected type will be tracked using the mutation listener.
+///
+/// # Type Parameters
+/// - `'reference`: The lifetime of the mutable reference to the weight
+/// - `Weight`: The type of the element weight being projected
+/// - `MutationListener`: A type that listens for mutations to track index updates
 pub trait ProjectMut<'reference, Weight, MutationListener>
 where
     Weight: Element,
     MutationListener: crate::MutationListener<'reference, Weight>,
     Self: Sized,
 {
+    /// Attempts to convert a weight to this specific mutable type.
+    ///
+    /// # Parameters
+    /// - `weight`: The element weight to project
+    /// - `mutation_listener`: The listener that will track mutations to the weight
+    ///
+    /// # Returns
+    /// `Some(Self)` if the weight can be projected to this type, `None` otherwise.
     fn project_mut(
         weight: &'reference mut Weight,
         mutation_listener: MutationListener,

@@ -144,6 +144,16 @@ pub trait VertexWalker<'graph>: Walker<'graph> {
         VertexReduce::new(self, reducer)
     }
 
+    /// Returns the next vertex ID in the traversal.
+    ///
+    /// This method advances the walker and returns the ID of the next vertex,
+    /// or None if there are no more vertices to traverse.
+    ///
+    /// # Parameters
+    /// - `graph`: The graph being traversed
+    ///
+    /// # Returns
+    /// The ID of the next vertex, or None if the traversal is complete
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId>;
 }
 
@@ -215,5 +225,15 @@ pub trait EdgeWalker<'graph>: Walker<'graph> {
         EdgeReduce::new(self, reducer)
     }
 
+    /// Returns the next edge ID in the traversal.
+    ///
+    /// This method advances the walker and returns the ID of the next edge,
+    /// or None if there are no more edges to traverse.
+    ///
+    /// # Parameters
+    /// - `graph`: The graph being traversed
+    ///
+    /// # Returns
+    /// The ID of the next edge, or None if the traversal is complete
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId>;
 }

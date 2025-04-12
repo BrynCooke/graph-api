@@ -24,19 +24,26 @@ impl Display for IndexType {
     }
 }
 
-/// An Index is a fast lookup to an element. This is
+/// An Index is a fast lookup mechanism for graph elements.
+///
+/// Indexes allow for efficient querying of graph elements based on different criteria.
+/// Each index has a type and can be identified by an ordinal within its type.
 pub trait Index
 where
     Self: Sized + Copy + Eq + Hash + Debug,
 {
-    /// The type of the element being indexed.
-    /// Supported types are graph dependant, however all graphs support basic rust type and strings.
+    /// Returns the TypeId of the element being indexed.
+    /// 
+    /// Supported types are graph dependent, but all graph implementations support
+    /// basic Rust types and strings.
     fn ty(&self) -> TypeId;
 
-    /// The index ordinal
+    /// Returns the ordinal number of this index.
+    ///
+    /// The ordinal uniquely identifies an index within its index type.
     fn ordinal(&self) -> usize;
 
-    /// The type of index
+    /// Returns the type of this index (Hash, Range, or FullText).
     fn index_type(&self) -> IndexType;
 }
 

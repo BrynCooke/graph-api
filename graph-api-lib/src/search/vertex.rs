@@ -100,7 +100,12 @@ where
         self
     }
 
-    /// The maximum number of vertices to return from this search
+    /// Returns the maximum number of vertices to return from this search.
+    ///
+    /// If no limit was set, returns usize::MAX (effectively no limit).
+    ///
+    /// # Returns
+    /// The vertex limit, or usize::MAX if no limit was set
     pub fn limit(&self) -> usize {
         match self {
             VertexSearch::Scan { limit, .. } => limit,

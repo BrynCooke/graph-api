@@ -58,7 +58,13 @@ impl<Graph> EdgeSearch<'_, Graph>
 where
     Graph: crate::Graph,
 {
-    /// Edges must match the label
+    /// Creates a new edge search with default settings.
+    ///
+    /// This creates an edge search that will match all edges, regardless of label,
+    /// adjacent label, or direction.
+    ///
+    /// # Returns
+    /// A new EdgeSearch with default settings.
     pub fn scan() -> Self {
         Self::default()
     }
@@ -106,7 +112,13 @@ where
         self
     }
 
-    /// The maximum number of edges to return from this search
+    /// Returns the maximum number of edges to return from this search.
+    ///
+    /// Unlike vertex search limits, edge search limits return an Option<usize>,
+    /// with None indicating no limit.
+    ///
+    /// # Returns
+    /// Some(limit) if a limit was set, or None if no limit is applied
     pub fn limit(&self) -> Option<usize> {
         self.limit
     }
