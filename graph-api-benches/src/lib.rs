@@ -1,5 +1,3 @@
-#![doc = include_str!("../../README.md")]
-
 pub mod construction;
 pub mod edge;
 pub mod generators;
