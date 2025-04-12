@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500"> <!-- Adjusted viewBox -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"> <!-- Adjusted viewBox -->
     <title>Graph Model Structure</title>
     <desc>Diagram showing the structure of the graph model with Person, Project, and Comment vertex types and Follows,
         Created, Liked, and CommentedOn edge types, including their defined properties.
@@ -11,7 +11,8 @@
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
         <!-- Define a marker for the self-loop -->
-        <marker id="arrowhead-self" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="1" refY="3"
+        <marker id="arrowhead-self" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="1"
+                refY="3"
                 orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
@@ -20,9 +21,9 @@
 
     <!-- Vertex Types -->
     <g class="node" id="vertex-person" transform="translate(150, 150)">
-        <rect width="180" height="100" x="-90" y="-50"></rect>
+        <rect width="180" height="100" x="-90" y="-50"/>
         <text class="node-label" y="-35">Person</text>
-        <text class="property-text" y="-10">
+        <text class="node-property-text" y="-10">
             <tspan x="0">name: String</tspan>
             <tspan x="0" dy="1.2em">username: String</tspan>
             <tspan x="0" dy="1.2em">biography: String</tspan>
@@ -30,21 +31,20 @@
         </text>
     </g>
 
-    <g class="node" id="vertex-project" transform="translate(450, 150)">
-        <rect width="180" height="80" x="-90" y="-40"></rect>
+    <g class="node" id="vertex-project" transform="translate(450, 165)">
+        <rect width="180" height="60" x="-90" y="-40"/>
         <text class="node-label" y="-25">Project</text>
-        <text class="property-text" y="0">
+        <text class="node-property-text" y="0">
             <tspan x="0">name: String</tspan>
-            <tspan x="0" dy="1.2em">description: String</tspan>
-            <tspan x="0" dy="1.2em">stars: u32</tspan>
         </text>
     </g>
 
     <g class="node" id="vertex-comment" transform="translate(150, 350)">
-        <rect width="180" height="50" x="-90" y="-25"></rect>
+        <rect width="180" height="65" x="-90" y="-25"/>
         <text class="node-label" y="-10">Comment</text>
-        <text class="property-text" y="10">
+        <text class="node-property-text" y="10">
             <tspan x="0">text: String</tspan>
+            <tspan x="0" dy="1.2em">date: String</tspan>
         </text>
     </g>
 
@@ -52,8 +52,8 @@
     <!-- Follows (Person -> Person) -->
     <g class="edge directed" id="edge-follows">
         <!-- Self-loop on Person -->
-        <path d="M 60,150 A 40 40 0 1 1 100,110" fill="none" marker-end="url(#arrowhead-self)"/>
-        <text class="edge-label" x="40" y="110">Follows</text>
+        <path d="M 60,150 A 45 45 0 1 1 90,90" fill="none" marker-end="url(#arrowhead-self)"/>
+        <text class="edge-label" x="40" y="90">Follows</text>
     </g>
 
     <!-- Created (Person -> Project) -->
@@ -67,14 +67,14 @@
         <!-- Slightly curved path below Created -->
         <path d="M 240 160 Q 300 190 360 160" fill="none" marker-end="url(#arrowhead)"/>
         <text class="edge-label" x="300" y="180">Liked</text>
-        <text class="property-text halo" x="300" y="195">timestamp: u64</text>
+        <text class="property-text halo" x="300" y="195">timestamp: String</text>
     </g>
 
     <!-- CommentedOn (Person -> Comment) -->
     <g class="edge directed" id="edge-commentedon">
         <line x1="150" y1="200" x2="150" y2="325" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="165" y="250" text-anchor="start">CommentedOn</text>
-        <text class="property-text halo" x="165" y="265" text-anchor="start">timestamp: u64</text>
+        <text class="edge-label" x="150" y="250" text-anchor="start">Commented</text>
+        <text class="property-text halo" x="155" y="265" text-anchor="start">timestamp: String</text>
     </g>
 
 </svg>
