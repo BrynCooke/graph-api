@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480"> <!-- Increased height -->
-    <title>Graph Model Example</title>
-    <desc>Diagram showing a graph model with Person and Project vertices and Follows, Created, Liked, Contributes edges. Layout prioritizes avoiding edge crossings and uses consistent styling.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 550"> <!-- Increased height for Comment -->
+    <title>Graph Model Example (with Comment)</title>
+    <desc>Diagram showing a graph model with Person, Project, and Comment vertices and Follows, Created, Liked, Contributes, and CommentedOn edges. Layout prioritizes avoiding edge crossings and uses consistent styling.</desc>
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
                 orient="auto" markerUnits="strokeWidth">
@@ -34,7 +34,12 @@
         <text class="node-label">Project</text>
         <text class="property-text" y="28">name: Alpaca</text> <!-- Moved down -->
     </g>
-    <g class="node" id="node-rust" transform="translate(300, 380)"> <!-- Adjusted Y position further -->
+    <g class="node" id="node-comment1" transform="translate(150, 360)"> <!-- New Comment Node -->
+        <circle r="25"></circle>
+        <text class="node-label">Comment</text>
+        <text class="property-text" y="28">text: "Great API!"</text>
+    </g>
+    <g class="node" id="node-rust" transform="translate(300, 480)"> <!-- Adjusted Y position further down -->
         <circle r="25"></circle>
         <text class="node-label">Project</text>
         <text class="property-text" y="28">name: Rust</text> <!-- Moved down -->
@@ -69,16 +74,23 @@
         <text class="edge-label" x="300" y="175">Liked</text>
     </g>
 
+    <!-- CommentedOn Edge -->
+    <g class="edge directed" id="edge-bryn-comment1-commentedon">
+        <!-- Path from Bryn to Comment -->
+        <path d="M 150 125 Q 100 242.5 150 335" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="100" y="230">CommentedOn</text>
+    </g>
+
     <!-- Contributes Edges -->
     <g class="edge directed" id="edge-bryn-rust-contributes">
         <!-- Adjusted path start/end points for new node positions -->
-        <line x1="170" y1="255" x2="280" y2="360" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
-        <text class="edge-label" x="210" y="315">Contributes</text> <!-- Adjusted Y coord -->
+        <line x1="175" y1="245" x2="285" y2="460" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
+        <text class="edge-label" x="215" y="360">Contributes</text> <!-- Adjusted Y coord -->
     </g>
     <g class="edge directed" id="edge-julia-rust-contributes">
         <!-- Adjusted path start/end points for new node positions -->
-        <line x1="430" y1="255" x2="320" y2="360" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
-        <text class="edge-label" x="390" y="315">Contributes</text> <!-- Adjusted Y coord -->
+        <line x1="425" y1="245" x2="315" y2="460" marker-end="url(#arrowhead)"/> <!-- Adjusted Y coords -->
+        <text class="edge-label" x="385" y="360">Contributes</text> <!-- Adjusted Y coord -->
     </g>
 
 </svg>
