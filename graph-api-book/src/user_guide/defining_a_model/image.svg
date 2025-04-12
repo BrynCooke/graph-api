@@ -2,7 +2,9 @@
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450"> <!-- Reduced height after removing Rust/Contributes -->
     <title>Graph Model Example (Person, Project, Comment)</title>
-    <desc>Diagram showing a graph model with Person, Project, and Comment vertices and Follows, Created, Liked, and CommentedOn edges. Layout prioritizes avoiding edge crossings and uses consistent styling.</desc>
+    <desc>Diagram showing a graph model with Person, Project, and Comment vertices and Follows, Created, Liked, and
+        CommentedOn edges. Layout prioritizes avoiding edge crossings and uses consistent styling.
+    </desc>
     <defs>
         <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
                 orient="auto" markerUnits="strokeWidth">
@@ -81,7 +83,7 @@
     <g class="edge directed" id="edge-bryn-comment1-commentedon">
         <!-- Path from Bryn to Comment -->
         <path d="M 150 125 Q 100 242.5 150 335" fill="none" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="100" y="225">CommentedOn</text> <!-- Adjusted Y slightly -->
+        <text class="edge-label" x="100" y="225">Commented</text> <!-- Adjusted Y slightly -->
         <text class="property-text halo" x="100" y="240">timestamp: 456</text> <!-- Added timestamp -->
     </g>
 
