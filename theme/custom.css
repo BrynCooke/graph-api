@@ -71,6 +71,10 @@
         --highlight-fill: rgba(255, 146, 43, 0.25); /* Adjusted alpha for dark */
         --highlight-stroke: var(--accent-secondary);
     }
+    /* Ensure base SVG text fill uses the overridden variable */
+    svg {
+        fill: var(--text-color);
+    }
 }
 
 /* --- Base SVG Styles --- */
@@ -79,6 +83,7 @@ svg {
     font-size: var(--font-size-normal);
     font-weight: var(--font-weight-normal);
     background-color: var(--graph-bg); /* Optional, often transparent */
+    fill: var(--text-color); /* Default text fill color */
 }
 
 /* --- Node Styles --- */
