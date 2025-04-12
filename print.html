@@ -6286,13 +6286,14 @@ the <a href="reference/../implementation/guide">Implementation Guide</a> for det
 <p>The Graph API is designed to support a variety of graph implementations.</p>
 <p>Community contributions of new graph implementations are welcomed and encouraged!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="simplegraph"><a class="header" href="#simplegraph">SimpleGraph</a></h1>
-<p><code>SimpleGraph</code> is the flagship implementation of the Graph API, designed specifically for property graphs with full
-indexing support. It serves as both a reference implementation and a practical, high-performance graph for most use
-cases.</p>
+<p><code>SimpleGraph</code> is the reference implementation for the Graph API, designed primarily to showcase and test the full
+capabilities of the API, including comprehensive indexing support for property graphs. While functional, it's not
+optimized for high performance.</p>
 <h2 id="overview-8"><a class="header" href="#overview-8">Overview</a></h2>
-<p><code>SimpleGraph</code> is a custom in-memory graph implementation that fully supports all Graph API features, including all types
-of indexes. It's designed for property graph use cases where elements are identified by labels (enum variants) and may
-have properties that need indexing.</p>
+<p><code>SimpleGraph</code> is a custom in-memory graph implementation built specifically to demonstrate and validate all Graph API
+features, including every type of index. It serves as a clear example for developers implementing the Graph API traits
+and is invaluable for testing Graph API consumers against a fully compliant backend. It handles property graph use cases
+where elements have labels (enum variants) and indexed properties.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use graph_api_simplegraph::SimpleGraph;
@@ -6369,26 +6370,26 @@ label-based filtering.</p>
 <li>✅ Graph clearing</li>
 </ul>
 <h2 id="performance-characteristics-1"><a class="header" href="#performance-characteristics-1">Performance Characteristics</a></h2>
-<p><code>SimpleGraph</code> is optimized for:</p>
+<p><code>SimpleGraph</code> is primarily designed for feature completeness and ease of understanding, not for high performance:</p>
 <ol>
-<li><strong>Query Performance</strong>: Fast lookups for indexed properties</li>
-<li><strong>Memory Efficiency</strong>: Compact representation of graph elements</li>
-<li><strong>Traversal Speed</strong>: Efficient adjacency lists for fast graph traversal</li>
+<li><strong>Correctness over Speed</strong>: Implementation prioritizes demonstrating API features correctly.</li>
+<li><strong>Basic Optimizations</strong>: Includes fundamental optimizations like adjacency lists but lacks advanced performance tuning.</li>
+<li><strong>Not Production-Ready</strong>: Generally not recommended for performance-critical production environments.</li>
 </ol>
 <h3 id="benchmarks"><a class="header" href="#benchmarks">Benchmarks</a></h3>
-<p>While performance will vary based on the specific workload, <code>SimpleGraph</code> generally provides:</p>
+<p>Benchmarks exist primarily to validate the <em>functionality</em> of the API features rather than to showcase raw speed. Expect:</p>
 <ul>
-<li>Fast insertion and removal of vertices/edges</li>
-<li>Near constant-time lookup for hash-indexed properties</li>
-<li>Logarithmic time lookup for range-indexed properties</li>
-<li>Efficient traversal performance for both incoming and outgoing edges</li>
+<li>Functional insertion and removal.</li>
+<li>Correct index lookups (hash, range, full-text) but potentially slower than highly optimized alternatives.</li>
+<li>Basic traversal efficiency.</li>
 </ul>
 <h2 id="use-cases"><a class="header" href="#use-cases">Use Cases</a></h2>
-<p><code>SimpleGraph</code> is well-suited for:</p>
+<p><code>SimpleGraph</code> is ideal for:</p>
 <ul>
-<li><strong>Property graphs</strong>: Especially when using labels and properties extensively</li>
-<li><strong>Index-heavy applications</strong>: When you need to efficiently query vertices/edges by properties</li>
-<li><strong>General-purpose graph processing</strong>: For most in-memory graph processing needs</li>
+<li><strong>Testing</strong>: Verifying code that uses the Graph API against a fully compliant implementation.</li>
+<li><strong>Reference</strong>: Understanding how to implement the Graph API traits and features.</li>
+<li><strong>Learning</strong>: Exploring the capabilities of the Graph API in a controlled environment.</li>
+<li><strong>Prototyping</strong>: Quickly building graph-based applications where performance is not the primary concern initially.</li>
 </ul>
 <h2 id="implementation-notes-1"><a class="header" href="#implementation-notes-1">Implementation Notes</a></h2>
 <p><code>SimpleGraph</code> is implemented using several key components:</p>
@@ -6549,10 +6550,10 @@ let people = graph.walk()
 .collect::&lt;Vec&lt;_ &gt; &gt; ();
 assert_eq!(people.len(), 1);
 <span class="boring">}</span></code></pre></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="petgraph"><a class="header" href="#petgraph">PetGraph</a></h1>
-<p><code>PetGraph</code> provides a Graph API adapter for the popular <a href="https://crates.io/crates/petgraph">petgraph</a> Rust graph library. This implementation allows existing petgraph users to take advantage of the Graph API ergonomics while leveraging petgraph's established algorithms and performance characteristics.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="petgraph-adapter"><a class="header" href="#petgraph-adapter">PetGraph Adapter</a></h1>
+<p>The <code>PetGraph</code> adapter provides Graph API compatibility for the excellent and widely-used <a href="https://crates.io/crates/petgraph">petgraph</a> Rust graph library. This allows projects using <code>petgraph</code> to benefit from the Graph API's ergonomic query interface while retaining <code>petgraph</code>'s robust performance, extensive algorithm suite, and maturity.</p>
 <h2 id="overview-9"><a class="header" href="#overview-9">Overview</a></h2>
-<p><code>PetGraph</code> is an adapter implementation that wraps <code>petgraph::stable_graph::StableGraph</code> to make it compatible with the Graph API. This implementation focuses on providing a bridge to petgraph's functionality rather than implementing all Graph API features.</p>
+<p>This adapter wraps <code>petgraph::stable_graph::StableGraph</code>, enabling it to be used seamlessly with Graph API traits and walkers. It acts as a bridge, translating Graph API calls into <code>petgraph</code> operations. Note that it primarily exposes <code>petgraph</code>'s core graph structure and does <em>not</em> add the advanced indexing features found in <code>SimpleGraph</code>.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use petgraph::stable_graph::StableGraph;
@@ -6659,11 +6660,13 @@ println!("{:?}", Dot::with_config(&amp;graph, &amp;[Config::EdgeNoLabel]));
 <li>Property-based lookups require iterating through all vertices/edges</li>
 </ul>
 <h2 id="use-cases-1"><a class="header" href="#use-cases-1">Use Cases</a></h2>
-<p><code>PetGraph</code> is well-suited for:</p>
+<p>The <code>PetGraph</code> adapter is an excellent choice when:</p>
 <ul>
-<li><strong>Existing petgraph users</strong>: When you want to use Graph API ergonomics with existing petgraph code</li>
-<li><strong>Algorithm-heavy applications</strong>: When you need access to petgraph's graph algorithms</li>
-<li><strong>Simple graph structures</strong>: When you don't need indexing features</li>
+<li><strong>Performance is critical</strong>: Leverage <code>petgraph</code>'s optimized data structures and algorithms.</li>
+<li><strong>Integrating with existing <code>petgraph</code> code</strong>: Use the Graph API interface on existing <code>petgraph</code> graphs.</li>
+<li><strong>Needing advanced graph algorithms</strong>: Access <code>petgraph</code>'s rich library of algorithms directly.</li>
+<li><strong>Working with simpler graph structures</strong>: When the advanced indexing features of <code>SimpleGraph</code> are not required.</li>
+<li><strong>Building production systems</strong>: Benefit from <code>petgraph</code>'s maturity and widespread use.</li>
 </ul>
 <h2 id="implementation-notes-2"><a class="header" href="#implementation-notes-2">Implementation Notes</a></h2>
 <p>The <code>PetGraph</code> adapter consists of several wrapper types:</p>

@@ -159,10 +159,10 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="petgraph"><a class="header" href="#petgraph">PetGraph</a></h1>
-<p><code>PetGraph</code> provides a Graph API adapter for the popular <a href="https://crates.io/crates/petgraph">petgraph</a> Rust graph library. This implementation allows existing petgraph users to take advantage of the Graph API ergonomics while leveraging petgraph's established algorithms and performance characteristics.</p>
+                        <h1 id="petgraph-adapter"><a class="header" href="#petgraph-adapter">PetGraph Adapter</a></h1>
+<p>The <code>PetGraph</code> adapter provides Graph API compatibility for the excellent and widely-used <a href="https://crates.io/crates/petgraph">petgraph</a> Rust graph library. This allows projects using <code>petgraph</code> to benefit from the Graph API's ergonomic query interface while retaining <code>petgraph</code>'s robust performance, extensive algorithm suite, and maturity.</p>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p><code>PetGraph</code> is an adapter implementation that wraps <code>petgraph::stable_graph::StableGraph</code> to make it compatible with the Graph API. This implementation focuses on providing a bridge to petgraph's functionality rather than implementing all Graph API features.</p>
+<p>This adapter wraps <code>petgraph::stable_graph::StableGraph</code>, enabling it to be used seamlessly with Graph API traits and walkers. It acts as a bridge, translating Graph API calls into <code>petgraph</code> operations. Note that it primarily exposes <code>petgraph</code>'s core graph structure and does <em>not</em> add the advanced indexing features found in <code>SimpleGraph</code>.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use petgraph::stable_graph::StableGraph;
@@ -269,11 +269,13 @@ println!("{:?}", Dot::with_config(&amp;graph, &amp;[Config::EdgeNoLabel]));
 <li>Property-based lookups require iterating through all vertices/edges</li>
 </ul>
 <h2 id="use-cases"><a class="header" href="#use-cases">Use Cases</a></h2>
-<p><code>PetGraph</code> is well-suited for:</p>
+<p>The <code>PetGraph</code> adapter is an excellent choice when:</p>
 <ul>
-<li><strong>Existing petgraph users</strong>: When you want to use Graph API ergonomics with existing petgraph code</li>
-<li><strong>Algorithm-heavy applications</strong>: When you need access to petgraph's graph algorithms</li>
-<li><strong>Simple graph structures</strong>: When you don't need indexing features</li>
+<li><strong>Performance is critical</strong>: Leverage <code>petgraph</code>'s optimized data structures and algorithms.</li>
+<li><strong>Integrating with existing <code>petgraph</code> code</strong>: Use the Graph API interface on existing <code>petgraph</code> graphs.</li>
+<li><strong>Needing advanced graph algorithms</strong>: Access <code>petgraph</code>'s rich library of algorithms directly.</li>
+<li><strong>Working with simpler graph structures</strong>: When the advanced indexing features of <code>SimpleGraph</code> are not required.</li>
+<li><strong>Building production systems</strong>: Benefit from <code>petgraph</code>'s maturity and widespread use.</li>
 </ul>
 <h2 id="implementation-notes"><a class="header" href="#implementation-notes">Implementation Notes</a></h2>
 <p>The <code>PetGraph</code> adapter consists of several wrapper types:</p>
