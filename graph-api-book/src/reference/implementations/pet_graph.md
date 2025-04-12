@@ -1,10 +1,10 @@
-# PetGraph
+# PetGraph Adapter
 
-`PetGraph` provides a Graph API adapter for the popular [petgraph](https://crates.io/crates/petgraph) Rust graph library. This implementation allows existing petgraph users to take advantage of the Graph API ergonomics while leveraging petgraph's established algorithms and performance characteristics.
+The `PetGraph` adapter provides Graph API compatibility for the excellent and widely-used [petgraph](https://crates.io/crates/petgraph) Rust graph library. This allows projects using `petgraph` to benefit from the Graph API's ergonomic query interface while retaining `petgraph`'s robust performance, extensive algorithm suite, and maturity.
 
 ## Overview
 
-`PetGraph` is an adapter implementation that wraps `petgraph::stable_graph::StableGraph` to make it compatible with the Graph API. This implementation focuses on providing a bridge to petgraph's functionality rather than implementing all Graph API features.
+This adapter wraps `petgraph::stable_graph::StableGraph`, enabling it to be used seamlessly with Graph API traits and walkers. It acts as a bridge, translating Graph API calls into `petgraph` operations. Note that it primarily exposes `petgraph`'s core graph structure and does *not* add the advanced indexing features found in `SimpleGraph`.
 
 ```rust
 use petgraph::stable_graph::StableGraph;
@@ -122,11 +122,13 @@ However, `PetGraph` lacks indexing support, which means:
 
 ## Use Cases
 
-`PetGraph` is well-suited for:
+The `PetGraph` adapter is an excellent choice when:
 
-- **Existing petgraph users**: When you want to use Graph API ergonomics with existing petgraph code
-- **Algorithm-heavy applications**: When you need access to petgraph's graph algorithms
-- **Simple graph structures**: When you don't need indexing features
+- **Performance is critical**: Leverage `petgraph`'s optimized data structures and algorithms.
+- **Integrating with existing `petgraph` code**: Use the Graph API interface on existing `petgraph` graphs.
+- **Needing advanced graph algorithms**: Access `petgraph`'s rich library of algorithms directly.
+- **Working with simpler graph structures**: When the advanced indexing features of `SimpleGraph` are not required.
+- **Building production systems**: Benefit from `petgraph`'s maturity and widespread use.
 
 ## Implementation Notes
 

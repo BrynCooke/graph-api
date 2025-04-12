@@ -1,14 +1,15 @@
 # SimpleGraph
 
-`SimpleGraph` is the flagship implementation of the Graph API, designed specifically for property graphs with full
-indexing support. It serves as both a reference implementation and a practical, high-performance graph for most use
-cases.
+`SimpleGraph` is the reference implementation for the Graph API, designed primarily to showcase and test the full
+capabilities of the API, including comprehensive indexing support for property graphs. While functional, it's not
+optimized for high performance.
 
 ## Overview
 
-`SimpleGraph` is a custom in-memory graph implementation that fully supports all Graph API features, including all types
-of indexes. It's designed for property graph use cases where elements are identified by labels (enum variants) and may
-have properties that need indexing.
+`SimpleGraph` is a custom in-memory graph implementation built specifically to demonstrate and validate all Graph API
+features, including every type of index. It serves as a clear example for developers implementing the Graph API traits
+and is invaluable for testing Graph API consumers against a fully compliant backend. It handles property graph use cases
+where elements have labels (enum variants) and indexed properties.
 
 ```rust
 use graph_api_simplegraph::SimpleGraph;
@@ -82,28 +83,28 @@ graph.add_edge(alice, project, Edge::Created);
 
 ## Performance Characteristics
 
-`SimpleGraph` is optimized for:
+`SimpleGraph` is primarily designed for feature completeness and ease of understanding, not for high performance:
 
-1. **Query Performance**: Fast lookups for indexed properties
-2. **Memory Efficiency**: Compact representation of graph elements
-3. **Traversal Speed**: Efficient adjacency lists for fast graph traversal
+1. **Correctness over Speed**: Implementation prioritizes demonstrating API features correctly.
+2. **Basic Optimizations**: Includes fundamental optimizations like adjacency lists but lacks advanced performance tuning.
+3. **Not Production-Ready**: Generally not recommended for performance-critical production environments.
 
 ### Benchmarks
 
-While performance will vary based on the specific workload, `SimpleGraph` generally provides:
+Benchmarks exist primarily to validate the *functionality* of the API features rather than to showcase raw speed. Expect:
 
-- Fast insertion and removal of vertices/edges
-- Near constant-time lookup for hash-indexed properties
-- Logarithmic time lookup for range-indexed properties
-- Efficient traversal performance for both incoming and outgoing edges
+- Functional insertion and removal.
+- Correct index lookups (hash, range, full-text) but potentially slower than highly optimized alternatives.
+- Basic traversal efficiency.
 
 ## Use Cases
 
-`SimpleGraph` is well-suited for:
+`SimpleGraph` is ideal for:
 
-- **Property graphs**: Especially when using labels and properties extensively
-- **Index-heavy applications**: When you need to efficiently query vertices/edges by properties
-- **General-purpose graph processing**: For most in-memory graph processing needs
+- **Testing**: Verifying code that uses the Graph API against a fully compliant implementation.
+- **Reference**: Understanding how to implement the Graph API traits and features.
+- **Learning**: Exploring the capabilities of the Graph API in a controlled environment.
+- **Prototyping**: Quickly building graph-based applications where performance is not the primary concern initially.
 
 ## Implementation Notes
 
