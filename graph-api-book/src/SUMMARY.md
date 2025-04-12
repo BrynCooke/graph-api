@@ -48,7 +48,6 @@
 - [Testing Your Implementation](./implementation/testing.md)
 - [Features and Extensions](./implementation/features.md)
 - [Implementing Indexes](./implementation/indexes.md)
-- [Performance Considerations](./implementation/performance.md)
 - [Benchmarking](./implementation/benchmarks.md)
 
 # Reference

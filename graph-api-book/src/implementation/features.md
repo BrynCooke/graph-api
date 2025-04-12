@@ -102,7 +102,7 @@ impl<K: Hash + Eq, V: Copy + Eq + Hash> HashIndex<K, V> {
         }
     }
 
-    fn get(&self, key: &K) -> impl Iterator<Item = V> + '_ {
+    fn get(&self, key: &K) -> impl Iterator<Item=V> + '_ {
         self.map
             .get(key)
             .into_iter()
@@ -140,38 +140,6 @@ where
 }
 ```
 
-### Custom Traversal Steps
-
-While not part of the core API, you can add custom traversal steps for your graph implementation:
-
-```rust
-// Example: Custom extension trait for your graph
-pub trait MyGraphExt<'g> {
-    // A custom traversal step for efficient path finding
-    fn shortest_path(
-        &self, 
-        from: Self::VertexId, 
-        to: Self::VertexId
-    ) -> Option<Vec<Self::EdgeId>>;
-}
-
-// Implement for your graph
-impl<'g, V, E> MyGraphExt<'g> for MyGraph<V, E>
-where
-    V: Element,
-    E: Element,
-{
-    fn shortest_path(
-        &self, 
-        from: Self::VertexId, 
-        to: Self::VertexId
-    ) -> Option<Vec<Self::EdgeId>> {
-        // Efficient path-finding algorithm implementation
-        // ...
-    }
-}
-```
-
 ## Extending the Walker API
 
 You can extend the Walker API for your graph implementation by creating custom steps:
@@ -192,6 +160,9 @@ impl<'g, G: Graph> CustomStepExt<'g, G> for VertexWalker<'g, G> {
     }
 }
 ```
+
+See [custom_step.rs](https://github.com/BrynCooke/graph-api/blob/main/graph-api-lib/examples/custom_step.rs) for a full
+example.
 
 ## Integration with External Systems
 
@@ -240,35 +211,7 @@ where
 
 ## Feature Compatibility
 
-When implementing optional features, consider compatibility issues:
-
-1. **Compile-time Feature Flags**: Use Cargo features to make certain capabilities optional:
-
-```toml
-# In Cargo.toml
-[features]
-full-text-index = []
-persistence = ["dep:serde"]
-```
-
-2. **Runtime Feature Detection**: Allow clients to check for feature support at runtime:
-
-```rust
-impl<V, E> MyGraph<V, E>
-where
-    V: Element,
-    E: Element,
-{
-    pub fn supports_full_text_index(&self) -> bool {
-        // Check if feature is supported using trait objects
-        self as &dyn Any
-            .downcast_ref::<dyn SupportsVertexFullTextIndex>()
-            .is_some()
-    }
-}
-```
-
-Or simply use trait bounds in your API:
+When implementing optional features, use trait bounds in your API:
 
 ```rust
 pub fn search_full_text<G>(graph: &G, text: &str) -> Vec<G::VertexId>
@@ -282,49 +225,6 @@ where
 }
 ```
 
-## Performance Extensions
-
-Consider adding performance-focused extensions:
-
-1. **Bulk Operations**: Methods for efficient batch operations:
-
-```rust
-impl<V, E> MyGraph<V, E>
-where
-    V: Element,
-    E: Element, 
-{
-    pub fn add_vertices_batch(&mut self, vertices: Vec<V>) -> Vec<Self::VertexId> {
-        // Optimized batch insertion
-    }
-    
-    pub fn add_edges_batch(
-        &mut self,
-        edges: Vec<(Self::VertexId, Self::VertexId, E)>,
-    ) -> Vec<Self::EdgeId> {
-        // Optimized batch insertion
-    }
-}
-```
-
-2. **Specialized Algorithms**: Graph algorithms optimized for your implementation:
-
-```rust
-impl<V, E> MyGraph<V, E>
-where
-    V: Element,
-    E: Element,
-{
-    pub fn connected_components(&self) -> Vec<Vec<Self::VertexId>> {
-        // Efficient connected components algorithm
-    }
-    
-    pub fn pagerank(&self, damping: f64, iterations: usize) -> HashMap<Self::VertexId, f64> {
-        // PageRank implementation
-    }
-}
-```
-
 ## Best Practices for Extensions
 
 When adding features and extensions, follow these best practices:
@@ -333,10 +233,4 @@ When adding features and extensions, follow these best practices:
 2. **Document Extensions Thoroughly**: Clearly document what extensions are available and how to use them.
 3. **Test Extensions Separately**: Write dedicated tests for extended features.
 4. **Consider Performance Impact**: Ensure extensions don't negatively impact core operations.
-5. **Graceful Degradation**: When a feature isn't supported, provide helpful error messages.
 
-## Conclusion
-
-Extending your graph implementation with additional features can make it more powerful and useful for specific use
-cases. By carefully designing extensions that complement the core Graph API, you can create a versatile graph
-implementation that meets a wide range of needs while maintaining compatibility with the broader ecosystem.

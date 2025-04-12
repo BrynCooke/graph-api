@@ -65,50 +65,43 @@ impl<Vertex, Edge> SupportsVertexLabelIndex for MyGraph<Vertex, Edge>
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl<Vertex, Edge> SupportsEdgeLabelIndex for MyGraph<Vertex, Edge>
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl<Vertex, Edge> SupportsVertexHashIndex for MyGraph<Vertex, Edge>
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl<Vertex, Edge> SupportsEdgeHashIndex for MyGraph<Vertex, Edge>
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl<Vertex, Edge> SupportsVertexRangeIndex for MyGraph<Vertex, Edge>
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl<Vertex, Edge> SupportsEdgeRangeIndex for MyGraph<Vertex, Edge>
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 
 impl<Vertex, Edge> SupportsVertexFullTextIndex for MyGraph<Vertex, Edge>
 where
     Vertex: Element,
     Edge: Element,
-{
-}
+{}
 ```
 
 ## Implementing Label Indexes
@@ -141,7 +134,7 @@ impl LabelIndex {
         self.indexes[label].remove(id);
     }
 
-    fn get(&self, label: usize) -> impl Iterator<Item = VertexId> + '_ {
+    fn get(&self, label: usize) -> impl Iterator<Item=VertexId> + '_ {
         self.indexes[label].iter().copied()
     }
 }
@@ -155,10 +148,10 @@ Update label indexes during vertex/edge operations:
 fn add_vertex(&mut self, vertex: Self::Vertex) -> Self::VertexId {
     let label_idx = vertex.label().ordinal();
     let vertex_id = // create a new vertex ID
-    
-    // Add to label index
-    self.label_index.insert(label_idx, vertex_id);
-    
+
+        // Add to label index
+        self.label_index.insert(label_idx, vertex_id);
+
     // Rest of implementation
     // ...
 }
@@ -197,7 +190,7 @@ impl<K: Hash + Eq, V: Copy + Eq + Hash> HashIndex<K, V> {
         }
     }
 
-    fn get(&self, key: &K) -> impl Iterator<Item = V> + '_ {
+    fn get(&self, key: &K) -> impl Iterator<Item=V> + '_ {
         self.map
             .get(key)
             .into_iter()
@@ -217,14 +210,14 @@ pub struct MyMutationListener<'reference, Element> {
 }
 
 impl<'reference, Element> MutationListener<'reference, Element>
-    for MyMutationListener<'reference, Element>
+for MyMutationListener<'reference, Element>
 where
     Element: Element,
 {
     fn update(&mut self, index: <Element::Label as Label>::Index, before: Value, after: Value) {
         // Remove the old value from the index
         self.indexes[index.ordinal()].remove(&before, self.id);
-        
+
         // Add the new value to the index
         self.indexes[index.ordinal()].insert(after, self.id);
     }
@@ -264,14 +257,14 @@ impl<K: Ord, V: Copy + Eq + Hash> RangeIndex<K, V> {
         }
     }
 
-    fn get(&self, key: &K) -> impl Iterator<Item = V> + '_ {
+    fn get(&self, key: &K) -> impl Iterator<Item=V> + '_ {
         self.map
             .get(key)
             .into_iter()
             .flat_map(|values| values.iter().copied())
     }
 
-    fn range<'a, R>(&'a self, range: R) -> impl Iterator<Item = V> + 'a
+    fn range<'a, R>(&'a self, range: R) -> impl Iterator<Item=V> + 'a
     where
         R: RangeBounds<K> + 'a,
         K: 'a,
@@ -293,7 +286,7 @@ fn vertices<'search>(
     search: &VertexSearch<'search, Self>,
 ) -> Self::VertexIter<'search, '_> {
     // ...other search handling
-    
+
     if let VertexSearch::Range { index, range, .. } = search {
         let index_storage = &self.indexes[index.ordinal()];
         return VertexIter {
@@ -301,7 +294,7 @@ fn vertices<'search>(
             // ...other fields
         };
     }
-    
+
     // ...default handling
 }
 ```
@@ -334,10 +327,10 @@ impl<V: Copy + Eq + Hash> FullTextIndex<V> {
     fn insert(&mut self, id: V, text: &str) {
         // Remove old content if it exists
         self.remove(&id);
-        
+
         // Store the full text
         self.contents.insert(id, text.to_string());
-        
+
         // Tokenize the text and add to inverted index
         for token in tokenize(text) {
             self.tokens.entry(token).or_default().insert(id);
@@ -358,10 +351,10 @@ impl<V: Copy + Eq + Hash> FullTextIndex<V> {
         }
     }
 
-    fn search(&self, query: &str) -> impl Iterator<Item = V> + '_ {
+    fn search(&self, query: &str) -> impl Iterator<Item=V> + '_ {
         // Tokenize the query
         let query_tokens: Vec<_> = tokenize(query).collect();
-        
+
         // Find matches
         query_tokens
             .into_iter()
@@ -374,7 +367,7 @@ impl<V: Copy + Eq + Hash> FullTextIndex<V> {
 }
 
 // Helper function to tokenize text
-fn tokenize(text: &str) -> impl Iterator<Item = String> + '_ {
+fn tokenize(text: &str) -> impl Iterator<Item=String> + '_ {
     text.to_lowercase()
         .split_whitespace()
         .map(|s| s.to_string())
@@ -402,12 +395,12 @@ Only update indexes when needed:
 fn remove_vertex(&mut self, id: Self::VertexId) -> Option<Self::Vertex> {
     // Fetch the vertex
     let vertex = self.vertices.get(id.index())?;
-    
+
     // Only update indexes if the vertex exists
     for index in vertex.label().indexes() {
         self.indexes[index.ordinal()].remove(&self.get_value(vertex, index), id.index());
     }
-    
+
     // Remove the vertex
     // ...
 }
@@ -421,23 +414,23 @@ For bulk operations, batch index updates:
 fn add_vertices_batch(&mut self, vertices: Vec<Self::Vertex>) -> Vec<Self::VertexId> {
     let mut ids = Vec::with_capacity(vertices.len());
     let mut index_updates = Vec::new();
-    
+
     // First pass: add vertices and collect index updates
     for vertex in vertices {
         let id = self.add_vertex_no_index(vertex);
         ids.push(id);
-        
+
         // Collect index updates
         for index in vertex.label().indexes() {
             index_updates.push((index, self.get_value(&vertex, index), id));
         }
     }
-    
+
     // Second pass: apply all index updates
     for (index, value, id) in index_updates {
         self.indexes[index.ordinal()].insert(value, id);
     }
-    
+
     ids
 }
 ```
@@ -469,43 +462,43 @@ Test your index implementation thoroughly:
 #[test]
 fn test_hash_index() {
     let mut graph = MyGraph::new();
-    
+
     // Add vertices with indexed properties
     let v1 = graph.add_vertex(Vertex::Person {
         name: "Alice".to_string(),
         age: 30,
         // ...other fields
     });
-    
+
     let v2 = graph.add_vertex(Vertex::Person {
         name: "Bob".to_string(),
         age: 25,
         // ...other fields
     });
-    
+
     // Test index lookup
     let results = graph.walk()
         .vertices(Vertex::person_by_name("Alice"))
         .collect::<Vec<_>>();
-    
+
     assert_eq!(results.len(), 1);
     assert_eq!(results[0].id(), v1);
-    
+
     // Test index update after mutation
     graph.vertex_mut(v1).unwrap()
         .project_mut::<PersonMut<_>>().unwrap()
         .set_name("Alicia");
-    
+
     let results = graph.walk()
         .vertices(Vertex::person_by_name("Alicia"))
         .collect::<Vec<_>>();
-    
+
     assert_eq!(results.len(), 1);
     assert_eq!(results[0].id(), v1);
 }
 ```
 
-## Conclusion
+## Next Steps
 
 Implementing efficient indexes is key to building a high-performance graph backend. By carefully designing index
 structures and ensuring proper updates during mutations, you can provide fast lookup capabilities while maintaining

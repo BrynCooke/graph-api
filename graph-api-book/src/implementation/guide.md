@@ -1,10 +1,13 @@
 # Implementation Guide for Graph Backends
 
-This guide will walk you through the process of implementing a new graph backend for the Graph API. While the Graph API provides several ready-to-use implementations (like `SimpleGraph` and `PetGraph`), you might want to build your own implementation to support specific requirements or optimize for particular use cases.
+This guide will walk you through the process of implementing a new graph backend for the Graph API. While the Graph API
+provides several ready-to-use implementations (like `SimpleGraph` and `PetGraph`), you might want to build your own
+implementation to support specific requirements or optimize for particular use cases.
 
 ## Overview
 
-Implementing a graph backend involves satisfying the requirements of the `Graph` trait and its associated types. This guide will walk you through:
+Implementing a graph backend involves satisfying the requirements of the `Graph` trait and its associated types. This
+guide will walk you through:
 
 1. Understanding the core components needed for a graph implementation
 2. Creating the fundamental data structures
@@ -42,7 +45,7 @@ pub struct MyEdgeId {
 
 // Import the necessary traits
 use graph_api_lib::{
-    Graph, Element, EdgeSearch, VertexSearch, 
+    Graph, Element, EdgeSearch, VertexSearch,
     SupportsVertexLabelIndex, SupportsEdgeLabelIndex, SupportsVertexHashIndex,
     SupportsVertexRangeIndex, SupportsEdgeRangeIndex, SupportsVertexFullTextIndex,
     SupportsEdgeAdjacentLabelIndex, SupportsClear
@@ -57,7 +60,7 @@ where
     // Your internal storage goes here
     // Example:
     vertices: Vec<YourVertexStorage<Vertex>>,
-    edges: Vec<YourEdgeStorage<Edge>>, 
+    edges: Vec<YourEdgeStorage<Edge>>,
     // More fields as needed (indexes, etc.)
 }
 ```
@@ -141,7 +144,7 @@ where
 
 impl<'graph, Graph> Iterator for MyVertexIter<'_, 'graph, Graph>
 where
-    Graph: graph_api_lib::Graph<VertexId = MyVertexId> + 'graph,
+    Graph: graph_api_lib::Graph<VertexId=MyVertexId> + 'graph,
 {
     type Item = MyVertexReference<'graph, Graph>;
 
@@ -170,16 +173,28 @@ where
     type Edge = Edge;
     type VertexId = MyVertexId;
     type EdgeId = MyEdgeId;
-    
+
     // Reference types
-    type VertexReference<'graph> = MyVertexReference<'graph, Self> where Self: 'graph;
-    type VertexReferenceMut<'graph> = MyVertexReferenceMut<'graph, Self> where Self: 'graph;
-    type EdgeReference<'graph> = MyEdgeReference<'graph, Self> where Self: 'graph;
-    type EdgeReferenceMut<'graph> = MyEdgeReferenceMut<'graph, Self> where Self: 'graph;
-    
+    type VertexReference<'graph> = MyVertexReference<'graph, Self>
+    where
+        Self: 'graph;
+    type VertexReferenceMut<'graph> = MyVertexReferenceMut<'graph, Self>
+    where
+        Self: 'graph;
+    type EdgeReference<'graph> = MyEdgeReference<'graph, Self>
+    where
+        Self: 'graph;
+    type EdgeReferenceMut<'graph> = MyEdgeReferenceMut<'graph, Self>
+    where
+        Self: 'graph;
+
     // Iterator types
-    type EdgeIter<'search, 'graph> = MyEdgeIter<'search, 'graph, Self> where Self: 'graph;
-    type VertexIter<'search, 'graph> = MyVertexIter<'search, 'graph, Self> where Self: 'graph;
+    type EdgeIter<'search, 'graph> = MyEdgeIter<'search, 'graph, Self>
+    where
+        Self: 'graph;
+    type VertexIter<'search, 'graph> = MyVertexIter<'search, 'graph, Self>
+    where
+        Self: 'graph;
 
     // Implement the core graph operations
     fn add_vertex(&mut self, vertex: Self::Vertex) -> Self::VertexId {
@@ -293,7 +308,7 @@ pub struct MyVertexMutationListener<'reference, Element> {
 }
 
 impl<'reference, Element> graph_api_lib::MutationListener<'reference, Element>
-    for MyVertexMutationListener<'reference, Element>
+for MyVertexMutationListener<'reference, Element>
 where
     Element: graph_api_lib::Element,
 {
@@ -356,8 +371,11 @@ struct EdgeData<E> {
 // Implement the necessary traits...
 ```
 
-## Conclusion
+## Next Steps
 
-Implementing a graph backend requires careful attention to detail, but the Graph API's trait system provides a clear structure to follow. By implementing the core traits and considering performance implications, you can create a specialized graph backend that perfectly fits your use case.
+Implementing a graph backend requires careful attention to detail, but the Graph API's trait system provides a clear
+structure to follow. By implementing the core traits and considering performance implications, you can create a
+specialized graph backend that perfectly fits your use case.
 
-Remember to check the source code of existing implementations like `SimpleGraph` for more detailed examples of how to handle complex scenarios like indexing and traversal.
+Remember to check the source code of existing implementations like `SimpleGraph` for more detailed examples of how to
+handle complex scenarios like indexing and traversal.
