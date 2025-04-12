@@ -164,11 +164,7 @@ where
         self,
         n: usize,
     ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexTake<'graph, Walker>> {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.take(n),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| walker.take(n))
     }
 }
 
@@ -230,10 +226,6 @@ where
         self,
         n: usize,
     ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeTake<'graph, Walker>> {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.take(n),
-            graph: self.graph,
-        }
+        self.with_edge_walker(|walker| walker.take(n))
     }
 }

@@ -62,10 +62,6 @@ where
     /// - The head-tail terminology follows standard graph theory convention
     /// - When working with edges, remember that `tail()` gives you "where the edge comes from" (source)
     pub fn tail(self) -> VertexWalkerBuilder<'graph, Mutability, Graph, Endpoints<'graph, Walker>> {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: Endpoints::new(self.walker, crate::walker::steps::End::Tail),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| Endpoints::new(walker, crate::walker::steps::End::Tail))
     }
 }

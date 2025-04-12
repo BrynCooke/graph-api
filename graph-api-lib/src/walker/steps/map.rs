@@ -60,7 +60,7 @@ where
         M: FnMut(Graph::VertexReference<'graph>, Walker::Context) -> R + 'graph,
         Walker: 'graph,
     {
-        VertexReferenceIterImpl::new(self.graph.take(), self.walker)
+        VertexReferenceIterImpl::new(self.graph(), self.walker())
             .map(move |(reference, ctx)| mapping(reference, ctx))
     }
 }
@@ -121,7 +121,7 @@ where
         M: FnMut(Graph::EdgeReference<'graph>, Walker::Context) -> R + 'graph,
         Walker: 'graph,
     {
-        EdgeReferenceIterImpl::new(self.graph.take(), self.walker)
+        EdgeReferenceIterImpl::new(self.graph(), self.walker())
             .map(move |(reference, ctx)| mapping(reference, ctx))
     }
 }

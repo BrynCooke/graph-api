@@ -226,11 +226,7 @@ where
                 Option<&'a Graph::VertexReference<'graph>>,
             > + 'graph,
     {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: VertexControlFlow::new(self.walker, predicate),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| VertexControlFlow::new(walker, predicate))
     }
 }
 
@@ -309,10 +305,6 @@ where
                 Option<&'a Graph::EdgeReference<'graph>>,
             > + 'graph,
     {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: EdgeControlFlow::new(self.walker, predicate),
-            graph: self.graph,
-        }
+        self.with_edge_walker(|walker| EdgeControlFlow::new(walker, predicate))
     }
 }

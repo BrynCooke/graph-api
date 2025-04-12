@@ -64,8 +64,8 @@ where
     where
         'graph: 'graph,
     {
-        let graph = self.graph.take();
-        let mut walker = self.walker;
+        let graph = self.graph();
+        let mut walker = self.walker();
         walker.next(graph)
     }
 }
@@ -128,8 +128,8 @@ where
     /// - Returns immediately after finding the first edge, improving performance for large graphs
     /// - After getting the edge ID, you can use graph.edge() to access the full edge data
     pub fn first(mut self) -> Option<Graph::EdgeId> {
-        let graph = self.graph.take();
-        let mut walker = self.walker;
+        let graph = self.graph();
+        let mut walker = self.walker();
         walker.next(graph)
     }
 }

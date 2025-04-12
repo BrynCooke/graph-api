@@ -171,11 +171,7 @@ where
     where
         Predicate: Fn(&Graph::VertexReference<'_>, &Walker::Context) -> bool,
     {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.filter(predicate),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| walker.filter(predicate))
     }
 }
 
@@ -240,10 +236,6 @@ where
     where
         Predicate: Fn(&Graph::EdgeReference<'_>, &Walker::Context) -> bool,
     {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.filter(predicate),
-            graph: self.graph,
-        }
+        self.with_edge_walker(|walker| walker.filter(predicate))
     }
 }

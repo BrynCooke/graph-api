@@ -295,13 +295,11 @@ where
         Callback: Fn(&Graph::VertexReference<'_>, &Walker::Context) -> Context + 'graph,
         Context: Clone + 'static,
     {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.context(move |vertex, context| {
+        self.with_vertex_walker(move |walker| {
+            walker.context(move |vertex, context| {
                 ContextRef::new(callback(vertex, context), context.clone())
-            }),
-            graph: self.graph,
-        }
+            })
+        })
     }
 }
 
@@ -381,13 +379,11 @@ where
         Callback: Fn(&Graph::EdgeReference<'_>, &Walker::Context) -> Context,
         Context: Clone + 'static,
     {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.context(move |edge, context| {
+        self.with_edge_walker(move |walker| {
+            walker.context(move |edge, context| {
                 ContextRef::new(callback(edge, context), context.clone())
-            }),
-            graph: self.graph,
-        }
+            })
+        })
     }
 }
 

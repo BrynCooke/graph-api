@@ -62,8 +62,8 @@ where
         F: FnMut(Acc, Graph::VertexReference<'graph>, &Walker::Context) -> Acc,
         'graph: 'graph,
     {
-        let graph = self.graph.take();
-        let mut walker = self.walker;
+        let graph = self.graph();
+        let mut walker = self.walker();
         let mut acc = init;
 
         while let Some(vertex_id) = walker.next(graph) {
@@ -98,8 +98,8 @@ where
         F: FnMut(Acc, Graph::EdgeReference<'graph>, &Walker::Context) -> Acc,
         'graph: 'graph,
     {
-        let graph = self.graph.take();
-        let mut walker = self.walker;
+        let graph = self.graph();
+        let mut walker = self.walker();
         let mut acc = init;
 
         while let Some(edge_id) = walker.next(graph) {

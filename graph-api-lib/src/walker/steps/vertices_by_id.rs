@@ -122,11 +122,7 @@ where
     where
         Iter: IntoIterator<Item = Graph::VertexId>,
     {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.vertices_by_id(vertex_ids),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| walker.vertices_by_id(vertex_ids))
     }
 }
 
@@ -147,10 +143,6 @@ where
     where
         Iter: IntoIterator<Item = Graph::VertexId>,
     {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.empty.vertices_by_id(vertex_ids),
-            graph: self.graph,
-        }
+        crate::walker::builder::new(self.graph, self.empty.vertices_by_id(vertex_ids))
     }
 }

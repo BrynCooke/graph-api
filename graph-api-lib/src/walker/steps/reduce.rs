@@ -240,11 +240,7 @@ where
             &Walker::Context,
         ) -> &'a Graph::VertexReference<'graph>,
     {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.reduce(reducer),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| walker.reduce(reducer))
     }
 }
 
@@ -312,10 +308,6 @@ where
             &Walker::Context,
         ) -> &'a Graph::EdgeReference<'graph>,
     {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.reduce(reducer),
-            graph: self.graph,
-        }
+        self.with_edge_walker(|walker| walker.reduce(reducer))
     }
 }

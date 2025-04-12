@@ -1,6 +1,6 @@
 use crate::ElementId;
 use crate::graph::Graph;
-use crate::walker::builder::{ImmutableMarker, VertexWalkerBuilder, WalkerBuilder};
+use crate::walker::builder::{GraphAccess, ImmutableMarker, VertexWalkerBuilder, WalkerBuilder};
 use crate::walker::{VertexWalker, Walker};
 use include_doc::function_body;
 use std::cell::Cell;
@@ -180,7 +180,7 @@ where
             // The waypoint allows the detour traversal to access the current vertex and context
             self.walker = Some(
                 (self.path)(crate::walker::builder::new(
-                    graph,
+                    GraphAccess::Immutable(graph),
                     Waypoint {
                         _phantom: Default::default(),
                         next: self.waypoint_next.clone(),
@@ -313,10 +313,6 @@ where
         WalkerBuilderT: Into<self::WalkerBuilder<'graph, ImmutableMarker, Graph, Terminal>>,
         Terminal: crate::walker::Walker<'graph, Graph = Graph>,
     {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: Detour::new(self.walker, predicate),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| Detour::new(walker, predicate))
     }
 }

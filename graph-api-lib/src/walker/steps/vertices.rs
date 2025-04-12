@@ -142,11 +142,7 @@ where
         self,
         vertex_search: T,
     ) -> VertexWalkerBuilder<'graph, Mutability, Graph, Vertices<'a, 'graph, Walker>> {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.vertices(vertex_search.into()),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| walker.vertices(vertex_search.into()))
     }
 }
 
@@ -164,10 +160,6 @@ where
         Graph,
         Vertices<'search, 'graph, Empty<Graph, Context>>,
     > {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.empty.vertices(vertex_search),
-            graph: self.graph,
-        }
+        crate::walker::builder::new(self.graph, self.empty.vertices(vertex_search))
     }
 }

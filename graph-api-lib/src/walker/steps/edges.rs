@@ -135,10 +135,6 @@ where
         self,
         search: T,
     ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, Edges<'a, 'graph, Walker>> {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: self.walker.edges(search.into()),
-            graph: self.graph,
-        }
+        self.with_edge_walker(|walker| walker.edges(search.into()))
     }
 }

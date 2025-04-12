@@ -60,8 +60,8 @@ where
         'graph: 'graph,
     {
         let mut count = 0;
-        let graph = self.graph.take();
-        let mut walker = self.walker;
+        let graph = self.graph();
+        let mut walker = self.walker();
         while let Some(_vertex_id) = walker.next(graph) {
             count += 1;
         }
@@ -84,8 +84,8 @@ where
         'graph: 'graph,
     {
         let mut count = 0;
-        let graph = self.graph.take();
-        let mut walker = self.walker;
+        let graph = self.graph();
+        let mut walker = self.walker();
         while let Some(_vertex_id) = walker.next(graph) {
             count += 1;
         }

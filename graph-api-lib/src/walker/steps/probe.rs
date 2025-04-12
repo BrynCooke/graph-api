@@ -178,11 +178,7 @@ where
     where
         Callback: FnMut(&Graph::VertexReference<'_>, &Walker::Context),
     {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: VertexProbe::new(self.walker, callback),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| VertexProbe::new(walker, callback))
     }
 }
 
@@ -253,10 +249,6 @@ where
     where
         Callback: FnMut(&Graph::EdgeReference<'_>, &Walker::Context),
     {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: EdgeProbe::new(self.walker, callback),
-            graph: self.graph,
-        }
+        self.with_edge_walker(|walker| EdgeProbe::new(walker, callback))
     }
 }

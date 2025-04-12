@@ -67,9 +67,9 @@ where
         Mutability: Mutable,
         'graph: 'graph,
     {
-        let graph = self.graph.take_mut();
+        let graph = self.graph_mut();
         let graph_copy: &Graph = unsafe { std::mem::transmute(&*graph) };
-        let mut walker = self.walker;
+        let mut walker = self.walker();
 
         let mut contexts = Vec::new();
         while let Some(vertex_id) = walker.next(graph_copy) {
@@ -102,9 +102,9 @@ where
         Mutability: Mutable,
         'graph: 'graph,
     {
-        let graph = self.graph.take_mut();
+        let graph = self.graph_mut();
         let graph_copy: &Graph = unsafe { std::mem::transmute(&*graph) };
-        let mut walker = self.walker;
+        let mut walker = self.walker();
 
         let mut contexts = Vec::new();
         while let Some(edge) = walker.next(graph_copy) {

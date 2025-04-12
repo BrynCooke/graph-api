@@ -69,7 +69,7 @@ where
     type IntoIter = VertexIterImpl<'graph, Graph, Walker>;
 
     fn into_iter(mut self) -> Self::IntoIter {
-        VertexIterImpl::new(self.graph.take(), self.walker)
+        VertexIterImpl::new(self.graph(), self.walker())
     }
 }
 
@@ -83,7 +83,7 @@ where
     type IntoIter = EdgeIterImpl<'graph, Graph, Walker>;
 
     fn into_iter(mut self) -> Self::IntoIter {
-        EdgeIterImpl::new(self.graph.take(), self.walker)
+        EdgeIterImpl::new(self.graph(), self.walker())
     }
 }
 

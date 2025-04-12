@@ -84,15 +84,15 @@ pub struct VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
 where
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    pub(crate) _phantom: PhantomData<&'graph Mutability>,
-    pub(crate) walker: Walker,
-    pub(crate) graph: GraphAccess<'graph, Graph>,
+    _phantom: PhantomData<&'graph Mutability>,
+    walker: Walker,
+    graph: GraphAccess<'graph, Graph>,
 }
 
-pub(crate) fn new<'graph, Graph, Start>(
-    graph: &'graph Graph,
+pub(crate) fn new<'graph, Mutability, Graph, Start>(
+    graph: GraphAccess<'graph, Graph>,
     start: Start,
-) -> VertexWalkerBuilder<'graph, ImmutableMarker, Graph, Start>
+) -> VertexWalkerBuilder<'graph, Mutability, Graph, Start>
 where
     Graph: crate::graph::Graph,
     Start: VertexWalker<'graph, Graph = Graph>,
@@ -100,7 +100,7 @@ where
     VertexWalkerBuilder {
         _phantom: Default::default(),
         walker: start,
-        graph: GraphAccess::Immutable(graph),
+        graph,
     }
 }
 
@@ -125,9 +125,20 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
+    pub fn graph(&mut self) -> &'graph Graph {
+        self.graph.take()
+    }
+    pub fn graph_mut(&mut self) -> &'graph mut Graph {
+        self.graph.take_mut()
+    }
+
+    pub fn walker(self) -> Walker {
+        self.walker
+    }
+
     pub fn with_edge_walker<
         EdgeWalker: crate::walker::EdgeWalker<'graph>,
-        WithFn: Fn(Walker) -> EdgeWalker,
+        WithFn: FnOnce(Walker) -> EdgeWalker,
     >(
         self,
         step: WithFn,
@@ -141,7 +152,7 @@ where
 
     pub fn with_vertex_walker<
         VertexWalker: crate::walker::VertexWalker<'graph, Graph = Graph>,
-        WithFn: Fn(Walker) -> VertexWalker,
+        WithFn: FnOnce(Walker) -> VertexWalker,
     >(
         self,
         step: WithFn,
@@ -158,9 +169,9 @@ pub struct EdgeWalkerBuilder<'graph, Mutability, Graph, Walker>
 where
     Walker: EdgeWalker<'graph>,
 {
-    pub(crate) _phantom: PhantomData<&'graph Mutability>,
-    pub(crate) walker: Walker,
-    pub(crate) graph: GraphAccess<'graph, Graph>,
+    _phantom: PhantomData<&'graph Mutability>,
+    walker: Walker,
+    graph: GraphAccess<'graph, Graph>,
 }
 
 impl<'graph, Mutability, Graph, Walker> EdgeWalkerBuilder<'graph, Mutability, Graph, Walker>
@@ -169,9 +180,19 @@ where
     Walker: EdgeWalker<'graph, Graph = Graph>,
     <Walker as crate::walker::Walker<'graph>>::Context: Clone + 'static,
 {
+    pub fn graph(&mut self) -> &'graph Graph {
+        self.graph.take()
+    }
+    pub fn graph_mut(&mut self) -> &'graph mut Graph {
+        self.graph.take_mut()
+    }
+    pub fn walker(self) -> Walker {
+        self.walker
+    }
+
     pub fn with_edge_walker<
         EdgeWalker: crate::walker::EdgeWalker<'graph>,
-        WithFn: Fn(Walker) -> EdgeWalker,
+        WithFn: FnOnce(Walker) -> EdgeWalker,
     >(
         self,
         step: WithFn,
@@ -185,7 +206,7 @@ where
 
     pub fn with_vertex_walker<
         VertexWalker: crate::walker::VertexWalker<'graph, Graph = Graph>,
-        WithFn: Fn(Walker) -> VertexWalker,
+        WithFn: FnOnce(Walker) -> VertexWalker,
     >(
         self,
         step: WithFn,

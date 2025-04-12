@@ -58,11 +58,7 @@ where
     where
         Callback: Fn(&Graph::VertexReference<'_>, &mut Walker::Context) + 'graph,
     {
-        VertexWalkerBuilder {
-            _phantom: Default::default(),
-            walker: VertexMutateContext::new(self.walker, callback),
-            graph: self.graph,
-        }
+        self.with_vertex_walker(|walker| VertexMutateContext::new(walker, callback))
     }
 }
 
@@ -115,11 +111,7 @@ where
     where
         Callback: Fn(&Graph::EdgeReference<'_>, &mut Walker::Context) + 'graph,
     {
-        EdgeWalkerBuilder {
-            _phantom: Default::default(),
-            walker: EdgeMutateContext::new(self.walker, callback),
-            graph: self.graph,
-        }
+        self.with_edge_walker(|walker| EdgeMutateContext::new(walker, callback))
     }
 }
 
