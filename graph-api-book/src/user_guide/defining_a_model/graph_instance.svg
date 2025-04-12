@@ -18,45 +18,45 @@
     <!-- Edges -->
     <!-- Follows Edges -->
     <g class="edge directed" id="edge-julia-bryn-follows">
-        <!-- Path from Julia (450, 250) to Bryn (150, 250), curved upwards -->
-        <path d="M 425 250 Q 300 250 175 250" fill="none" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="240">Follows</text>
+        <!-- Path from Julia (500, 250) to Bryn (150, 250), curved upwards -->
+        <path d="M 475 250 Q 325 200 175 250" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="325" y="220">Follows</text>
     </g>
     <g class="edge directed" id="edge-eve-julia-follows">
-        <!-- Line from Eve (450, 100) to Julia (450, 250) -->
-        <line x1="450" y1="125" x2="450" y2="225" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="450" y="175" text-anchor="start">Follows</text>
+        <!-- Line from Eve (450, 100) to Julia (500, 250) -->
+        <line x1="450" y1="125" x2="485" y2="230" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="475" y="175">Follows</text>
     </g>
     <g class="edge directed" id="edge-bryn-eve-follows">
         <!-- Line from Bryn (150, 250) to Eve (450, 100) -->
-        <line x1="175" y1="240" x2="425" y2="110" marker-end="url(#arrowhead)"/>
+        <line x1="175" y1="240" x2="430" y2="115" marker-end="url(#arrowhead)"/>
         <text class="edge-label" x="300" y="170">Follows</text>
     </g>
 
     <!-- Created Edges -->
     <g class="edge directed" id="edge-bryn-graphapi-created">
-        <!-- Line from Bryn (150, 250) to GraphApi (150, 400) -->
-        <line x1="150" y1="275" x2="150" y2="375" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="150" y="325" text-anchor="start">Created</text>
+        <!-- Line from Bryn (150, 250) to GraphApi (100, 400) -->
+        <line x1="140" y1="275" x2="105" y2="375" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="125" y="325">Created</text>
     </g>
     <g class="edge directed" id="edge-julia-alpaca-created">
-        <!-- Line from Julia (450, 250) to Alpaca (450, 400) -->
-        <line x1="450" y1="275" x2="450" y2="375" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="450" y="325" text-anchor="end">Created</text>
+        <!-- Line from Julia (500, 250) to Alpaca (450, 400) -->
+        <line x1="490" y1="275" x2="450" y2="375" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="470" y="325">Created</text>
     </g>
 
     <!-- Liked Edge -->
     <g class="edge directed" id="edge-bryn-alpaca-liked">
         <!-- Path from Bryn (150, 250) to Alpaca (450, 400), curved downwards -->
-        <path d="M 175 260 Q 300 290 425 390" fill="none" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="290">Liked</text>
-        <text class="property-text halo" x="300" y="305">ts: 2023-01-01</text>
+        <path d="M 170 260 Q 300 350 430 390" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="330">Liked</text>
+        <text class="property-text halo" x="300" y="345">ts: 2023-01-01</text>
     </g>
 
     <!-- Commented Edge -->
     <g class="edge directed" id="edge-bryn-alpaca-commented">
         <!-- Path from Bryn (150, 250) to Alpaca (450, 400), curved more downwards -->
-        <path d="M 175 270 Q 300 380 425 395" fill="none" marker-end="url(#arrowhead)"/>
+        <path d="M 170 270 Q 300 380 435 395" fill="none" marker-end="url(#arrowhead)"/>
         <text class="edge-label" x="300" y="360">Commented</text>
         <text class="property-text halo" x="300" y="375">ts: 2023-01-02</text>
     </g>
