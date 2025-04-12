@@ -214,11 +214,37 @@ graph.walk().vertices(VertexSearch::scan().with_label(Person::label()))</code></
 </ul>
 <h2 id="example-walker-traversals"><a class="header" href="#example-walker-traversals">Example Walker Traversals</a></h2>
 <h3 id="basic-traversal"><a class="header" href="#basic-traversal">Basic Traversal</a></h3>
-<pre><code class="language-rust noplayground">#![function_body!("basic_traversal_example.rs", basic_walker_example)]</code></pre>
+<pre><code class="language-rust noplayground">    // Find all Project vertices created by a Person
+    let _results = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with all Person vertices
+        .edges(Edge::created()) // Follow "Created" edges
+        .tail() // Move to the target vertices (Projects)
+        .collect::&lt;Vec&lt;_&gt;&gt;(); // Collect the Project vertices</code></pre>
 <h3 id="multi-step-traversal"><a class="header" href="#multi-step-traversal">Multi-Step Traversal</a></h3>
-<pre><code class="language-rust noplayground">#![function_body!("multi_step_example.rs", multi_step_example)]</code></pre>
+<pre><code class="language-rust noplayground">    // Find all people who follow someone who created a project
+    let _results = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with all Person vertices
+        .edges(Edge::follows()) // Follow "follows" edges
+        .tail() // Move to the followed person
+        .edges(Edge::created()) // Find "created" edges from these people
+        .tail() // Move to the Project vertices
+        .collect::&lt;Vec&lt;_&gt;&gt;(); // Collect results</code></pre>
 <h3 id="traversal-with-detour"><a class="header" href="#traversal-with-detour">Traversal with Detour</a></h3>
-<pre><code class="language-rust noplayground">#![function_body!("detour_example.rs", detour_traversal_example)]</code></pre>
+<pre><code class="language-rust noplayground">    // For each person, find the projects they created
+    let _results = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with all Person vertices
+        .detour(|person_walker| {
+            // For each person, collect the projects they created
+            person_walker
+                .edges(Edge::created()) // Follow "created" edges
+                .tail() // Move to the target (projects)
+                .take(1) // Only need one match to qualify
+        })
+        // Continue with original person vertices that have created projects
+        .collect::&lt;Vec&lt;_&gt;&gt;(); // Collect results</code></pre>
 <h2 id="next-steps"><a class="header" href="#next-steps">Next Steps</a></h2>
 <p>To learn more about specific walker steps, see the <a href="./steps.html">Walker Steps</a> documentation.</p>
 

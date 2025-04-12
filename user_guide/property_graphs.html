@@ -163,13 +163,15 @@ intuitive way. Graph API leverages Rust's type system to provide a strongly-type
 <p>Property graphs consist of two primary elements:</p>
 <ol>
 <li>
-<p><strong>Vertices</strong> (nodes): Represent entities in your data model. Each vertex has a type (label) and can hold multiple key-value properties.</p>
+<p><strong>Vertices</strong> (nodes): Represent entities in your data model. Each vertex has a type (label) and can hold multiple
+key-value properties.</p>
 <object type="image/svg+xml" data="property_graphs/vertex_with_properties.svg">
 Diagram showing a single vertex with properties
 </object>
 </li>
 <li>
-<p><strong>Edges</strong> (relationships): Connect vertices to express relationships. Edges are directed, have a type (label), and can also hold properties.</p>
+<p><strong>Edges</strong> (relationships): Connect vertices to express relationships. Edges are directed, have a type (label), and
+can also hold properties.</p>
 <object type="image/svg+xml" data="property_graphs/edge_with_properties.svg">
 Diagram showing two vertices connected by an edge with properties
 </object>
@@ -204,7 +206,46 @@ themselves. They're particularly useful for:</p>
 </ul>
 <h2 id="property-graph-example"><a class="header" href="#property-graph-example">Property Graph Example</a></h2>
 <p>Here's a simple example of how Graph API models a property graph:</p>
-<pre><code class="language-rust noplayground">#![function_body!("property_graphs/basic_model.rs", define_basic_model, [SocialVertex, SocialEdge])]</code></pre>
+<pre><code class="language-rust noplayground">// Define vertex types for a social media application
+#[derive(Debug, Clone, VertexExt)]
+pub enum Vertex {
+    // Person vertex with various properties
+    Person {
+        name: String, // Not indexed
+
+        #[index(hash)] // Hash index for exact lookups
+        username: String,
+
+        #[index(full_text)] // Full-text index for text search
+        biography: String,
+
+        #[index(range)] // Range index for range queries
+        age: u8,
+    },
+
+    // Project vertex with minimal properties
+    Project {
+        name: String,
+    },
+
+    // Comment vertex
+    Comment {
+        text: String,
+        date: String,
+    },
+}
+
+// Define edge types that connect vertices
+#[derive(Debug, Clone, EdgeExt)]
+pub enum Edge {
+    // Simple edges without properties
+    Created,
+    Follows,
+
+    // Edges with properties
+    Liked { timestamp: String },
+    Commented { timestamp: String },
+}</code></pre>
 <h2 id="understanding-indexes"><a class="header" href="#understanding-indexes">Understanding Indexes</a></h2>
 <p>Indexes are a crucial part of an efficient graph database. They allow you to quickly locate vertices and edges without
 scanning the entire graph.</p>

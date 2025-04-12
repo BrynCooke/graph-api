@@ -509,13 +509,15 @@ intuitive way. Graph API leverages Rust's type system to provide a strongly-type
 <p>Property graphs consist of two primary elements:</p>
 <ol>
 <li>
-<p><strong>Vertices</strong> (nodes): Represent entities in your data model. Each vertex has a type (label) and can hold multiple key-value properties.</p>
+<p><strong>Vertices</strong> (nodes): Represent entities in your data model. Each vertex has a type (label) and can hold multiple
+key-value properties.</p>
 <object type="image/svg+xml" data="property_graphs/vertex_with_properties.svg">
 Diagram showing a single vertex with properties
 </object>
 </li>
 <li>
-<p><strong>Edges</strong> (relationships): Connect vertices to express relationships. Edges are directed, have a type (label), and can also hold properties.</p>
+<p><strong>Edges</strong> (relationships): Connect vertices to express relationships. Edges are directed, have a type (label), and
+can also hold properties.</p>
 <object type="image/svg+xml" data="property_graphs/edge_with_properties.svg">
 Diagram showing two vertices connected by an edge with properties
 </object>
@@ -550,7 +552,46 @@ themselves. They're particularly useful for:</p>
 </ul>
 <h2 id="property-graph-example"><a class="header" href="#property-graph-example">Property Graph Example</a></h2>
 <p>Here's a simple example of how Graph API models a property graph:</p>
-<pre><code class="language-rust noplayground">#![function_body!("property_graphs/basic_model.rs", define_basic_model, [SocialVertex, SocialEdge])]</code></pre>
+<pre><code class="language-rust noplayground">// Define vertex types for a social media application
+#[derive(Debug, Clone, VertexExt)]
+pub enum Vertex {
+    // Person vertex with various properties
+    Person {
+        name: String, // Not indexed
+
+        #[index(hash)] // Hash index for exact lookups
+        username: String,
+
+        #[index(full_text)] // Full-text index for text search
+        biography: String,
+
+        #[index(range)] // Range index for range queries
+        age: u8,
+    },
+
+    // Project vertex with minimal properties
+    Project {
+        name: String,
+    },
+
+    // Comment vertex
+    Comment {
+        text: String,
+        date: String,
+    },
+}
+
+// Define edge types that connect vertices
+#[derive(Debug, Clone, EdgeExt)]
+pub enum Edge {
+    // Simple edges without properties
+    Created,
+    Follows,
+
+    // Edges with properties
+    Liked { timestamp: String },
+    Commented { timestamp: String },
+}</code></pre>
 <h2 id="understanding-indexes"><a class="header" href="#understanding-indexes">Understanding Indexes</a></h2>
 <p>Indexes are a crucial part of an efficient graph database. They allow you to quickly locate vertices and edges without
 scanning the entire graph.</p>
@@ -625,19 +666,7 @@ pub enum Edge {
     Commented { timestamp: String },
 }</code></pre>
 <h2 id="scanning-the-entire-graph"><a class="header" href="#scanning-the-entire-graph">Scanning the Entire Graph</a></h2>
-<p>Without indexes, the only way to find vertices matching specific criteria is to scan the entire graph:</p>
-<pre><code class="language-rust noplayground">// Function explaining non-indexed fields
-pub fn non_indexed_fields() {
-    // In the standard model, several fields are intentionally left without indexes:
-    //
-    // 1. Person::name - Non-indexed field requiring full scan for searches
-    // 2. Person::unique_id - UUID field that doesn't need indexing for typical usage
-    // 3. Project::name - Non-indexed field in the Project variant
-    // 4. All fields in Comment variant - None are indexed
-    //
-    // Non-indexed fields can still be searched, but require a full graph scan
-    // which is less efficient than using indexed lookups
-}</code></pre>
+<p>Without indexes, the only way to find vertices matching specific criteria is to scan the entire graph.</p>
 <h3 id="finding-by-name-without-index"><a class="header" href="#finding-by-name-without-index">Finding by Name (Without Index)</a></h3>
 <p>When a field isn't indexed (like <code>name</code> in the <code>Person</code> vertex), we have to scan all vertices to find matches:</p>
 <pre><code class="language-rust noplayground">    // INEFFICIENT: Find all people named "Bryn" by scanning
@@ -1894,11 +1923,37 @@ graph.walk().vertices(VertexSearch::scan().with_label(Person::label()))</code></
 </ul>
 <h2 id="example-walker-traversals"><a class="header" href="#example-walker-traversals">Example Walker Traversals</a></h2>
 <h3 id="basic-traversal-1"><a class="header" href="#basic-traversal-1">Basic Traversal</a></h3>
-<pre><code class="language-rust noplayground">#![function_body!("basic_traversal_example.rs", basic_walker_example)]</code></pre>
+<pre><code class="language-rust noplayground">    // Find all Project vertices created by a Person
+    let _results = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with all Person vertices
+        .edges(Edge::created()) // Follow "Created" edges
+        .tail() // Move to the target vertices (Projects)
+        .collect::&lt;Vec&lt;_&gt;&gt;(); // Collect the Project vertices</code></pre>
 <h3 id="multi-step-traversal"><a class="header" href="#multi-step-traversal">Multi-Step Traversal</a></h3>
-<pre><code class="language-rust noplayground">#![function_body!("multi_step_example.rs", multi_step_example)]</code></pre>
+<pre><code class="language-rust noplayground">    // Find all people who follow someone who created a project
+    let _results = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with all Person vertices
+        .edges(Edge::follows()) // Follow "follows" edges
+        .tail() // Move to the followed person
+        .edges(Edge::created()) // Find "created" edges from these people
+        .tail() // Move to the Project vertices
+        .collect::&lt;Vec&lt;_&gt;&gt;(); // Collect results</code></pre>
 <h3 id="traversal-with-detour"><a class="header" href="#traversal-with-detour">Traversal with Detour</a></h3>
-<pre><code class="language-rust noplayground">#![function_body!("detour_example.rs", detour_traversal_example)]</code></pre>
+<pre><code class="language-rust noplayground">    // For each person, find the projects they created
+    let _results = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with all Person vertices
+        .detour(|person_walker| {
+            // For each person, collect the projects they created
+            person_walker
+                .edges(Edge::created()) // Follow "created" edges
+                .tail() // Move to the target (projects)
+                .take(1) // Only need one match to qualify
+        })
+        // Continue with original person vertices that have created projects
+        .collect::&lt;Vec&lt;_&gt;&gt;(); // Collect results</code></pre>
 <h2 id="next-steps-2"><a class="header" href="#next-steps-2">Next Steps</a></h2>
 <p>To learn more about specific walker steps, see the <a href="user_guide/walker/./steps.html">Walker Steps</a> documentation.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="walker-steps-1"><a class="header" href="#walker-steps-1">Walker Steps</a></h1>
@@ -3197,6 +3252,34 @@ walker
 <li><strong>Element comparison</strong>: Comparing properties between current and previous elements</li>
 <li><strong>Data collection</strong>: Gathering information from connected elements in the graph</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mutate-context"><a class="header" href="#mutate-context">Mutate Context</a></h1>
+<p>The <code>mutate_context</code> step allows you to modify context data during a graph traversal without affecting the traversal position. This provides a way to update state or accumulate information as you move through the graph.</p>
+<object type="image/svg+xml" data="mutate_context/image.svg" title="Mutate Context Step Diagram">
+Mutate context step diagram showing context being modified while elements remain unchanged
+</object>
+<p>In this diagram:</p>
+<ul>
+<li>An <strong>Input Stream</strong> contains elements <strong>A</strong> and <strong>B</strong>, each associated with a context value.</li>
+<li>The <strong><code>.mutate_context(|e, ctx| { /* modify ctx */ })</code></strong> step is applied, allowing in-place modification of the context associated with each element.</li>
+<li>The resulting <strong>Output Stream</strong> shows the same elements (<strong>A</strong> and <strong>B</strong>) but with modified context values.</li>
+<li>This demonstrates that <code>mutate_context</code> affects only the context data, not the traversal elements or position.</li>
+</ul>
+<h2 id="syntax-13"><a class="header" href="#syntax-13">Syntax</a></h2>
+<pre><code class="language-rust noplayground">walker.mutate_context(|element, context| {
+    // Modify context in-place via mutable reference
+})</code></pre>
+<h2 id="parameters-14"><a class="header" href="#parameters-14">Parameters</a></h2>
+<ul>
+<li><code>callback</code>: A function that takes:
+<ul>
+<li>A reference to the current element (vertex or edge)</li>
+<li>A mutable reference to the current context</li>
+<li>Performs in-place modifications to the context</li>
+</ul>
+</li>
+</ul>
+<h2 id="return-value-14"><a class="header" href="#return-value-14">Return Value</a></h2>
+<p>Returns a new walker with the same position but modified context data.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="detour-step"><a class="header" href="#detour-step">Detour Step</a></h1>
 <p>The <code>detour</code> step is a powerful operation that allows you to execute a sub-traversal for <em>each</em> element currently in the
 main walker stream. The results yielded by each sub-traversal <em>do not replace</em> the original element in the main stream.
@@ -3217,7 +3300,7 @@ yields results <strong>B</strong> and <strong>C</strong>.</li>
 <li><strong>Output Elements (Results)</strong>: The main walker stream continues, now containing the <em>combined results</em> from all
 sub-walkers (<strong>A, A, X</strong>). The original elements (A, X) have been replaced.</li>
 </ul>
-<h2 id="syntax-13"><a class="header" href="#syntax-13">Syntax</a></h2>
+<h2 id="syntax-14"><a class="header" href="#syntax-14">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.detour(|sub_walker_builder| {
     // Configure the sub-walker with additional steps
     sub_walker_builder
@@ -3225,12 +3308,12 @@ sub-walkers (<strong>A, A, X</strong>). The original elements (A, X) have been r
         .head()     // Example step
         // ... more steps ...
 })</code></pre>
-<h2 id="parameters-14"><a class="header" href="#parameters-14">Parameters</a></h2>
+<h2 id="parameters-15"><a class="header" href="#parameters-15">Parameters</a></h2>
 <ul>
 <li><code>detour_fn</code>: A closure that receives a <code>StartWalkerBuilder</code> positioned at the current element from the main stream.
 This closure defines the steps for the sub-traversal.</li>
 </ul>
-<h2 id="return-value-14"><a class="header" href="#return-value-14">Return Value</a></h2>
+<h2 id="return-value-15"><a class="header" href="#return-value-15">Return Value</a></h2>
 <p>Returns a new walker where the elements are the combined results of all the sub-traversals executed within the <code>detour</code>.</p>
 <h2 id="examples-12"><a class="header" href="#examples-12">Examples</a></h2>
 <h3 id="basic-detour"><a class="header" href="#basic-detour">Basic Detour</a></h3>
@@ -3334,12 +3417,12 @@ Collect step diagram showing elements flowing into the step and a Rust collectio
 <li><strong>Returns: Vec&lt;ID&gt;</strong>: The step returns a Rust <code>Vec</code> containing the unique identifiers (IDs) of the elements that were processed (<code>[ID(A), ID(B), ID(C)]</code>).</li>
 <li><strong>Terminates Walker</strong>: This step ends the Graph API walker chain.</li>
 </ul>
-<h2 id="syntax-14"><a class="header" href="#syntax-14">Syntax</a></h2>
+<h2 id="syntax-15"><a class="header" href="#syntax-15">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.collect::&lt;C&gt;()</code></pre>
 <p>Where <code>C</code> is the collection type you want to gather results into.</p>
-<h2 id="parameters-15"><a class="header" href="#parameters-15">Parameters</a></h2>
+<h2 id="parameters-16"><a class="header" href="#parameters-16">Parameters</a></h2>
 <p>This step takes no parameters, but uses a type parameter to specify the collection type.</p>
-<h2 id="return-value-15"><a class="header" href="#return-value-15">Return Value</a></h2>
+<h2 id="return-value-16"><a class="header" href="#return-value-16">Return Value</a></h2>
 <p>Returns a collection of type <code>C</code> where <code>C</code> implements <code>FromIterator</code>.</p>
 <h2 id="examples-13"><a class="header" href="#examples-13">Examples</a></h2>
 <h3 id="collecting-into-a-vec"><a class="header" href="#collecting-into-a-vec">Collecting into a Vec</a></h3>
@@ -3419,11 +3502,11 @@ Count step diagram showing elements flowing into the step and a usize count as t
 <li><strong>Returns: usize</strong>: The step returns a single <code>usize</code> value, which is the total number of elements processed (4 in this case).</li>
 <li><strong>Terminates Walker</strong>: This step ends the Graph API walker chain.</li>
 </ul>
-<h2 id="syntax-15"><a class="header" href="#syntax-15">Syntax</a></h2>
+<h2 id="syntax-16"><a class="header" href="#syntax-16">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.count()</code></pre>
-<h2 id="parameters-16"><a class="header" href="#parameters-16">Parameters</a></h2>
+<h2 id="parameters-17"><a class="header" href="#parameters-17">Parameters</a></h2>
 <p>This step takes no parameters.</p>
-<h2 id="return-value-16"><a class="header" href="#return-value-16">Return Value</a></h2>
+<h2 id="return-value-17"><a class="header" href="#return-value-17">Return Value</a></h2>
 <p>Returns a <code>usize</code> representing the number of elements in the traversal.</p>
 <h2 id="examples-14"><a class="header" href="#examples-14">Examples</a></h2>
 <h3 id="basic-count"><a class="header" href="#basic-count">Basic Count</a></h3>
@@ -3493,11 +3576,11 @@ Into Iterator step diagram showing elements flowing into the step and a Rust ite
 <li><strong>Rust Iterator</strong>: The step returns a standard Rust iterator. This iterator yields the unique identifiers (IDs) of the elements that were processed (ID(A), ID(B), ID(C)).</li>
 <li><strong>Terminates Walker</strong>: This step ends the Graph API walker chain. Subsequent operations must use standard Rust iterator methods.</li>
 </ul>
-<h2 id="syntax-16"><a class="header" href="#syntax-16">Syntax</a></h2>
+<h2 id="syntax-17"><a class="header" href="#syntax-17">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.into_iter()</code></pre>
-<h2 id="parameters-17"><a class="header" href="#parameters-17">Parameters</a></h2>
+<h2 id="parameters-18"><a class="header" href="#parameters-18">Parameters</a></h2>
 <p>This step takes no parameters.</p>
-<h2 id="return-value-17"><a class="header" href="#return-value-17">Return Value</a></h2>
+<h2 id="return-value-18"><a class="header" href="#return-value-18">Return Value</a></h2>
 <p>Returns a standard Rust iterator that yields vertex or edge IDs from the traversal.</p>
 <h2 id="examples-15"><a class="header" href="#examples-15">Examples</a></h2>
 <h3 id="basic-usage-3"><a class="header" href="#basic-usage-3">Basic Usage</a></h3>
@@ -3574,11 +3657,11 @@ Probe step diagram showing elements flowing through, side effects, and unchanged
 <li><strong>Side Effect</strong>: As each element (A, B, C) passes through, the provided callback function is executed. This is shown triggering actions like logging or updating metrics.</li>
 <li><strong>Output Elements (Unchanged)</strong>: The elements <strong>A, B, C</strong> continue to the next step in the traversal, completely unaffected by the <code>probe</code> operation.</li>
 </ul>
-<h2 id="syntax-17"><a class="header" href="#syntax-17">Syntax</a></h2>
+<h2 id="syntax-18"><a class="header" href="#syntax-18">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.probe(|element, context| {
     // inspection logic
 })</code></pre>
-<h2 id="parameters-18"><a class="header" href="#parameters-18">Parameters</a></h2>
+<h2 id="parameters-19"><a class="header" href="#parameters-19">Parameters</a></h2>
 <ul>
 <li><code>inspector</code>: A function that takes:
 <ul>
@@ -3588,7 +3671,7 @@ Probe step diagram showing elements flowing through, side effects, and unchanged
 </ul>
 </li>
 </ul>
-<h2 id="return-value-18"><a class="header" href="#return-value-18">Return Value</a></h2>
+<h2 id="return-value-19"><a class="header" href="#return-value-19">Return Value</a></h2>
 <p>Returns the same traversal unchanged, allowing you to continue chaining steps.</p>
 <h2 id="examples-16"><a class="header" href="#examples-16">Examples</a></h2>
 <h3 id="inspecting-vertices"><a class="header" href="#inspecting-vertices">Inspecting Vertices</a></h3>
@@ -3679,11 +3762,11 @@ Mutate step diagram showing elements being modified in-place and the step return
 <li><strong>Mutated Elements (In Graph)</strong>: The diagram shows the state of the elements <em>after</em> the mutation callback has been applied (e.g., <strong>A'</strong> with <code>val=10</code>). This highlights the in-place nature of the operation.</li>
 <li><strong>Returns: usize</strong>: The step completes and returns the count of elements processed (3 in this case), terminating the walker chain.</li>
 </ul>
-<h2 id="syntax-18"><a class="header" href="#syntax-18">Syntax</a></h2>
+<h2 id="syntax-19"><a class="header" href="#syntax-19">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.mutate(|element, context, graph| {
     // mutation logic using graph access
 })</code></pre>
-<h2 id="parameters-19"><a class="header" href="#parameters-19">Parameters</a></h2>
+<h2 id="parameters-20"><a class="header" href="#parameters-20">Parameters</a></h2>
 <ul>
 <li><code>callback</code>: A function that takes:
 <ul>
@@ -3694,7 +3777,7 @@ Mutate step diagram showing elements being modified in-place and the step return
 </ul>
 </li>
 </ul>
-<h2 id="return-value-19"><a class="header" href="#return-value-19">Return Value</a></h2>
+<h2 id="return-value-20"><a class="header" href="#return-value-20">Return Value</a></h2>
 <p>Returns a <code>usize</code> representing the number of elements processed by the <code>mutate</code> step.</p>
 <h2 id="example-5"><a class="header" href="#example-5">Example</a></h2>
 <pre><code class="language-rust noplayground">    // Example 1: Update all person vertices to increment their age
@@ -3753,13 +3836,13 @@ Debug step diagram showing elements flowing through, console output, and unchang
 <li><strong>Console Output</strong>: As each element (A, B, C) passes through the <code>dbg</code> step, its details are printed to the console, prefixed with the provided label. This is shown as a side effect.</li>
 <li><strong>Output Elements (Unchanged)</strong>: The elements <strong>A, B, C</strong> continue to the next step in the traversal, completely unaffected by the <code>dbg</code> operation.</li>
 </ul>
-<h2 id="syntax-19"><a class="header" href="#syntax-19">Syntax</a></h2>
+<h2 id="syntax-20"><a class="header" href="#syntax-20">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.dbg("Custom label")</code></pre>
-<h2 id="parameters-20"><a class="header" href="#parameters-20">Parameters</a></h2>
+<h2 id="parameters-21"><a class="header" href="#parameters-21">Parameters</a></h2>
 <ul>
 <li><code>label</code>: An optional string label to identify the debug output.</li>
 </ul>
-<h2 id="return-value-20"><a class="header" href="#return-value-20">Return Value</a></h2>
+<h2 id="return-value-21"><a class="header" href="#return-value-21">Return Value</a></h2>
 <p>Returns the same traversal unchanged, allowing you to continue chaining steps.</p>
 <h2 id="example-6"><a class="header" href="#example-6">Example</a></h2>
 <pre><code class="language-rust noplayground">pub fn dbg_example() {

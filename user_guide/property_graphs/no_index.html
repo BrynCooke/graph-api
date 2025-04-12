@@ -217,19 +217,7 @@ pub enum Edge {
     Commented { timestamp: String },
 }</code></pre>
 <h2 id="scanning-the-entire-graph"><a class="header" href="#scanning-the-entire-graph">Scanning the Entire Graph</a></h2>
-<p>Without indexes, the only way to find vertices matching specific criteria is to scan the entire graph:</p>
-<pre><code class="language-rust noplayground">// Function explaining non-indexed fields
-pub fn non_indexed_fields() {
-    // In the standard model, several fields are intentionally left without indexes:
-    //
-    // 1. Person::name - Non-indexed field requiring full scan for searches
-    // 2. Person::unique_id - UUID field that doesn't need indexing for typical usage
-    // 3. Project::name - Non-indexed field in the Project variant
-    // 4. All fields in Comment variant - None are indexed
-    //
-    // Non-indexed fields can still be searched, but require a full graph scan
-    // which is less efficient than using indexed lookups
-}</code></pre>
+<p>Without indexes, the only way to find vertices matching specific criteria is to scan the entire graph.</p>
 <h3 id="finding-by-name-without-index"><a class="header" href="#finding-by-name-without-index">Finding by Name (Without Index)</a></h3>
 <p>When a field isn't indexed (like <code>name</code> in the <code>Person</code> vertex), we have to scan all vertices to find matches:</p>
 <pre><code class="language-rust noplayground">    // INEFFICIENT: Find all people named "Bryn" by scanning

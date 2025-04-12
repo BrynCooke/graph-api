@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>detour - graph-api</title>
+        <title>mutate_context - graph-api</title>
 
 
         <!-- Custom HTML head -->
@@ -156,141 +156,44 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="detour-step"><a class="header" href="#detour-step">Detour Step</a></h1>
-<p>The <code>detour</code> step is a powerful operation that allows you to execute a sub-traversal for <em>each</em> element currently in the
-main walker stream. The results yielded by each sub-traversal <em>do not replace</em> the original element in the main stream.
-This enables complex conditional logic and exploration without losing the main traversal context.</p>
-<object type="image/svg+xml" data="detour/image.svg" title="Detour Step Diagram">
-Detour step diagram showing input elements triggering sub-walkers, whose results form the output stream
+                        <h1 id="mutate-context"><a class="header" href="#mutate-context">Mutate Context</a></h1>
+<p>The <code>mutate_context</code> step allows you to modify context data during a graph traversal without affecting the traversal position. This provides a way to update state or accumulate information as you move through the graph.</p>
+<object type="image/svg+xml" data="mutate_context/image.svg" title="Mutate Context Step Diagram">
+Mutate context step diagram showing context being modified while elements remain unchanged
 </object>
 <p>In this diagram:</p>
 <ul>
-<li><strong>Input Elements</strong>: The main walker stream arrives at the <code>detour</code> step with elements <strong>A</strong> and <strong>X</strong>.</li>
-<li><strong><code>.detour(|sub| ...)</code></strong>: For each input element, a sub-walker is initiated:
-<ul>
-<li><strong>Sub-Walker (from A)</strong>: Starts at A, executes the steps defined in the closure (e.g., <code>edges().head()</code>), and
-yields results <strong>B</strong> and <strong>C</strong>.</li>
-<li><strong>Sub-Walker (from X)</strong>: Starts at X, executes the same steps, and yields result <strong>Y</strong>.</li>
-</ul>
-</li>
-<li><strong>Output Elements (Results)</strong>: The main walker stream continues, now containing the <em>combined results</em> from all
-sub-walkers (<strong>A, A, X</strong>). The original elements (A, X) have been replaced.</li>
+<li>An <strong>Input Stream</strong> contains elements <strong>A</strong> and <strong>B</strong>, each associated with a context value.</li>
+<li>The <strong><code>.mutate_context(|e, ctx| { /* modify ctx */ })</code></strong> step is applied, allowing in-place modification of the context associated with each element.</li>
+<li>The resulting <strong>Output Stream</strong> shows the same elements (<strong>A</strong> and <strong>B</strong>) but with modified context values.</li>
+<li>This demonstrates that <code>mutate_context</code> affects only the context data, not the traversal elements or position.</li>
 </ul>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
-<pre><code class="language-rust noplayground">walker.detour(|sub_walker_builder| {
-    // Configure the sub-walker with additional steps
-    sub_walker_builder
-        .edges(...) // Example step
-        .head()     // Example step
-        // ... more steps ...
+<pre><code class="language-rust noplayground">walker.mutate_context(|element, context| {
+    // Modify context in-place via mutable reference
 })</code></pre>
 <h2 id="parameters"><a class="header" href="#parameters">Parameters</a></h2>
 <ul>
-<li><code>detour_fn</code>: A closure that receives a <code>StartWalkerBuilder</code> positioned at the current element from the main stream.
-This closure defines the steps for the sub-traversal.</li>
+<li><code>callback</code>: A function that takes:
+<ul>
+<li>A reference to the current element (vertex or edge)</li>
+<li>A mutable reference to the current context</li>
+<li>Performs in-place modifications to the context</li>
+</ul>
+</li>
 </ul>
 <h2 id="return-value"><a class="header" href="#return-value">Return Value</a></h2>
-<p>Returns a new walker where the elements are the combined results of all the sub-traversals executed within the <code>detour</code>.</p>
-<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
-<h3 id="basic-detour"><a class="header" href="#basic-detour">Basic Detour</a></h3>
-<p>This example shows how to use a detour to find projects created by people who follow someone over 30:</p>
-<pre><code class="language-rust noplayground">    // Basic detour example: Find projects created by people who follow someone over 30
-    println!("Projects created by people who follow someone over 30:");
-
-    let projects = graph
-        .walk()
-        .vertices(Vertex::person()) // Start with all people
-        .detour(|sub_walker| {
-            // The detour checks if this person follows someone over 30
-            sub_walker
-                .edges(Edge::follows()) // Follow "follows" edges
-                .head() // Move to the target person
-                .filter_by_person(|person, _| person.age() &gt; 30) // Check if they're over 30
-                .take(1) // We only need one match to qualify
-        })
-        // Back to original person vertices that passed the detour check
-        .edges(Edge::created()) // Find what they created
-        .head() // Move to the created project
-        .filter_project() // Keep only project vertices
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    for project in projects {
-        println!("{:?}", project);
-    }</code></pre>
-<h3 id="nested-detours"><a class="header" href="#nested-detours">Nested Detours</a></h3>
-<p>This example demonstrates using nested detours for more complex traversal logic:</p>
-<pre><code class="language-rust noplayground">    // Complex detour example: Find people who created projects that were liked by others
-    println!("\nPeople who created projects that were liked by others:");
-
-    let creators = graph
-        .walk()
-        .vertices(Vertex::person()) // Start with all people
-        .push_default_context()
-        .detour(|creator_walker| {
-            // Detour to check if this person created something that was liked
-            creator_walker
-                .edges(Edge::created()) // Find what they created
-                .head() // Move to the created project
-                .detour(|project_walker| {
-                    // Nested detour to check if the project was liked
-                    project_walker
-                        .edges(Edge::liked()) // Find "liked" edges pointing to this project
-                        .tail() // Move to the person who liked it
-                        .filter(|liker, ctx| {
-                            // Check that the liker is different from the creator
-                            *ctx.vertex_id() != liker.id()
-                        })
-                })
-        })
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    for creator in creators {
-        println!("{:?} created something that was liked", creator);
-    }</code></pre>
-<h2 id="when-to-use-detour"><a class="header" href="#when-to-use-detour">When to use <code>detour</code></a></h2>
-<p>Detour shines in several common graph traversal scenarios:</p>
-<ul>
-<li>
-<p><strong>Conditional filtering based on connected elements</strong>:<br />
-For example, "Find people who follow someone over 30" requires exploring connections before making filtering decisions</p>
-</li>
-<li>
-<p><strong>Looking ahead without changing position</strong>:<br />
-When you need to check properties of elements further in the graph before deciding how to proceed</p>
-</li>
-<li>
-<p><strong>Complex multi-step conditions</strong>:<br />
-When a condition requires checking multiple properties or relationships that would be awkward with chained filters</p>
-</li>
-<li>
-<p><strong>Collecting contextual information</strong>:<br />
-When you need to gather information from related elements to inform decisions in the main traversal</p>
-</li>
-<li>
-<p><strong>Avoiding traversal state mutation</strong>:<br />
-When you want to explore potential paths without permanently changing your traversal state</p>
-</li>
-</ul>
-<h2 id="implementation-notes"><a class="header" href="#implementation-notes">Implementation Notes</a></h2>
-<ul>
-<li>The detour closure receives a fresh walker starting at the current position</li>
-<li>All walker operations inside the detour are executed in a sub-traversal context</li>
-<li>Results from the detour replace the current elements in the traversal</li>
-<li>The main traversal continues from where it left off, but with the filtered/transformed elements</li>
-<li>For better performance, try to use indexed lookups within detours whenever possible</li>
-<li>Detours can be nested for extremely complex traversal logic</li>
-<li>Using detours improves code readability by logically grouping related traversal operations</li>
-</ul>
+<p>Returns a new walker with the same position but modified context data.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../../user_guide/walker/steps/mutate_context.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../../user_guide/walker/steps/default_context.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../../user_guide/walker/steps/collect.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../../user_guide/walker/steps/detour.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -300,11 +203,11 @@ When you want to explore potential paths without permanently changing your trave
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../../user_guide/walker/steps/mutate_context.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../../user_guide/walker/steps/default_context.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../../user_guide/walker/steps/collect.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../../user_guide/walker/steps/detour.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

@@ -103,11 +103,11 @@
         <g id="property-texts">
             <!-- Coordinates are relative to graph group origin (150, 100) -->
             <!-- Original node centers + y offset -->
-            <text class="property-text" x="100" y="75">{name: "Alice"}</text>  <!-- Node A: 100, 50+25 -->
-            <text class="property-text" x="300" y="75">{name: "Bob"}</text>    <!-- Node B: 300, 50+25 -->
-            <text class="property-text" x="50" y="205">{name: "Alice"}</text>  <!-- Node C: 50, 180+25 -->
-            <text class="property-text" x="250" y="205">{name: "Charlie"}</text><!-- Node D: 250, 180+25 -->
-            <text class="property-text" x="400" y="205">{name: "Bob"}</text>    <!-- Node E: 400, 180+25 -->
+            <text class="property-text" x="100" y="77">{name: "Alice"}</text>  <!-- Node A: 100, 50+25 -->
+            <text class="property-text" x="300" y="77">{name: "Bob"}</text>    <!-- Node B: 300, 50+25 -->
+            <text class="property-text" x="50" y="207">{name: "Alice"}</text>  <!-- Node C: 50, 180+25 -->
+            <text class="property-text" x="250" y="207">{name: "Charlie"}</text><!-- Node D: 250, 180+25 -->
+            <text class="property-text" x="400" y="207">{name: "Bob"}</text>    <!-- Node E: 400, 180+25 -->
         </g>
 
     </g> <!-- End of graph group -->

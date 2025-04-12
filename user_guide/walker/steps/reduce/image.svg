@@ -99,7 +99,7 @@
                         <circle r="15"></circle>
                         <text class="node-label">A</text>
                     </g>
-                    <text class="property-text" y="20" text-anchor="middle">Kept (30 > 25)</text>
+                    <text class="property-text" y="22" text-anchor="middle">Kept (30 > 25)</text>
                 </g>
             </g>
 
@@ -135,7 +135,7 @@
                         <circle r="15"></circle>
                         <text class="node-label">C</text>
                     </g>
-                    <text class="property-text" y="20" text-anchor="middle">Kept (40 > 30)</text>
+                    <text class="property-text" y="22" text-anchor="middle">Kept (40 > 30)</text>
                 </g>
             </g>
 

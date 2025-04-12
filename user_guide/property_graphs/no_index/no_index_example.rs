@@ -2,20 +2,6 @@ use crate::standard_model::{Vertex, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference, VertexSearch};
 
 // ANCHOR: all
-// ANCHOR: non_indexed_fields
-// Function explaining non-indexed fields
-pub fn non_indexed_fields() {
-    // In the standard model, several fields are intentionally left without indexes:
-    //
-    // 1. Person::name - Non-indexed field requiring full scan for searches
-    // 2. Person::unique_id - UUID field that doesn't need indexing for typical usage
-    // 3. Project::name - Non-indexed field in the Project variant
-    // 4. All fields in Comment variant - None are indexed
-    //
-    // Non-indexed fields can still be searched, but require a full graph scan
-    // which is less efficient than using indexed lookups
-}
-// ANCHOR_END: non_indexed_fields
 
 // Example showing how to scan the entire graph without indexes
 pub fn scan_example() {
