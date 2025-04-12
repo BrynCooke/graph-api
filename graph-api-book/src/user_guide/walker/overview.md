@@ -79,19 +79,19 @@ Walkers provide several ways to control the traversal flow:
 ### Basic Traversal
 
 ```rust,noplayground
-#![function_body!("basic_traversal_example.rs", basic_walker_example)]
+{{#include basic_traversal_example.rs:basic_walker_example}}
 ```
 
 ### Multi-Step Traversal
 
 ```rust,noplayground
-#![function_body!("multi_step_example.rs", multi_step_example)]
+{{#include multi_step_example.rs:multi_step_example}}
 ```
 
 ### Traversal with Detour
 
 ```rust,noplayground
-#![function_body!("detour_example.rs", detour_traversal_example)]
+{{#include detour_example.rs:detour_traversal_example}}
 ```
 
 ## Next Steps
