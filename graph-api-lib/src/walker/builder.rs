@@ -49,7 +49,7 @@ impl<'graph, Mutability, Graph, Walker> WalkerBuilder<'graph, Mutability, Graph,
 where
     Walker: crate::walker::Walker<'graph>,
 {
-    pub(crate) fn walker(&mut self) -> &mut Walker {
+    pub fn walker(&mut self) -> &mut Walker {
         &mut self.walker
     }
 }
@@ -125,7 +125,33 @@ where
     Graph: crate::graph::Graph,
     Walker: VertexWalker<'graph, Graph = Graph>,
 {
-    // All step methods were moved to respective step files
+    pub fn with_edge_walker<
+        EdgeWalker: crate::walker::EdgeWalker<'graph>,
+        WithFn: Fn(Walker) -> EdgeWalker,
+    >(
+        self,
+        step: WithFn,
+    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeWalker> {
+        EdgeWalkerBuilder {
+            _phantom: Default::default(),
+            walker: step(self.walker),
+            graph: self.graph,
+        }
+    }
+
+    pub fn with_vertex_walker<
+        VertexWalker: crate::walker::VertexWalker<'graph, Graph = Graph>,
+        WithFn: Fn(Walker) -> VertexWalker,
+    >(
+        self,
+        step: WithFn,
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexWalker> {
+        VertexWalkerBuilder {
+            _phantom: Default::default(),
+            walker: step(self.walker),
+            graph: self.graph,
+        }
+    }
 }
 
 pub struct EdgeWalkerBuilder<'graph, Mutability, Graph, Walker>
@@ -143,7 +169,33 @@ where
     Walker: EdgeWalker<'graph, Graph = Graph>,
     <Walker as crate::walker::Walker<'graph>>::Context: Clone + 'static,
 {
-    // All step methods were moved to respective step files
+    pub fn with_edge_walker<
+        EdgeWalker: crate::walker::EdgeWalker<'graph>,
+        WithFn: Fn(Walker) -> EdgeWalker,
+    >(
+        self,
+        step: WithFn,
+    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, EdgeWalker> {
+        EdgeWalkerBuilder {
+            _phantom: Default::default(),
+            walker: step(self.walker),
+            graph: self.graph,
+        }
+    }
+
+    pub fn with_vertex_walker<
+        VertexWalker: crate::walker::VertexWalker<'graph, Graph = Graph>,
+        WithFn: Fn(Walker) -> VertexWalker,
+    >(
+        self,
+        step: WithFn,
+    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, VertexWalker> {
+        VertexWalkerBuilder {
+            _phantom: Default::default(),
+            walker: step(self.walker),
+            graph: self.graph,
+        }
+    }
 }
 
 pub(crate) fn new_start<Graph>(graph: &Graph) -> StartWalkerBuilder<'_, ImmutableMarker, Graph, ()>
