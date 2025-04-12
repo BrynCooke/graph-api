@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="/theme/custom.css"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 150">
     <title>Edge with Properties</title>
     <desc>Two vertices connected by an edge which has its own properties.</desc>
     <defs>
@@ -9,21 +9,23 @@
             <path d="M0,0 L8,3 L0,6 Z"/>
         </marker>
     </defs>
-    <!-- Vertices -->
-    <g class="node" id="node-bryn" transform="translate(100, 100)">
-        <circle r="30"></circle>
-        <text class="node-label">Person</text>
-        <text class="property-text" y="25">name: Bryn</text>
-    </g>
-    <g class="node" id="node-julia" transform="translate(300, 100)">
-        <circle r="30"></circle>
-        <text class="node-label">Person</text>
-        <text class="property-text" y="25">name: Julia</text>
-    </g>
-    <!-- Edge -->
-    <g class="edge directed" id="edge-bryn-julia">
-        <line x1="130" y1="100" x2="270" y2="100" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="200" y="90">Follows</text>
-        <text class="property-text" x="200" y="115">since: 2023</text> <!-- Edge Property -->
+    <g transform="translate(100, -25)">
+        <!-- Vertices -->
+        <g class="node" id="node-bryn" transform="translate(100, 100)">
+            <circle r="25"></circle>
+            <text class="node-label">Person</text>
+            <text class="property-text" y="35">name: Bryn</text>
+        </g>
+        <g class="node" id="node-julia" transform="translate(300, 100)">
+            <circle r="25"></circle>
+            <text class="node-label">Person</text>
+            <text class="property-text" y="35">name: Julia</text>
+        </g>
+        <!-- Edge -->
+        <g class="edge directed" id="edge-bryn-julia">
+            <line x1="130" y1="100" x2="270" y2="100" marker-end="url(#arrowhead)"/>
+            <text class="edge-label" x="200" y="90">Follows</text>
+            <text class="property-text" x="200" y="115">since: 2023</text> <!-- Edge Property -->
+        </g>
     </g>
 </svg>
