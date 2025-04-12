@@ -8,13 +8,14 @@ suitability for different applications.
 
 The Graph API project provides two main graph implementations:
 
-1. **[SimpleGraph](./implementations/simple_graph.md)**: A reference graph implementation designed specifically for
-   the Graph API, with full support for all index types.
+1. **[SimpleGraph](./implementations/simple_graph.md)**: A reference implementation built specifically for the Graph
+   API. It fully supports all Graph API features, including all index types, making it ideal for testing Graph API
+   functionality and serving as a blueprint for new implementations.
 
-2. **[PetGraph](./implementations/pet_graph.md)**: An adapter implementation for the
-   popular [petgraph](https://crates.io/crates/petgraph) crate, demonstrating Graph API compatibility with an
-   established
-   Rust graph library.
+2. **[PetGraph](./implementations/pet_graph.md)**: An adapter for the excellent and widely-used
+   [petgraph](https://crates.io/crates/petgraph) crate. This demonstrates Graph API compatibility with established
+   Rust graph libraries and is a great choice for performance-sensitive applications or projects already using
+   petgraph.
 
 ## Choosing an Implementation
 
@@ -40,18 +41,20 @@ Different implementations support different features:
 
 Performance varies between implementations:
 
-- **SimpleGraph**: Supports all of GraphApi's features, but has not been optimized
-- **PetGraph**: Established graph library that is widely used
+- **SimpleGraph**: Primarily designed for feature completeness and testing; not optimized for high performance.
+- **PetGraph**: A mature, well-optimized, and widely-used graph library suitable for production use.
 
 ### Memory Usage
 
-- **SimpleGraph**: Supports all of GraphApi's features, but has not been optimized
-- **PetGraph**: Uses petgraph's memory model, which may be more memory-efficient
+- **SimpleGraph**: Memory usage is straightforward but not heavily optimized.
+- **PetGraph**: Leverages petgraph's memory model, which is generally efficient.
 
 ### Integration
 
-- **SimpleGraph**: Designed specifically for Graph API and fully supports all features
-- **PetGraph**: Useful when you need to integrate with existing petgraph-based code
+- **SimpleGraph**: Best for demonstrating and testing Graph API features or as a starting point for custom
+  implementations.
+- **PetGraph**: Ideal for integrating Graph API capabilities into projects already using petgraph or when requiring
+  petgraph's performance characteristics.
 
 ## Creating Your Own Implementation
 
