@@ -73,14 +73,16 @@
     <g class="edge directed" id="edge-bryn-alpaca-liked">
         <!-- Slightly adjusted curve -->
         <path d="M 175 115 Q 312.5 172.5 425 215" fill="none" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="300" y="175">Liked</text>
+        <text class="edge-label" x="300" y="170">Liked</text> <!-- Adjusted Y slightly -->
+        <text class="property-text halo" x="300" y="185">timestamp: 123</text> <!-- Added timestamp -->
     </g>
 
     <!-- CommentedOn Edge -->
     <g class="edge directed" id="edge-bryn-comment1-commentedon">
         <!-- Path from Bryn to Comment -->
         <path d="M 150 125 Q 100 242.5 150 335" fill="none" marker-end="url(#arrowhead)"/>
-        <text class="edge-label" x="100" y="230">CommentedOn</text>
+        <text class="edge-label" x="100" y="225">CommentedOn</text> <!-- Adjusted Y slightly -->
+        <text class="property-text halo" x="100" y="240">timestamp: 456</text> <!-- Added timestamp -->
     </g>
 
     <!-- Removed Contributes Edges -->
