@@ -1,3 +1,5 @@
+<img src="./mascot.png" width="300" height="200" style="display: block; padding: 1em; margin: 0 auto" alt="GraphApi mascot">
+
 # Introduction to Graph API
 
 Graph API is an ergonomic library for working with **in memory** graphs in Rust that provides a flexible and type-safe
