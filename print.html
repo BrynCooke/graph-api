@@ -5742,6 +5742,7 @@ cargo bench
 cargo bench -- vertex_insertion
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h1>
+<p>Check out the <a href="https://docs.rs/graph-api-lib/0.1.0/graph_api_lib/">docs on docs.rs</a>,</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="support-traits"><a class="header" href="#support-traits">Support Traits</a></h1>
 <p>The Graph API uses a trait-based approach to indicate which optional features a graph implementation supports. This
 allows for a more flexible and extensible API, where new capabilities can be added over time without breaking existing
@@ -6233,14 +6234,15 @@ suitability for different applications.</p>
 <p>The Graph API project provides two main graph implementations:</p>
 <ol>
 <li>
-<p><strong><a href="reference/./implementations/simple_graph.html">SimpleGraph</a></strong>: A reference graph implementation designed specifically for
-the Graph API, with full support for all index types.</p>
+<p><strong><a href="reference/./implementations/simple_graph.html">SimpleGraph</a></strong>: A reference implementation built specifically for the Graph
+API. It fully supports all Graph API features, including all index types, making it ideal for testing Graph API
+functionality and serving as a blueprint for new implementations.</p>
 </li>
 <li>
-<p><strong><a href="reference/./implementations/pet_graph.html">PetGraph</a></strong>: An adapter implementation for the
-popular <a href="https://crates.io/crates/petgraph">petgraph</a> crate, demonstrating Graph API compatibility with an
-established
-Rust graph library.</p>
+<p><strong><a href="reference/./implementations/pet_graph.html">PetGraph</a></strong>: An adapter for the excellent and widely-used
+<a href="https://crates.io/crates/petgraph">petgraph</a> crate. This demonstrates Graph API compatibility with established
+Rust graph libraries and is a great choice for performance-sensitive applications or projects already using
+petgraph.</p>
 </li>
 </ol>
 <h2 id="choosing-an-implementation"><a class="header" href="#choosing-an-implementation">Choosing an Implementation</a></h2>
@@ -6262,18 +6264,20 @@ Rust graph library.</p>
 <h3 id="performance-characteristics"><a class="header" href="#performance-characteristics">Performance Characteristics</a></h3>
 <p>Performance varies between implementations:</p>
 <ul>
-<li><strong>SimpleGraph</strong>: Supports all of GraphApi's features, but has not been optimized</li>
-<li><strong>PetGraph</strong>: Established graph library that is widely used</li>
+<li><strong>SimpleGraph</strong>: Primarily designed for feature completeness and testing; not optimized for high performance.</li>
+<li><strong>PetGraph</strong>: A mature, well-optimized, and widely-used graph library suitable for production use.</li>
 </ul>
 <h3 id="memory-usage"><a class="header" href="#memory-usage">Memory Usage</a></h3>
 <ul>
-<li><strong>SimpleGraph</strong>: Supports all of GraphApi's features, but has not been optimized</li>
-<li><strong>PetGraph</strong>: Uses petgraph's memory model, which may be more memory-efficient</li>
+<li><strong>SimpleGraph</strong>: Memory usage is straightforward but not heavily optimized.</li>
+<li><strong>PetGraph</strong>: Leverages petgraph's memory model, which is generally efficient.</li>
 </ul>
 <h3 id="integration"><a class="header" href="#integration">Integration</a></h3>
 <ul>
-<li><strong>SimpleGraph</strong>: Designed specifically for Graph API and fully supports all features</li>
-<li><strong>PetGraph</strong>: Useful when you need to integrate with existing petgraph-based code</li>
+<li><strong>SimpleGraph</strong>: Best for demonstrating and testing Graph API features or as a starting point for custom
+implementations.</li>
+<li><strong>PetGraph</strong>: Ideal for integrating Graph API capabilities into projects already using petgraph or when requiring
+petgraph's performance characteristics.</li>
 </ul>
 <h2 id="creating-your-own-implementation"><a class="header" href="#creating-your-own-implementation">Creating Your Own Implementation</a></h2>
 <p>If the existing implementations don't meet your needs, you can create your own by implementing the <code>Graph</code> trait. See
