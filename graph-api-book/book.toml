@@ -8,3 +8,5 @@ title = "graph-api"
 [output.html]
 additional-css = ["theme/custom.css"]
 
+[preprocessor.variables.variables]
+version = "0.1.0"

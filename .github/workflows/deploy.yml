@@ -22,6 +22,9 @@ jobs:
         with:
           mdbook-version: 'latest'
 
+      - name: Add mdBook variables
+        run: cargo install mdbook-variables
+
       - name: Build mdBook
         run: mdbook build graph-api-book
 
@@ -46,7 +49,7 @@ jobs:
             sed -i "s|href=\"/theme/custom.css\"|href=\"${relative_css_path}\"|g" "$file"
             echo "Updated stylesheet path in $file to $relative_css_path"
           ' bash {} \;
-      
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}

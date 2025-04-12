@@ -30,15 +30,15 @@ Add the Graph API to your project dependencies:
 
 ```toml
 [dependencies]
-graph-api-lib = "0.1.0"
-graph-api-derive = "0.1.0"  # For derive macros
+graph-api-lib = "{{version}}"
+graph-api-derive = "{{version}}"  # For derive macros
 ```
 
 For a simple graph implementation:
 
 ```toml
 [dependencies]
-graph-api-simplegraph = "0.1.0"
+graph-api-simplegraph = "{{version}}"
 ```
 
 ## Examples
