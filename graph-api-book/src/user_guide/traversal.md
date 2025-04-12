@@ -86,6 +86,7 @@ See the [Walker Steps](./walker/steps.md) section for detailed documentation on 
 ### Traversal Position Steps
 
 - [vertices](./walker/steps/vertices.md) - Start traversal from vertices
+- [vertices_by_id](./walker/steps/vertices_by_id.md) - Start traversal from vertices by their IDs
 - [edges](./walker/steps/edges.md) - Move to edges
 - [head](./walker/steps/head.md) - Move to source vertices of edges
 - [tail](./walker/steps/tail.md) - Move to target vertices of edges
@@ -100,19 +101,30 @@ See the [Walker Steps](./walker/steps.md) section for detailed documentation on 
 
 - [context](./walker/steps/context.md) - Store data in context
 - [default_context](./walker/steps/default_context.md) - Set default context
+- [mutate_context](./walker/steps/mutate_context.md) - Modify context during traversal
 
-### Collection Steps
+### Collection and Transformation Steps
 
 - [collect](./walker/steps/collect.md) - Collect elements into a collection
 - [count](./walker/steps/count.md) - Count elements
 - [into_iter](./walker/steps/into_iter.md) - Iterate over elements
-
-### Advanced Steps
-
-- [detour](./walker/steps/detour.md) - Create sub-traversals
-- [mutate](./walker/steps/mutate.md) - Modify the graph during traversal
-- [probe](./walker/steps/probe.md) - Debug traversal state
 - [map](./walker/steps/map.md) - Transform elements during traversal
+- [reduce](./walker/steps/reduce.md) - Reduce elements to a single value
+- [fold](./walker/steps/fold.md) - Fold elements with a provided function
+
+### Flow Control Steps
+
+- [control_flow](./walker/steps/control_flow.md) - Control traversal flow
+- [detour](./walker/steps/detour.md) - Create sub-traversals
+
+### Modification Steps
+
+- [mutate](./walker/steps/mutate.md) - Modify the graph during traversal
+
+### Debugging Steps
+
+- [probe](./walker/steps/probe.md) - Debug traversal state
+- [dbg](./walker/steps/dbg.md) - Print debug information during traversal
 
 ## Advanced Usage
 
