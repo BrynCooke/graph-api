@@ -1,6 +1,6 @@
 # Existing Implementations
 
-The Graph API ecosystem includes several ready-to-use graph implementations that cater to different use cases and
+The Graph API ecosystem includes two ready-to-use graph implementations that cater to different use cases and
 performance requirements. This section provides an overview of the existing implementations, their features, and
 suitability for different applications.
 
@@ -8,11 +8,12 @@ suitability for different applications.
 
 The Graph API project provides two main graph implementations:
 
-1. **[SimpleGraph](./implementations/simple_graph.md)**: A custom-built graph implementation designed specifically for
-   the Graph API, with full support for all index types and optimized for property graph use cases.
+1. **[SimpleGraph](./implementations/simple_graph.md)**: A reference graph implementation designed specifically for
+   the Graph API, with full support for all index types.
 
 2. **[PetGraph](./implementations/pet_graph.md)**: An adapter implementation for the
-   popular [petgraph](https://crates.io/crates/petgraph) crate, providing Graph API compatibility with an established
+   popular [petgraph](https://crates.io/crates/petgraph) crate, demonstrating Graph API compatibility with an
+   established
    Rust graph library.
 
 ## Choosing an Implementation
@@ -39,13 +40,13 @@ Different implementations support different features:
 
 Performance varies between implementations:
 
-- **SimpleGraph**: Optimized for property graph operations with fast index lookups
-- **PetGraph**: Leverages petgraph's established graph algorithms but lacks index support
+- **SimpleGraph**: Supports all of GraphApi's features, but has not been optimized
+- **PetGraph**: Established graph library that is widely used
 
 ### Memory Usage
 
-- **SimpleGraph**: Uses a specialized data structure with efficient memory layout
-- **PetGraph**: Uses petgraph's memory model, which may be more memory-efficient for specific use cases
+- **SimpleGraph**: Supports all of GraphApi's features, but has not been optimized
+- **PetGraph**: Uses petgraph's memory model, which may be more memory-efficient
 
 ### Integration
 
@@ -59,11 +60,6 @@ the [Implementation Guide](../implementation/guide) for detailed instructions on
 
 ## Future Implementations
 
-The Graph API is designed to support a variety of graph implementations. Future versions may include additional
-implementations for:
-
-- **Disk-backed graphs**: For handling graphs larger than memory
-- **Distributed graphs**: For processing very large graphs across multiple machines
-- **Specialized graphs**: For domain-specific optimization (e.g., social networks, knowledge graphs)
+The Graph API is designed to support a variety of graph implementations.
 
 Community contributions of new graph implementations are welcomed and encouraged!
