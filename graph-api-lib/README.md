@@ -1,10 +1,16 @@
 # Graph-API-Lib
 
-**Welcome to graph-api-lib** — a delightful and powerful general-purpose library for working with graph data structures in Rust!
+**Welcome to graph-api-lib** — a delightful and powerful general-purpose library for working with graph data structures
+in Rust!
 
-**graph-api-lib** provides a standardized API for graph mutation and traversal, abstracting away the complexity of working with different graph implementations. It allows you to write clean, maintainable graph-related code that isn't tied to a specific backend.
+**graph-api-lib** provides a standardized API for graph mutation and traversal, abstracting away the complexity of
+working with different graph implementations. It allows you to write clean, maintainable graph-related code that isn't
+tied to a specific backend.
 
-With **graph-api-lib**, graph operations become intuitive and enjoyable. Add vertices, create edges, traverse your data, and analyze graph structures with a consistent, ergonomic interface.
+With **graph-api-lib**, graph operations become intuitive and enjoyable. Add vertices, create edges, traverse your data,
+and analyze graph structures with a consistent, ergonomic interface.
+
+Dive into the [graph-api book](https://bryncooke.github.io/graph-api/) for a comprehensive guide to using this library.
 
 ## Key Features
 
@@ -19,16 +25,15 @@ With **graph-api-lib**, graph operations become intuitive and enjoyable. Add ver
 ```rust
 // Find all people who created projects written in Rust:
 let rust_creators = graph
-    .walk()
-    .vertices(VertexIndex::person())
-    .edges(EdgeIndex::created().direction(Direction::Outgoing))
-    .tail()
-    .edges(EdgeIndex::language().direction(Direction::Outgoing))
-    .tail()
-    .filter_rust()
-    .head()
-    .head()
-    .collect::<Vec<_>>();
+.walk()
+.vertices(Vertex::person())
+.edges(Edge::created().direction(Direction::Outgoing))
+.tail()
+.edges(Edge::language().direction(Direction::Outgoing))
+.tail()
+.filter_rust()
+.head()
+.collect::<Vec<_ > > ();
 ```
 
 ## Future Development
@@ -44,5 +49,3 @@ let rust_creators = graph
 - Knowledge graphs
 - Recommendation systems
 - Any application dealing with connected data!
-
-Dive into the [graph-api book](https://bryncooke.github.io/graph-api/) for a comprehensive guide to using this library.
