@@ -7,6 +7,8 @@ title = "graph-api"
 
 [output.html]
 additional-css = ["theme/custom.css"]
+git-repository-url = "https://github.com/BrynCooke/graph-api"
+git-repository-icon = "fa-github"
 
 [preprocessor.variables.variables]
 version = "0.1.0"
