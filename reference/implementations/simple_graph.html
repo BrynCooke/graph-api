@@ -198,12 +198,12 @@ pub enum Edge {
 let mut graph = SimpleGraph::new();
 
 // Use the graph
-let alice = graph.add_vertex(Vertex::Person { 
-    name: "Alice".to_string(), 
-    age: 30 
+let alice = graph.add_vertex(Vertex::Person {
+name: "Alice".to_string(),
+age: 30
 });
-let project = graph.add_vertex(Vertex::Project { 
-    name: "Graph API".to_string() 
+let project = graph.add_vertex(Vertex::Project {
+name: "Graph API".to_string()
 });
 graph.add_edge(alice, project, Edge::Created);
 <span class="boring">}</span></code></pre></pre>
@@ -247,11 +247,12 @@ label-based filtering.</p>
 <p><code>SimpleGraph</code> is primarily designed for feature completeness and ease of understanding, not for high performance:</p>
 <ol>
 <li><strong>Correctness over Speed</strong>: Implementation prioritizes demonstrating API features correctly.</li>
-<li><strong>Basic Optimizations</strong>: Includes fundamental optimizations like adjacency lists but lacks advanced performance tuning.</li>
-<li><strong>Not Production-Ready</strong>: Generally not recommended for performance-critical production environments.</li>
+<li><strong>Basic Optimizations</strong>: Includes fundamental optimizations like adjacency lists but lacks advanced performance
+tuning.</li>
 </ol>
 <h3 id="benchmarks"><a class="header" href="#benchmarks">Benchmarks</a></h3>
-<p>Benchmarks exist primarily to validate the <em>functionality</em> of the API features rather than to showcase raw speed. Expect:</p>
+<p>Benchmarks exist primarily to validate the <em>functionality</em> of the API features rather than to showcase raw speed.
+Expect:</p>
 <ul>
 <li>Functional insertion and removal.</li>
 <li>Correct index lookups (hash, range, full-text) but potentially slower than highly optimized alternatives.</li>
@@ -336,20 +337,20 @@ pub enum Edge {
 let mut graph = SimpleGraph::new();
 
 // Add vertices
-let alice = graph.add_vertex(Vertex::Person { 
-    name: "Alice".to_string(), 
-    age: 30,
-    bio: "Graph enthusiast".to_string(),
+let alice = graph.add_vertex(Vertex::Person {
+name: "Alice".to_string(),
+age: 30,
+bio: "Graph enthusiast".to_string(),
 });
 
-let bob = graph.add_vertex(Vertex::Person { 
-    name: "Bob".to_string(), 
-    age: 25,
-    bio: "Software developer".to_string(),
+let bob = graph.add_vertex(Vertex::Person {
+name: "Bob".to_string(),
+age: 25,
+bio: "Software developer".to_string(),
 });
 
-let project = graph.add_vertex(Vertex::Project { 
-    name: "Graph API".to_string() 
+let project = graph.add_vertex(Vertex::Project {
+name: "Graph API".to_string()
 });
 
 // Add edges
@@ -359,34 +360,34 @@ graph.add_edge(bob, project, Edge::Created);
 
 // Query by label
 let people = graph.walk()
-    .vertices(Vertex::person_all())
-    .collect::&lt;Vec&lt;_&gt;&gt;();
+.vertices(Vertex::person_all())
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
 assert_eq!(people.len(), 2);
 
 // Query by property (hash index)
 let alice_found = graph.walk()
-    .vertices(Vertex::person_by_name("Alice"))
-    .collect::&lt;Vec&lt;_&gt;&gt;();
+.vertices(Vertex::person_by_name("Alice"))
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
 assert_eq!(alice_found.len(), 1);
 
 // Query by range (range index)
 let young_people = graph.walk()
-    .vertices(Vertex::person_by_age(20..30))
-    .collect::&lt;Vec&lt;_&gt;&gt;();
+.vertices(Vertex::person_by_age(20..30))
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
 assert_eq!(young_people.len(), 1);
 
 // Text search (full-text index)
 let developers = graph.walk()
-    .vertices(Vertex::person_by_bio("developer"))
-    .collect::&lt;Vec&lt;_&gt;&gt;();
+.vertices(Vertex::person_by_bio("developer"))
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
 assert_eq!(developers.len(), 1);
 
 // Traversal
 let alices_creations = graph.walk()
-    .vertices(Vertex::person_by_name("Alice"))
-    .edges(Edge::created().direction(Direction::Outgoing))
-    .head()
-    .collect::&lt;Vec&lt;_&gt;&gt;();
+.vertices(Vertex::person_by_name("Alice"))
+.edges(Edge::created().direction(Direction::Outgoing))
+.head()
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
 assert_eq!(alices_creations.len(), 1);
 <span class="boring">}</span></code></pre></pre>
 <h2 id="advanced-features"><a class="header" href="#advanced-features">Advanced Features</a></h2>
