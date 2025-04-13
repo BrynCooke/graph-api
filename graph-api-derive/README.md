@@ -2,9 +2,11 @@
 
 **Welcome to graph-api-derive** — where the type-safe magic happens for your graph models!
 
-This crate provides powerful derive macros that enhance your graph data structures with compile-time safety and rich query capabilities. Say goodbye to manually writing boilerplate code for working with graph elements!
+This crate provides powerful derive macros that enhance your graph data structures with compile-time safety and rich
+query capabilities. Say goodbye to manually writing boilerplate code for working with graph elements!
 
-With **graph-api-derive**, you can transform simple enum declarations into feature-rich graph components with indexing, type-safe projections, and specialized query helpers.
+With **graph-api-derive**, you can transform simple enum declarations into feature-rich graph components with indexing,
+type-safe projections, and specialized query helpers.
 
 ## What It Does
 
@@ -14,7 +16,7 @@ Give us a model like this:
 #[derive(Debug, Clone, VertexExt)]
 pub enum Vertex {
     Person {
-        #[index]
+        #[index(hash)]
         name: String,
         #[index(range)]
         age: u64,
@@ -44,12 +46,12 @@ And we'll generate a wealth of useful code for you:
 * **Type-Safe Projections**: Access vertex and edge data with confidence using `Person<_>` and `Knows<_>` projections
 * **Safe Mutations**: Update properties with automatic index management via `PersonMut` and `KnowsMut`
 * **Specialized Query Helpers**: Find exactly what you're looking for with generated index methods:
-  * `VertexIndex::person_by_name("Bryn")`: Find people by name
-  * `VertexIndex::person_by_age(30..50)`: Find people in an age range
-  * `VertexIndex::person_by_biography("graph")`: Find people whose biography mentions "graph"
+    * `VertexIndex::person_by_name("Bryn")`: Find people by name
+    * `VertexIndex::person_by_age(30..50)`: Find people in an age range
+    * `VertexIndex::person_by_biography("graph")`: Find people whose biography mentions "graph"
 * **Tailored Edge Traversals**: Navigate your graph with purpose:
-  * `EdgeIndex::knows()`: Follow "knows" relationships
-  * `EdgeIndex::created()`: Explore creation relationships
+    * `EdgeIndex::knows()`: Follow "knows" relationships
+    * `EdgeIndex::created()`: Explore creation relationships
 
 ## Benefits
 
