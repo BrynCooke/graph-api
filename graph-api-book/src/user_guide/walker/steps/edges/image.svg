@@ -48,7 +48,7 @@
     <line class="edge directed" x1="380" y1="100" x2="550" y2="100" marker-end="url(#arrowhead)"/>
 
     <!-- Output Edges -->
-    <g transform="translate(420, 100)">
+    <g transform="translate(415, 100)">
         <g class="node">
             <circle r="10"></circle>
             <text class="node-label" font-size="10px">A</text>
@@ -60,7 +60,7 @@
         </g>
         <text class="edge-label highlighted" x="25" y="-15" font-size="10px">likes</text>
     </g>
-    <g transform="translate(490, 100)">
+    <g transform="translate(495, 100)">
         <g class="node">
             <circle r="10"></circle>
             <text class="node-label" font-size="10px">A</text>
