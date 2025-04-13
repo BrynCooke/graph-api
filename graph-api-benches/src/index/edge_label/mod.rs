@@ -140,10 +140,7 @@ where
         let src = person_ids[0];
         let dst = person_ids[1];
 
-        b.iter(|| {
-            
-            graph.add_edge(src, dst, Edge::Knows { since: 2023 })
-        })
+        b.iter(|| graph.add_edge(src, dst, Edge::Knows { since: 2023 }))
     });
 
     // Benchmark removal with edge label index

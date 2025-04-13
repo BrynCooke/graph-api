@@ -103,7 +103,7 @@ where
 
         b.iter(|| {
             age = (age + 1) % 100; // Cycle through ages 25-99
-            
+
             graph.add_vertex(Vertex::Person {
                 name: format!("Range{}", age),
                 age,

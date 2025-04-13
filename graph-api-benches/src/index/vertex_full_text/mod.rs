@@ -128,7 +128,7 @@ where
 
         b.iter(|| {
             counter += 1;
-            
+
             graph.add_vertex(Vertex::Person {
                 name: format!("FullText{}", counter),
                 age: 30,
