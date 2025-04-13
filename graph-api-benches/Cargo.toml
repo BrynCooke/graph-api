@@ -31,12 +31,12 @@ graph-api-lib = { version = "0.1.2", path = "../graph-api-lib" }
 graph-api-derive = { version = "0.1.1", path = "../graph-api-derive" }
 uuid = { version = "1.11.0", features = ["v4"] }
 criterion = { version = "0.5", features = ["html_reports"] }
-rand = { version = "0.8" }
+rand = { version = "0.9" }
 graph-api-test = { version = "0.1.2", path = "../graph-api-test" }
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }
-rand = "0.8"
+rand = "0.9"
 
 [[bench]]
 name = "graph_benchmarks"

@@ -1,7 +1,7 @@
 use graph_api_lib::Graph;
 use graph_api_test::{Edge, Language, Project, Refs, Vertex, populate_graph};
+use rand::prelude::*;
 use rand::rngs::StdRng;
-use rand::seq::SliceRandom;
 use rand::{Rng, SeedableRng};
 use std::collections::HashSet;
 use uuid::Uuid;
@@ -50,10 +50,10 @@ where
     // Generate vertices
     let mut vertex_ids = Vec::with_capacity(vertex_count);
     for i in 0..vertex_count {
-        let vertex = match rng.gen_range(0..3) {
+        let vertex = match rng.random_range(0..3) {
             0 => Vertex::Person {
                 name: format!("Person-{}", i),
-                age: rng.gen_range(18..80),
+                age: rng.random_range(18..80),
                 unique_id: Uuid::new_v4(),
                 username: format!("user_{}", i),
                 biography: format!("Bio for person {}: {}", i, random_biography(&mut rng)),
@@ -71,8 +71,8 @@ where
     let mut added_edges = HashSet::new();
     for _ in 0..edge_count {
         // Pick random source and target vertices
-        let src_idx = rng.gen_range(0..vertex_count);
-        let tgt_idx = rng.gen_range(0..vertex_count);
+        let src_idx = rng.random_range(0..vertex_count);
+        let tgt_idx = rng.random_range(0..vertex_count);
         let src = vertex_ids[src_idx];
         let tgt = vertex_ids[tgt_idx];
 
@@ -82,13 +82,13 @@ where
         }
 
         // Add edge with random type
-        let edge = match rng.gen_range(0..3) {
+        let edge = match rng.random_range(0..3) {
             0 => Edge::Knows {
-                since: rng.gen_range(1980..2023),
+                since: rng.random_range(1980..2023),
             },
             1 => Edge::Created,
             _ => Edge::Language(Language {
-                name: match rng.gen_range(0..4) {
+                name: match rng.random_range(0..4) {
                     0 => "Rust".to_string(),
                     1 => "Java".to_string(),
                     2 => "Python".to_string(),
@@ -117,7 +117,7 @@ where
     for i in 0..vertex_count {
         let vertex = Vertex::Person {
             name: format!("Person-{}", i),
-            age: rng.gen_range(18..80),
+            age: rng.random_range(18..80),
             unique_id: Uuid::new_v4(),
             username: format!("user_{}", i),
             biography: format!("Social network user {}", i),
@@ -130,20 +130,20 @@ where
     // This creates a more realistic social graph structure than purely random connections
     for i in 0..vertex_count {
         // Each person knows 5-15 other people
-        let num_connections = rng.gen_range(5..15).min(vertex_count - 1);
+        let num_connections = rng.random_range(5..15).min(vertex_count - 1);
         let mut connections = HashSet::new();
 
         while connections.len() < num_connections {
             // 80% chance to connect to someone "nearby" (community structure)
-            let target_idx = if rng.gen_bool(0.8) {
+            let target_idx = if rng.random_bool(0.8) {
                 // Connect to someone nearby in the list (community)
                 let range = 50; // community size
                 let start = i.saturating_sub(range / 2);
                 let end = (i + range / 2).min(vertex_count - 1);
-                rng.gen_range(start..=end)
+                rng.random_range(start..=end)
             } else {
                 // Random connection anywhere
-                rng.gen_range(0..vertex_count)
+                rng.random_range(0..vertex_count)
             };
 
             // Avoid self-loops
@@ -155,7 +155,7 @@ where
         // Create edges for connections
         for target_idx in connections {
             let target = vertex_ids[target_idx];
-            let year = rng.gen_range(1980..2023);
+            let year = rng.random_range(1980..2023);
             graph.add_edge(vertex_ids[i], target, Edge::Knows { since: year });
         }
     }
@@ -187,7 +187,7 @@ where
     for i in 0..person_count {
         let vertex = Vertex::Person {
             name: format!("Developer-{}", i),
-            age: rng.gen_range(18..80),
+            age: rng.random_range(18..80),
             unique_id: Uuid::new_v4(),
             username: format!("dev_{}", i),
             biography: format!("Developer working on project {}", i % project_count),
@@ -204,11 +204,11 @@ where
     // Create project dependencies (project -> project edges)
     for (i, &project_id) in project_ids.iter().enumerate() {
         // Each project depends on 0-5 other projects
-        let num_deps = rng.gen_range(0..=5).min(project_count - 1);
+        let num_deps = rng.random_range(0..=5).min(project_count - 1);
         let mut deps = HashSet::new();
 
         while deps.len() < num_deps {
-            let target_idx = rng.gen_range(0..project_count);
+            let target_idx = rng.random_range(0..project_count);
             if target_idx != i {
                 // Avoid self-dependencies
                 deps.insert(target_idx);
@@ -225,7 +225,7 @@ where
     // Create author relationships (person -> project edges)
     for (i, &person_id) in person_ids.iter().enumerate() {
         // Each person contributes to 1-3 projects
-        let num_projects = rng.gen_range(1..=3).min(project_count);
+        let num_projects = rng.random_range(1..=3).min(project_count);
         let mut projects = HashSet::new();
 
         // First project is often related to the person's index (simulates main project)
@@ -233,7 +233,7 @@ where
 
         // Add more random projects
         while projects.len() < num_projects {
-            projects.insert(rng.gen_range(0..project_count));
+            projects.insert(rng.random_range(0..project_count));
         }
 
         // Create author edges
@@ -246,10 +246,10 @@ where
     // Create language relationships (project -> language edges)
     for &project_id in &project_ids {
         // Each project uses 1-2 languages
-        let num_langs = rng.gen_range(1..=2).min(rust_count);
+        let num_langs = rng.random_range(1..=2).min(rust_count);
 
         for _ in 0..num_langs {
-            let lang_idx = rng.gen_range(0..rust_count);
+            let lang_idx = rng.random_range(0..rust_count);
             let lang_id = rust_ids[lang_idx];
 
             graph.add_edge(
