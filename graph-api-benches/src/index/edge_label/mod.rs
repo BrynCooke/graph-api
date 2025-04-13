@@ -141,8 +141,8 @@ where
         let dst = person_ids[1];
 
         b.iter(|| {
-            let edge_id = graph.add_edge(src, dst, Edge::Knows { since: 2023 });
-            edge_id
+            
+            graph.add_edge(src, dst, Edge::Knows { since: 2023 })
         })
     });
 

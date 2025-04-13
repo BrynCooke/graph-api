@@ -26,7 +26,7 @@ instead of checking every vertex in the graph.
 In Graph API, you define a hash index by adding the `#[index(hash)]` attribute to a field in your vertex enum:
 
 ```rust,noplayground
-{{#include hash_index/hash_index_example.rs:define_standard_index}}
+{{#include hash_index/hash_index_example.rs:model_definition}}
 ```
 
 ## How Hash Indexes Work
@@ -42,7 +42,7 @@ When you apply the `#[index(hash)]` attribute to a field:
 The real power of hash indexes becomes apparent when querying the graph:
 
 ```rust,noplayground
-{{#include hash_index/hash_index_example.rs:standard_index_queries}}
+{{#include hash_index/hash_index_example.rs:hash_index_queries}}
 ```
 
 ## Performance Benefits

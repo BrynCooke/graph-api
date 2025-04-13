@@ -21,7 +21,8 @@ In this diagram:
     - The index efficiently locates the starting point for the value `35`.
     - It then scans forward through the sorted index entries (35, 35, 42) until the condition is no longer met.
     - The vertices associated with these index entries (`B`, `D`, `C`) are identified as the result.
-- The **orange highlighting** shows the portion of the index scanned (`age >= 35`) and the resulting vertices (`B`, `D`, `C`) in the graph.
+- The **orange highlighting** shows the portion of the index scanned (`age >= 35`) and the resulting vertices (`B`, `D`,
+  `C`) in the graph.
 - **Blue arrows** point from the selected index entries to the corresponding graph vertices.
 
 This is much faster than checking the `age` property of every single vertex in the graph for large datasets.
@@ -31,7 +32,7 @@ This is much faster than checking the `age` property of every single vertex in t
 In Graph API, you define a range index by adding the `#[index(range)]` attribute to a field in your vertex or edge enum:
 
 ```rust,noplayground
-{{#include range_index/range_index_example.rs:define_range_index}}
+{{#include range_index/range_index_example.rs:model_definition}}
 ```
 
 ## How Range Indexes Work
@@ -49,15 +50,7 @@ Range indexes typically use ordered data structures like B-trees or skip lists t
 The primary benefit of range indexes is the ability to perform efficient range queries:
 
 ```rust,noplayground
-{{#include range_index/range_index_example.rs:range_queries}}
-```
-
-## Sorting and Pagination
-
-While Graph API doesn't directly support sorted indexes, you can use range indexes to optimize sorted query results:
-
-```rust,noplayground
-{{#include range_index/range_index_example.rs:range_sort}}
+{{#include range_index/range_index_example.rs:range_index_queries}}
 ```
 
 ## Performance Benefits

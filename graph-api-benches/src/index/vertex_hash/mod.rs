@@ -114,14 +114,14 @@ where
 
         b.iter(|| {
             counter += 1;
-            let vertex_id = graph.add_vertex(Vertex::Person {
+            
+            graph.add_vertex(Vertex::Person {
                 name: format!("Test{}", counter),
                 age: 30,
                 unique_id: Uuid::new_v4(),
                 username: format!("test_user{}", counter),
                 biography: "Test biography".to_string(),
-            });
-            vertex_id
+            })
         })
     });
 

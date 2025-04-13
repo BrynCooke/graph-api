@@ -103,14 +103,14 @@ where
 
         b.iter(|| {
             age = (age + 1) % 100; // Cycle through ages 25-99
-            let vertex_id = graph.add_vertex(Vertex::Person {
+            
+            graph.add_vertex(Vertex::Person {
                 name: format!("Range{}", age),
                 age,
                 unique_id: Uuid::new_v4(),
                 username: format!("range_user{}", age),
                 biography: "Test biography for range index".to_string(),
-            });
-            vertex_id
+            })
         })
     });
 

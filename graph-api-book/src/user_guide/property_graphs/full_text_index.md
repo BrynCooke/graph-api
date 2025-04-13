@@ -34,7 +34,7 @@ associated with graph elements.
 In Graph API, you define a full-text index by using the `#[index(full_text)]` attribute on string fields:
 
 ```rust,noplayground
-{{#include full_text_index/full_text_index_example.rs:define_full_text_index}}
+{{#include hash_index/hash_index_example.rs:model_definition}}
 ```
 
 ## How Full-text Indexes Work
@@ -91,5 +91,4 @@ Full-text indexes have some limitations:
 3. **Tokenization limitations**: Basic word splitting may not handle all languages equally
 4. **Update complexity**: Maintaining the index adds overhead during updates
 
-For range-based queries, see [range indexes](./range_index.md), and for combining different index types,
-see [combining indexes](./combining_indexes.md).
+For range-based queries, see [range indexes](./range_index.md).

@@ -128,14 +128,14 @@ where
 
         b.iter(|| {
             counter += 1;
-            let vertex_id = graph.add_vertex(Vertex::Person {
+            
+            graph.add_vertex(Vertex::Person {
                 name: format!("FullText{}", counter),
                 age: 30,
                 unique_id: Uuid::new_v4(),
                 username: format!("fulltext_user{}", counter),
                 biography: format!("This is a test biography for fulltext indexing {}", counter),
-            });
-            vertex_id
+            })
         })
     });
 
