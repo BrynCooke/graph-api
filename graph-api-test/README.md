@@ -1,8 +1,10 @@
 # Graph-API Test Suite
 
-**Welcome to graph-api-test** — your friendly companion for ensuring your graph implementation behaves exactly as expected!
+**Welcome to graph-api-test** — your friendly companion for ensuring your graph implementation behaves exactly as
+expected!
 
-Implementing the Graph-API traits for your custom graph structure? This comprehensive test suite takes the guesswork out of compatibility testing, giving you confidence that your graph behaves correctly.
+Implementing the Graph-API traits for your custom graph structure? This comprehensive test suite takes the guesswork out
+of compatibility testing, giving you confidence that your graph behaves correctly.
 
 ## Effortless Testing
 
@@ -12,17 +14,19 @@ Testing your graph implementation couldn't be easier:
 #[cfg(test)]
 mod test {
     use graph_api_test::test_suite;
-    
+
     // One line to test everything!
     test_suite!(YourGraph::new());
 }
 ```
 
-With this simple macro, you'll validate that your graph implementation properly supports all the operations and behaviors expected by the Graph-API ecosystem. No need to write tedious test cases for each feature!
+With this simple macro, you'll validate that your graph implementation properly supports all the operations and
+behaviors expected by the Graph-API ecosystem. No need to write tedious test cases for each feature!
 
 ## Feature-Specific Testing
 
-Implementing only a subset of Graph-API's optional capabilities? No problem! Simply include the features that match your implementation:
+Implementing only a subset of Graph-API's optional capabilities? No problem! Simply include the features that match your
+implementation:
 
 ```toml
 [dev-dependencies]
@@ -30,7 +34,7 @@ graph-api-test = { version = "0.1.0", features = [
     "vertex-label-index",
     "edge-label-index",
     "vertex-range-index"
-]}
+] }
 ```
 
 ## Available Feature Tests
