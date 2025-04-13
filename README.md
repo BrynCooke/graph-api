@@ -1,4 +1,11 @@
-![CI](https://github.com/BrynCooke/graph-api/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/BrynCooke/graph-api/actions/workflows/continuous-integration.yml/badge.svg)
+
+![Crates.io Lib](https://img.shields.io/crates/v/graph-api-lib?label=graph-api-lib)
+![Crates.io Derive Version](https://img.shields.io/crates/v/graph-api-derive?label=graph-api-derive)
+![Crates.io Test Version](https://img.shields.io/crates/v/graph-api-test?label=graph-api-test)
+![Crates.io Benches Version](https://img.shields.io/crates/v/graph-api-benches?label=graph-api-benches)
+![Crates.io SimpoleGraph Version](https://img.shields.io/crates/v/graph-api-simplegraph?label=graph-api-simplegraph)
+![Crates.io Petgraph Version](https://img.shields.io/crates/v/graph-api-petgraph?label=graph-api-petgraph)
 
 # Graph API
 
