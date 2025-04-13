@@ -23,7 +23,7 @@ To test your implementation:
 
 ```toml
 [dev-dependencies]
-graph-api-test = { version = "{{version}}", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-test = { version = "{{test_version}}", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 ```
 

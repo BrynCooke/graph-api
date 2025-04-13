@@ -14,7 +14,7 @@ First, add the necessary dependencies to your `Cargo.toml`:
 ```toml
 [dev-dependencies]
 criterion = "0.5"
-graph-api-benches = { version = "{{version}}", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-benches = { version = "{{benches_version}}", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 [[bench]]
 name = "my_graph_benchmarks"
