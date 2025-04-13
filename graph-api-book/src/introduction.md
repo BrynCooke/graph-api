@@ -1,4 +1,4 @@
-<img src="./mascot.png" width="300" height="200" style="display: block; padding: 1em; margin: 0 auto" alt="GraphApi mascot">
+<img src="./mascot.png" width="400" height="200" style="display: block; padding: 1em; margin: 0 auto" alt="GraphApi mascot">
 
 # Introduction to Graph API
 
