@@ -462,6 +462,7 @@ dependencies = [
  "graph-api-lib",
  "graph-api-test",
  "petgraph",
+ "rand 0.9.0",
 ]
 
 [[package]]
@@ -474,6 +475,7 @@ dependencies = [
  "graph-api-lib",
  "graph-api-test",
  "paste",
+ "rand 0.9.0",
  "rphonetic",
  "smallbox",
  "uuid",
