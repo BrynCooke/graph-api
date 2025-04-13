@@ -1,6 +1,6 @@
 [package]
 name = "graph-api-test"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Test utilities and property-based testing for the graph-api ecosystem"
 authors = ["Bryn Cooke"]
@@ -24,7 +24,7 @@ graph-clear = []
 
 
 [dependencies]
-graph-api-lib = { version = "0.1.0", path = "../graph-api-lib" }
+graph-api-lib = { version = "0.1.1", path = "../graph-api-lib" }
 graph-api-derive = { version = "0.1.0", path = "../graph-api-derive" }
 thiserror = "2.0.3"
 proptest = "1.5.0"
