@@ -24,7 +24,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install just command runner
-        uses: extractions/setup-just@v1
+        uses: extractions/setup-just@v3
         
       - name: Update book versions
         run: just update-book-versions
