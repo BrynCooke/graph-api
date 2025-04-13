@@ -1,6 +1,6 @@
 [package]
 name = "graph-api-derive"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "Derive macros for the graph-api ecosystem - provides type-safe vertex and edge extensions"
 authors = ["Bryn Cooke"]
@@ -26,4 +26,4 @@ insta = { version = "1.39.0", features = ["yaml"] }
 trybuild = "1.0"
 proc-macro2 = { version = "1.0.82", features = [] }
 prettyplease = "0.2.29"
-graph-api-lib = { version = "0.1.3", path = "../graph-api-lib" }
+graph-api-lib = { version = "0.1.4", path = "../graph-api-lib" }

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] - 2025-04-13
+
+### ⚙️ Miscellaneous Tasks
+
+- Local dependencies all have versions (#42)
+
+
 ## [0.1.3] - 2025-04-13
 
 ### 🐛 Bug Fixes
