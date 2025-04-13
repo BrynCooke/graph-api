@@ -50,7 +50,7 @@ jobs:
             echo "Updated stylesheet path in $file to $relative_css_path"
           ' bash {} \;
 
-      - name: Deploy
+      - name: Deploy Github Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
