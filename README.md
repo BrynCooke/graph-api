@@ -1,5 +1,4 @@
 ![CI](https://github.com/BrynCooke/graph-api/actions/workflows/continuous-integration.yml/badge.svg)
-
 ![Crates.io Lib](https://img.shields.io/crates/v/graph-api-lib?label=graph-api-lib)
 ![Crates.io Derive Version](https://img.shields.io/crates/v/graph-api-derive?label=graph-api-derive)
 ![Crates.io Test Version](https://img.shields.io/crates/v/graph-api-test?label=graph-api-test)
@@ -9,6 +8,9 @@
 
 # Graph API
 
+<p align="center">
+<img src="graph-api-book/src/mascot.png" width="400" height="200" alt="GraphApi mascot">
+</p>
 An ergonomic API for working with **in memory** graphs in Rust that provides a flexible and type-safe way to interact
 with graph data
 structures.
