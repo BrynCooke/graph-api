@@ -1,5 +1,5 @@
 use crate::standard_model::{Vertex, VertexExt, standard_populated_graph};
-use graph_api_lib::{Graph, VertexReference, VertexSearch};
+use graph_api_lib::{Graph, VertexSearch};
 
 // ANCHOR: all
 

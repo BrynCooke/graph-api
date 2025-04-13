@@ -186,7 +186,7 @@ appears twice, pointing to both <code>B</code> and <code>D</code>.</li>
 <p>This is much faster than checking the <code>age</code> property of every single vertex in the graph for large datasets.</p>
 <h2 id="defining-range-indexes"><a class="header" href="#defining-range-indexes">Defining Range Indexes</a></h2>
 <p>In Graph API, you define a range index by adding the <code>#[index(range)]</code> attribute to a field in your vertex or edge enum:</p>
-<pre><code class="language-rust noplayground">#[derive(VertexExt)]
+<pre><code class="language-rust noplayground">#[derive(Debug, VertexExt)]
 pub enum IndexedVertex {
     // Person vertex with various properties
     Person {

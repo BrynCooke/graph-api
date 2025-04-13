@@ -181,13 +181,13 @@ value without scanning the entire graph. It uses a hash table data structure for
 instead of checking every vertex in the graph.</p>
 <h2 id="defining-hash-indexes"><a class="header" href="#defining-hash-indexes">Defining Hash Indexes</a></h2>
 <p>In Graph API, you define a hash index by adding the <code>#[index(hash)]</code> attribute to a field in your vertex enum:</p>
-<pre><code class="language-rust noplayground">#[derive(VertexExt)]
+<pre><code class="language-rust noplayground">#[derive(Debug, VertexExt)]
 pub enum IndexedVertex {
     // Person vertex with various properties
     Person {
         name: String, // Not indexed
 
-        #[index(hash)] // Full-textHash index for exact lookups
+        #[index(hash)] // Hash index for exact lookups
         username: String,
     },
 }</code></pre>

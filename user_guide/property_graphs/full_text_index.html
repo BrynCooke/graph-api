@@ -192,13 +192,13 @@ identified in the graph.</li>
 associated with graph elements.</p>
 <h2 id="defining-full-text-indexes"><a class="header" href="#defining-full-text-indexes">Defining Full-text Indexes</a></h2>
 <p>In Graph API, you define a full-text index by using the <code>#[index(full_text)]</code> attribute on string fields:</p>
-<pre><code class="language-rust noplayground">#[derive(VertexExt)]
+<pre><code class="language-rust noplayground">#[derive(Debug, VertexExt)]
 pub enum IndexedVertex {
     // Person vertex with various properties
     Person {
         name: String, // Not indexed
 
-        #[index(hash)] // Full-textHash index for exact lookups
+        #[index(hash)] // Hash index for exact lookups
         username: String,
     },
 }</code></pre>

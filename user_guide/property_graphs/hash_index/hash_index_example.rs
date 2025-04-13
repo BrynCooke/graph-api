@@ -1,13 +1,15 @@
-use crate::standard_model::{Vertex, VertexExt, standard_populated_graph};
+use crate::standard_model::VertexExt as VertexExt2;
+use crate::standard_model::{Vertex, standard_populated_graph};
+use graph_api_derive::VertexExt;
 use graph_api_lib::{Graph, VertexSearch};
 // ANCHOR: model_definition
-#[derive(VertexExt)]
+#[derive(Debug, VertexExt)]
 pub enum IndexedVertex {
     // Person vertex with various properties
     Person {
         name: String, // Not indexed
 
-        #[index(hash)] // Full-textHash index for exact lookups
+        #[index(hash)] // Hash index for exact lookups
         username: String,
     },
 }
