@@ -8,8 +8,9 @@
 
 # Graph API
 
-<img src="graph-api-book/src/mascot.png" width="400" height="200" style="display: block; padding: 1em; margin: 0 auto" alt="GraphApi mascot">
-
+<p align="center">
+<img src="graph-api-book/src/mascot.png" width="400" height="200" alt="GraphApi mascot">
+</p>
 An ergonomic API for working with **in memory** graphs in Rust that provides a flexible and type-safe way to interact
 with graph data
 structures.
