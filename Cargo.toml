@@ -22,3 +22,8 @@ rust-version = "1.80"
 
 [workspace.dependencies]
 petgraph = "0.7.1"
+
+# The profile that 'dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
