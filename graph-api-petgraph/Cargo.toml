@@ -19,9 +19,10 @@ graph-api-lib = { version = "0.1.4", path = "../graph-api-lib", features = ["pet
 petgraph = { workspace = true }
 
 [dev-dependencies]
-graph-api-test = { version = "0.1.4", path = "../graph-api-test", features = ["graph-clear"] }
-graph-api-benches = { version = "0.1.4", path = "../graph-api-benches", features = ["graph-clear"] }
+graph-api-test = { path = "../graph-api-test", features = ["graph-clear"] }
+graph-api-benches = { path = "../graph-api-benches", features = ["graph-clear"] }
 criterion = { version = "0.5", features = ["html_reports"] }
+rand = "0.9"
 
 [[bench]]
 name = "petgraph_benchmarks"
