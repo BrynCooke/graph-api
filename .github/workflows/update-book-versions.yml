@@ -23,54 +23,11 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Extract all crate versions
-        id: extract_versions
-        run: |
-          # Extract versions from each Cargo.toml file
-          LIB_VERSION=$(grep -m 1 "^version =" graph-api-lib/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          DERIVE_VERSION=$(grep -m 1 "^version =" graph-api-derive/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          SIMPLEGRAPH_VERSION=$(grep -m 1 "^version =" graph-api-simplegraph/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          PETGRAPH_VERSION=$(grep -m 1 "^version =" graph-api-petgraph/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          TEST_VERSION=$(grep -m 1 "^version =" graph-api-test/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          BENCHES_VERSION=$(grep -m 1 "^version =" graph-api-benches/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
-          
-          # Output versions for use in later steps
-          echo "lib_version=$LIB_VERSION" >> $GITHUB_OUTPUT
-          echo "derive_version=$DERIVE_VERSION" >> $GITHUB_OUTPUT
-          echo "simplegraph_version=$SIMPLEGRAPH_VERSION" >> $GITHUB_OUTPUT
-          echo "petgraph_version=$PETGRAPH_VERSION" >> $GITHUB_OUTPUT
-          echo "test_version=$TEST_VERSION" >> $GITHUB_OUTPUT
-          echo "benches_version=$BENCHES_VERSION" >> $GITHUB_OUTPUT
-          
-          # Log extracted versions
-          echo "Found versions:"
-          echo "  graph-api-lib: $LIB_VERSION"
-          echo "  graph-api-derive: $DERIVE_VERSION"
-          echo "  graph-api-simplegraph: $SIMPLEGRAPH_VERSION"
-          echo "  graph-api-petgraph: $PETGRAPH_VERSION"
-          echo "  graph-api-test: $TEST_VERSION"
-          echo "  graph-api-benches: $BENCHES_VERSION"
-
-      - name: Update book.toml versions
-        run: |
-          # Get versions from previous step
-          LIB_VERSION="${{ steps.extract_versions.outputs.lib_version }}"
-          DERIVE_VERSION="${{ steps.extract_versions.outputs.derive_version }}"
-          SIMPLEGRAPH_VERSION="${{ steps.extract_versions.outputs.simplegraph_version }}"
-          PETGRAPH_VERSION="${{ steps.extract_versions.outputs.petgraph_version }}"
-          TEST_VERSION="${{ steps.extract_versions.outputs.test_version }}"
-          BENCHES_VERSION="${{ steps.extract_versions.outputs.benches_version }}"
-          
-          # Update all version variables in book.toml
-          sed -i "s/^version = \".*\".*$/version = \"$LIB_VERSION\"  # Legacy variable - will be removed once all md files are updated/" graph-api-book/book.toml
-          sed -i "s/^lib_version = \".*\"$/lib_version = \"$LIB_VERSION\"/" graph-api-book/book.toml
-          sed -i "s/^derive_version = \".*\"$/derive_version = \"$DERIVE_VERSION\"/" graph-api-book/book.toml
-          sed -i "s/^simplegraph_version = \".*\"$/simplegraph_version = \"$SIMPLEGRAPH_VERSION\"/" graph-api-book/book.toml
-          sed -i "s/^petgraph_version = \".*\"$/petgraph_version = \"$PETGRAPH_VERSION\"/" graph-api-book/book.toml
-          sed -i "s/^test_version = \".*\"$/test_version = \"$TEST_VERSION\"/" graph-api-book/book.toml
-          sed -i "s/^benches_version = \".*\"$/benches_version = \"$BENCHES_VERSION\"/" graph-api-book/book.toml
-          
-          echo "Updated book.toml versions"
+      - name: Install just command runner
+        uses: extractions/setup-just@v3
+        
+      - name: Update book versions
+        run: just update-book-versions
 
       - name: Commit changes
         run: |

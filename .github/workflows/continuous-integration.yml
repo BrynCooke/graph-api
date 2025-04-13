@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: taiki-e/install-action@cargo-nextest
       - uses: actions/checkout@v4
-      - uses: extractions/setup-just@v2
+      - uses: extractions/setup-just@v3
       - name: Build
         run: just build
       - name: Test
