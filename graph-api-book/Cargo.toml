@@ -9,12 +9,12 @@ repository = "https://github.com/BrynCooke/graph-api"
 documentation = "https://bryncooke.github.io/graph-api/"
 readme = "SPEC.md"
 keywords = ["graph", "database", "documentation", "examples", "mdbook"]
-categories = ["data-structures", "development-tools::documentation"]
+categories = ["data-structures"]
 publish = false
 
 
 [dependencies]
-graph-api-derive = { version = "0.1.1", path = "../graph-api-derive" }
-graph-api-lib = { version = "0.1.2", path = "../graph-api-lib" }
-graph-api-simplegraph = { version = "0.1.2", path = "../graph-api-simplegraph" }
+graph-api-derive = { path = "../graph-api-derive" }
+graph-api-lib = { path = "../graph-api-lib" }
+graph-api-simplegraph = { path = "../graph-api-simplegraph" }
 uuid = "1.16.0"
