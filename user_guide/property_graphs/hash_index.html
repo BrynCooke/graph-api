@@ -181,31 +181,15 @@ value without scanning the entire graph. It uses a hash table data structure for
 instead of checking every vertex in the graph.</p>
 <h2 id="defining-hash-indexes"><a class="header" href="#defining-hash-indexes">Defining Hash Indexes</a></h2>
 <p>In Graph API, you define a hash index by adding the <code>#[index(hash)]</code> attribute to a field in your vertex enum:</p>
-<pre><code class="language-rust noplayground">#[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
+<pre><code class="language-rust noplayground">#[derive(VertexExt)]
+pub enum IndexedVertex {
+    // Person vertex with various properties
     Person {
-        name: String,
+        name: String, // Not indexed
 
-        #[index(hash)] // Hash index for username lookups
+        #[index(hash)] // Full-textHash index for exact lookups
         username: String,
-
-        age: u8,
     },
-
-    Product {
-        name: String,
-
-        #[index(hash)] // Hash index for SKU lookups
-        sku: String,
-
-        price: f32,
-    },
-}
-
-#[derive(Debug, Clone, EdgeExt)]
-pub enum Edge {
-    Purchased,
-    Viewed,
 }</code></pre>
 <h2 id="how-hash-indexes-work"><a class="header" href="#how-hash-indexes-work">How Hash Indexes Work</a></h2>
 <p>When you apply the <code>#[index(hash)]</code> attribute to a field:</p>
@@ -216,41 +200,13 @@ pub enum Edge {
 </ol>
 <h2 id="querying-with-hash-indexes"><a class="header" href="#querying-with-hash-indexes">Querying with Hash Indexes</a></h2>
 <p>The real power of hash indexes becomes apparent when querying the graph:</p>
-<pre><code class="language-rust noplayground">    // Find a person by username (using hash index)
-    let _alice_results = graph
+<pre><code class="language-rust noplayground">    // Find a person by their username (using hash index)
+    let julia = graph
         .walk()
-        .vertices(VertexSearch::scan())
-        .filter_by_person(|p, _| p.username() == "alice123")
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    // Find a product by SKU (using hash index)
-    let headphones = graph
-        .walk()
-        .vertices(VertexSearch::scan())
-        .filter_by_product(|p, _| p.sku() == "AUD-2002")
+        .vertices(Vertex::person_by_username("julia456"))
         .first();
 
-    // Find who purchased a specific product (combining index lookup with traversal)
-    // For real code, we would get the ID from the vertex
-    // For this documentation example, we'll simplify
-    if headphones.is_some() {
-        // Get product by SKU instead of by ID
-        let purchasers = graph
-            .walk()
-            .vertices(VertexSearch::scan())
-            .filter_by_product(|p, _| p.sku() == "AUD-2002")
-            .edges(EdgeSearch::scan().incoming())
-            .filter_purchased() // Type-safe filter using the generated helper
-            .head()
-            .filter_person() // Type-safe filter using the generated helper
-            .map(|v, _| {
-                // Type-safe property access using projection
-                v.project::&lt;Person&lt;_&gt;&gt;().unwrap().name().to_string()
-            })
-            .collect::&lt;Vec&lt;_&gt;&gt;();
-
-        println!("People who purchased headphones: {:?}", purchasers);
-    }</code></pre>
+    println!("Found Julia: {}", julia.is_some());</code></pre>
 <h2 id="performance-benefits"><a class="header" href="#performance-benefits">Performance Benefits</a></h2>
 <p>Hash indexes offer significant performance advantages:</p>
 <ol>

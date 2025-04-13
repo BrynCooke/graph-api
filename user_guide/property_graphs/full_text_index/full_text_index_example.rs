@@ -1,26 +1,22 @@
-use crate::standard_model::{Vertex, standard_populated_graph};
-use graph_api_lib::Graph;
+use crate::standard_model::{Vertex, VertexExt, standard_populated_graph};
+use graph_api_lib::{Graph, VertexSearch};
+
+// ANCHOR: model_definition
+#[derive(VertexExt)]
+pub enum IndexedVertex {
+    // Person vertex with various properties
+    Person {
+        name: String, // Not indexed
+
+        #[index(full_text)] // Full-text index for text search
+        biography: String,
+    },
+}
+// ANCHOR_END: model_definition
 
 // ANCHOR: all
-// ANCHOR: define_full_text_index
-// Function explaining full-text indexes
-pub fn define_full_text_index() {
-    // Full-text indexes enable text search capabilities for string properties
-    // They are defined using the #[index(full_text)] attribute
-
-    // In the Vertex enum from standard_model.rs:
-    // - Person::biography has a full-text index for text search
-    //   This allows for partial matches and fuzzy search
-
-    // Full-text indexes are ideal for:
-    // - Long text fields (descriptions, biographies, articles)
-    // - Search by keyword functionality
-    // - Natural language search
-}
-// ANCHOR_END: define_full_text_index
-
-// Example demonstrating full-text search capabilities
-pub fn full_text_queries() {
+// Example demonstrating full-text index search capabilities
+pub fn full_text_index_example() {
     // Use the standard graph defined in standard_model.rs
     let graph = standard_populated_graph();
 
@@ -32,38 +28,34 @@ pub fn full_text_queries() {
         .collect::<Vec<_>>();
 
     println!("Found {} people who are developers", developers.len());
-
-    // Find people with "graph" in their biography
-    let graph_enthusiasts = graph
-        .walk()
-        .vertices(Vertex::person_by_biography("graph"))
-        .collect::<Vec<_>>();
-
-    println!(
-        "Found {} people interested in graphs",
-        graph_enthusiasts.len()
-    );
-
-    // Find people with "network" in their biography
-    let network_specialists = graph
-        .walk()
-        .vertices(Vertex::person_by_biography("network"))
-        .collect::<Vec<_>>();
-
-    println!("Found {} network specialists", network_specialists.len());
-
-    // Full-text search is more flexible than exact matching
-    // It can find partial matches, handle stemming, and more
-    // For example, searching for "develop" would also match "developer"
-    let develop_related = graph
-        .walk()
-        .vertices(Vertex::person_by_biography("develop"))
-        .collect::<Vec<_>>();
-
-    println!(
-        "Found {} people with 'develop' in their bio",
-        develop_related.len()
-    );
     // ANCHOR_END: full_text_queries
+
+    // ANCHOR: full_text_vs_scan
+    // Comparison: Full-text index vs. manual string search
+
+    // 1. Using full-text index (efficient)
+    let search_term = "network";
+    let by_index = graph
+        .walk()
+        .vertices(Vertex::person_by_biography(search_term))
+        .collect::<Vec<_>>();
+
+    // 2. Using scan (inefficient)
+    let by_scan = graph
+        .walk()
+        .vertices(VertexSearch::scan())
+        .filter_by_person(|person, _| {
+            person
+                .biography()
+                .to_lowercase()
+                .contains(&search_term.to_lowercase())
+        })
+        .collect::<Vec<_>>();
+
+    // Both approaches find matching vertices
+    assert_eq!(by_index.len(), by_scan.len());
+    // But the full-text index is much more efficient for large graphs
+    // and provides additional features like relevance ranking
+    // ANCHOR_END: full_text_vs_scan
 }
 // ANCHOR_END: all

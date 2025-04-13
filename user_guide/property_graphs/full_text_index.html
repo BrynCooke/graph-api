@@ -192,19 +192,15 @@ identified in the graph.</li>
 associated with graph elements.</p>
 <h2 id="defining-full-text-indexes"><a class="header" href="#defining-full-text-indexes">Defining Full-text Indexes</a></h2>
 <p>In Graph API, you define a full-text index by using the <code>#[index(full_text)]</code> attribute on string fields:</p>
-<pre><code class="language-rust noplayground">// Function explaining full-text indexes
-pub fn define_full_text_index() {
-    // Full-text indexes enable text search capabilities for string properties
-    // They are defined using the #[index(full_text)] attribute
+<pre><code class="language-rust noplayground">#[derive(VertexExt)]
+pub enum IndexedVertex {
+    // Person vertex with various properties
+    Person {
+        name: String, // Not indexed
 
-    // In the Vertex enum from standard_model.rs:
-    // - Person::biography has a full-text index for text search
-    //   This allows for partial matches and fuzzy search
-
-    // Full-text indexes are ideal for:
-    // - Long text fields (descriptions, biographies, articles)
-    // - Search by keyword functionality
-    // - Natural language search
+        #[index(hash)] // Full-textHash index for exact lookups
+        username: String,
+    },
 }</code></pre>
 <h2 id="how-full-text-indexes-work"><a class="header" href="#how-full-text-indexes-work">How Full-text Indexes Work</a></h2>
 <p>Behind the scenes, full-text indexes:</p>
@@ -222,39 +218,7 @@ pub fn define_full_text_index() {
         .vertices(Vertex::person_by_biography("developer"))
         .collect::&lt;Vec&lt;_&gt;&gt;();
 
-    println!("Found {} people who are developers", developers.len());
-
-    // Find people with "graph" in their biography
-    let graph_enthusiasts = graph
-        .walk()
-        .vertices(Vertex::person_by_biography("graph"))
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    println!(
-        "Found {} people interested in graphs",
-        graph_enthusiasts.len()
-    );
-
-    // Find people with "network" in their biography
-    let network_specialists = graph
-        .walk()
-        .vertices(Vertex::person_by_biography("network"))
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    println!("Found {} network specialists", network_specialists.len());
-
-    // Full-text search is more flexible than exact matching
-    // It can find partial matches, handle stemming, and more
-    // For example, searching for "develop" would also match "developer"
-    let develop_related = graph
-        .walk()
-        .vertices(Vertex::person_by_biography("develop"))
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    println!(
-        "Found {} people with 'develop' in their bio",
-        develop_related.len()
-    );</code></pre>
+    println!("Found {} people who are developers", developers.len());</code></pre>
 <h2 id="performance-benefits"><a class="header" href="#performance-benefits">Performance Benefits</a></h2>
 <p>Full-text indexes provide significant advantages for text search:</p>
 <ol>
@@ -288,8 +252,7 @@ pub fn define_full_text_index() {
 <li><strong>Tokenization limitations</strong>: Basic word splitting may not handle all languages equally</li>
 <li><strong>Update complexity</strong>: Maintaining the index adds overhead during updates</li>
 </ol>
-<p>For range-based queries, see <a href="./range_index.html">range indexes</a>, and for combining different index types,
-see <a href="./combining_indexes.html">combining indexes</a>.</p>
+<p>For range-based queries, see <a href="./range_index.html">range indexes</a>.</p>
 
                     </main>
 

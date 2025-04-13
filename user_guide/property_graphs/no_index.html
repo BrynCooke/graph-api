@@ -228,14 +228,7 @@ pub enum Edge {
     let bryn_vertices = graph
         .walk()
         .vertices(VertexSearch::scan()) // Must scan ALL vertices
-        .filter(|vertex, _| {
-            // Manual pattern matching and filtering
-            if let Vertex::Person { name, .. } = vertex.weight() {
-                name == "Bryn"
-            } else {
-                false
-            }
-        })
+        .filter_by_person(|person, _| person.name() == "Bryn")
         .collect::&lt;Vec&lt;_&gt;&gt;();
 
     println!("Found {} vertices for Bryn", bryn_vertices.len());</code></pre>
@@ -246,14 +239,7 @@ pub enum Edge {
     let graphapi_projects = graph
         .walk()
         .vertices(VertexSearch::scan()) // Must scan ALL vertices
-        .filter(|vertex, _| {
-            // Manual pattern matching and filtering
-            if let Vertex::Project { name } = vertex.weight() {
-                name == "GraphApi"
-            } else {
-                false
-            }
-        })
+        .filter_by_project(|project, _| project.name() == "GraphApi")
         .collect::&lt;Vec&lt;_&gt;&gt;();
 
     println!("Found {} GraphApi projects", graphapi_projects.len());</code></pre>
@@ -264,36 +250,23 @@ pub enum Edge {
 </ol>
 <pre><code class="language-rust noplayground">    // COMPARISON: Using an index vs. not using an index
     // 1. Inefficient: Find people with a specific username using a scan
-    let start_scan = std::time::Instant::now();
-    let _julia_by_scan = graph
+    let julia_by_scan = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .filter(|vertex, _| {
-            if let Vertex::Person { username, .. } = vertex.weight() {
-                username == "julia456"
-            } else {
-                false
-            }
-        })
+        .filter_by_person(|person, _| person.username() == "julia456")
         .collect::&lt;Vec&lt;_&gt;&gt;();
-    let scan_duration = start_scan.elapsed();</code></pre>
+
+    println!("Found {} with username julia456", julia_by_scan.len());</code></pre>
 <ol start="2">
 <li><strong>Efficient approach</strong> - using the index:</li>
 </ol>
 <pre><code class="language-rust noplayground">    // 2. Efficient: Find the same person using the username index
-    let start_index = std::time::Instant::now();
-    let _julia_by_index = graph
+    let julia_by_index = graph
         .walk()
         .vertices(Vertex::person_by_username("julia456"))
         .collect::&lt;Vec&lt;_&gt;&gt;();
-    let index_duration = start_index.elapsed();
 
-    println!("Scan duration: {:?}", scan_duration);
-    println!("Index duration: {:?}", index_duration);
-    println!(
-        "Speedup factor: {:.2}x",
-        scan_duration.as_nanos() as f64 / index_duration.as_nanos() as f64
-    );</code></pre>
+    println!("Found {} with username julia456", julia_by_index.len());</code></pre>
 <h2 id="performance-implications"><a class="header" href="#performance-implications">Performance Implications</a></h2>
 <p>For small graphs, scanning might be acceptable, but as graphs grow, scanning becomes increasingly inefficient:</p>
 <ol>

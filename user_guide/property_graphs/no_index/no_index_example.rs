@@ -1,4 +1,4 @@
-use crate::standard_model::{Vertex, standard_populated_graph};
+use crate::standard_model::{Vertex, VertexExt, standard_populated_graph};
 use graph_api_lib::{Graph, VertexReference, VertexSearch};
 
 // ANCHOR: all
@@ -14,14 +14,7 @@ pub fn scan_example() {
     let bryn_vertices = graph
         .walk()
         .vertices(VertexSearch::scan()) // Must scan ALL vertices
-        .filter(|vertex, _| {
-            // Manual pattern matching and filtering
-            if let Vertex::Person { name, .. } = vertex.weight() {
-                name == "Bryn"
-            } else {
-                false
-            }
-        })
+        .filter_by_person(|person, _| person.name() == "Bryn")
         .collect::<Vec<_>>();
 
     println!("Found {} vertices for Bryn", bryn_vertices.len());
@@ -33,14 +26,7 @@ pub fn scan_example() {
     let graphapi_projects = graph
         .walk()
         .vertices(VertexSearch::scan()) // Must scan ALL vertices
-        .filter(|vertex, _| {
-            // Manual pattern matching and filtering
-            if let Vertex::Project { name } = vertex.weight() {
-                name == "GraphApi"
-            } else {
-                false
-            }
-        })
+        .filter_by_project(|project, _| project.name() == "GraphApi")
         .collect::<Vec<_>>();
 
     println!("Found {} GraphApi projects", graphapi_projects.len());
@@ -49,36 +35,23 @@ pub fn scan_example() {
     // ANCHOR: comparison_scan
     // COMPARISON: Using an index vs. not using an index
     // 1. Inefficient: Find people with a specific username using a scan
-    let start_scan = std::time::Instant::now();
-    let _julia_by_scan = graph
+    let julia_by_scan = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .filter(|vertex, _| {
-            if let Vertex::Person { username, .. } = vertex.weight() {
-                username == "julia456"
-            } else {
-                false
-            }
-        })
+        .filter_by_person(|person, _| person.username() == "julia456")
         .collect::<Vec<_>>();
-    let scan_duration = start_scan.elapsed();
+
+    println!("Found {} with username julia456", julia_by_scan.len());
     // ANCHOR_END: comparison_scan
 
     // ANCHOR: comparison_index
     // 2. Efficient: Find the same person using the username index
-    let start_index = std::time::Instant::now();
-    let _julia_by_index = graph
+    let julia_by_index = graph
         .walk()
         .vertices(Vertex::person_by_username("julia456"))
         .collect::<Vec<_>>();
-    let index_duration = start_index.elapsed();
 
-    println!("Scan duration: {:?}", scan_duration);
-    println!("Index duration: {:?}", index_duration);
-    println!(
-        "Speedup factor: {:.2}x",
-        scan_duration.as_nanos() as f64 / index_duration.as_nanos() as f64
-    );
+    println!("Found {} with username julia456", julia_by_index.len());
     // ANCHOR_END: comparison_index
 }
 // ANCHOR_END: all

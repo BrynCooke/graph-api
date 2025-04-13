@@ -681,14 +681,7 @@ pub enum Edge {
     let bryn_vertices = graph
         .walk()
         .vertices(VertexSearch::scan()) // Must scan ALL vertices
-        .filter(|vertex, _| {
-            // Manual pattern matching and filtering
-            if let Vertex::Person { name, .. } = vertex.weight() {
-                name == "Bryn"
-            } else {
-                false
-            }
-        })
+        .filter_by_person(|person, _| person.name() == "Bryn")
         .collect::&lt;Vec&lt;_&gt;&gt;();
 
     println!("Found {} vertices for Bryn", bryn_vertices.len());</code></pre>
@@ -699,14 +692,7 @@ pub enum Edge {
     let graphapi_projects = graph
         .walk()
         .vertices(VertexSearch::scan()) // Must scan ALL vertices
-        .filter(|vertex, _| {
-            // Manual pattern matching and filtering
-            if let Vertex::Project { name } = vertex.weight() {
-                name == "GraphApi"
-            } else {
-                false
-            }
-        })
+        .filter_by_project(|project, _| project.name() == "GraphApi")
         .collect::&lt;Vec&lt;_&gt;&gt;();
 
     println!("Found {} GraphApi projects", graphapi_projects.len());</code></pre>
@@ -717,36 +703,23 @@ pub enum Edge {
 </ol>
 <pre><code class="language-rust noplayground">    // COMPARISON: Using an index vs. not using an index
     // 1. Inefficient: Find people with a specific username using a scan
-    let start_scan = std::time::Instant::now();
-    let _julia_by_scan = graph
+    let julia_by_scan = graph
         .walk()
         .vertices(VertexSearch::scan())
-        .filter(|vertex, _| {
-            if let Vertex::Person { username, .. } = vertex.weight() {
-                username == "julia456"
-            } else {
-                false
-            }
-        })
+        .filter_by_person(|person, _| person.username() == "julia456")
         .collect::&lt;Vec&lt;_&gt;&gt;();
-    let scan_duration = start_scan.elapsed();</code></pre>
+
+    println!("Found {} with username julia456", julia_by_scan.len());</code></pre>
 <ol start="2">
 <li><strong>Efficient approach</strong> - using the index:</li>
 </ol>
 <pre><code class="language-rust noplayground">    // 2. Efficient: Find the same person using the username index
-    let start_index = std::time::Instant::now();
-    let _julia_by_index = graph
+    let julia_by_index = graph
         .walk()
         .vertices(Vertex::person_by_username("julia456"))
         .collect::&lt;Vec&lt;_&gt;&gt;();
-    let index_duration = start_index.elapsed();
 
-    println!("Scan duration: {:?}", scan_duration);
-    println!("Index duration: {:?}", index_duration);
-    println!(
-        "Speedup factor: {:.2}x",
-        scan_duration.as_nanos() as f64 / index_duration.as_nanos() as f64
-    );</code></pre>
+    println!("Found {} with username julia456", julia_by_index.len());</code></pre>
 <h2 id="performance-implications"><a class="header" href="#performance-implications">Performance Implications</a></h2>
 <p>For small graphs, scanning might be acceptable, but as graphs grow, scanning becomes increasingly inefficient:</p>
 <ol>
@@ -795,31 +768,15 @@ value without scanning the entire graph. It uses a hash table data structure for
 instead of checking every vertex in the graph.</p>
 <h2 id="defining-hash-indexes"><a class="header" href="#defining-hash-indexes">Defining Hash Indexes</a></h2>
 <p>In Graph API, you define a hash index by adding the <code>#[index(hash)]</code> attribute to a field in your vertex enum:</p>
-<pre><code class="language-rust noplayground">#[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
+<pre><code class="language-rust noplayground">#[derive(VertexExt)]
+pub enum IndexedVertex {
+    // Person vertex with various properties
     Person {
-        name: String,
+        name: String, // Not indexed
 
-        #[index(hash)] // Hash index for username lookups
+        #[index(hash)] // Full-textHash index for exact lookups
         username: String,
-
-        age: u8,
     },
-
-    Product {
-        name: String,
-
-        #[index(hash)] // Hash index for SKU lookups
-        sku: String,
-
-        price: f32,
-    },
-}
-
-#[derive(Debug, Clone, EdgeExt)]
-pub enum Edge {
-    Purchased,
-    Viewed,
 }</code></pre>
 <h2 id="how-hash-indexes-work"><a class="header" href="#how-hash-indexes-work">How Hash Indexes Work</a></h2>
 <p>When you apply the <code>#[index(hash)]</code> attribute to a field:</p>
@@ -830,41 +787,13 @@ pub enum Edge {
 </ol>
 <h2 id="querying-with-hash-indexes"><a class="header" href="#querying-with-hash-indexes">Querying with Hash Indexes</a></h2>
 <p>The real power of hash indexes becomes apparent when querying the graph:</p>
-<pre><code class="language-rust noplayground">    // Find a person by username (using hash index)
-    let _alice_results = graph
+<pre><code class="language-rust noplayground">    // Find a person by their username (using hash index)
+    let julia = graph
         .walk()
-        .vertices(VertexSearch::scan())
-        .filter_by_person(|p, _| p.username() == "alice123")
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    // Find a product by SKU (using hash index)
-    let headphones = graph
-        .walk()
-        .vertices(VertexSearch::scan())
-        .filter_by_product(|p, _| p.sku() == "AUD-2002")
+        .vertices(Vertex::person_by_username("julia456"))
         .first();
 
-    // Find who purchased a specific product (combining index lookup with traversal)
-    // For real code, we would get the ID from the vertex
-    // For this documentation example, we'll simplify
-    if headphones.is_some() {
-        // Get product by SKU instead of by ID
-        let purchasers = graph
-            .walk()
-            .vertices(VertexSearch::scan())
-            .filter_by_product(|p, _| p.sku() == "AUD-2002")
-            .edges(EdgeSearch::scan().incoming())
-            .filter_purchased() // Type-safe filter using the generated helper
-            .head()
-            .filter_person() // Type-safe filter using the generated helper
-            .map(|v, _| {
-                // Type-safe property access using projection
-                v.project::&lt;Person&lt;_&gt;&gt;().unwrap().name().to_string()
-            })
-            .collect::&lt;Vec&lt;_&gt;&gt;();
-
-        println!("People who purchased headphones: {:?}", purchasers);
-    }</code></pre>
+    println!("Found Julia: {}", julia.is_some());</code></pre>
 <h2 id="performance-benefits"><a class="header" href="#performance-benefits">Performance Benefits</a></h2>
 <p>Hash indexes offer significant performance advantages:</p>
 <ol>
@@ -916,46 +845,22 @@ appears twice, pointing to both <code>B</code> and <code>D</code>.</li>
 <li>The vertices associated with these index entries (<code>B</code>, <code>D</code>, <code>C</code>) are identified as the result.</li>
 </ul>
 </li>
-<li>The <strong>orange highlighting</strong> shows the portion of the index scanned (<code>age &gt;= 35</code>) and the resulting vertices (<code>B</code>, <code>D</code>, <code>C</code>) in the graph.</li>
+<li>The <strong>orange highlighting</strong> shows the portion of the index scanned (<code>age &gt;= 35</code>) and the resulting vertices (<code>B</code>, <code>D</code>,
+<code>C</code>) in the graph.</li>
 <li><strong>Blue arrows</strong> point from the selected index entries to the corresponding graph vertices.</li>
 </ul>
 <p>This is much faster than checking the <code>age</code> property of every single vertex in the graph for large datasets.</p>
 <h2 id="defining-range-indexes"><a class="header" href="#defining-range-indexes">Defining Range Indexes</a></h2>
 <p>In Graph API, you define a range index by adding the <code>#[index(range)]</code> attribute to a field in your vertex or edge enum:</p>
-<pre><code class="language-rust noplayground">#[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
-    // Person vertex with range-indexed age
+<pre><code class="language-rust noplayground">#[derive(VertexExt)]
+pub enum IndexedVertex {
+    // Person vertex with various properties
     Person {
-        name: String,
+        name: String, // Not indexed
 
-        #[index(hash)]
-        username: String,
-
-        #[index(range)] // Range index for age-based queries
-        age: u32,
+        #[index(range)] // Range index for range lookups
+        age: u8,
     },
-
-    // Product vertex with range-indexed price
-    Product {
-        name: String,
-
-        #[index(hash)]
-        sku: String,
-
-        #[index(range)] // Range index for price-based queries
-        price: f64,
-
-        #[index(range)] // Range index for date-based queries
-        release_date: String, // Format: "YYYY-MM-DD"
-    },
-}
-
-#[derive(Debug, Clone, EdgeExt)]
-pub enum Edge {
-    Purchased {
-        timestamp: String, // Format: "YYYY-MM-DD"
-    },
-    Viewed,
 }</code></pre>
 <h2 id="how-range-indexes-work"><a class="header" href="#how-range-indexes-work">How Range Indexes Work</a></h2>
 <p>When you apply the <code>#[index(range)]</code> attribute to a field:</p>
@@ -967,96 +872,13 @@ pub enum Edge {
 <p>Range indexes typically use ordered data structures like B-trees or skip lists to enable efficient range lookups.</p>
 <h2 id="querying-with-range-indexes"><a class="header" href="#querying-with-range-indexes">Querying with Range Indexes</a></h2>
 <p>The primary benefit of range indexes is the ability to perform efficient range queries:</p>
-<pre><code class="language-rust noplayground">    // Find people in a specific age range (30-45)
-    let middle_aged = graph
+<pre><code class="language-rust noplayground">    // Find people within a specific age range (29-35)
+    let age_range_results = graph
         .walk()
-        .vertices(VertexSearch::scan())
-        .filter_by_person(|person, _| {
-            // Range query on age property
-            let age = person.age();
-            (30..=45).contains(&amp;age)
-        })
-        .map(|v, _| {
-            // Use type-safe projection
-            let person = v.project::&lt;Person&lt;_&gt;&gt;().unwrap();
-            format!("{} ({})", person.name(), person.age())
-        })
+        .vertices(Vertex::person_by_age_range(29..36))
         .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    // Find products in a specific price range ($100-$500)
-    let mid_price_products = graph
-        .walk()
-        .vertices(VertexSearch::scan())
-        .filter_by_product(|product, _| {
-            // Range query on price property
-            let price = product.price();
-            (100.0..=500.0).contains(&amp;price)
-        })
-        .map(|v, _| {
-            // Use type-safe projection
-            let product = v.project::&lt;Product&lt;_&gt;&gt;().unwrap();
-            format!("{} (${:.2})", product.name(), product.price())
-        })
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    // Find products released in the first quarter of 2023
-    let q1_products = graph
-        .walk()
-        .vertices(VertexSearch::scan())
-        .filter_by_product(|product, _| {
-            // Range query on release_date property
-            let date = product.release_date();
-            ("2023-01-01"..="2023-03-31").contains(&amp;date)
-        })
-        .map(|v, _| {
-            // Use type-safe projection
-            let product = v.project::&lt;Product&lt;_&gt;&gt;().unwrap();
-            format!("{} (released: {})", product.name(), product.release_date())
-        })
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    // Find purchases made in a specific date range
-    let q1_purchases = graph
-        .walk()
-        .vertices(VertexSearch::scan())
-        .edges(EdgeSearch::scan())
-        .filter_by_purchased(|edge, _| {
-            // Range query on timestamp property
-            let timestamp = edge.timestamp();
-            ("2023-01-01"..="2023-03-31").contains(&amp;timestamp)
-        })
-        .head()
-        .filter_person() // Type-safe filter using generated helper
-        .map(|v, _| {
-            // Use type-safe projection
-            v.project::&lt;Person&lt;_&gt;&gt;().unwrap().name().to_string()
-        })
-        .collect::&lt;Vec&lt;_&gt;&gt;();</code></pre>
-<h2 id="sorting-and-pagination"><a class="header" href="#sorting-and-pagination">Sorting and Pagination</a></h2>
-<p>While Graph API doesn't directly support sorted indexes, you can use range indexes to optimize sorted query results:</p>
-<pre><code class="language-rust noplayground">    // Find people in a specific age range (21-50), sorted by age descending
-    let _people_by_age = graph
-        .walk()
-        .vertices(VertexSearch::scan())
-        .filter_by_person(|person, _| {
-            // Range query on age property
-            let age = person.age();
-            (21..=50).contains(&amp;age)
-        })
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    // For sorting, we would extract the data from vertices
-    // For this documentation example, we'll use simplified data
-    let mut person_data = [("Alice", 28), ("Bob", 35), ("Carol", 42)];
-
-    // Sort by age in descending order
-    person_data.sort_by(|(_, age_a), (_, age_b)| age_b.cmp(age_a));
-
-    // Map the sorted results to names with ages
-    let people_sorted = person_data
-        .iter()
-        .map(|(name, age)| format!("{} ({})", name, age))
-        .collect::&lt;Vec&lt;_&gt;&gt;();</code></pre>
+    println!("Found {} people aged 29-35", age_range_results.len());
+</code></pre>
 <h2 id="performance-benefits-1"><a class="header" href="#performance-benefits-1">Performance Benefits</a></h2>
 <p>Range indexes offer significant performance advantages for range-based queries:</p>
 <ol>
@@ -1129,19 +951,15 @@ identified in the graph.</li>
 associated with graph elements.</p>
 <h2 id="defining-full-text-indexes"><a class="header" href="#defining-full-text-indexes">Defining Full-text Indexes</a></h2>
 <p>In Graph API, you define a full-text index by using the <code>#[index(full_text)]</code> attribute on string fields:</p>
-<pre><code class="language-rust noplayground">// Function explaining full-text indexes
-pub fn define_full_text_index() {
-    // Full-text indexes enable text search capabilities for string properties
-    // They are defined using the #[index(full_text)] attribute
+<pre><code class="language-rust noplayground">#[derive(VertexExt)]
+pub enum IndexedVertex {
+    // Person vertex with various properties
+    Person {
+        name: String, // Not indexed
 
-    // In the Vertex enum from standard_model.rs:
-    // - Person::biography has a full-text index for text search
-    //   This allows for partial matches and fuzzy search
-
-    // Full-text indexes are ideal for:
-    // - Long text fields (descriptions, biographies, articles)
-    // - Search by keyword functionality
-    // - Natural language search
+        #[index(hash)] // Full-textHash index for exact lookups
+        username: String,
+    },
 }</code></pre>
 <h2 id="how-full-text-indexes-work"><a class="header" href="#how-full-text-indexes-work">How Full-text Indexes Work</a></h2>
 <p>Behind the scenes, full-text indexes:</p>
@@ -1159,39 +977,7 @@ pub fn define_full_text_index() {
         .vertices(Vertex::person_by_biography("developer"))
         .collect::&lt;Vec&lt;_&gt;&gt;();
 
-    println!("Found {} people who are developers", developers.len());
-
-    // Find people with "graph" in their biography
-    let graph_enthusiasts = graph
-        .walk()
-        .vertices(Vertex::person_by_biography("graph"))
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    println!(
-        "Found {} people interested in graphs",
-        graph_enthusiasts.len()
-    );
-
-    // Find people with "network" in their biography
-    let network_specialists = graph
-        .walk()
-        .vertices(Vertex::person_by_biography("network"))
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    println!("Found {} network specialists", network_specialists.len());
-
-    // Full-text search is more flexible than exact matching
-    // It can find partial matches, handle stemming, and more
-    // For example, searching for "develop" would also match "developer"
-    let develop_related = graph
-        .walk()
-        .vertices(Vertex::person_by_biography("develop"))
-        .collect::&lt;Vec&lt;_&gt;&gt;();
-
-    println!(
-        "Found {} people with 'develop' in their bio",
-        develop_related.len()
-    );</code></pre>
+    println!("Found {} people who are developers", developers.len());</code></pre>
 <h2 id="performance-benefits-2"><a class="header" href="#performance-benefits-2">Performance Benefits</a></h2>
 <p>Full-text indexes provide significant advantages for text search:</p>
 <ol>
@@ -1225,8 +1011,7 @@ pub fn define_full_text_index() {
 <li><strong>Tokenization limitations</strong>: Basic word splitting may not handle all languages equally</li>
 <li><strong>Update complexity</strong>: Maintaining the index adds overhead during updates</li>
 </ol>
-<p>For range-based queries, see <a href="user_guide/property_graphs/./range_index.html">range indexes</a>, and for combining different index types,
-see <a href="user_guide/property_graphs/./combining_indexes.html">combining indexes</a>.</p>
+<p>For range-based queries, see <a href="user_guide/property_graphs/./range_index.html">range indexes</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="derive-macros"><a class="header" href="#derive-macros">Derive Macros</a></h1>
 <p>Graph API's derive macros automatically generate code that integrates your custom types with the Graph API framework,
 making your graph operations type-safe and ergonomic. This section explains the types that are generated and how to use
