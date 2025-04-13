@@ -1,13 +1,12 @@
 name: GitHub Pages
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  release:
+    types: [published]
 
 jobs:
   deploy:
+    name: Deploy Github Pages
     if: ${{ github.repository_owner == 'bryncooke' }}
     runs-on: ubuntu-latest
     permissions:
@@ -53,7 +52,6 @@ jobs:
 
       - name: Deploy Github Pages
         uses: peaceiris/actions-gh-pages@v4
-        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./graph-api-book/book
