@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   deploy:
+    name: Deploy Github Pages
     if: ${{ github.repository_owner == 'bryncooke' }}
     runs-on: ubuntu-latest
     permissions:
