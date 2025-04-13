@@ -1,6 +1,6 @@
 [package]
 name = "graph-api-petgraph"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2024"
 description = "Integration between graph-api and petgraph - use graph-api's traversal system with petgraph structures"
 authors = ["Bryn Cooke"]
@@ -15,7 +15,7 @@ categories = ["data-structures", "algorithms"]
 bench = false
 
 [dependencies]
-graph-api-lib = { version = "0.1.2", path = "../graph-api-lib", features = ["petgraph"] }
+graph-api-lib = { version = "0.1.3", path = "../graph-api-lib", features = ["petgraph"] }
 petgraph = { workspace = true }
 
 [dev-dependencies]
