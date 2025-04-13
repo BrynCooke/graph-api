@@ -46,12 +46,12 @@ And we'll generate a wealth of useful code for you:
 * **Type-Safe Projections**: Access vertex and edge data with confidence using `Person<_>` and `Knows<_>` projections
 * **Safe Mutations**: Update properties with automatic index management via `PersonMut` and `KnowsMut`
 * **Specialized Query Helpers**: Find exactly what you're looking for with generated index methods:
-    * `VertexIndex::person_by_name("Bryn")`: Find people by name
-    * `VertexIndex::person_by_age(30..50)`: Find people in an age range
-    * `VertexIndex::person_by_biography("graph")`: Find people whose biography mentions "graph"
+    * `Vertex::person_by_name("Bryn")`: Find people by name
+    * `Vertex::person_by_age(30..50)`: Find people in an age range
+    * `Vertex::person_by_biography("graph")`: Find people whose biography mentions "graph"
 * **Tailored Edge Traversals**: Navigate your graph with purpose:
-    * `EdgeIndex::knows()`: Follow "knows" relationships
-    * `EdgeIndex::created()`: Explore creation relationships
+    * `Edge::knows()`: Follow "knows" relationships
+    * `Edge::created()`: Explore creation relationships
 
 ## Benefits
 
