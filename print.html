@@ -254,12 +254,12 @@ implementation.</p>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <p>Add the Graph API to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-lib = "0.1.0"
-graph-api-derive = "0.1.0"  # For derive macros
+graph-api-lib = "0.1.2"
+graph-api-derive = "0.1.2"  # For derive macros
 </code></pre>
 <p>For a simple graph implementation:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-simplegraph = "0.1.0"
+graph-api-simplegraph = "0.1.2"
 </code></pre>
 <h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
 <h3 id="your-first-graph"><a class="header" href="#your-first-graph">Your First Graph</a></h3>
@@ -4700,7 +4700,7 @@ covers:</p>
 <li>Add <code>graph-api-test</code> as a dev-dependency in your <code>Cargo.toml</code>:</li>
 </ol>
 <pre><code class="language-toml">[dev-dependencies]
-graph-api-test = { version = "0.1.0", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-test = { version = "0.1.2", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 </code></pre>
 <ol start="2">
@@ -5456,7 +5456,7 @@ how to set up and run benchmarks, interpret results, and use benchmarking to gui
 <p>First, add the necessary dependencies to your <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[dev-dependencies]
 criterion = "0.5"
-graph-api-benches = { version = "0.1.0", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-benches = { version = "0.1.2", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 [[bench]]
 name = "my_graph_benchmarks"
@@ -5528,7 +5528,7 @@ cargo bench
 cargo bench -- vertex_insertion
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h1>
-<p>Check out the <a href="https://docs.rs/graph-api-lib/0.1.0/graph_api_lib/">docs on docs.rs</a>,</p>
+<p>Check out the <a href="https://docs.rs/graph-api-lib/0.1.2/graph_api_lib/">docs on docs.rs</a>,</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="support-traits"><a class="header" href="#support-traits">Support Traits</a></h1>
 <p>The Graph API uses a trait-based approach to indicate which optional features a graph implementation supports. This
 allows for a more flexible and extensible API, where new capabilities can be added over time without breaking existing
