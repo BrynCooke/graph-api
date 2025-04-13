@@ -28,7 +28,7 @@ bench = false
 
 [dependencies]
 graph-api-lib = { version = "0.1.1", path = "../graph-api-lib" }
-graph-api-derive = { version = "0.1.0", path = "../graph-api-derive" }
+graph-api-derive = { version = "0.1.1", path = "../graph-api-derive" }
 uuid = { version = "1.11.0", features = ["v4"] }
 criterion = { version = "0.5", features = ["html_reports"] }
 rand = { version = "0.8" }

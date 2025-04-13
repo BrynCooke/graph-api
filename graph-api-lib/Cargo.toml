@@ -19,9 +19,7 @@ petgraph = [
 [dependencies]
 petgraph = { workspace = true, optional = true }
 uuid = { version = "1.11.0", features = ["v4"] }
-thiserror = "2.0.3"
 derivative = "2.2.0"
-graph-api-derive = { version = "0.1.0", path = "../graph-api-derive" }
 include-doc = "0.2.1"
 
 [dev-dependencies]

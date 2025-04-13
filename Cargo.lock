@@ -416,7 +416,7 @@ dependencies = [
 
 [[package]]
 name = "graph-api-derive"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "case",
  "graph-api-lib",
@@ -434,12 +434,10 @@ name = "graph-api-lib"
 version = "0.1.1"
 dependencies = [
  "derivative",
- "graph-api-derive",
  "graph-api-simplegraph",
  "graph-api-test",
  "include-doc",
  "petgraph",
- "thiserror",
  "uuid",
 ]
 
@@ -462,7 +460,6 @@ dependencies = [
  "criterion",
  "fastbloom",
  "graph-api-benches",
- "graph-api-derive",
  "graph-api-lib",
  "graph-api-test",
  "paste",
