@@ -21,7 +21,7 @@ edition = "2024"
 rust-version = "1.80"
 
 [workspace.dependencies]
-petgraph = "0.7.1"
+petgraph = "0.8.0"
 
 # The profile that 'dist' will build with
 [profile.dist]
