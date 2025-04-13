@@ -40,12 +40,12 @@ pub enum Edge {
 let mut graph = SimpleGraph::new();
 
 // Use the graph
-let alice = graph.add_vertex(Vertex::Person { 
-    name: "Alice".to_string(), 
-    age: 30 
+let alice = graph.add_vertex(Vertex::Person {
+name: "Alice".to_string(),
+age: 30
 });
-let project = graph.add_vertex(Vertex::Project { 
-    name: "Graph API".to_string() 
+let project = graph.add_vertex(Vertex::Project {
+name: "Graph API".to_string()
 });
 graph.add_edge(alice, project, Edge::Created);
 ```
@@ -86,12 +86,13 @@ graph.add_edge(alice, project, Edge::Created);
 `SimpleGraph` is primarily designed for feature completeness and ease of understanding, not for high performance:
 
 1. **Correctness over Speed**: Implementation prioritizes demonstrating API features correctly.
-2. **Basic Optimizations**: Includes fundamental optimizations like adjacency lists but lacks advanced performance tuning.
-3. **Not Production-Ready**: Generally not recommended for performance-critical production environments.
+2. **Basic Optimizations**: Includes fundamental optimizations like adjacency lists but lacks advanced performance
+   tuning.
 
 ### Benchmarks
 
-Benchmarks exist primarily to validate the *functionality* of the API features rather than to showcase raw speed. Expect:
+Benchmarks exist primarily to validate the *functionality* of the API features rather than to showcase raw speed.
+Expect:
 
 - Functional insertion and removal.
 - Correct index lookups (hash, range, full-text) but potentially slower than highly optimized alternatives.
@@ -186,20 +187,20 @@ pub enum Edge {
 let mut graph = SimpleGraph::new();
 
 // Add vertices
-let alice = graph.add_vertex(Vertex::Person { 
-    name: "Alice".to_string(), 
-    age: 30,
-    bio: "Graph enthusiast".to_string(),
+let alice = graph.add_vertex(Vertex::Person {
+name: "Alice".to_string(),
+age: 30,
+bio: "Graph enthusiast".to_string(),
 });
 
-let bob = graph.add_vertex(Vertex::Person { 
-    name: "Bob".to_string(), 
-    age: 25,
-    bio: "Software developer".to_string(),
+let bob = graph.add_vertex(Vertex::Person {
+name: "Bob".to_string(),
+age: 25,
+bio: "Software developer".to_string(),
 });
 
-let project = graph.add_vertex(Vertex::Project { 
-    name: "Graph API".to_string() 
+let project = graph.add_vertex(Vertex::Project {
+name: "Graph API".to_string()
 });
 
 // Add edges
@@ -209,34 +210,34 @@ graph.add_edge(bob, project, Edge::Created);
 
 // Query by label
 let people = graph.walk()
-    .vertices(Vertex::person_all())
-    .collect::<Vec<_>>();
+.vertices(Vertex::person_all())
+.collect::<Vec<_ > > ();
 assert_eq!(people.len(), 2);
 
 // Query by property (hash index)
 let alice_found = graph.walk()
-    .vertices(Vertex::person_by_name("Alice"))
-    .collect::<Vec<_>>();
+.vertices(Vertex::person_by_name("Alice"))
+.collect::<Vec<_ > > ();
 assert_eq!(alice_found.len(), 1);
 
 // Query by range (range index)
 let young_people = graph.walk()
-    .vertices(Vertex::person_by_age(20..30))
-    .collect::<Vec<_>>();
+.vertices(Vertex::person_by_age(20..30))
+.collect::<Vec<_ > > ();
 assert_eq!(young_people.len(), 1);
 
 // Text search (full-text index)
 let developers = graph.walk()
-    .vertices(Vertex::person_by_bio("developer"))
-    .collect::<Vec<_>>();
+.vertices(Vertex::person_by_bio("developer"))
+.collect::<Vec<_ > > ();
 assert_eq!(developers.len(), 1);
 
 // Traversal
 let alices_creations = graph.walk()
-    .vertices(Vertex::person_by_name("Alice"))
-    .edges(Edge::created().direction(Direction::Outgoing))
-    .head()
-    .collect::<Vec<_>>();
+.vertices(Vertex::person_by_name("Alice"))
+.edges(Edge::created().direction(Direction::Outgoing))
+.head()
+.collect::<Vec<_ > > ();
 assert_eq!(alices_creations.len(), 1);
 ```
 
