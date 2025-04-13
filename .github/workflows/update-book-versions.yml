@@ -1,13 +1,14 @@
-name: Update Book Versions
+name: PR Helpers
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened ]
     branches:
       - main
 
 jobs:
   update-book-versions:
+    name: Update book versions
     if: ${{ contains(github.event.pull_request.labels.*.name, 'release') }}
     runs-on: ubuntu-latest
     permissions:
@@ -25,7 +26,7 @@ jobs:
 
       - name: Install just command runner
         uses: extractions/setup-just@v3
-        
+
       - name: Update book versions
         run: just update-book-versions
 
