@@ -10,6 +10,8 @@ additional-css = ["theme/custom.css"]
 git-repository-url = "https://github.com/BrynCooke/graph-api"
 git-repository-icon = "fa-github"
 
+[output.linkcheck]
+
 [preprocessor.variables.variables]
 version = "0.1.4"  # Legacy variable - will be removed once all md files are updated
 lib_version = "0.1.4"

@@ -1,7 +1,7 @@
 # Creating a Graph Implementation
 
 This chapter provides detailed guidance for implementing a new Graph API backend. It expands on the concepts introduced
-in the [Implementation Guide for Graph Backends](./guide).
+in the [Implementation Guide for Graph Backends](./guide.md).
 
 ## Design Considerations
 
@@ -201,7 +201,6 @@ After implementing the basic graph functionality:
 
 1. Review the [Testing Your Implementation](./testing.md) chapter for testing strategies.
 2. Check the [Implementing Indexes](./indexes.md) chapter for adding index support.
-3. See [Performance Considerations](./performance.md) for optimization tips.
 
 Remember that implementing a graph backend is an iterative process. Start with a minimal working implementation, test it
 thoroughly, and then add more features incrementally.
