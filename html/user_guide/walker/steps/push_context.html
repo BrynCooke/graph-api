@@ -1,0 +1,368 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>push_context - graph-api</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../favicon.png">
+        <link rel="stylesheet" href="../../../css/variables.css">
+        <link rel="stylesheet" href="../../../css/general.css">
+        <link rel="stylesheet" href="../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../../theme/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">graph-api</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/BrynCooke/graph-api" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="context"><a class="header" href="#context">Context</a></h1>
+<p>The <code>push_context</code> step allows you to carry information along a graph traversal, making it possible to access data from
+previous steps while working with the current element. Context creates a typed value that travels with the traversal
+without changing its position.</p>
+<object type="image/svg+xml" data="context/image.svg" title="Push Context Step Diagram">
+Context step diagram showing a fixed context value being attached to elements
+</object>
+<p>In this diagram:</p>
+<ul>
+<li>An <strong>Input Stream</strong> contains elements <strong>A</strong> and <strong>B</strong>.</li>
+<li>The <strong><code>.push_context(|v| v.id())</code></strong> step is applied. The context function (e.g., <code>|v| v.id()</code>) is evaluated <em>once</em> when the step is encountered (conceptually, when element <strong>A</strong> is processed).</li>
+<li>The resulting context value (e.g., <code>"A_ID"</code>) is then attached to <strong>all</strong> subsequent elements (<strong>A</strong> and <strong>B</strong>) in the <strong>Output Stream</strong>.</li>
+<li>This demonstrates that the context value is determined when the <code>push_context</code> step is applied and remains fixed for the rest of that traversal segment.</li>
+</ul>
+<h2 id="methods-for-adding-context"><a class="header" href="#methods-for-adding-context">Methods for Adding Context</a></h2>
+<pre><code class="language-rust noplayground">// Adding context to a traversal
+walker.push_context(|element, current_context| {
+    // Create and return new context value
+})
+
+// Adding current vertex/edge as context
+walker.push_default_context()</code></pre>
+<h2 id="parameters"><a class="header" href="#parameters">Parameters</a></h2>
+<ul>
+<li><code>context_fn</code>: A function that takes:
+<ul>
+<li>A reference to the current element (vertex or edge)</li>
+<li>The current context (if any)</li>
+<li>Returns a new context value to be carried along the traversal</li>
+</ul>
+</li>
+</ul>
+<h2 id="return-value"><a class="header" href="#return-value">Return Value</a></h2>
+<p>Returns a new walker with the context added, preserving the current traversal position.</p>
+<h2 id="accessing-context"><a class="header" href="#accessing-context">Accessing Context</a></h2>
+<p>Any step that accepts a function with context (like <code>map</code>, <code>filter</code>, etc.) will receive:</p>
+<ul>
+<li>The current element as the first parameter</li>
+<li>The context as the second parameter</li>
+</ul>
+<pre><code class="language-rust noplayground">// Using context in a map step
+walker
+    .push_context(|v, _| v.id())  // Store vertex ID
+    .map(|current, context| {
+        // Use the stored vertex ID from context
+        format!("Current: {}, Source: {}", current.id(), context)
+    })</code></pre>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<h3 id="vertex-context"><a class="header" href="#vertex-context">Vertex Context</a></h3>
+<p>Store information about the source vertex during a traversal:</p>
+<pre><code class="language-rust noplayground">    // Use push_default_context to make source vertex information available during traversal
+    let knows: Vec&lt;_&gt; = graph
+        .walk()
+        .vertices_by_id(vec![bryn_id, julia_id])
+        .push_default_context()
+        .edges(EdgeSearch::scan().outgoing())
+        .filter_follows()
+        .head()
+        .map(|target, ctx| {
+            if let Vertex::Person { name, .. } = ctx.vertex() {
+                format!(
+                    "{} follows {}",
+                    name,
+                    target.project::&lt;Person&lt;_&gt;&gt;().unwrap().name()
+                )
+            } else {
+                "Not a person".to_string()
+            }
+        })
+        .collect::&lt;Vec&lt;_&gt;&gt;();
+
+    // Check the results - should have 2 person descriptions
+    assert_eq!(knows.len(), 2);
+    println!("Vertex Context Example - Relationships found:");
+    for relationship in &amp;knows {
+        println!("- {}", relationship);
+    }</code></pre>
+<h3 id="edge-context"><a class="header" href="#edge-context">Edge Context</a></h3>
+<p>Track edge types during traversal:</p>
+<pre><code class="language-rust noplayground">    // Walk the graph starting from the person vertex
+    let edge_types = graph
+        .walk()
+        .vertices_by_id(vec![person_id])
+        .edges(EdgeSearch::scan().outgoing())
+        .push_context(|edge, _ctx| {
+            // Determine edge type based on the edge type
+            let edge_type = match edge.weight() {
+                Edge::Created =&gt; "Created",
+                Edge::Follows =&gt; "Follows",
+                Edge::Liked { .. } =&gt; "Liked",
+                Edge::Commented { .. } =&gt; "Commented",
+            };
+
+            // Return the edge type as context
+            edge_type
+        })
+        .map(|_v, c| *c)
+        .collect::&lt;Vec&lt;_&gt;&gt;();
+
+    println!("{:?}", edge_types);</code></pre>
+<h3 id="path-tracking"><a class="header" href="#path-tracking">Path Tracking</a></h3>
+<p>Build a representation of the path taken during traversal:</p>
+<pre><code class="language-rust noplayground">    // Track the path while traversing
+    let paths = graph
+        .walk()
+        .vertices_by_id(vec![start_id])
+        // Start with an empty path containing just the start vertex name
+        .push_context(|v, _| {
+            vec![match v.weight() {
+                Vertex::Person { name, .. } =&gt; name.clone(),
+                _ =&gt; "Unknown".to_string(),
+            }]
+        })
+        // Follow outgoing follows edges
+        .edges(EdgeSearch::scan().outgoing())
+        .filter_follows()
+        .tail()
+        // Add each person to the path
+        .push_context(|v, ctx| {
+            let mut new_path = (**ctx).clone();
+            if let Vertex::Person { name, .. } = v.weight() {
+                new_path.push(name.clone());
+            }
+            new_path
+        })
+        // Collect all paths
+        .map(|_, ctx| ctx.join(" -&gt; "))
+        .collect::&lt;Vec&lt;_&gt;&gt;();
+
+    // Print all paths
+    println!("All paths from start:");
+    for path in paths {
+        println!("- {}", path);
+    }</code></pre>
+<h2 id="type-safety"><a class="header" href="#type-safety">Type Safety</a></h2>
+<p>The context system is fully type-safe:</p>
+<ul>
+<li>Each context value has a concrete type</li>
+<li>Context transformation functions must return the correct type</li>
+<li>Closures that receive context are provided with the correctly typed context</li>
+</ul>
+<h2 id="common-use-cases"><a class="header" href="#common-use-cases">Common Use Cases</a></h2>
+<ul>
+<li><strong>Path tracking</strong>: Store the sequence of vertices or edges traversed</li>
+<li><strong>Metadata collection</strong>: Gather information from different parts of the graph</li>
+<li><strong>Aggregation</strong>: Build up composite results during traversal</li>
+<li><strong>Decision making</strong>: Use information from earlier steps to influence later decisions</li>
+</ul>
+<h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
+<ul>
+<li>Keep contexts immutable - create new contexts rather than modifying existing ones</li>
+<li>Use <code>push_default_context()</code> when you simply need to track the current vertex/edge</li>
+<li>Chain multiple context operations to build complex data structures</li>
+<li>Consider type-safety when designing context pipelines</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../user_guide/walker/steps/first.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../../user_guide/walker/steps/default_context.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../user_guide/walker/steps/first.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../../user_guide/walker/steps/default_context.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../../elasticlunr.min.js"></script>
+        <script src="../../../mark.min.js"></script>
+        <script src="../../../searcher.js"></script>
+
+        <script src="../../../clipboard.min.js"></script>
+        <script src="../../../highlight.js"></script>
+        <script src="../../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

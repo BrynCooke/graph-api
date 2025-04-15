@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="../../../../../theme/custom.css"?>
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
+    <title>Mutate Context Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'mutate_context' step:
+        - Shows an input stream of elements A, B with initial context values.
+        - The 'mutate_context(|_, ctx| **ctx += 1)' step is applied.
+        - The output stream shows the same elements A and B, but with modified context values,
+        demonstrating that the context is updated in-place.
+    </desc>
+    <defs>
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+    </defs>
+
+    <!-- Input Stream -->
+    <text class="step-label" x="100" y="40" text-anchor="middle">Input Stream</text>
+    <line class="edge directed" x1="50" y1="100" x2="250" y2="100" marker-end="url(#arrowhead)"/>
+
+    <!-- Input Elements with Initial Context -->
+    <!-- Element A -->
+    <g transform="translate(80, 100)">
+        <g class="node highlighted">
+            <circle r="15"></circle>
+            <text class="node-label">A</text>
+        </g>
+        <!-- Context Box -->
+        <g transform="translate(0, 50)">
+            <rect class="index-box" x="-15" y="-15" width="32" height="30"/>
+            <text class="index-value range" y="5" x="-8" text-anchor="middle">42</text>
+        </g>
+        <!-- Link Context -->
+        <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
+    </g>
+
+    <!-- Element B -->
+    <g transform="translate(160, 100)">
+        <g class="node highlighted">
+            <circle r="15"></circle>
+            <text class="node-label">B</text>
+        </g>
+        <!-- Context Box -->
+        <g transform="translate(0, 50)">
+            <rect class="index-box" x="-15" y="-15" width="32" height="30"/>
+            <text class="index-value range" y="5" x="-8" text-anchor="middle">42</text>
+        </g>
+        <!-- Link Context -->
+        <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
+    </g>
+
+    <!-- Mutate Context Step -->
+    <g>
+        <rect x="210" y="75" width="150" height="70" rx="5" ry="5"
+              fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+        <text class="step-label" x="285" y="105" text-anchor="middle" fill="var(--text-color-light)">mutate_context
+        </text>
+        <text class="code" x="285" y="125" text-anchor="middle" fill="var(--text-color-light)"
+              font-size="var(--font-size-small)">
+            (|_, ctx| **ctx += 1)
+        </text>
+    </g>
+    <!-- Output Stream -->
+    <text class="step-label" x="450" y="40" text-anchor="middle">Output Stream (Element, Modified Context)</text>
+    <line class="edge directed" x1="360" y1="100" x2="550" y2="100" marker-end="url(#arrowhead)"/>
+
+    <!-- Output Elements with Modified Context -->
+    <!-- Element A -->
+    <g transform="translate(410, 100)">
+        <g class="node highlighted">
+            <circle r="15"></circle>
+            <text class="node-label">A</text>
+        </g>
+        <!-- Context Box (Modified) -->
+        <g transform="translate(0, 50)">
+            <rect class="index-box modified" x="-15" y="-15" width="32" height="30"
+                  fill="var(--accent-secondary)" stroke="var(--node-stroke)"/>
+            <text class="index-value range" y="5" x="-8" text-anchor="middle">43</text>
+        </g>
+        <!-- Link Context -->
+        <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
+    </g>
+
+    <!-- Element B -->
+    <g transform="translate(490, 100)">
+        <g class="node highlighted">
+            <circle r="15"></circle>
+            <text class="node-label">B</text>
+        </g>
+        <!-- Context Box (Modified) -->
+        <g transform="translate(0, 50)">
+            <rect class="index-box modified" x="-15" y="-15" width="32" height="30"
+                  fill="var(--accent-secondary)" stroke="var(--node-stroke)"/>
+            <text class="index-value range" y="5" x="-8" text-anchor="middle">43</text>
+        </g>
+        <!-- Link Context -->
+        <line class="index-pointer" x1="0" y1="15" x2="0" y2="35" marker-end="url(#arrowhead-pointer)"/>
+    </g>
+
+    <!-- Legend -->
+    <g transform="translate(0, 220)">
+        <rect class="index-box" x="25" y="0" width="550" height="100"/>
+        <text class="index-title" x="300" y="20">Legend</text>
+
+        <g transform="translate(60, 45)">
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Element in the stream (unchanged by mutate_context)
+            </text>
+        </g>
+
+        <g transform="translate(60, 75)">
+            <rect class="index-box modified" x="-10" y="-10" width="20" height="20"
+                  fill="var(--accent-secondary)" stroke="var(--node-stroke)"/>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Context value that has been modified in-place by mutate_context
+            </text>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="../../../../theme/custom.css"?>
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+    <title>Full-Text Vertex Index Example with Query</title>
+    <desc>Diagram showing a full-text index on the 'description' property. The index maps processed words (tokens) like
+        'fast', 'graph', 'library', 'traversal' to the vertices (A, B, C) containing them. A query for 'description
+        CONTAINS "traversal"' is highlighted, showing the index lookup returning nodes B and C.
+    </desc>
+
+    <defs>
+        <!-- Standard arrowhead marker -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Pointer arrowhead marker -->
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Unselected Pointer arrowhead marker -->
+        <marker id="arrowhead-pointer-unselected" class="marker-arrowhead-pointer-unselected marker-base"
+                markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+    </defs>
+
+    <!-- === Index Structure === -->
+    <g id="index-group" class="index-container" transform="translate(20, 40)">
+        <rect class="index-box" x="0" y="0" width="240" height="260"/>
+        <text class="index-title" x="120" y="25">Full-Text Index (on 'description')</text>
+
+        <!-- Divider Lines -->
+        <line class="index-divider fulltext" x1="0" y1="45" x2="240" y2="45"/>
+        <line class="index-divider fulltext" x1="115" y1="45" x2="115" y2="260"/> <!-- Vertical divider -->
+
+        <!-- Index Entries -->
+        <g class="index-entry" transform="translate(10, 70)">
+            <text class="index-token fulltext" x="100" y="0">'efficient'</text> <!-- Centered in key column -->
+            <text class="index-value fulltext" x="125" y="0">[ C ]</text> <!-- Start of value column -->
+        </g>
+        <line class="index-divider fulltext" x1="10" y1="90" x2="230" y2="90"/>
+
+        <g class="index-entry" transform="translate(10, 110)">
+            <text class="index-token fulltext" x="100" y="0">'fast'</text>
+            <text class="index-value fulltext" x="125" y="0">[ A ]</text>
+        </g>
+        <line class="index-divider fulltext" x1="10" y1="130" x2="230" y2="130"/>
+
+        <g class="index-entry" transform="translate(10, 150)">
+            <text class="index-token fulltext" x="100" y="0">'graph'</text>
+            <text class="index-value fulltext" x="125" y="0">[ A, B ]</text>
+        </g>
+        <line class="index-divider fulltext" x1="10" y1="170" x2="230" y2="170"/>
+
+        <g class="index-entry" transform="translate(10, 190)">
+            <text class="index-token fulltext" x="100" y="0">'library'</text>
+            <text class="index-value fulltext" x="125" y="0">[ A, B ]</text>
+        </g>
+        <line class="index-divider fulltext" x1="10" y1="210" x2="230" y2="210"/>
+
+        <g class="index-entry highlighted" transform="translate(10, 230)">
+            <text class="index-token fulltext" x="100" y="0">'traversal'</text>
+            <text class="index-value fulltext" x="125" y="0">[ B, C ]</text>
+        </g>
+        <line class="index-divider fulltext" x1="10" y1="250" x2="230" y2="250"/>
+
+        <!-- Query Highlight Box around "traversal" entry -->
+        <rect class="query-highlight-box" x="5" y="218" width="230" height="24"/>
+
+    </g> <!-- End of index-group -->
+
+    <!-- === Index Pointers === -->
+    <g id="index-pointers-group">
+        <!-- Pointers from index value list to corresponding nodes -->
+        <!-- From 'efficient' [C] -->
+        <path class="index-pointer-unselected" d="M 195 110 Q 260 180 363 260"
+              marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To C -->
+        <!-- From 'fast' [A] -->
+        <path class="index-pointer-unselected" d="M 195 150 Q 260 120 358 110"
+              marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
+        <!-- From 'graph' [A, B] -->
+        <path class="index-pointer-unselected" d="M 215 190 Q 270 140 358 110"
+              marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
+        <path class="index-pointer-unselected" d="M 215 190 Q 350 190 510 190"
+              marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B -->
+        <!-- From 'library' [A, B] -->
+        <path class="index-pointer-unselected" d="M 215 230 Q 270 160 358 110"
+              marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
+        <path class="index-pointer-unselected" d="M 215 230 Q 350 210 510 190"
+              marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To B -->
+        <!-- From 'traversal' [B, C] - Selected -->
+        <path class="index-pointer" d="M 215 270 Q 350 230 510 190"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To B -->
+        <path class="index-pointer" d="M 215 270 Q 270 270 360 270"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To C -->
+    </g>
+
+    <!-- === Graph Structure === -->
+    <g id="graph-group" transform="translate(300, 40)"> <!-- Shifted right -->
+
+        <!-- Edges (Rendered Before Nodes) -->
+        <g class="edge directed" id="edge-A-B">
+            <!-- Start near A (80, 70), End near B (230, 150) -->
+            <path d="M 98 79 Q 160 100 216 136" marker-end="url(#arrowhead)"/> <!-- A -> B -->
+        </g>
+        <g class="edge directed" id="edge-B-C">
+            <!-- Start near B (230, 150), End near C (80, 230) -->
+            <path d="M 216 164 Q 150 200 98 221" marker-end="url(#arrowhead)"/> <!-- B -> C -->
+        </g>
+
+        <!-- Nodes (Rendered After Edges) -->
+        <!-- Node A -->
+        <g class="node" id="node-A" transform="translate(80, 70)"> <!-- Center at abs (380, 110) -->
+            <circle r="20"/>
+            <text class="node-label">A</text>
+        </g>
+        <!-- Node B - Highlighted -->
+        <g class="node highlighted" id="node-B" transform="translate(230, 150)"> <!-- Center at abs (530, 190) -->
+            <circle r="20"/>
+            <text class="node-label">B</text>
+        </g>
+        <!-- Node C - Highlighted -->
+        <g class="node highlighted" id="node-C" transform="translate(80, 230)"> <!-- Center at abs (380, 270) -->
+            <circle r="20"/>
+            <text class="node-label">C</text>
+        </g>
+
+        <!-- Property Text (Rendered Last within Graph Group) -->
+        <g id="property-texts-group">
+            <!-- Positioned below nodes -->
+            <text class="property-text" x="80" y="100">{desc: "Fast graph library"}
+            </text>  <!-- Node A: 80, 70+30 -->
+            <text class="property-text" x="200" y="180">{desc: "Library for graph traversal"}
+            </text> <!-- Node B: 230, 150+30 -->
+            <text class="property-text" x="80" y="260">{desc: "Efficient traversal..."}
+            </text> <!-- Node C: 80, 230+30 -->
+        </g>
+
+    </g> <!-- End of graph-group -->
+
+    <!-- === Query Text === -->
+    <!-- Positioned below index box (ends at y=300), centered at x=140 (20+120) -->
+    <text class="query-text" x="140" y="340">Query: description CONTAINS "traversal"</text>
+
+</svg>

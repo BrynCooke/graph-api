@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="../../../../../theme/custom.css"?>
+<svg viewBox="0 0 600 380" xmlns="http://www.w3.org/2000/svg">
+    <title>ControlFlow Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'control_flow' step:
+        - Shows an input stream of elements A, B, C, D.
+        - The 'control_flow' step processes each element.
+        - Element A is skipped (Continue(None)).
+        - Element B is kept (Continue(Some)).
+        - Element C is kept and stops the traversal (Break(Some)).
+        - Element D is not processed due to the break.
+        - The legend explains the different ControlFlow outcomes.
+    </desc>
+    <defs>
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-visited" class="marker-arrowhead-visited marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-stop" class="marker-arrowhead-path marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+    </defs>
+
+    <!-- Input Stream -->
+    <text class="step-label" x="100" y="20" text-anchor="middle">Input Stream</text>
+    <line class="edge directed" x1="50" y1="100" x2="250" y2="100" marker-end="url(#arrowhead)"/>
+
+    <g transform="translate(-40, 0)">
+        <!-- Input Elements -->
+        <g class="node highlighted" transform="translate(80, 100)">
+            <circle r="15"></circle>
+            <text class="node-label">A</text>
+        </g>
+        <g class="node highlighted" transform="translate(130, 100)">
+            <circle r="15"></circle>
+            <text class="node-label">B</text>
+        </g>
+        <g class="node highlighted" transform="translate(180, 100)">
+            <circle r="15"></circle>
+            <text class="node-label">C</text>
+        </g>
+        <g class="node highlighted" transform="translate(230, 100)">
+            <circle r="15"></circle>
+            <text class="node-label">D</text>
+        </g>
+    </g>
+
+    <!-- ControlFlow Step Box -->
+    <rect x="250" y="75" width="100" height="50" rx="5" ry="5"
+          fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+    <text class="step-label" x="300" y="105" text-anchor="middle" fill="var(--text-color-light)">control_flow</text>
+
+    <!-- Output Stream -->
+    <text class="step-label" x="450" y="20" text-anchor="middle">Output Stream</text>
+    <line class="edge directed" x1="350" y1="100" x2="550" y2="100" marker-end="url(#arrowhead)"/>
+
+    <!-- Element Processing Paths -->
+    <!-- Element A: Skipped -->
+    <line class="index-pointer" x1="300" y1="125" x2="300" y2="180"/>
+    <line class="index-pointer" x1="300" y1="180" x2="250" y2="180" marker-end="url(#arrowhead-visited)"/>
+    <g class="node visited" transform="translate(220, 180)">
+        <circle r="15"></circle>
+        <text class="node-label">A</text>
+    </g>
+    <text class="property-text" x="220" y="200" text-anchor="middle">Skipped</text>
+    <text class="property-text" x="300" y="145" text-anchor="middle">Continue(None)</text>
+
+    <!-- Element B: Kept -->
+    <g class="node highlighted" transform="translate(400, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">B</text>
+    </g>
+    <text class="property-text" x="400" y="120" text-anchor="middle">Kept</text>
+    <text class="property-text" x="385" y="50" text-anchor="middle">Continue(Some)</text>
+
+    <!-- Element C: Kept & Break -->
+    <g class="node end" transform="translate(470, 100)"> <!-- Use 'end' class for break -->
+        <circle r="15"></circle>
+        <text class="node-label">C</text>
+    </g>
+    <text class="property-text" x="470" y="120" text-anchor="middle">Kept &amp; Break</text>
+    <text class="property-text" x="485" y="50" text-anchor="middle" fill="var(--accent-secondary)">Break(Some)</text>
+
+    <!-- Break Indicator -->
+    <line x1="495" y1="90" x2="525" y2="110" stroke="var(--accent-secondary)" stroke-width="var(--stroke-width-thick)"/>
+    <line x1="495" y1="110" x2="525" y2="90" stroke="var(--accent-secondary)" stroke-width="var(--stroke-width-thick)"/>
+    <text class="step-label" x="510" y="155" text-anchor="middle" fill="var(--accent-secondary)" font-weight="bold">
+        STOP
+    </text>
+
+    <!-- Element D: Not Processed -->
+    <g class="node visited" transform="translate(560, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">D</text>
+    </g>
+    <text class="property-text" x="560" y="120" text-anchor="middle">Not Processed</text>
+
+    <!-- Legend -->
+    <g transform="translate(0, 240)">
+        <rect class="index-box" x="25" y="0" width="550" height="120"/>
+        <text class="index-title" x="300" y="20">ControlFlow Predicate Outcomes</text>
+
+        <g transform="translate(60, 45)">
+            <g class="node visited">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                <tspan class="code" font-family="monospace">ControlFlow::Continue(None)</tspan>: Element is skipped,
+                traversal continues.
+            </text>
+        </g>
+
+        <g transform="translate(60, 70)">
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                <tspan class="code" font-family="monospace">ControlFlow::Continue(Some(element))</tspan>: Element is
+                kept,
+                traversal continues.
+            </text>
+        </g>
+
+        <g transform="translate(60, 95)">
+            <g class="node end">
+                <circle r="10"></circle>
+            </g> <!-- Use 'end' class -->
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                <tspan class="code" font-family="monospace">ControlFlow::Break(...)</tspan>: Element might be kept,
+                traversal stops immediately.
+            </text>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="../../../../theme/custom.css"?>
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
+    <title>Range Vertex Index Example with Query</title>
+    <desc>Diagram showing a range index on the 'age' property. The index is sorted by age. A query for 'age >= 35' is
+        highlighted, showing the index scan returning nodes B, D, and C.
+    </desc>
+
+    <defs>
+        <!-- Standard arrowhead marker -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Pointer arrowhead marker -->
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- Unselected Pointer arrowhead marker -->
+        <marker id="arrowhead-pointer-unselected" class="marker-arrowhead-pointer-unselected marker-base"
+                markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+    </defs>
+
+    <!-- === Index Structure === -->
+    <g id="index-group" class="index-container" transform="translate(20, 40)">
+        <rect class="index-box" x="0" y="0" width="220" height="240"/>
+        <text class="index-title" x="110" y="25">Range Index (on 'age')</text>
+
+        <!-- Divider Lines -->
+        <line class="index-divider range" x1="0" y1="45" x2="220" y2="45"/>
+        <line class="index-divider range" x1="70" y1="45" x2="70" y2="240"/> <!-- Vertical divider -->
+
+        <!-- Index Entries (Sorted by Age) -->
+        <!-- Entry for Age 25 -->
+        <g class="index-entry" transform="translate(10, 70)">
+            <text class="index-key range" x="55" y="0">25</text> <!-- Centered in key column -->
+            <text class="index-value range" x="80" y="0">[ A ]</text> <!-- Start of value column -->
+        </g>
+        <line class="index-divider range" x1="10" y1="90" x2="210" y2="90"/>
+
+        <!-- Entry for Age 35 (Nodes B, D) - Highlighted -->
+        <g class="index-entry highlighted" transform="translate(10, 110)">
+            <text class="index-key range" x="55" y="0">35</text>
+            <text class="index-value range" x="80" y="0">[ B, D ]</text>
+        </g>
+        <!-- Entry for Age 35 (Node D) - Implicitly covered by above -->
+        <line class="index-divider range" x1="10" y1="130" x2="210" y2="130"/>
+
+        <!-- Entry for Age 42 - Highlighted -->
+        <g class="index-entry highlighted" transform="translate(10, 150)">
+            <text class="index-key range" x="55" y="0">42</text>
+            <text class="index-value range" x="80" y="0">[ C ]</text>
+        </g>
+        <line class="index-divider range" x1="10" y1="170" x2="210" y2="170"/>
+
+        <!-- Query Highlight Box covering the range >= 35 -->
+        <rect class="query-highlight-box" x="5" y="95" width="210" height="70"/>
+
+    </g> <!-- End of index-group -->
+
+    <!-- === Index Pointers === -->
+    <g id="index-pointers-group">
+        <!-- Pointers from index value list to corresponding nodes -->
+        <!-- From Age 25 [A] - Unselected -->
+        <path class="index-pointer-unselected" d="M 150 110 Q 220 90 310 90"
+              marker-end="url(#arrowhead-pointer-unselected)"/> <!-- To A -->
+
+        <!-- From Age 35 [B, D] - Selected -->
+        <path class="index-pointer" d="M 170 150 Q 300 130 460 95"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To B -->
+        <path class="index-pointer" d="M 170 150 Q 300 180 460 235"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To D -->
+
+        <!-- From Age 42 [C] - Selected -->
+        <path class="index-pointer" d="M 150 190 Q 220 190 313 230"
+              marker-end="url(#arrowhead-pointer)"/> <!-- To C -->
+    </g>
+
+    <!-- === Graph Structure === -->
+    <g id="graph-group" transform="translate(250, 40)"> <!-- Shifted left -->
+
+        <!-- Edges (Rendered Before Nodes) -->
+        <g class="edge directed" id="edge-A-B">
+            <line x1="100" y1="50" x2="210" y2="50" marker-end="url(#arrowhead)"/> <!-- A -> B -->
+        </g>
+        <g class="edge directed" id="edge-A-C">
+            <line x1="80" y1="70" x2="80" y2="180" marker-end="url(#arrowhead)"/> <!-- A -> C -->
+        </g>
+        <g class="edge directed" id="edge-B-D">
+            <line x1="230" y1="70" x2="230" y2="180" marker-end="url(#arrowhead)"/> <!-- B -> D -->
+        </g>
+        <g class="edge directed" id="edge-C-D">
+            <line x1="100" y1="200" x2="210" y2="200" marker-end="url(#arrowhead)"/> <!-- C -> D -->
+        </g>
+
+        <!-- Nodes (Rendered After Edges) -->
+        <!-- Node A -->
+        <g class="node" id="node-A" transform="translate(80, 50)"> <!-- Center at abs (380, 90) -->
+            <circle r="20"/>
+            <text class="node-label">A</text>
+        </g>
+        <!-- Node B - Highlighted -->
+        <g class="node highlighted" id="node-B" transform="translate(230, 50)"> <!-- Center at abs (530, 90) -->
+            <circle r="20"/>
+            <text class="node-label">B</text>
+        </g>
+        <!-- Node C - Highlighted -->
+        <g class="node highlighted" id="node-C" transform="translate(80, 200)"> <!-- Center at abs (380, 240) -->
+            <circle r="20"/>
+            <text class="node-label">C</text>
+        </g>
+        <!-- Node D - Highlighted -->
+        <g class="node highlighted" id="node-D" transform="translate(230, 200)"> <!-- Center at abs (530, 240) -->
+            <circle r="20"/>
+            <text class="node-label">D</text>
+        </g>
+
+        <!-- Property Text (Rendered Last within Graph Group) -->
+        <g id="property-texts-group">
+            <!-- Positioned below nodes -->
+            <text class="property-text" x="80" y="80">{age: 25, ...}</text>  <!-- Node A: 80, 50+30 -->
+            <text class="property-text" x="230" y="80">{age: 35, ...}</text>    <!-- Node B: 230, 50+30 -->
+            <text class="property-text" x="80" y="230">{age: 42, ...}</text>  <!-- Node C: 80, 200+30 -->
+            <text class="property-text" x="230" y="230">{age: 35, ...}</text><!-- Node D: 230, 200+30 -->
+        </g>
+
+    </g> <!-- End of graph-group -->
+
+    <!-- === Query Text === -->
+    <!-- Positioned below index box (ends at y=280), centered at x=130 (20+110) -->
+    <text class="query-text" x="130" y="310">Query: age >= 35</text>
+
+</svg>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="../../../../../theme/custom.css"?>
+<svg viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg"> <!-- Increased height for vertical layout & legend -->
+    <title>Vertices Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'vertices' step:
+        - Shows a conceptual representation of graph vertices A(Person), B(Product), C(Person), D(Review).
+        - The 'graph.walk().vertices(Vertex::person())' step selects vertices based on criteria.
+        - The output stream contains only the selected vertices A and C (Persons).
+    </desc>
+    <defs>
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+    </defs>
+
+    <text class="step-label" x="120" y="40" text-anchor="middle">Conceptual Graph Vertices</text>
+
+    <!-- Conceptual Graph Representation (Input - Vertical Layout) -->
+    <g id="graph-input" transform="translate(100, 50)"> <!-- Adjusted position -->
+        <!-- Represent vertices conceptually, stacked vertically -->
+        <g class="node" transform="translate(0, 40)"> <!-- A -->
+            <circle r="15"></circle>
+            <text class="node-label">A</text>
+            <text class="property-text" y="25">Person</text>
+        </g>
+        <g class="node" transform="translate(-50, 90)"> <!-- B -->
+            <circle r="15"></circle>
+            <text class="node-label">B</text>
+            <text class="property-text" y="25">Product</text>
+        </g>
+        <g class="node" transform="translate(0, 140)"> <!-- C -->
+            <circle r="15"></circle>
+            <text class="node-label">C</text>
+            <text class="property-text" y="25">Person</text>
+        </g>
+        <g class="node" transform="translate(-50, 190)"> <!-- D -->
+            <circle r="15"></circle>
+            <text class="node-label">D</text>
+            <text class="property-text" y="25">Review</text>
+        </g>
+    </g>
+
+    <!-- Vertices Step Box (Grouped) -->
+    <g id="vertices-step-group" transform="translate(300, 140)"> <!-- Adjusted position -->
+        <rect x="-100" y="-25" width="200" height="50" rx="5" ry="5"
+              fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+        <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">
+            graph.walk().vertices
+        </text>
+        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)"
+              font-size="var(--font-size-small)">
+            (Vertex::person())
+        </text>
+    </g>
+
+    <!-- Pointers from Person Vertices (A, C) to Step Box -->
+    <path class="index-pointer" d="M 115 90 Q 180 110 200 125" marker-end="url(#arrowhead-pointer)"/> <!-- From A -->
+    <path class="index-pointer" d="M 115 190 Q 180 170 200 155" marker-end="url(#arrowhead-pointer)"/> <!-- From C -->
+
+
+    <!-- Output Stream -->
+    <text class="step-label" x="450" y="40" text-anchor="middle">Output Stream (Vertices)</text>
+    <line class="edge directed" x1="400" y1="140" x2="550" y2="140" marker-end="url(#arrowhead)"/> <!-- Adjusted Y -->
+
+    <!-- Output Vertices -->
+    <g class="node highlighted" transform="translate(430, 140)"> <!-- Adjusted Y -->
+        <circle r="15"></circle>
+        <text class="node-label">A</text>
+        <text class="property-text" y="25">Person</text>
+    </g>
+    <g class="node highlighted" transform="translate(490, 140)"> <!-- Adjusted Y -->
+        <circle r="15"></circle>
+        <text class="node-label">C</text>
+        <text class="property-text" y="25">Person</text>
+    </g>
+
+    <!-- Legend -->
+    <g transform="translate(0, 320)"> <!-- Adjusted Y position -->
+        <rect class="index-box" x="25" y="0" width="550" height="100"/>
+        <text class="index-title" x="300" y="20">Legend</text>
+
+        <g transform="translate(60, 45)">
+            <g class="node">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Conceptual vertex in the graph
+            </text>
+        </g>
+
+        <g transform="translate(60, 75)">
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Vertex selected by <tspan class="code">.vertices()</tspan> in the output stream
+            </text>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="../../../../../theme/custom.css"?>
+<svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg"> <!-- Adjusted height for legend -->
+    <title>Map Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'map' step:
+        - Shows an input stream of elements A, B, C.
+        - The 'map(|v| v.name())' step processes each element.
+        - The output is represented as a Rust Iterator containing the transformed values ("NameA", "NameB", "NameC").
+        - Indicates that the map step terminates the walker traversal.
+    </desc>
+    <defs>
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <!-- No pointer needed for map -->
+    </defs>
+
+    <!-- Input Stream -->
+    <text class="step-label" x="100" y="40" text-anchor="middle">Input Stream</text>
+    <line class="edge directed" x1="50" y1="100" x2="250" y2="100" marker-end="url(#arrowhead)"/>
+
+    <!-- Input Elements -->
+    <g class="node highlighted" transform="translate(80, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">A</text>
+    </g>
+    <g class="node highlighted" transform="translate(130, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">B</text>
+    </g>
+    <g class="node highlighted" transform="translate(180, 100)">
+        <circle r="15"></circle>
+        <text class="node-label">C</text>
+    </g>
+
+    <!-- Map Step Box (Grouped) -->
+    <g id="map-step-group" transform="translate(300, 100)"> <!-- Centered position for the group -->
+        <rect x="-80" y="-25" width="160" height="50" rx="5" ry="5"
+              fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+        <text class="step-label" x="0" y="-5" text-anchor="middle" fill="var(--text-color-light)">map</text>
+        <text class="code" x="0" y="15" text-anchor="middle" fill="var(--text-color-light)" font-size="var(--font-size-small)">
+            (|v| v.name())
+        </text>
+    </g>
+
+    <!-- Arrow from Step to Result -->
+    <line class="edge directed" x1="380" y1="100" x2="420" y2="100" marker-end="url(#arrowhead)"/>
+
+    <!-- Resulting Iterator Box (Grouped) -->
+    <g id="iterator-result-group" transform="translate(500, 100)"> <!-- Centered position for the group -->
+        <rect x="-75" y="-40" width="150" height="80" rx="5" ry="5"
+              fill="var(--accent-secondary)" fill-opacity="0.15"
+              stroke="var(--accent-secondary)" stroke-width="1.5"/>
+        <text x="0" y="-15" text-anchor="middle" font-weight="bold" fill="var(--accent-secondary)">Iterator&lt;String&gt;</text>
+        <text x="0" y="10" text-anchor="middle" font-family="monospace" fill="var(--accent-secondary)">
+            "NameA"
+        </text>
+        <text x="0" y="25" text-anchor="middle" font-family="monospace" fill="var(--accent-secondary)">
+            "NameB", "NameC"
+        </text>
+    </g>
+    <text x="500" y="155" class="text-color-muted" font-size="var(--font-size-small)" text-anchor="middle">Terminates Walker</text>
+
+
+    <!-- Legend -->
+    <g transform="translate(0, 220)"> <!-- Adjusted Y position -->
+        <rect class="index-box" x="25" y="0" width="550" height="100"/>
+        <text class="index-title" x="300" y="20">Legend</text>
+
+        <g transform="translate(60, 45)">
+            <g class="node highlighted">
+                <circle r="10"></circle>
+            </g>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Element in the input stream
+            </text>
+        </g>
+
+        <g transform="translate(60, 75)">
+             <rect x="-10" y="-10" width="20" height="20" rx="3" ry="3"
+                  fill="var(--accent-secondary)" fill-opacity="0.15"
+                  stroke="var(--accent-secondary)" stroke-width="1"/>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Resulting Rust Iterator (containing transformed values)
+            </text>
+        </g>
+    </g>
+</svg>

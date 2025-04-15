@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="../../../theme/custom.css"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450">
+    <title>Graph Instance Example</title>
+    <desc>Diagram showing a specific instance of a graph with Person and Project vertices (Bryn, Julia, Eve, GraphApi,
+        Alpaca) and their connecting edges (Follows, Created, Liked, Commented) based on the standard_populated_graph
+        function.
+    </desc>
+    <defs>
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6" refX="7" refY="3"
+                orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+    </defs>
+    <text x="300" y="25" class="index-title" text-anchor="middle">Graph Instance Example</text>
+
+
+    <!-- Edges -->
+    <!-- Follows Edges -->
+    <g class="edge directed" id="edge-julia-bryn-follows">
+        <!-- Path from Julia (500, 250) to Bryn (150, 250), curved upwards -->
+        <path d="M 475 250 Q 325 200 175 250" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="325" y="220">Follows</text>
+    </g>
+    <g class="edge directed" id="edge-eve-julia-follows">
+        <!-- Line from Eve (450, 100) to Julia (500, 250) -->
+        <line x1="450" y1="125" x2="485" y2="230" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="475" y="175">Follows</text>
+    </g>
+    <g class="edge directed" id="edge-bryn-eve-follows">
+        <!-- Line from Bryn (150, 250) to Eve (450, 100) -->
+        <line x1="175" y1="240" x2="430" y2="115" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="170">Follows</text>
+    </g>
+
+    <!-- Created Edges -->
+    <g class="edge directed" id="edge-bryn-graphapi-created">
+        <!-- Line from Bryn (150, 250) to GraphApi (100, 400) -->
+        <line x1="140" y1="275" x2="105" y2="375" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="125" y="325">Created</text>
+    </g>
+    <g class="edge directed" id="edge-julia-alpaca-created">
+        <!-- Line from Julia (500, 250) to Alpaca (450, 400) -->
+        <line x1="490" y1="275" x2="450" y2="375" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="470" y="325">Created</text>
+    </g>
+
+    <!-- Liked Edge -->
+    <g class="edge directed" id="edge-bryn-alpaca-liked">
+        <!-- Path from Bryn (150, 250) to Alpaca (450, 400), curved downwards -->
+        <path d="M 170 260 Q 300 280 430 390" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="290">Liked</text>
+        <text class="property-text halo" x="300" y="305">ts: 2023-01-01</text>
+    </g>
+
+    <!-- Commented Edge -->
+    <g class="edge directed" id="edge-bryn-alpaca-commented">
+        <!-- Path from Bryn (150, 250) to Alpaca (450, 400), curved more downwards -->
+        <path d="M 170 270 Q 300 380 435 395" fill="none" marker-end="url(#arrowhead)"/>
+        <text class="edge-label" x="300" y="360">Commented</text>
+        <text class="property-text halo" x="300" y="375">ts: 2023-01-02</text>
+    </g>
+
+
+    <!-- Vertices -->
+    <g class="node" id="node-bryn" transform="translate(150, 250)">
+        <circle r="25"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="28">name: Bryn</text>
+        <text class="property-text" y="43">age: 28</text>
+    </g>
+    <g class="node" id="node-julia" transform="translate(500, 250)">
+        <circle r="25"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="28">name: Julia</text>
+        <text class="property-text" y="43">age: 34</text>
+    </g>
+    <g class="node" id="node-eve" transform="translate(450, 100)"> <!-- Positioned Eve lower -->
+        <circle r="25"></circle>
+        <text class="node-label">Person</text>
+        <text class="property-text" y="28">name: Eve</text>
+        <text class="property-text" y="43">age: 31</text>
+    </g>
+    <g class="node" id="node-graphapi" transform="translate(100, 400)">
+        <circle r="25"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="30">name: GraphApi</text>
+    </g>
+    <g class="node" id="node-alpaca" transform="translate(450, 400)">
+        <circle r="25"></circle>
+        <text class="node-label">Project</text>
+        <text class="property-text" y="30">name: Alpaca</text>
+    </g>
+
+</svg>
