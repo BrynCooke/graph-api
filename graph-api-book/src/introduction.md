@@ -5,10 +5,21 @@
 Graph API is an ergonomic library for working with **in memory** graphs in Rust that provides a flexible and type-safe
 way to interact with graph data structures.
 
+Heavily inspired by [Apache TinkerPop](https://tinkerpop.apache.org/), it
+offers an **iterator-like** interface specifically designed for graph traversal and manipulation.
+
 ## Overview
 
 This library offers a unified interface for working with different types of graphs while maintaining strong type safety
 and ergonomic usage patterns. It includes features for graph traversal, modification, and custom extensions.
+
+## Advantages
+
+- **Iterator-like interface for graphs**: Intuitive API that feels familiar to Rust developers
+- **Works with multiple backends**: Comes with a simple graph implementation but also
+  supports [petgraph](https://github.com/petgraph/petgraph)
+- **Composable operations**: Chain graph operations together in a fluent, declarative style
+- **Separation of graph model and implementation**: Define your domain model once and use it with any supported backend
 
 ## Key Features
 
