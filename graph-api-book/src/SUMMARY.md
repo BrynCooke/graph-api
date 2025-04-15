@@ -28,7 +28,7 @@
         - [reduce](./user_guide/walker/steps/reduce.md)
         - [take](./user_guide/walker/steps/take.md)
         - [first](./user_guide/walker/steps/first.md)
-        - [context](./user_guide/walker/steps/context.md)
+        - [push_context](./user_guide/walker/steps/push_context.md)
         - [default_context](./user_guide/walker/steps/default_context.md)
         - [mutate_context](./user_guide/walker/steps/mutate_context.md)
         - [detour](./user_guide/walker/steps/detour.md)

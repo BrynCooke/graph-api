@@ -33,6 +33,9 @@ jobs:
       - name: Add mdBook variables
         run: cargo install mdbook-variables
 
+      - name: Add mdBook linkcheck
+        run: cargo install mdbook-linkcheck
+
       - name: Build mdBook
         run: mdbook build graph-api-book
 
