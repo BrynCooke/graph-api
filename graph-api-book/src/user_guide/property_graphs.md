@@ -69,7 +69,6 @@ types of indexes and how to use them effectively:
 
 - [Exploring Without Indexes](./property_graphs/no_index.md): Understand the challenges of graph traversal without
   indexes
-- [Standard Indexes](./property_graphs/standard_index.md): Fast lookups by exact property value
+- [Hash Indexes](./property_graphs/hash_index.md): Fast lookups by exact property value
 - [Range Indexes](./property_graphs/range_index.md): Range queries for numeric and range properties
 - [Full-text Indexes](./property_graphs/full_text_index.md): Text search capabilities for string properties
-- [Combining Indexes](./property_graphs/combining_indexes.md): Powerful traversals using multiple index types

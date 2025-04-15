@@ -59,7 +59,8 @@ Performance varies between implementations:
 ## Creating Your Own Implementation
 
 If the existing implementations don't meet your needs, you can create your own by implementing the `Graph` trait. See
-the [Implementation Guide](../implementation/guide) for detailed instructions on creating a custom graph implementation.
+the [Implementation Guide](../implementation/guide.md) for detailed instructions on creating a custom graph
+implementation.
 
 ## Future Implementations
 
