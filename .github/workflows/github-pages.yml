@@ -2,8 +2,14 @@ name: GitHub Pages
 
 on:
   release:
-    types: [published]
-
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'main'
+        type: string
 jobs:
   deploy:
     name: Deploy Github Pages
@@ -16,6 +22,8 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || 'main' }}
 
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v2
