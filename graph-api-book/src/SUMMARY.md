@@ -57,6 +57,6 @@
 - [Derive Macros](./reference/derive_macros.md)
 - [Existing Implementations](./reference/implementations.md)
     - [SimpleGraph](./reference/implementations/simple_graph.md)
-    - [PetGraph](./reference/implementations/pet_graph.md)
+    - [PetGraph](./reference/implementations/petgraph.md)
 
 
