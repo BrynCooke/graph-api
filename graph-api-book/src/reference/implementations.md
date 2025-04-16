@@ -25,17 +25,19 @@ When deciding which graph implementation to use, consider the following factors:
 
 Different implementations support different features:
 
-| Feature                     | SimpleGraph | PetGraph |
-|-----------------------------|-------------|----------|
-| Vertex label indexes        | ✅           | ❌        |
-| Edge label indexes          | ✅           | ❌        |
-| Vertex hash indexes         | ✅           | ❌        |
-| Edge hash indexes           | ✅           | ❌        |
-| Vertex range indexes        | ✅           | ❌        |
-| Edge range indexes          | ✅           | ❌        |
-| Vertex full-text indexes    | ✅           | ❌        |
-| Edge adjacent label indexes | ✅           | ❌        |
-| Graph clearing              | ✅           | ✅        |
+| Feature                      | SimpleGraph | PetGraph |
+|------------------------------|-------------|----------|
+| Vertex label indexes         | ✅           | ❌        |
+| Edge label indexes           | ✅           | ❌        |
+| Vertex hash indexes          | ✅           | ❌        |
+| Edge hash indexes            | ❌           | ❌        |
+| Vertex range indexes         | ✅           | ❌        |
+| Edge range indexes           | ❌           | ❌        |
+| Vertex full-text indexes     | ✅           | ❌        |
+| Edge adjacent label indexes* | ✅           | ❌        |
+| Graph clearing               | ✅           | ✅        |
+
+\* Edge adjacent indexes are not fully supported in graph-api yet.
 
 ### Performance Characteristics
 
