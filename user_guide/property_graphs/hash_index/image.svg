@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/css" href="../../../../theme/custom.css"?>
+<?xml-stylesheet type="text/css" href="../../../theme/custom.css"?>
 <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
     <title>Hash Vertex Index Example with Query</title>
     <desc>Diagram showing a hash index on the 'name' property. The index maps names to vertex IDs. A query for 'name =

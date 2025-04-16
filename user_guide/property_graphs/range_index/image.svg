@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/css" href="../../../../theme/custom.css"?>
+<?xml-stylesheet type="text/css" href="../../../theme/custom.css"?>
 <svg viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
     <title>Range Vertex Index Example with Query</title>
     <desc>Diagram showing a range index on the 'age' property. The index is sorted by age. A query for 'age >= 35' is
