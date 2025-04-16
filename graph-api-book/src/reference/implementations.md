@@ -9,10 +9,10 @@ suitability for different applications.
 The Graph API project provides two main graph implementations:
 
 1. **[SimpleGraph](./implementations/simple_graph.md)**: A reference implementation built specifically for the Graph
-   API. It fully supports all Graph API features, including all index types, making it ideal for testing Graph API
+   API. It fully supports all Graph API features, including most index types, making it ideal for testing Graph API
    functionality and serving as a blueprint for new implementations.
 
-2. **[PetGraph](./implementations/pet_graph.md)**: An adapter for the excellent and widely-used
+2. **[PetGraph](./implementations/petgraph.md)**: An adapter for the excellent and widely-used
    [petgraph](https://crates.io/crates/petgraph) crate. This demonstrates Graph API compatibility with established
    Rust graph libraries and is a great choice for performance-sensitive applications or projects already using
    petgraph.
