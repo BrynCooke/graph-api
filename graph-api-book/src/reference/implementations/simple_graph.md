@@ -4,6 +4,17 @@
 capabilities of the API, including comprehensive indexing support for property graphs. While functional, it's not
 optimized for high performance.
 
+## Installation
+
+Add SimpleGraph to your project dependencies:
+
+```toml
+[dependencies]
+graph-api-lib = "{{lib_version}}"
+graph-api-derive = "{{derive_version}}"  # For derive macros
+graph-api-simplegraph = "{{simplegraph_version}}"
+```
+
 ## Overview
 
 `SimpleGraph` is a custom in-memory graph implementation built specifically to demonstrate and validate all Graph API
@@ -74,11 +85,11 @@ graph.add_edge(alice, project, Edge::Created);
 - ✅ Vertex label indexes
 - ✅ Edge label indexes
 - ✅ Vertex hash indexes
-- ✅ Edge hash indexes
+- ❌ Edge hash indexes
 - ✅ Vertex range indexes
-- ✅ Edge range indexes
+- ❌ Edge range indexes
 - ✅ Vertex full-text indexes
-- ✅ Edge adjacent label indexes
+- ✅ Edge adjacent label indexes (this isn't fully supported in graph-api-lib yet)
 - ✅ Graph clearing
 
 ## Performance Characteristics
