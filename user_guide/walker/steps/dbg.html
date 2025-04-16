@@ -160,7 +160,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="debug-step"><a class="header" href="#debug-step">Debug Step</a></h1>
-<p>The <code>dbg</code> step provides a simple way to inspect the elements flowing through a traversal without altering them. It prints detailed information about each element to the console as it passes through the step.</p>
+<p>The <code>dbg</code> step provides a simple way to inspect the elements flowing through a traversal without altering them. It
+prints detailed information about each element to the console as it passes through the step.</p>
 <object type="image/svg+xml" data="dbg/image.svg" title="Dbg Step Diagram">
 Debug step diagram showing elements flowing through, console output, and unchanged output stream
 </object>
@@ -168,8 +169,10 @@ Debug step diagram showing elements flowing through, console output, and unchang
 <ul>
 <li><strong>Input Elements</strong>: The walker starts with elements <strong>A, B, C</strong>.</li>
 <li>The <strong><code>.dbg("Label")</code></strong> step processes each element.</li>
-<li><strong>Console Output</strong>: As each element (A, B, C) passes through the <code>dbg</code> step, its details are printed to the console, prefixed with the provided label. This is shown as a side effect.</li>
-<li><strong>Output Elements (Unchanged)</strong>: The elements <strong>A, B, C</strong> continue to the next step in the traversal, completely unaffected by the <code>dbg</code> operation.</li>
+<li><strong>Console Output</strong>: As each element (A, B, C) passes through the <code>dbg</code> step, its details are printed to the console,
+prefixed with the provided label. This is shown as a side effect.</li>
+<li><strong>Output Elements (Unchanged)</strong>: The elements <strong>A, B, C</strong> continue to the next step in the traversal, completely
+unaffected by the <code>dbg</code> operation.</li>
 </ul>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.dbg("Custom label")</code></pre>
@@ -180,9 +183,19 @@ Debug step diagram showing elements flowing through, console output, and unchang
 <h2 id="return-value"><a class="header" href="#return-value">Return Value</a></h2>
 <p>Returns the same traversal unchanged, allowing you to continue chaining steps.</p>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
-<pre><code class="language-rust noplayground">pub fn dbg_example() {
-    // Stub example - to be implemented
-}</code></pre>
+<pre><code class="language-rust noplayground">    // Create a pipeline with multiple dbg steps to see how data transforms
+    let result = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with all people
+        .dbg("all-people") // Debug all people vertices
+        .filter_by_person(|person, _| {
+            // Find people over 30
+            person.age() &gt; 30
+        })
+        .dbg("people-over-30") // Debug filtered results
+        .count();
+
+    println!("Found {} people over 30", result);</code></pre>
 <h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
 <ul>
 <li>Use meaningful labels to identify each debug checkpoint in complex traversals</li>
