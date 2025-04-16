@@ -280,30 +280,30 @@ graph-api-simplegraph = "0.1.4"
 <h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
 <h3 id="your-first-graph"><a class="header" href="#your-first-graph">Your First Graph</a></h3>
 <p>Let's define a simple graph model with people and projects:</p>
-<pre><code class="language-rust noplayground">    // Define our vertex types using derive macro
-    #[derive(Debug, Clone, VertexExt)]
-    enum Vertex {
-        // A person vertex with name and age properties
-        Person {
-            name: String,
-            #[index]
-            username: String,
-            age: u8,
-        },
-        // A project vertex with just a name
-        Project {
-            name: String,
-        },
-    }
+<pre><code class="language-rust noplayground">// Define our vertex types using derive macro
+#[derive(Debug, Clone, VertexExt)]
+pub enum Vertex {
+    // A person vertex with name and age properties
+    Person {
+        name: String,
+        #[index(hash)]
+        username: String,
+        age: u8,
+    },
+    // A project vertex with just a name
+    Project {
+        name: String,
+    },
+}
 
-    // Define our edge types using derive macro
-    #[derive(Debug, Clone, EdgeExt)]
-    enum Edge {
-        // Simple relationship types
-        Knows,
-        Created,
-        WorksOn,
-    }</code></pre>
+// Define our edge types using derive macro
+#[derive(Debug, Clone, EdgeExt)]
+enum Edge {
+    // Simple relationship types
+    Knows,
+    Created,
+    WorksOn,
+}</code></pre>
 <p>Now we can create a graph and add some data:</p>
 <pre><code class="language-rust noplayground">        // Create a new empty graph
         let mut graph = SimpleGraph::&lt;Vertex, Edge&gt;::new();
@@ -333,10 +333,10 @@ graph-api-simplegraph = "0.1.4"
 <pre><code class="language-rust noplayground">        // Find all people who created a project
         let creators = graph
             .walk()
-            .vertices()
+            .vertices(VertexSearch::scan())
             .filter_person() // Type-safe filter using generated helper
-            .edges(Edge::created_search()) // Using generated search function
-            .vertices()
+            .edges(Edge::created()) // Using generated search function
+            .head()
             .filter_project() // Type-safe filter using generated helper
             .map(|v, _| {
                 // Use projection for type-safe property access
@@ -347,9 +347,9 @@ graph-api-simplegraph = "0.1.4"
         // Find all people who know someone
         let people_with_friends = graph
             .walk()
-            .vertices()
+            .vertices(VertexSearch::scan())
             .filter_person() // Type-safe filter using generated helper
-            .edges(Edge::knows_search()) // Using generated search function
+            .edges(Edge::knows()) // Using generated search function
             .tail()
             .filter_person() // Type-safe filter using generated helper
             .map(|v, _| {
