@@ -1,36 +1,34 @@
 use graph_api_derive::{EdgeExt, VertexExt};
-use graph_api_lib::{Graph, VertexSearch};
+use graph_api_lib::{Graph, VertexReference, VertexSearch};
 use graph_api_simplegraph::SimpleGraph;
+// ANCHOR: model
+// Define our vertex types using derive macro
+#[derive(Debug, Clone, VertexExt)]
+pub enum Vertex {
+    // A person vertex with name and age properties
+    Person {
+        name: String,
+        #[index(hash)]
+        username: String,
+        age: u8,
+    },
+    // A project vertex with just a name
+    Project {
+        name: String,
+    },
+}
 
+// Define our edge types using derive macro
+#[derive(Debug, Clone, EdgeExt)]
+enum Edge {
+    // Simple relationship types
+    Knows,
+    Created,
+    WorksOn,
+}
+// ANCHOR_END: model
 fn main() {
     // ANCHOR: all
-
-    // ANCHOR: model
-    // Define our vertex types using derive macro
-    #[derive(Debug, Clone, VertexExt)]
-    enum Vertex {
-        // A person vertex with name and age properties
-        Person {
-            name: String,
-            #[index]
-            username: String,
-            age: u8,
-        },
-        // A project vertex with just a name
-        Project {
-            name: String,
-        },
-    }
-
-    // Define our edge types using derive macro
-    #[derive(Debug, Clone, EdgeExt)]
-    enum Edge {
-        // Simple relationship types
-        Knows,
-        Created,
-        WorksOn,
-    }
-    // ANCHOR_END: model
 
     // Function that demonstrates graph creation
     fn create_simple_graph() -> SimpleGraph<Vertex, Edge> {
@@ -70,10 +68,10 @@ fn main() {
         // Find all people who created a project
         let creators = graph
             .walk()
-            .vertices()
+            .vertices(VertexSearch::scan())
             .filter_person() // Type-safe filter using generated helper
-            .edges(Edge::created_search()) // Using generated search function
-            .vertices()
+            .edges(Edge::created()) // Using generated search function
+            .head()
             .filter_project() // Type-safe filter using generated helper
             .map(|v, _| {
                 // Use projection for type-safe property access
@@ -84,9 +82,9 @@ fn main() {
         // Find all people who know someone
         let people_with_friends = graph
             .walk()
-            .vertices()
+            .vertices(VertexSearch::scan())
             .filter_person() // Type-safe filter using generated helper
-            .edges(Edge::knows_search()) // Using generated search function
+            .edges(Edge::knows()) // Using generated search function
             .tail()
             .filter_person() // Type-safe filter using generated helper
             .map(|v, _| {
