@@ -163,6 +163,13 @@
 <p><code>SimpleGraph</code> is the reference implementation for the Graph API, designed primarily to showcase and test the full
 capabilities of the API, including comprehensive indexing support for property graphs. While functional, it's not
 optimized for high performance.</p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p>Add SimpleGraph to your project dependencies:</p>
+<pre><code class="language-toml">[dependencies]
+graph-api-lib = "0.1.4"
+graph-api-derive = "0.1.2"  # For derive macros
+graph-api-simplegraph = "0.1.4"
+</code></pre>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
 <p><code>SimpleGraph</code> is a custom in-memory graph implementation built specifically to demonstrate and validate all Graph API
 features, including every type of index. It serves as a clear example for developers implementing the Graph API traits
@@ -236,11 +243,11 @@ label-based filtering.</p>
 <li>✅ Vertex label indexes</li>
 <li>✅ Edge label indexes</li>
 <li>✅ Vertex hash indexes</li>
-<li>✅ Edge hash indexes</li>
+<li>❌ Edge hash indexes</li>
 <li>✅ Vertex range indexes</li>
-<li>✅ Edge range indexes</li>
+<li>❌ Edge range indexes</li>
 <li>✅ Vertex full-text indexes</li>
-<li>✅ Edge adjacent label indexes</li>
+<li>✅ Edge adjacent label indexes (this isn't fully supported in graph-api-lib yet)</li>
 <li>✅ Graph clearing</li>
 </ul>
 <h2 id="performance-characteristics"><a class="header" href="#performance-characteristics">Performance Characteristics</a></h2>
@@ -434,7 +441,7 @@ assert_eq!(people.len(), 1);
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../reference/implementations/pet_graph.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../reference/implementations/petgraph.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -448,7 +455,7 @@ assert_eq!(people.len(), 1);
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../reference/implementations/pet_graph.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../reference/implementations/petgraph.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

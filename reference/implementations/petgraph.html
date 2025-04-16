@@ -160,9 +160,22 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="petgraph-adapter"><a class="header" href="#petgraph-adapter">PetGraph Adapter</a></h1>
-<p>The <code>PetGraph</code> adapter provides Graph API compatibility for the excellent and widely-used <a href="https://crates.io/crates/petgraph">petgraph</a> Rust graph library. This allows projects using <code>petgraph</code> to benefit from the Graph API's ergonomic query interface while retaining <code>petgraph</code>'s robust performance, extensive algorithm suite, and maturity.</p>
+<p>The <code>PetGraph</code> adapter provides Graph API compatibility for the excellent and
+widely-used <a href="https://crates.io/crates/petgraph">petgraph</a> Rust graph library. This allows projects using <code>petgraph</code> to
+benefit from the Graph API's ergonomic query interface while retaining <code>petgraph</code>'s robust performance, extensive
+algorithm suite, and maturity.</p>
+<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
+<p>Add PetGraph support to your project dependencies:</p>
+<pre><code class="language-toml">[dependencies]
+graph-api-lib = "0.1.4"
+graph-api-derive = "0.1.2"  # For derive macros
+graph-api-petgraph = "0.1.4"  # Graph API adapter for petgraph
+petgraph = "0.6"  # The underlying graph library
+</code></pre>
 <h2 id="overview"><a class="header" href="#overview">Overview</a></h2>
-<p>This adapter wraps <code>petgraph::stable_graph::StableGraph</code>, enabling it to be used seamlessly with Graph API traits and walkers. It acts as a bridge, translating Graph API calls into <code>petgraph</code> operations. Note that it primarily exposes <code>petgraph</code>'s core graph structure and does <em>not</em> add the advanced indexing features found in <code>SimpleGraph</code>.</p>
+<p>This adapter wraps <code>petgraph::stable_graph::StableGraph</code>, enabling it to be used seamlessly with Graph API traits and
+walkers. It acts as a bridge, translating Graph API calls into <code>petgraph</code> operations. Note that it primarily exposes
+<code>petgraph</code>'s core graph structure and does <em>not</em> add the advanced indexing features found in <code>SimpleGraph</code>.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use petgraph::stable_graph::StableGraph;
@@ -191,12 +204,12 @@ pub enum Edge {
 let mut graph = StableGraph::new();
 
 // Use the graph through the Graph API
-let alice = graph.add_vertex(Vertex::Person { 
-    name: "Alice".to_string(), 
-    age: 30 
+let alice = graph.add_vertex(Vertex::Person {
+name: "Alice".to_string(),
+age: 30
 });
-let project = graph.add_vertex(Vertex::Project { 
-    name: "Graph API".to_string() 
+let project = graph.add_vertex(Vertex::Project {
+name: "Graph API".to_string()
 });
 graph.add_edge(alice, project, Edge::Created);
 <span class="boring">}</span></code></pre></pre>
@@ -241,7 +254,7 @@ graph.add_edge(b, c, Edge::Knows { since: 2015 });
 graph.add_edge(a, c, Edge::Knows { since: 2020 });
 
 // Use petgraph algorithms directly on the same graph
-let path = dijkstra(&amp;graph, a, Some(c), |_| 1);
+let path = dijkstra( &amp; graph, a, Some(c), | _ | 1);
 <span class="boring">}</span></code></pre></pre>
 <h3 id="visualization"><a class="header" href="#visualization">Visualization</a></h3>
 <p>Petgraph supports graph visualization with Graphviz:</p>
@@ -296,7 +309,9 @@ println!("{:?}", Dot::with_config(&amp;graph, &amp;[Config::EdgeNoLabel]));
 <li><strong>Compatibility gaps</strong>: Some petgraph features may not map directly to Graph API concepts</li>
 </ol>
 <h2 id="source-code"><a class="header" href="#source-code">Source Code</a></h2>
-<p>The source code for the <code>PetGraph</code> adapter is available in the <a href="https://github.com/BrynCooke/graph-api/tree/main/graph-api-lib/src/petgraph">graph-api-lib</a> crate under the <code>petgraph</code> module.</p>
+<p>The source code for the <code>PetGraph</code> adapter is available in
+the <a href="https://github.com/BrynCooke/graph-api/tree/main/graph-api-lib/src/petgraph">graph-api-lib</a> crate under the
+<code>petgraph</code> module.</p>
 <h2 id="example-usage"><a class="header" href="#example-usage">Example Usage</a></h2>
 <p>Here's an example demonstrating <code>PetGraph</code> usage:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -327,18 +342,18 @@ pub enum Edge {
 let mut graph = StableGraph::new();
 
 // Add vertices
-let alice = graph.add_vertex(Vertex::Person { 
-    name: "Alice".to_string(), 
-    age: 30,
+let alice = graph.add_vertex(Vertex::Person {
+name: "Alice".to_string(),
+age: 30,
 });
 
-let bob = graph.add_vertex(Vertex::Person { 
-    name: "Bob".to_string(), 
-    age: 25,
+let bob = graph.add_vertex(Vertex::Person {
+name: "Bob".to_string(),
+age: 25,
 });
 
-let project = graph.add_vertex(Vertex::Project { 
-    name: "Graph API".to_string() 
+let project = graph.add_vertex(Vertex::Project {
+name: "Graph API".to_string()
 });
 
 // Add edges
@@ -348,24 +363,24 @@ graph.add_edge(bob, project, Edge::Created);
 
 // Basic traversal (without indexing)
 let all_vertices = graph.walk()
-    .vertices(VertexSearch::scan())
-    .collect::&lt;Vec&lt;_&gt;&gt;();
+.vertices(VertexSearch::scan())
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
 assert_eq!(all_vertices.len(), 3);
 
 // Find all people (manual filtering since indexing isn't supported)
 let people = graph.walk()
-    .vertices(VertexSearch::scan())
-    .filter_by_person(|_, _| true)
-    .collect::&lt;Vec&lt;_&gt;&gt;();
+.vertices(VertexSearch::scan())
+.filter_by_person( | _, _ | true)
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
 assert_eq!(people.len(), 2);
 
 // Find projects connected to Alice
 let alices_projects = graph.walk()
-    .vertices_by_id(vec![alice])
-    .edges(EdgeSearch::scan())
-    .filter_by_created(|_, _| true)
-    .head()
-    .collect::&lt;Vec&lt;_&gt;&gt;();
+.vertices_by_id(vec![alice])
+.edges(EdgeSearch::scan())
+.filter_by_created( | _, _ | true)
+.head()
+.collect::&lt;Vec&lt;_ &gt; &gt; ();
 assert_eq!(alices_projects.len(), 1);
 <span class="boring">}</span></code></pre></pre>
 <h2 id="integrating-with-petgraph-algorithms"><a class="header" href="#integrating-with-petgraph-algorithms">Integrating with Petgraph Algorithms</a></h2>
@@ -386,15 +401,15 @@ graph.add_edge(a, b, Edge::Knows { since: 2010 });
 graph.add_edge(b, c, Edge::Knows { since: 2015 });
 
 // Use petgraph algorithms
-let distances = dijkstra(&amp;graph, a, None, |_| 1);
+let distances = dijkstra( &amp; graph, a, None, | _ | 1);
 assert_eq!(distances[&amp;c], 2); // Distance from A to C is 2
 
-let is_cyclic = is_cyclic_directed(&amp;graph);
+let is_cyclic = is_cyclic_directed( &amp; graph);
 assert_eq!(is_cyclic, false);
 
 // Add an edge to create a cycle
 graph.add_edge(c, a, Edge::Knows { since: 2020 });
-let is_cyclic = is_cyclic_directed(&amp;graph);
+let is_cyclic = is_cyclic_directed( &amp; graph);
 assert_eq!(is_cyclic, true);
 <span class="boring">}</span></code></pre></pre>
 <h2 id="when-to-choose-petgraph"><a class="header" href="#when-to-choose-petgraph">When to Choose PetGraph</a></h2>

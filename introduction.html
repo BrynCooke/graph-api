@@ -171,8 +171,14 @@ and ergonomic usage patterns. It includes features for graph traversal, modifica
 <h2 id="advantages"><a class="header" href="#advantages">Advantages</a></h2>
 <ul>
 <li><strong>Iterator-like interface for graphs</strong>: Intuitive API that feels familiar to Rust developers</li>
-<li><strong>Works with multiple backends</strong>: Comes with a simple graph implementation but also
-supports <a href="https://github.com/petgraph/petgraph">petgraph</a></li>
+<li><strong>Works with multiple backends</strong>:
+<ul>
+<li><strong><a href="reference/implementations/simple_graph.html">simple graph</a></strong> - A simple adjacency list based graph with index
+support</li>
+<li><strong><a href="reference/implementations/petgraph.html">petgraph</a></strong> - An excellent established graph library</li>
+<li>You can also create your own!</li>
+</ul>
+</li>
 <li><strong>Composable operations</strong>: Chain graph operations together in a fluent, declarative style</li>
 <li><strong>Separation of graph model and implementation</strong>: Define your domain model once and use it with any supported backend</li>
 </ul>

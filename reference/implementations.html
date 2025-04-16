@@ -168,11 +168,11 @@ suitability for different applications.</p>
 <ol>
 <li>
 <p><strong><a href="./implementations/simple_graph.html">SimpleGraph</a></strong>: A reference implementation built specifically for the Graph
-API. It fully supports all Graph API features, including all index types, making it ideal for testing Graph API
+API. It fully supports all Graph API features, including most index types, making it ideal for testing Graph API
 functionality and serving as a blueprint for new implementations.</p>
 </li>
 <li>
-<p><strong><a href="./implementations/pet_graph.html">PetGraph</a></strong>: An adapter for the excellent and widely-used
+<p><strong><a href="./implementations/petgraph.html">PetGraph</a></strong>: An adapter for the excellent and widely-used
 <a href="https://crates.io/crates/petgraph">petgraph</a> crate. This demonstrates Graph API compatibility with established
 Rust graph libraries and is a great choice for performance-sensitive applications or projects already using
 petgraph.</p>
@@ -186,14 +186,15 @@ petgraph.</p>
 <tr><td>Vertex label indexes</td><td>✅</td><td>❌</td></tr>
 <tr><td>Edge label indexes</td><td>✅</td><td>❌</td></tr>
 <tr><td>Vertex hash indexes</td><td>✅</td><td>❌</td></tr>
-<tr><td>Edge hash indexes</td><td>✅</td><td>❌</td></tr>
+<tr><td>Edge hash indexes</td><td>❌</td><td>❌</td></tr>
 <tr><td>Vertex range indexes</td><td>✅</td><td>❌</td></tr>
-<tr><td>Edge range indexes</td><td>✅</td><td>❌</td></tr>
+<tr><td>Edge range indexes</td><td>❌</td><td>❌</td></tr>
 <tr><td>Vertex full-text indexes</td><td>✅</td><td>❌</td></tr>
-<tr><td>Edge adjacent label indexes</td><td>✅</td><td>❌</td></tr>
+<tr><td>Edge adjacent label indexes*</td><td>✅</td><td>❌</td></tr>
 <tr><td>Graph clearing</td><td>✅</td><td>✅</td></tr>
 </tbody></table>
 </div>
+<p>* Edge adjacent indexes are not fully supported in graph-api yet.</p>
 <h3 id="performance-characteristics"><a class="header" href="#performance-characteristics">Performance Characteristics</a></h3>
 <p>Performance varies between implementations:</p>
 <ul>
