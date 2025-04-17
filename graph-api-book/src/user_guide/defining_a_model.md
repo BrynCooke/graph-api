@@ -50,9 +50,8 @@ Graph API's traversal and query features.
 
 This macro provides:
 
-- Methods to access vertex properties
 - Integration with the indexing system
-- Serialization/deserialization support
+- Projection types
 - Type-safe accessors for properties
 - Type-safe filters for traversals
 
@@ -60,9 +59,8 @@ This macro provides:
 
 This macro provides:
 
-- Methods to access edge properties
 - Integration with label-based indexing
-- Serialization/deserialization support
+- Projection types
 - Type-safe accessors for properties
 - Type-safe filters for traversals
 
@@ -83,5 +81,3 @@ When defining your graph model:
 1. **Use descriptive names** - Choose clear names for vertex and edge types
 2. **Index strategically** - Only index fields used in frequent queries
 3. **Use appropriate index types** - Match index types to query patterns
-4. **Keep models focused** - Split large models into logical groupings
-5. **Use Rust's type system** - Leverage Rust's types for property values
