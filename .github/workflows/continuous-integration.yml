@@ -1,7 +1,9 @@
 name: Continuous Integration
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - "main"
+      - "release-plz-*"
   pull_request:
     types: [ opened, synchronize, reopened ]
     branches: [ "main" ]
