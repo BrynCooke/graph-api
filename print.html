@@ -493,18 +493,16 @@ Graph API's traversal and query features.</p>
 <h3 id="vertexext"><a class="header" href="#vertexext">VertexExt</a></h3>
 <p>This macro provides:</p>
 <ul>
-<li>Methods to access vertex properties</li>
 <li>Integration with the indexing system</li>
-<li>Serialization/deserialization support</li>
+<li>Projection types</li>
 <li>Type-safe accessors for properties</li>
 <li>Type-safe filters for traversals</li>
 </ul>
 <h3 id="edgeext"><a class="header" href="#edgeext">EdgeExt</a></h3>
 <p>This macro provides:</p>
 <ul>
-<li>Methods to access edge properties</li>
 <li>Integration with label-based indexing</li>
-<li>Serialization/deserialization support</li>
+<li>Projection types</li>
 <li>Type-safe accessors for properties</li>
 <li>Type-safe filters for traversals</li>
 </ul>
@@ -522,8 +520,6 @@ Graph API's traversal and query features.</p>
 <li><strong>Use descriptive names</strong> - Choose clear names for vertex and edge types</li>
 <li><strong>Index strategically</strong> - Only index fields used in frequent queries</li>
 <li><strong>Use appropriate index types</strong> - Match index types to query patterns</li>
-<li><strong>Keep models focused</strong> - Split large models into logical groupings</li>
-<li><strong>Use Rust's type system</strong> - Leverage Rust's types for property values</li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="property-graphs"><a class="header" href="#property-graphs">Property Graphs</a></h1>
 <p>A property graph is a powerful data model that allows you to represent complex, interconnected data in a highly
