@@ -1,6 +1,7 @@
 # Debug Step
 
-The `dbg` step provides a simple way to inspect the elements flowing through a traversal without altering them. It prints detailed information about each element to the console as it passes through the step.
+The `dbg` step provides a simple way to inspect the elements flowing through a traversal without altering them. It
+prints detailed information about each element to the console as it passes through the step.
 
 <object type="image/svg+xml" data="dbg/image.svg" title="Dbg Step Diagram">
 Debug step diagram showing elements flowing through, console output, and unchanged output stream
@@ -10,8 +11,10 @@ In this diagram:
 
 - **Input Elements**: The walker starts with elements **A, B, C**.
 - The **`.dbg("Label")`** step processes each element.
-- **Console Output**: As each element (A, B, C) passes through the `dbg` step, its details are printed to the console, prefixed with the provided label. This is shown as a side effect.
-- **Output Elements (Unchanged)**: The elements **A, B, C** continue to the next step in the traversal, completely unaffected by the `dbg` operation.
+- **Console Output**: As each element (A, B, C) passes through the `dbg` step, its details are printed to the console,
+  prefixed with the provided label. This is shown as a side effect.
+- **Output Elements (Unchanged)**: The elements **A, B, C** continue to the next step in the traversal, completely
+  unaffected by the `dbg` operation.
 
 ## Syntax
 
@@ -30,7 +33,7 @@ Returns the same traversal unchanged, allowing you to continue chaining steps.
 ## Example
 
 ```rust,noplayground
-{{#include dbg/dbg_example.rs:all}}
+{{#include dbg/dbg_example.rs:dbg_pipeline}}
 ```
 
 ## Best Practices
