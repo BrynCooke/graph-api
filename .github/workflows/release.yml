@@ -106,4 +106,18 @@ jobs:
             # Add comment to PR using gh CLI which uses the token from env
             gh pr comment "$pr_number" --body "Updated book documentation for this release."
           done
+      - name: Trigger status checks
+        env:
+          PRS: ${{ steps.release-plz.outputs.prs }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}
+        run: |
+          echo "$PRS" | jq -c '.[]' | while read -r pr; do
+            pr_number=$(echo "$pr" | jq -r '.number')
+            echo "Fetching commits for PR #$pr_number"
+            commits=$(gh pr view "$pr_number" --json commits --jq '.commits[].oid')
+            for commit in $commits; do
+              echo "Triggering status checks for commit $commit"
+              gh api repos/${{ github.repository }}/statuses/$commit -f state=pending -f context="ci/build"
+            done
+          done
 
