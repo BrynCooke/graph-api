@@ -1,7 +1,9 @@
 name: Continuous Integration
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - "main"
+      - "release-plz-*"
   pull_request:
     types: [ opened, synchronize, reopened ]
     branches: [ "main" ]
@@ -23,23 +25,23 @@ jobs:
         run: just test
       - name: Clippy
         run: just lint
-        
+
   build_book:
     name: Build Book
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v2
         with:
           mdbook-version: 'latest'
-          
+
       - name: Add mdBook plugins
         run: |
           cargo install mdbook-variables
           cargo install mdbook-linkcheck
-        
+
       - name: Build mdBook
         run: mdbook build graph-api-book
