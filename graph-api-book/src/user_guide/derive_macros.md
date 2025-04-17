@@ -113,7 +113,7 @@ When you apply `#[derive(EdgeExt)]` to an enum, similar types are generated:
 ```rust,noplayground
 // Given this edge definition
 #[derive(EdgeExt)]
-enum Edge {
+pub enum Edge {
     Created,
     Follows,
     Liked { timestamp: String },

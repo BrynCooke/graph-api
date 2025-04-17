@@ -2,7 +2,7 @@ use crate::model::{EnumVariants, Field, Model, Variant, VariantType, ref_type};
 use case::CaseExt;
 use proc_macro2::TokenStream;
 use quote::{ToTokens, format_ident, quote};
-use syn::Lifetime;
+use syn::{Lifetime, Visibility, parse_quote};
 
 impl Model {
     pub(crate) fn into_edge(self) -> TokenStream {
@@ -788,6 +788,10 @@ impl Variant {
 }
 
 impl Field {
+    fn projection_visibility(&self) -> Visibility {
+        parse_quote! {pub}
+    }
+
     fn ident(&self) -> TokenStream {
         self.ident.to_token_stream()
     }
@@ -809,7 +813,7 @@ impl Field {
     }
 
     fn getter(&self) -> TokenStream {
-        let vis = &self.visibility;
+        let vis = &self.projection_visibility();
         let ident = &self.ident;
         let ty = ref_type(&self.ty, None);
         if ty == self.ty {
@@ -828,7 +832,7 @@ impl Field {
     }
 
     fn setter(&self) -> TokenStream {
-        let vis = &self.visibility;
+        let vis = &self.projection_visibility();
         let ident = &self.ident;
         let set_ident = format_ident!("set_{}", &self.ident);
         let ty = &self.ty;
@@ -853,8 +857,13 @@ impl Field {
 }
 
 impl Variant {
+    fn projection_visibility(&self) -> Visibility {
+        parse_quote! {pub}
+    }
+
     fn vertex_projection(&self) -> TokenStream {
         let vis = &self.visibility;
+        let projection_vis = &self.projection_visibility();
         let element_ident = &self.element_ident;
         let variant_ident = &self.ident;
         let projection_module = &self.projection_module;
@@ -872,7 +881,7 @@ impl Variant {
             #vis use #projection_module::#mut_ident;
             mod #projection_module {
                 use super::*;
-                #vis struct #ident<'reference, Element> {
+                #projection_vis struct #ident<'reference, Element> {
                     _phantom: std::marker::PhantomData<Element>,
                     #(#struct_fields),*
                 }
@@ -881,7 +890,7 @@ impl Variant {
                     #(#fields_getters)*
                 }
 
-                #vis struct #mut_ident<'reference, Element, MutationListener> where
+                #projection_vis struct #mut_ident<'reference, Element, MutationListener> where
                     Element: graph_api_lib::Element,
                     MutationListener: graph_api_lib::MutationListener<'reference, Element>
                 {
@@ -931,7 +940,7 @@ impl Variant {
     }
 
     fn edge_projection(&self) -> TokenStream {
-        let vis = &self.visibility;
+        let vis = &self.projection_visibility();
         let projection_module = &self.projection_module;
         let element_ident = &self.element_ident;
         let variant_ident = &self.ident;

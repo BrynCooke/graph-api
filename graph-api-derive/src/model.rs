@@ -31,7 +31,6 @@ pub(crate) struct Variant {
 
 #[cfg_attr(test, derive(Debug))]
 pub(crate) struct Field {
-    pub(crate) visibility: Visibility,
     pub(crate) ident: Ident,
     pub(crate) ty: Type,
     pub(crate) index_ident: Ident,
@@ -146,7 +145,6 @@ impl TryFrom<DeriveType<'_>> for Model {
                                 .iter()
                                 .map(|field| {
                                     let mut field_model = Field {
-                                        visibility: model.visibility.clone(),
                                         ident: field
                                             .ident
                                             .as_ref()
