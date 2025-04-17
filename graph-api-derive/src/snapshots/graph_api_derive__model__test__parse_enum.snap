@@ -92,7 +92,6 @@ Model {
             variant_type: Named,
             fields: [
                 Field {
-                    visibility: Visibility::Inherited,
                     ident: Ident(
                         param1,
                     ),
@@ -122,7 +121,6 @@ Model {
                     full_text: false,
                 },
                 Field {
-                    visibility: Visibility::Inherited,
                     ident: Ident(
                         param2,
                     ),
