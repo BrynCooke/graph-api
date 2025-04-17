@@ -184,7 +184,7 @@ implementation.</p>
 <p>Add the Graph API to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
 graph-api-lib = "0.1.4"
-graph-api-derive = "0.1.2"  # For derive macros
+graph-api-derive = "0.1.3"  # For derive macros
 </code></pre>
 <p>For a simple graph implementation:</p>
 <pre><code class="language-toml">[dependencies]
@@ -195,7 +195,7 @@ graph-api-simplegraph = "0.1.4"
 <p>Let's define a simple graph model with people and projects:</p>
 <pre><code class="language-rust noplayground">// Define our vertex types using derive macro
 #[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
+enum Vertex {
     // A person vertex with name and age properties
     Person {
         name: String,

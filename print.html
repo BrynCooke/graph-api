@@ -271,7 +271,7 @@ implementation.</p>
 <p>Add the Graph API to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
 graph-api-lib = "0.1.4"
-graph-api-derive = "0.1.2"  # For derive macros
+graph-api-derive = "0.1.3"  # For derive macros
 </code></pre>
 <p>For a simple graph implementation:</p>
 <pre><code class="language-toml">[dependencies]
@@ -282,7 +282,7 @@ graph-api-simplegraph = "0.1.4"
 <p>Let's define a simple graph model with people and projects:</p>
 <pre><code class="language-rust noplayground">// Define our vertex types using derive macro
 #[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
+enum Vertex {
     // A person vertex with name and age properties
     Person {
         name: String,
@@ -1143,7 +1143,7 @@ where
 <h3 id="1-label-enum-edgelabel"><a class="header" href="#1-label-enum-edgelabel">1. Label Enum (EdgeLabel)</a></h3>
 <pre><code class="language-rust noplayground">// Given this edge definition
 #[derive(EdgeExt)]
-enum Edge {
+pub enum Edge {
     Created,
     Follows,
     Liked { timestamp: String },
@@ -4669,7 +4669,7 @@ covers:</p>
 <li>Add <code>graph-api-test</code> as a dev-dependency in your <code>Cargo.toml</code>:</li>
 </ol>
 <pre><code class="language-toml">[dev-dependencies]
-graph-api-test = { version = "0.1.5", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-test = { version = "0.1.6", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 </code></pre>
 <ol start="2">
@@ -5425,7 +5425,7 @@ how to set up and run benchmarks, interpret results, and use benchmarking to gui
 <p>First, add the necessary dependencies to your <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[dev-dependencies]
 criterion = "0.5"
-graph-api-benches = { version = "0.1.5", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-benches = { version = "0.1.6", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 [[bench]]
 name = "my_graph_benchmarks"
@@ -6050,7 +6050,7 @@ optimized for high performance.</p>
 <p>Add SimpleGraph to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
 graph-api-lib = "0.1.4"
-graph-api-derive = "0.1.2"  # For derive macros
+graph-api-derive = "0.1.3"  # For derive macros
 graph-api-simplegraph = "0.1.4"
 </code></pre>
 <h2 id="overview-8"><a class="header" href="#overview-8">Overview</a></h2>
@@ -6324,7 +6324,7 @@ algorithm suite, and maturity.</p>
 <p>Add PetGraph support to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
 graph-api-lib = "0.1.4"
-graph-api-derive = "0.1.2"  # For derive macros
+graph-api-derive = "0.1.3"  # For derive macros
 graph-api-petgraph = "0.1.4"  # Graph API adapter for petgraph
 petgraph = "0.6"  # The underlying graph library
 </code></pre>

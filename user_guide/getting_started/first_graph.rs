@@ -4,7 +4,7 @@ use graph_api_simplegraph::SimpleGraph;
 // ANCHOR: model
 // Define our vertex types using derive macro
 #[derive(Debug, Clone, VertexExt)]
-pub enum Vertex {
+enum Vertex {
     // A person vertex with name and age properties
     Person {
         name: String,

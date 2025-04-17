@@ -279,7 +279,7 @@ where
 <h3 id="1-label-enum-edgelabel"><a class="header" href="#1-label-enum-edgelabel">1. Label Enum (EdgeLabel)</a></h3>
 <pre><code class="language-rust noplayground">// Given this edge definition
 #[derive(EdgeExt)]
-enum Edge {
+pub enum Edge {
     Created,
     Follows,
     Liked { timestamp: String },
