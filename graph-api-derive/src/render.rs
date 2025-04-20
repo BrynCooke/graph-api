@@ -748,8 +748,7 @@ impl Variant {
     }
 
     fn index_ty(&self) -> Vec<TokenStream> {
-        self.fields
-            .iter()
+        self.indexed_fields()
             .map(|f| {
                 let ty = &f.ty;
                 quote! {#ty}
@@ -1022,6 +1021,7 @@ mod tests {
             #[derive(VertexExt)]
             pub enum Vertex {
                 Person {
+                    non_indexed: usize,
                     #[index(hash)]
                     name: String,
                     #[index(range)]
