@@ -209,6 +209,7 @@ mod __vertex_projection_vertex_person {
     use super::*;
     pub struct Person<'reference, Element> {
         _phantom: std::marker::PhantomData<Element>,
+        non_indexed: &'reference usize,
         name: &'reference String,
         age: &'reference u64,
         unique_id: &'reference Uuid,
@@ -216,6 +217,9 @@ mod __vertex_projection_vertex_person {
         biography: &'reference String,
     }
     impl<'reference, Element> Person<'reference, Element> {
+        pub fn non_indexed<'a>(&self) -> usize {
+            *self.non_indexed
+        }
         pub fn name(&self) -> &str {
             self.name
         }
@@ -239,6 +243,7 @@ mod __vertex_projection_vertex_person {
     {
         _phantom: std::marker::PhantomData<Element>,
         __listener: MutationListener,
+        non_indexed: &'reference mut usize,
         name: &'reference mut String,
         age: &'reference mut u64,
         unique_id: &'reference mut Uuid,
@@ -254,6 +259,9 @@ mod __vertex_projection_vertex_person {
         Element: graph_api_lib::Element<Label = VertexLabel>,
         MutationListener: graph_api_lib::MutationListener<'reference, Element>,
     {
+        pub fn non_indexed<'a>(&self) -> usize {
+            *self.non_indexed
+        }
         pub fn name(&self) -> &str {
             self.name
         }
@@ -268,6 +276,9 @@ mod __vertex_projection_vertex_person {
         }
         pub fn biography(&self) -> &str {
             self.biography
+        }
+        pub fn set_non_indexed(&mut self, value: usize) {
+            *self.non_indexed = value;
         }
         pub fn set_name(&mut self, value: String) {
             self.__listener
@@ -310,9 +321,17 @@ mod __vertex_projection_vertex_person {
     impl<'reference> graph_api_lib::Project<'reference, Vertex>
     for Person<'reference, Vertex> {
         fn project(weight: &'reference Vertex) -> Option<Self> {
-            if let Vertex::Person { name, age, unique_id, username, biography } = weight {
+            if let Vertex::Person {
+                non_indexed,
+                name,
+                age,
+                unique_id,
+                username,
+                biography,
+            } = weight {
                 Some(Person {
                     _phantom: std::default::Default::default(),
+                    non_indexed,
                     name,
                     age,
                     unique_id,
@@ -336,10 +355,18 @@ mod __vertex_projection_vertex_person {
             weight: &'reference mut Vertex,
             mutation_listener: MutationListener,
         ) -> Option<Self> {
-            if let Vertex::Person { name, age, unique_id, username, biography } = weight {
+            if let Vertex::Person {
+                non_indexed,
+                name,
+                age,
+                unique_id,
+                username,
+                biography,
+            } = weight {
                 Some(PersonMut {
                     _phantom: std::default::Default::default(),
                     __listener: mutation_listener,
+                    non_indexed,
                     name,
                     age,
                     unique_id,

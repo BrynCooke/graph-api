@@ -1,10 +1,11 @@
 use graph_api_derive::{EdgeExt, VertexExt};
-use graph_api_lib::{Element, Label};
+use graph_api_lib::{Element, Index, Label};
 use uuid::Uuid;
 
 #[derive(Debug, Clone, VertexExt)]
 pub enum Vertex {
     Person {
+        non_indexed: usize,
         #[index(hash)]
         name: String,
         #[index(range)]
@@ -37,17 +38,17 @@ pub struct Language {
 }
 
 #[test]
-fn test_label_name() {
-    assert_eq!(
-        Vertex::Person {
-            name: "".to_string(),
-            age: 0,
-            unique_id: Default::default(),
-            username: "".to_string(),
-            biography: "".to_string(),
-        }
-        .label()
-        .name(),
-        "Person"
-    );
+fn test_label() {
+    let label = Vertex::Person {
+        non_indexed: 0,
+        name: "".to_string(),
+        age: 0,
+        unique_id: Default::default(),
+        username: "".to_string(),
+        biography: "".to_string(),
+    }
+    .label();
+    assert_eq!(label.name(), "Person");
+    assert_eq!(label.indexes().len(), 5);
+    assert_eq!(label.indexes()[0].ty(), std::any::TypeId::of::<String>());
 }
