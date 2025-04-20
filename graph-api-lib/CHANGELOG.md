@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2025-04-20
+
+### 🚀 Features
+
+- [**breaking**] Move removal of elements to a supports trait (#76)
+
+
 ## [0.1.4] - 2025-04-13
 
 ### ⚙️ Miscellaneous Tasks
