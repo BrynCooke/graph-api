@@ -1,6 +1,8 @@
 use criterion::{BenchmarkGroup, measurement::WallTime};
 use graph_api_derive::{EdgeExt, VertexExt};
 use graph_api_lib::Graph;
+#[cfg(feature = "element-removal")]
+use graph_api_lib::SupportsElementRemoval;
 use std::collections::HashSet;
 use std::fmt::Debug;
 use uuid::Uuid;
@@ -58,8 +60,10 @@ where
     (person_ids, project, rust)
 }
 
+// Individual benchmark functions
+
 #[cfg(feature = "vertex-label-index")]
-pub fn run_benchmarks<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+pub fn bench_label_lookup<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexLabelIndex,
 {
@@ -82,7 +86,21 @@ where
             results
         })
     });
+}
 
+#[cfg(not(feature = "vertex-label-index"))]
+pub fn bench_label_lookup<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
+
+#[cfg(feature = "vertex-label-index")]
+pub fn bench_label_insertion<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexLabelIndex,
+{
     // Benchmark insertion with label index
     group.bench_function("vertex_label_insertion", |b| {
         let mut graph = setup();
@@ -100,7 +118,25 @@ where
             })
         })
     });
+}
 
+#[cfg(not(feature = "vertex-label-index"))]
+pub fn bench_label_insertion<G>(
+    _group: &mut BenchmarkGroup<WallTime>,
+    _setup: impl Fn() -> G + Clone,
+) where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
+
+#[cfg(all(feature = "vertex-label-index", feature = "element-removal"))]
+pub fn bench_label_removal<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>
+        + graph_api_lib::SupportsVertexLabelIndex
+        + SupportsElementRemoval,
+{
     // Benchmark removal with label index
     group.bench_function("vertex_label_removal", |b| {
         // Setup: Create a new graph for each iteration
@@ -123,10 +159,10 @@ where
     });
 }
 
-#[cfg(not(feature = "vertex-label-index"))]
-pub fn run_benchmarks<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+#[cfg(not(all(feature = "vertex-label-index", feature = "element-removal")))]
+pub fn bench_label_removal<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
-    // No-op when feature is disabled
+    // No-op when features are disabled
 }

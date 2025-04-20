@@ -21,6 +21,7 @@ edge-label-index = []
 edge-index = []
 edge-range-index = []
 graph-clear = []
+element-removal = []
 
 
 [dependencies]

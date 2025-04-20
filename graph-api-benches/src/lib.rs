@@ -63,37 +63,54 @@ macro_rules! bench_suite {
         // Run vertex label index benchmarks
         let mut vertex_label_group = criterion.benchmark_group("vertex_label_index");
         $crate::configure_group(&mut vertex_label_group);
-        $crate::index::run_vertex_label_benchmarks(&mut vertex_label_group, $setup);
+        $crate::index::vertex_label::bench_label_lookup(&mut vertex_label_group, $setup.clone());
+        $crate::index::vertex_label::bench_label_insertion(&mut vertex_label_group, $setup.clone());
+        $crate::index::vertex_label::bench_label_removal(&mut vertex_label_group, $setup.clone());
         vertex_label_group.finish();
 
         // Run vertex hash index benchmarks
         let mut vertex_hash_group = criterion.benchmark_group("vertex_hash_index");
         $crate::configure_group(&mut vertex_hash_group);
-        $crate::index::run_vertex_hash_benchmarks(&mut vertex_hash_group, $setup);
+        $crate::index::vertex_hash::bench_lookup(&mut vertex_hash_group, $setup.clone());
+        $crate::index::vertex_hash::bench_insertion(&mut vertex_hash_group, $setup.clone());
+        $crate::index::vertex_hash::bench_removal(&mut vertex_hash_group, $setup.clone());
         vertex_hash_group.finish();
 
         // Run vertex full-text index benchmarks
         let mut vertex_full_text_group = criterion.benchmark_group("vertex_full_text_index");
         $crate::configure_group(&mut vertex_full_text_group);
-        $crate::index::run_vertex_full_text_benchmarks(&mut vertex_full_text_group, $setup);
+        $crate::index::vertex_full_text::bench_lookup(&mut vertex_full_text_group, $setup.clone());
+        $crate::index::vertex_full_text::bench_insertion(
+            &mut vertex_full_text_group,
+            $setup.clone(),
+        );
+        $crate::index::vertex_full_text::bench_removal(&mut vertex_full_text_group, $setup.clone());
         vertex_full_text_group.finish();
 
         // Run vertex range index benchmarks
         let mut vertex_range_group = criterion.benchmark_group("vertex_range_index");
         $crate::configure_group(&mut vertex_range_group);
-        $crate::index::run_vertex_range_benchmarks(&mut vertex_range_group, $setup);
+        $crate::index::vertex_range::bench_lookup(&mut vertex_range_group, $setup.clone());
+        $crate::index::vertex_range::bench_insertion(&mut vertex_range_group, $setup.clone());
+        $crate::index::vertex_range::bench_removal(&mut vertex_range_group, $setup.clone());
         vertex_range_group.finish();
 
         // Run edge label index benchmarks
         let mut edge_label_group = criterion.benchmark_group("edge_label_index");
         $crate::configure_group(&mut edge_label_group);
-        $crate::index::run_edge_label_benchmarks(&mut edge_label_group, $setup);
+        $crate::index::edge_label::bench_lookup(&mut edge_label_group, $setup.clone());
+        $crate::index::edge_label::bench_insertion(&mut edge_label_group, $setup.clone());
+        $crate::index::edge_label::bench_removal(&mut edge_label_group, $setup.clone());
         edge_label_group.finish();
 
         // Run no-index benchmarks (baseline performance)
         let mut no_index_group = criterion.benchmark_group("no_index");
         $crate::configure_group(&mut no_index_group);
-        $crate::index::run_no_index_benchmarks(&mut no_index_group, $setup);
+        $crate::index::no_index::bench_vertex_insertion(&mut no_index_group, $setup.clone());
+        $crate::index::no_index::bench_edge_insertion(&mut no_index_group, $setup.clone());
+        $crate::index::no_index::bench_vertex_scan(&mut no_index_group, $setup.clone());
+        $crate::index::no_index::bench_vertex_removal(&mut no_index_group, $setup.clone());
+        $crate::index::no_index::bench_edge_removal(&mut no_index_group, $setup.clone());
         no_index_group.finish();
 
         // Run scaling benchmarks

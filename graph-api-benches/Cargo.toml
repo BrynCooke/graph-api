@@ -21,6 +21,7 @@ edge-label-index = []
 edge-hash-index = []
 edge-range-index = []
 graph-clear = []
+element-removal = []
 
 [lib]
 bench = false

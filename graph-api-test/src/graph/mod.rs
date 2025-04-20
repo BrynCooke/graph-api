@@ -1,4 +1,6 @@
 use crate::{Edge, Knows, KnowsMut, Person, PersonMut, Vertex, populate_graph};
+#[cfg(feature = "element-removal")]
+use graph_api_lib::SupportsElementRemoval;
 use graph_api_lib::{EdgeReference, EdgeReferenceMut, VertexReference, VertexReferenceMut};
 use uuid::Uuid;
 
@@ -16,9 +18,10 @@ where
     assert!(graph.vertex(vertex).is_some());
 }
 
+#[cfg(feature = "element-removal")]
 pub fn test_remove_vertex<Graph>(graph: &mut Graph)
 where
-    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge> + SupportsElementRemoval,
 {
     let vertex = graph.add_vertex(Vertex::Person {
         name: "Bryn".to_string(),
@@ -29,6 +32,13 @@ where
     });
     graph.remove_vertex(vertex);
     assert!(graph.vertex(vertex).is_none());
+}
+
+#[cfg(not(feature = "element-removal"))]
+pub fn test_remove_vertex<Graph>(_graph: &mut Graph)
+where
+    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+{
 }
 
 pub fn test_add_edge<Graph>(graph: &mut Graph)
@@ -53,9 +63,10 @@ where
     assert!(graph.edge(edge).is_some());
 }
 
+#[cfg(feature = "element-removal")]
 pub fn test_remove_edge<Graph>(graph: &mut Graph)
 where
-    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge> + SupportsElementRemoval,
 {
     let v1 = graph.add_vertex(Vertex::Person {
         name: "Julia".to_string(),
@@ -76,9 +87,17 @@ where
     assert!(graph.edge(edge).is_none());
 }
 
-pub fn test_remove_vertex_with_edges<Graph>(graph: &mut Graph)
+#[cfg(not(feature = "element-removal"))]
+pub fn test_remove_edge<Graph>(_graph: &mut Graph)
 where
     Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+{
+}
+
+#[cfg(feature = "element-removal")]
+pub fn test_remove_vertex_with_edges<Graph>(graph: &mut Graph)
+where
+    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge> + SupportsElementRemoval,
 {
     // Create vertices
     let v1 = graph.add_vertex(Vertex::Person {
@@ -120,6 +139,13 @@ where
     assert!(graph.vertex(v1).is_some());
     assert!(graph.vertex(v3).is_some());
     assert!(graph.edge(e3).is_some());
+}
+
+#[cfg(not(feature = "element-removal"))]
+pub fn test_remove_vertex_with_edges<Graph>(_graph: &mut Graph)
+where
+    Graph: graph_api_lib::Graph<Vertex = Vertex, Edge = Edge>,
+{
 }
 
 pub fn test_mutate_vertex<Graph>(graph: &mut Graph)

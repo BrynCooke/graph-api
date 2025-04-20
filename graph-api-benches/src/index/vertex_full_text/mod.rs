@@ -2,6 +2,8 @@ use criterion::{BenchmarkGroup, measurement::WallTime};
 
 use graph_api_derive::{EdgeExt, VertexExt};
 use graph_api_lib::Graph;
+#[cfg(feature = "element-removal")]
+use graph_api_lib::SupportsElementRemoval;
 use std::fmt::Debug;
 use uuid::Uuid;
 
@@ -79,8 +81,10 @@ where
     graph.add_vertex(Vertex::Rust);
 }
 
+// Individual benchmark functions
+
 #[cfg(feature = "vertex-full-text-index")]
-pub fn run_benchmarks<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+pub fn bench_lookup<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexFullTextIndex,
 {
@@ -102,25 +106,21 @@ where
             results
         })
     });
+}
 
-    // Benchmark full-text index lookup for project description
-    group.bench_function("vertex_fulltext_description_lookup", |b| {
-        // Setup: Create graph with test data
-        let mut graph = setup();
-        populate_test_data(&mut graph);
+#[cfg(not(feature = "vertex-full-text-index"))]
+pub fn bench_lookup<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
 
-        b.iter(|| {
-            // Query by project description containing "database"
-            let results = graph
-                .walk()
-                .vertices(Vertex::project_by_description("database"))
-                .collect::<Vec<_>>();
-
-            // Should find matches
-            results
-        })
-    });
-
+#[cfg(feature = "vertex-full-text-index")]
+pub fn bench_insertion<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexFullTextIndex,
+{
     // Benchmark insertion with full-text index
     group.bench_function("vertex_fulltext_insertion", |b| {
         let mut graph = setup();
@@ -138,7 +138,23 @@ where
             })
         })
     });
+}
 
+#[cfg(not(feature = "vertex-full-text-index"))]
+pub fn bench_insertion<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
+
+#[cfg(all(feature = "vertex-full-text-index", feature = "element-removal"))]
+pub fn bench_removal<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>
+        + graph_api_lib::SupportsVertexFullTextIndex
+        + SupportsElementRemoval,
+{
     // Benchmark removal with full-text index
     group.bench_function("vertex_fulltext_removal", |b| {
         // Setup: Create a new graph for each iteration
@@ -161,10 +177,10 @@ where
     });
 }
 
-#[cfg(not(feature = "vertex-full-text-index"))]
-pub fn run_benchmarks<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+#[cfg(not(all(feature = "vertex-full-text-index", feature = "element-removal")))]
+pub fn bench_removal<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
-    // No-op when feature is disabled
+    // No-op when features are disabled
 }

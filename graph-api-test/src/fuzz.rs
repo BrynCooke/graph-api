@@ -1,4 +1,3 @@
-use graph_api_lib::Graph;
 use graph_api_lib::{EdgeReference, EdgeSearch};
 use proptest::prelude::*;
 use std::collections::HashSet;
@@ -6,9 +5,12 @@ use std::collections::HashSet;
 #[derive(Debug, Clone)]
 pub enum GraphOperation {
     AddVertex(u32),
+    #[cfg(feature = "element-removal")]
     RemoveVertex(usize),
     AddEdge(usize, usize),
+    #[cfg(feature = "element-removal")]
     RemoveEdge(usize),
+    Noop,
 }
 
 prop_compose! {
@@ -19,17 +21,28 @@ prop_compose! {
         from_idx in any::<usize>(),
         to_idx in any::<usize>(),
     ) -> GraphOperation {
+        let _index = index;
         match op_type {
             0 => GraphOperation::AddVertex(vertex_weight),
+                    #[cfg(feature = "element-removal")]
             1 => GraphOperation::RemoveVertex(index),
             2 => GraphOperation::AddEdge(from_idx, to_idx),
-            _ => GraphOperation::RemoveEdge(index),
+                    #[cfg(feature = "element-removal")]
+            3 => GraphOperation::RemoveEdge(index),
+            _ =>GraphOperation::Noop,
         }
     }
 }
 
 pub fn test_fuzz(
-    mut graph: impl Graph<Vertex = u32, Edge = ()>,
+    #[cfg(not(feature = "element-removal"))] mut graph: impl graph_api_lib::Graph<
+        Vertex = u32,
+        Edge = (),
+    >,
+    #[cfg(feature = "element-removal")] mut graph: impl graph_api_lib::SupportsElementRemoval<
+        Vertex = u32,
+        Edge = (),
+    >,
     operations: Vec<GraphOperation>,
 ) -> bool {
     let mut vertex_ids = HashSet::new();
@@ -41,6 +54,7 @@ pub fn test_fuzz(
                 let id = graph.add_vertex(weight);
                 vertex_ids.insert(id);
             }
+            #[cfg(feature = "element-removal")]
             GraphOperation::RemoveVertex(idx) => {
                 if let Some(id) = vertex_ids.iter().nth(idx % (vertex_ids.len() + 1)).cloned() {
                     //println!("Removing vertex: {:?}", id);
@@ -73,6 +87,7 @@ pub fn test_fuzz(
                     edge_ids.insert(edge_id);
                 }
             }
+            #[cfg(feature = "element-removal")]
             GraphOperation::RemoveEdge(idx) => {
                 if let Some(id) = edge_ids.iter().nth(idx % (edge_ids.len() + 1)).cloned() {
                     //println!("Removing edge {:?}", id);
@@ -80,6 +95,7 @@ pub fn test_fuzz(
                     edge_ids.remove(&id);
                 }
             }
+            _ => {}
         }
 
         // Validate no dangling edges

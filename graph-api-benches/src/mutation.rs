@@ -1,7 +1,9 @@
 use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
 
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
-use graph_api_lib::{EdgeSearch, Graph, VertexReferenceMut, VertexSearch};
+#[cfg(feature = "element-removal")]
+use graph_api_lib::SupportsElementRemoval;
+use graph_api_lib::{Graph, VertexReferenceMut, VertexSearch};
 use graph_api_test::{Edge, PersonMut, Vertex, VertexExt};
 
 /// Run all mutation operation benchmarks
@@ -11,6 +13,18 @@ pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
 ) {
     bench_mutation_vertex_update(group, setup.clone());
     bench_mutation_edge_add(group, setup.clone());
+
+    // Only run removal benchmarks if the feature is enabled and graph supports removal
+    #[cfg(feature = "element-removal")]
+    run_removal_benchmarks(group, setup);
+}
+
+/// Run removal-specific benchmarks
+#[cfg(feature = "element-removal")]
+fn run_removal_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge> + SupportsElementRemoval>(
+    group: &mut BenchmarkGroup<WallTime>,
+    setup: impl Fn() -> G + Clone,
+) {
     bench_mutation_edge_remove(group, setup.clone());
 }
 
@@ -75,7 +89,8 @@ fn bench_mutation_edge_add<G: Graph<Vertex = Vertex, Edge = Edge>>(
 }
 
 /// Benchmark removing edges during traversal
-fn bench_mutation_edge_remove<G: Graph<Vertex = Vertex, Edge = Edge>>(
+#[cfg(feature = "element-removal")]
+fn bench_mutation_edge_remove<G: Graph<Vertex = Vertex, Edge = Edge> + SupportsElementRemoval>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) {
