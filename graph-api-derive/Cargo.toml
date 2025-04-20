@@ -1,6 +1,6 @@
 [package]
 name = "graph-api-derive"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2024"
 description = "Derive macros for the graph-api ecosystem - provides type-safe vertex and edge extensions"
 authors = ["Bryn Cooke"]
