@@ -270,12 +270,12 @@ implementation.</p>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <p>Add the Graph API to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-lib = "0.1.4"
-graph-api-derive = "0.1.3"  # For derive macros
+graph-api-lib = "0.2.0"
+graph-api-derive = "0.1.4"  # For derive macros
 </code></pre>
 <p>For a simple graph implementation:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-simplegraph = "0.1.4"
+graph-api-simplegraph = "0.2.0"
 </code></pre>
 <h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
 <h3 id="your-first-graph"><a class="header" href="#your-first-graph">Your First Graph</a></h3>
@@ -4128,7 +4128,7 @@ use graph_api_lib::{
     Graph, Element, EdgeSearch, VertexSearch,
     SupportsVertexLabelIndex, SupportsEdgeLabelIndex, SupportsVertexHashIndex,
     SupportsVertexRangeIndex, SupportsEdgeRangeIndex, SupportsVertexFullTextIndex,
-    SupportsEdgeAdjacentLabelIndex, SupportsClear
+    SupportsEdgeAdjacentLabelIndex, SupportsClear, SupportsElementRemoval
 };
 
 // Main graph structure
@@ -4282,13 +4282,6 @@ where
         // Implementation details
     }
 
-    fn remove_vertex(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::Vertex&gt; {
-        // Implementation details
-    }
-
-    fn remove_edge(&amp;mut self, id: Self::EdgeId) -&gt; Option&lt;Self::Edge&gt; {
-        // Implementation details
-    }
 
     fn vertex(&amp;self, id: Self::VertexId) -&gt; Option&lt;Self::VertexReference&lt;'_&gt;&gt; {
         // Implementation details
@@ -4325,6 +4318,23 @@ where
 }
 
 // Then implement support traits for the features you want to provide
+// Implement SupportsElementRemoval if you want to support removing vertices and edges
+impl&lt;Vertex, Edge&gt; SupportsElementRemoval for MyGraph&lt;Vertex, Edge&gt;
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    fn remove_vertex(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::Vertex&gt; {
+        // Implementation details for removing a vertex
+        // Remember to handle connected edges and update indexes
+    }
+
+    fn remove_edge(&amp;mut self, id: Self::EdgeId) -&gt; Option&lt;Self::Edge&gt; {
+        // Implementation details for removing an edge
+        // Remember to update adjacency lists and indexes
+    }
+}
+
 impl&lt;Vertex, Edge&gt; SupportsVertexLabelIndex for MyGraph&lt;Vertex, Edge&gt;
 where
     Vertex: Element,
@@ -4669,7 +4679,7 @@ covers:</p>
 <li>Add <code>graph-api-test</code> as a dev-dependency in your <code>Cargo.toml</code>:</li>
 </ol>
 <pre><code class="language-toml">[dev-dependencies]
-graph-api-test = { version = "0.1.6", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-test = { version = "0.2.0", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 </code></pre>
 <ol start="2">
@@ -5425,7 +5435,7 @@ how to set up and run benchmarks, interpret results, and use benchmarking to gui
 <p>First, add the necessary dependencies to your <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[dev-dependencies]
 criterion = "0.5"
-graph-api-benches = { version = "0.1.6", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-benches = { version = "0.2.0", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 [[bench]]
 name = "my_graph_benchmarks"
@@ -5497,7 +5507,7 @@ cargo bench
 cargo bench -- vertex_insertion
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h1>
-<p>Check out the <a href="https://docs.rs/graph-api-lib/0.1.4/graph_api_lib/">docs on docs.rs</a>,</p>
+<p>Check out the <a href="https://docs.rs/graph-api-lib/0.2.0/graph_api_lib/">docs on docs.rs</a>,</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="support-traits"><a class="header" href="#support-traits">Support Traits</a></h1>
 <p>The Graph API uses a trait-based approach to indicate which optional features a graph implementation supports. This
 allows for a more flexible and extensible API, where new capabilities can be added over time without breaking existing
@@ -5511,34 +5521,44 @@ implementations.</p>
     type Edge: Debug + Element;
     type VertexId: Debug + Eq + PartialEq + Copy + Clone + Hash + Into&lt;ElementId&lt;Self&gt;&gt; + 'static;
     type EdgeId: Debug + Eq + PartialEq + Copy + Clone + Hash + Into&lt;ElementId&lt;Self&gt;&gt; + 'static;
-    
+
     // Reference types
-    type VertexReference&lt;'graph&gt;: VertexReference&lt;'graph, Self&gt; where Self: 'graph;
-    type VertexReferenceMut&lt;'graph&gt;: VertexReferenceMut&lt;'graph, Self&gt; where Self: 'graph;
-    type EdgeReference&lt;'graph&gt;: EdgeReference&lt;'graph, Self&gt; where Self: 'graph;
-    type EdgeReferenceMut&lt;'graph&gt;: EdgeReferenceMut&lt;'graph, Self&gt; where Self: 'graph;
-    
+    type VertexReference&lt;'graph&gt;: VertexReference&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type VertexReferenceMut&lt;'graph&gt;: VertexReferenceMut&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type EdgeReference&lt;'graph&gt;: EdgeReference&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type EdgeReferenceMut&lt;'graph&gt;: EdgeReferenceMut&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+
     // Iterator types
-    type EdgeIter&lt;'search, 'graph&gt;: Iterator&lt;Item = Self::EdgeReference&lt;'graph&gt;&gt; where Self: 'graph;
-    type VertexIter&lt;'search, 'graph&gt;: Iterator&lt;Item = Self::VertexReference&lt;'graph&gt;&gt; where Self: 'graph;
-    
+    type EdgeIter&lt;'search, 'graph&gt;: Iterator&lt;Item=Self::EdgeReference&lt;'graph&gt;&gt;
+    where
+        Self: 'graph;
+    type VertexIter&lt;'search, 'graph&gt;: Iterator&lt;Item=Self::VertexReference&lt;'graph&gt;&gt;
+    where
+        Self: 'graph;
+
     // Core methods
     fn add_vertex(&amp;mut self, vertex: Self::Vertex) -&gt; Self::VertexId;
     fn add_edge(&amp;mut self, from: Self::VertexId, to: Self::VertexId, edge: Self::Edge) -&gt; Self::EdgeId;
-    fn remove_vertex(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::Vertex&gt;;
-    fn remove_edge(&amp;mut self, id: Self::EdgeId) -&gt; Option&lt;Self::Edge&gt;;
     fn vertex(&amp;self, id: Self::VertexId) -&gt; Option&lt;Self::VertexReference&lt;'_&gt;&gt;;
     fn vertex_mut(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::VertexReferenceMut&lt;'_&gt;&gt;;
     fn vertices&lt;'search&gt;(&amp;self, vertex_search: &amp;VertexSearch&lt;'search, Self&gt;) -&gt; Self::VertexIter&lt;'search, '_&gt;;
     fn edge(&amp;self, id: Self::EdgeId) -&gt; Option&lt;Self::EdgeReference&lt;'_&gt;&gt;;
     fn edge_mut(&amp;mut self, id: Self::EdgeId) -&gt; Option&lt;Self::EdgeReferenceMut&lt;'_&gt;&gt;;
     fn edges&lt;'search&gt;(&amp;self, id: Self::VertexId, search: &amp;EdgeSearch&lt;'search, Self&gt;) -&gt; Self::EdgeIter&lt;'search, '_&gt;;
-    
+
     // Default implementations
     fn dbg&lt;T: Into&lt;ElementId&lt;Self&gt;&gt;&gt;(&amp;self, id: T) -&gt; String { ... }
     fn walk(&amp;self) -&gt; StartWalkerBuilder&lt;ImmutableMarker, Self&gt; { ... }
     fn walk_mut(&amp;mut self) -&gt; StartWalkerBuilder&lt;MutableMarker, Self&gt; { ... }
-    
+
     // Default implementation that panics if SupportsClear is not implemented
     fn clear(&amp;mut self) {
         panic!("This graph implementation does not support clearing. Implement the SupportsClear trait for this graph type to add clearing support.")
@@ -5578,13 +5598,22 @@ pub trait SupportsEdgeRangeIndex: Graph {}
 /// Supports indexing of edges by adjacent vertex label
 pub trait SupportsEdgeAdjacentLabelIndex: Graph {}
 <span class="boring">}</span></code></pre></pre>
-<h3 id="other-support"><a class="header" href="#other-support">Other Support</a></h3>
+<h3 id="mutation-support"><a class="header" href="#mutation-support">Mutation Support</a></h3>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>/// Supports clearing all vertices and edges
 pub trait SupportsClear: Graph {
     /// Clears the graph, removing all vertices and edges
     fn clear(&amp;mut self);
+}
+
+/// Supports removal of individual vertices and edges
+pub trait SupportsElementRemoval: Graph {
+    /// Removes a vertex from the graph and returns the vertex.
+    fn remove_vertex(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::Vertex&gt;;
+
+    /// Removes an edge from the graph and returns the edge.
+    fn remove_edge(&amp;mut self, id: Self::EdgeId) -&gt; Option&lt;Self::Edge&gt;;
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="using-support-traits"><a class="header" href="#using-support-traits">Using Support Traits</a></h2>
@@ -5651,6 +5680,15 @@ where
         .vertices(Vertex::person_by_age_range(18..))
         .map(|v| v.id())
         .collect()
+}
+
+// Function that removes elements
+fn remove_vertex_and_connected_edges&lt;G&gt;(graph: &amp;mut G, id: G::VertexId)
+where
+    G: Graph + SupportsElementRemoval,
+{
+    // Can safely use element removal here
+    graph.remove_vertex(id);
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="adding-new-support-traits"><a class="header" href="#adding-new-support-traits">Adding New Support Traits</a></h2>
@@ -6049,9 +6087,9 @@ optimized for high performance.</p>
 <h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
 <p>Add SimpleGraph to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-lib = "0.1.4"
-graph-api-derive = "0.1.3"  # For derive macros
-graph-api-simplegraph = "0.1.4"
+graph-api-lib = "0.2.0"
+graph-api-derive = "0.1.4"  # For derive macros
+graph-api-simplegraph = "0.2.0"
 </code></pre>
 <h2 id="overview-8"><a class="header" href="#overview-8">Overview</a></h2>
 <p><code>SimpleGraph</code> is a custom in-memory graph implementation built specifically to demonstrate and validate all Graph API
@@ -6323,9 +6361,9 @@ algorithm suite, and maturity.</p>
 <h2 id="installation-2"><a class="header" href="#installation-2">Installation</a></h2>
 <p>Add PetGraph support to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-lib = "0.1.4"
-graph-api-derive = "0.1.3"  # For derive macros
-graph-api-petgraph = "0.1.4"  # Graph API adapter for petgraph
+graph-api-lib = "0.2.0"
+graph-api-derive = "0.1.4"  # For derive macros
+graph-api-petgraph = "0.1.5"  # Graph API adapter for petgraph
 petgraph = "0.6"  # The underlying graph library
 </code></pre>
 <h2 id="overview-9"><a class="header" href="#overview-9">Overview</a></h2>

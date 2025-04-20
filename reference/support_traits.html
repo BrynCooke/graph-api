@@ -172,34 +172,44 @@ implementations.</p>
     type Edge: Debug + Element;
     type VertexId: Debug + Eq + PartialEq + Copy + Clone + Hash + Into&lt;ElementId&lt;Self&gt;&gt; + 'static;
     type EdgeId: Debug + Eq + PartialEq + Copy + Clone + Hash + Into&lt;ElementId&lt;Self&gt;&gt; + 'static;
-    
+
     // Reference types
-    type VertexReference&lt;'graph&gt;: VertexReference&lt;'graph, Self&gt; where Self: 'graph;
-    type VertexReferenceMut&lt;'graph&gt;: VertexReferenceMut&lt;'graph, Self&gt; where Self: 'graph;
-    type EdgeReference&lt;'graph&gt;: EdgeReference&lt;'graph, Self&gt; where Self: 'graph;
-    type EdgeReferenceMut&lt;'graph&gt;: EdgeReferenceMut&lt;'graph, Self&gt; where Self: 'graph;
-    
+    type VertexReference&lt;'graph&gt;: VertexReference&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type VertexReferenceMut&lt;'graph&gt;: VertexReferenceMut&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type EdgeReference&lt;'graph&gt;: EdgeReference&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+    type EdgeReferenceMut&lt;'graph&gt;: EdgeReferenceMut&lt;'graph, Self&gt;
+    where
+        Self: 'graph;
+
     // Iterator types
-    type EdgeIter&lt;'search, 'graph&gt;: Iterator&lt;Item = Self::EdgeReference&lt;'graph&gt;&gt; where Self: 'graph;
-    type VertexIter&lt;'search, 'graph&gt;: Iterator&lt;Item = Self::VertexReference&lt;'graph&gt;&gt; where Self: 'graph;
-    
+    type EdgeIter&lt;'search, 'graph&gt;: Iterator&lt;Item=Self::EdgeReference&lt;'graph&gt;&gt;
+    where
+        Self: 'graph;
+    type VertexIter&lt;'search, 'graph&gt;: Iterator&lt;Item=Self::VertexReference&lt;'graph&gt;&gt;
+    where
+        Self: 'graph;
+
     // Core methods
     fn add_vertex(&amp;mut self, vertex: Self::Vertex) -&gt; Self::VertexId;
     fn add_edge(&amp;mut self, from: Self::VertexId, to: Self::VertexId, edge: Self::Edge) -&gt; Self::EdgeId;
-    fn remove_vertex(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::Vertex&gt;;
-    fn remove_edge(&amp;mut self, id: Self::EdgeId) -&gt; Option&lt;Self::Edge&gt;;
     fn vertex(&amp;self, id: Self::VertexId) -&gt; Option&lt;Self::VertexReference&lt;'_&gt;&gt;;
     fn vertex_mut(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::VertexReferenceMut&lt;'_&gt;&gt;;
     fn vertices&lt;'search&gt;(&amp;self, vertex_search: &amp;VertexSearch&lt;'search, Self&gt;) -&gt; Self::VertexIter&lt;'search, '_&gt;;
     fn edge(&amp;self, id: Self::EdgeId) -&gt; Option&lt;Self::EdgeReference&lt;'_&gt;&gt;;
     fn edge_mut(&amp;mut self, id: Self::EdgeId) -&gt; Option&lt;Self::EdgeReferenceMut&lt;'_&gt;&gt;;
     fn edges&lt;'search&gt;(&amp;self, id: Self::VertexId, search: &amp;EdgeSearch&lt;'search, Self&gt;) -&gt; Self::EdgeIter&lt;'search, '_&gt;;
-    
+
     // Default implementations
     fn dbg&lt;T: Into&lt;ElementId&lt;Self&gt;&gt;&gt;(&amp;self, id: T) -&gt; String { ... }
     fn walk(&amp;self) -&gt; StartWalkerBuilder&lt;ImmutableMarker, Self&gt; { ... }
     fn walk_mut(&amp;mut self) -&gt; StartWalkerBuilder&lt;MutableMarker, Self&gt; { ... }
-    
+
     // Default implementation that panics if SupportsClear is not implemented
     fn clear(&amp;mut self) {
         panic!("This graph implementation does not support clearing. Implement the SupportsClear trait for this graph type to add clearing support.")
@@ -239,13 +249,22 @@ pub trait SupportsEdgeRangeIndex: Graph {}
 /// Supports indexing of edges by adjacent vertex label
 pub trait SupportsEdgeAdjacentLabelIndex: Graph {}
 <span class="boring">}</span></code></pre></pre>
-<h3 id="other-support"><a class="header" href="#other-support">Other Support</a></h3>
+<h3 id="mutation-support"><a class="header" href="#mutation-support">Mutation Support</a></h3>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>/// Supports clearing all vertices and edges
 pub trait SupportsClear: Graph {
     /// Clears the graph, removing all vertices and edges
     fn clear(&amp;mut self);
+}
+
+/// Supports removal of individual vertices and edges
+pub trait SupportsElementRemoval: Graph {
+    /// Removes a vertex from the graph and returns the vertex.
+    fn remove_vertex(&amp;mut self, id: Self::VertexId) -&gt; Option&lt;Self::Vertex&gt;;
+
+    /// Removes an edge from the graph and returns the edge.
+    fn remove_edge(&amp;mut self, id: Self::EdgeId) -&gt; Option&lt;Self::Edge&gt;;
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="using-support-traits"><a class="header" href="#using-support-traits">Using Support Traits</a></h2>
@@ -312,6 +331,15 @@ where
         .vertices(Vertex::person_by_age_range(18..))
         .map(|v| v.id())
         .collect()
+}
+
+// Function that removes elements
+fn remove_vertex_and_connected_edges&lt;G&gt;(graph: &amp;mut G, id: G::VertexId)
+where
+    G: Graph + SupportsElementRemoval,
+{
+    // Can safely use element removal here
+    graph.remove_vertex(id);
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="adding-new-support-traits"><a class="header" href="#adding-new-support-traits">Adding New Support Traits</a></h2>
