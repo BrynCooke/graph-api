@@ -13,6 +13,7 @@ env:
 
 jobs:
   continuous_integration:
+    if: github.event.pull_request.draft == false
     name: Build, Test, Lint
     runs-on: ubuntu-latest
     steps:
@@ -29,7 +30,7 @@ jobs:
   build_book:
     name: Build Book
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }}
+    if: github.event.pull_request.draft == false
     steps:
       - uses: actions/checkout@v4
 
