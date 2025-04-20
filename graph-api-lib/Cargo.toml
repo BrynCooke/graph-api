@@ -1,6 +1,6 @@
 [package]
 name = "graph-api-lib"
-version = "0.1.4"
+version = "0.2.0"
 edition = "2024"
 description = "Core library for the graph-api ecosystem - a flexible, type-safe API for working with in-memory graphs in Rust"
 authors = ["Bryn Cooke"]
