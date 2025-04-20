@@ -17,6 +17,9 @@ git_release_enable = true
 # labels for the release PR
 pr_labels = ["release"]
 
+# draft PR to prevent CI
+pr_draft = true
+
 # disallow updating repositories with uncommitted changes
 allow_dirty = false
 
