@@ -2,6 +2,8 @@ use criterion::{BenchmarkGroup, measurement::WallTime};
 use graph_api_derive::{EdgeExt, VertexExt};
 
 use graph_api_lib::Graph;
+#[cfg(feature = "element-removal")]
+use graph_api_lib::SupportsElementRemoval;
 use std::fmt::Debug;
 use uuid::Uuid;
 
@@ -12,7 +14,6 @@ pub enum Vertex {
         #[index(hash)]
         name: String,
         age: u64,
-        #[index(hash)]
         unique_id: Uuid,
         username: String,
         biography: String,
@@ -65,8 +66,10 @@ where
     (bryn, project, bryn_id)
 }
 
+// Individual benchmark functions
+
 #[cfg(feature = "vertex-hash-index")]
-pub fn run_benchmarks<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+pub fn bench_lookup<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexHashIndex,
 {
@@ -88,25 +91,21 @@ where
             results
         })
     });
+}
 
-    // Benchmark hash property index lookup by UUID
-    group.bench_function("vertex_hash_uuid_lookup", |b| {
-        // Setup: Create graph with test data
-        let mut graph = setup();
-        let (_, _, bryn_id) = populate_test_data(&mut graph);
+#[cfg(not(feature = "vertex-hash-index"))]
+pub fn bench_lookup<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
 
-        b.iter(|| {
-            // Query by hash property (unique_id)
-            let results = graph
-                .walk()
-                .vertices(Vertex::person_by_unique_id(bryn_id))
-                .collect::<Vec<_>>();
-
-            assert!(!results.is_empty());
-            results
-        })
-    });
-
+#[cfg(feature = "vertex-hash-index")]
+pub fn bench_insertion<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexHashIndex,
+{
     // Benchmark insertion with hash index
     group.bench_function("vertex_hash_insertion", |b| {
         let mut graph = setup();
@@ -124,7 +123,23 @@ where
             })
         })
     });
+}
 
+#[cfg(not(feature = "vertex-hash-index"))]
+pub fn bench_insertion<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
+
+#[cfg(all(feature = "vertex-hash-index", feature = "element-removal"))]
+pub fn bench_removal<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>
+        + graph_api_lib::SupportsVertexHashIndex
+        + SupportsElementRemoval,
+{
     // Benchmark removal with hash index
     group.bench_function("vertex_hash_removal", |b| {
         // Setup: Create a new graph for each iteration
@@ -148,10 +163,10 @@ where
     });
 }
 
-#[cfg(not(feature = "vertex-hash-index"))]
-pub fn run_benchmarks<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+#[cfg(not(all(feature = "vertex-hash-index", feature = "element-removal")))]
+pub fn bench_removal<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
-    // No-op when feature is disabled
+    // No-op when features are disabled
 }

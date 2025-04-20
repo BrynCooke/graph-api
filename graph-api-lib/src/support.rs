@@ -27,3 +27,12 @@ pub trait SupportsClear: crate::Graph {
     /// Clears the graph, removing all vertices and edges
     fn clear(&mut self);
 }
+
+/// Supports removal of individual vertices and edges
+pub trait SupportsElementRemoval: crate::Graph {
+    /// Removes a vertex from the graph and returns the vertex.
+    fn remove_vertex(&mut self, id: Self::VertexId) -> Option<Self::Vertex>;
+
+    /// Removes an edge from the graph and returns the edge.
+    fn remove_edge(&mut self, id: Self::EdgeId) -> Option<Self::Edge>;
+}

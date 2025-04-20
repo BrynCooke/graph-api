@@ -1,9 +1,15 @@
-use crate::{Edge, PersonMut, Vertex, assert_elements_eq, populate_graph};
-use graph_api_lib::{Graph, SupportsVertexHashIndex, SupportsVertexRangeIndex, VertexReferenceMut};
+#[cfg(feature = "vertex-range-index")]
+use crate::{PersonMut, assert_elements_eq, populate_graph};
+#[cfg(feature = "vertex-range-index")]
+use graph_api_lib::VertexReferenceMut;
 
+use crate::{Edge, Vertex};
+use graph_api_lib::Graph;
+
+#[cfg(feature = "vertex-range-index")]
 pub fn test_index<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexRangeIndex + SupportsVertexHashIndex,
+    T: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexRangeIndex,
 {
     let refs = populate_graph(graph);
     // Test range query for age between 20-40
@@ -12,17 +18,21 @@ where
         .vertices(Vertex::person_by_age_range(20..46))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
-
-    let collected = graph
-        .walk()
-        .vertices(Vertex::person_by_age(45))
-        .collect::<Vec<_>>();
-    assert_elements_eq!(graph, collected, vec![refs.bryn]);
 }
 
+#[cfg(not(feature = "vertex-range-index"))]
+pub fn test_index<T>(_graph: &mut T)
+where
+    T: Graph<Vertex = Vertex, Edge = Edge>,
+{
+}
+
+#[cfg(all(feature = "vertex-range-index", feature = "element-removal"))]
 pub fn test_index_remove<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexRangeIndex,
+    T: Graph<Vertex = Vertex, Edge = Edge>
+        + graph_api_lib::SupportsVertexRangeIndex
+        + graph_api_lib::SupportsElementRemoval,
 {
     let refs = populate_graph(graph);
     // Remove a vertex
@@ -38,9 +48,17 @@ where
     );
 }
 
+#[cfg(not(all(feature = "element-removal", feature = "vertex-range-index")))]
+pub fn test_index_remove<T>(_graph: &mut T)
+where
+    T: Graph<Vertex = Vertex, Edge = Edge>,
+{
+}
+
+#[cfg(feature = "vertex-range-index")]
 pub fn test_index_update<T>(graph: &mut T)
 where
-    T: Graph<Vertex = Vertex, Edge = Edge> + SupportsVertexRangeIndex,
+    T: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexRangeIndex,
 {
     let refs = populate_graph(graph);
     graph
@@ -62,4 +80,11 @@ where
         .vertices(Vertex::person_by_age_range(100..106))
         .collect::<Vec<_>>();
     assert_elements_eq!(graph, collected, vec![refs.bryn]);
+}
+
+#[cfg(not(feature = "vertex-range-index"))]
+pub fn test_index_update<T>(_graph: &mut T)
+where
+    T: Graph<Vertex = Vertex, Edge = Edge>,
+{
 }

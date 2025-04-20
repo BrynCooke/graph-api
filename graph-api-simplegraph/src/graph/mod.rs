@@ -10,8 +10,9 @@ use crate::index::VertexIndexStorage;
 use graph_api_lib::{
     Direction, EdgeSearch, Element, ElementId, Graph, Index, Label, Project, ProjectMut,
     SupportsClear, SupportsEdgeAdjacentLabelIndex, SupportsEdgeHashIndex, SupportsEdgeLabelIndex,
-    SupportsEdgeRangeIndex, SupportsVertexFullTextIndex, SupportsVertexHashIndex,
-    SupportsVertexLabelIndex, SupportsVertexRangeIndex, Value, VertexSearch,
+    SupportsEdgeRangeIndex, SupportsElementRemoval, SupportsVertexFullTextIndex,
+    SupportsVertexHashIndex, SupportsVertexLabelIndex, SupportsVertexRangeIndex, Value,
+    VertexSearch,
 };
 use smallbox::space::S8;
 use smallbox::{SmallBox, smallbox};
@@ -506,43 +507,6 @@ where
         edge_id
     }
 
-    fn remove_vertex(&mut self, id: Self::VertexId) -> Option<Self::Vertex> {
-        let label_idx = id.label();
-        let vertex_idx = id.vertex();
-
-        // Get the corresponding LabelledVertices for this label
-        let labelled_vertices = &mut self.vertices[label_idx as usize];
-        // Remove the vertex and return it
-        if let Some(vertex_storage) = labelled_vertices.remove(vertex_idx, &mut self.indexes) {
-            // Remove the edges from the adjacency lists for the vertices.
-            for adjacency in &vertex_storage.adjacency_list {
-                let vertex_label = &mut self.vertices[adjacency.vertex_label as usize];
-                vertex_label.remove_adjacency(adjacency.vertex_id, &adjacency.reversed(id));
-                self.edges[adjacency.edge_label as usize].remove(adjacency.edge_id);
-            }
-            return Some(vertex_storage.weight);
-        }
-        None
-    }
-
-    fn remove_edge(&mut self, edge: Self::EdgeId) -> Option<Self::Edge> {
-        let label_idx = edge.label() as usize;
-        let edge_idx = edge.edge();
-
-        // Get the corresponding LabelledEdges for this label
-        let labelled_edges = &mut self.edges[label_idx];
-
-        // Remove the edge from both vertex adjacency lists
-        let tail_vertices = &mut self.vertices[edge.tail().label() as usize];
-        tail_vertices.remove_adjacency(edge.tail().vertex(), &Adjacency::outgoing(&edge));
-
-        let head_vertices = &mut self.vertices[edge.head().label() as usize];
-        head_vertices.remove_adjacency(edge.head().vertex(), &Adjacency::incoming(&edge));
-
-        // Remove and return the edge
-        labelled_edges.remove(edge_idx)
-    }
-
     fn vertex(&self, id: Self::VertexId) -> Option<Self::VertexReference<'_>> {
         let label_idx = id.label();
         let vertex_idx = id.vertex();
@@ -782,5 +746,48 @@ where
         for edge_label in &mut self.edges {
             edge_label.clear();
         }
+    }
+}
+
+impl<Vertex, Edge> SupportsElementRemoval for SimpleGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    fn remove_vertex(&mut self, id: Self::VertexId) -> Option<Self::Vertex> {
+        let label_idx = id.label();
+        let vertex_idx = id.vertex();
+
+        // Get the corresponding LabelledVertices for this label
+        let labelled_vertices = &mut self.vertices[label_idx as usize];
+        // Remove the vertex and return it
+        if let Some(vertex_storage) = labelled_vertices.remove(vertex_idx, &mut self.indexes) {
+            // Remove the edges from the adjacency lists for the vertices.
+            for adjacency in &vertex_storage.adjacency_list {
+                let vertex_label = &mut self.vertices[adjacency.vertex_label as usize];
+                vertex_label.remove_adjacency(adjacency.vertex_id, &adjacency.reversed(id));
+                self.edges[adjacency.edge_label as usize].remove(adjacency.edge_id);
+            }
+            return Some(vertex_storage.weight);
+        }
+        None
+    }
+
+    fn remove_edge(&mut self, edge: Self::EdgeId) -> Option<Self::Edge> {
+        let label_idx = edge.label() as usize;
+        let edge_idx = edge.edge();
+
+        // Get the corresponding LabelledEdges for this label
+        let labelled_edges = &mut self.edges[label_idx];
+
+        // Remove the edge from both vertex adjacency lists
+        let tail_vertices = &mut self.vertices[edge.tail().label() as usize];
+        tail_vertices.remove_adjacency(edge.tail().vertex(), &Adjacency::outgoing(&edge));
+
+        let head_vertices = &mut self.vertices[edge.head().label() as usize];
+        head_vertices.remove_adjacency(edge.head().vertex(), &Adjacency::incoming(&edge));
+
+        // Remove and return the edge
+        labelled_edges.remove(edge_idx)
     }
 }

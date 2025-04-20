@@ -1,6 +1,8 @@
 use criterion::{BenchmarkGroup, measurement::WallTime};
 use graph_api_derive::{EdgeExt, VertexExt};
 use graph_api_lib::Graph;
+#[cfg(feature = "element-removal")]
+use graph_api_lib::SupportsElementRemoval;
 
 use std::fmt::Debug;
 use uuid::Uuid;
@@ -88,8 +90,10 @@ where
     (person_ids, edge_ids)
 }
 
+// Individual benchmark functions
+
 #[cfg(feature = "edge-label-index")]
-pub fn run_benchmarks<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+pub fn bench_lookup<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
 {
@@ -112,26 +116,21 @@ where
             results
         })
     });
+}
 
-    // Benchmark edge label index lookup for "created" edges
-    group.bench_function("edge_label_created_lookup", |b| {
-        // Setup: Create graph with test data
-        let mut graph = setup();
-        populate_test_data(&mut graph);
+#[cfg(not(feature = "edge-label-index"))]
+pub fn bench_lookup<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
 
-        b.iter(|| {
-            // Query edges with "created" label
-            let results = graph
-                .walk()
-                .vertices(graph_api_lib::VertexSearch::scan())
-                .take(10)
-                .edges(Edge::created())
-                .collect::<Vec<_>>();
-
-            results
-        })
-    });
-
+#[cfg(feature = "edge-label-index")]
+pub fn bench_insertion<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsEdgeLabelIndex,
+{
     // Benchmark insertion with edge label index
     group.bench_function("edge_label_insertion", |b| {
         // Setup: Create graph with minimal data for adding edges
@@ -142,7 +141,23 @@ where
 
         b.iter(|| graph.add_edge(src, dst, Edge::Knows { since: 2023 }))
     });
+}
 
+#[cfg(not(feature = "edge-label-index"))]
+pub fn bench_insertion<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
+
+#[cfg(all(feature = "edge-label-index", feature = "element-removal"))]
+pub fn bench_removal<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>
+        + graph_api_lib::SupportsEdgeLabelIndex
+        + SupportsElementRemoval,
+{
     // Benchmark removal with edge label index
     group.bench_function("edge_label_removal", |b| {
         // Setup: Create a new graph with an edge for each iteration
@@ -161,10 +176,10 @@ where
     });
 }
 
-#[cfg(not(feature = "edge-label-index"))]
-pub fn run_benchmarks<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+#[cfg(not(all(feature = "edge-label-index", feature = "element-removal")))]
+pub fn bench_removal<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
-    // No-op when feature is disabled
+    // No-op when features are disabled
 }

@@ -68,7 +68,6 @@ impl<T: Index> From<&T> for VertexIndexStorage {
                 }
             };
         }
-
         index!(String, String);
         index!(Uuid, Uuid);
         index!(usize, USize);

@@ -1,5 +1,7 @@
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
 use graph_api_derive::{EdgeExt, VertexExt};
+#[cfg(feature = "element-removal")]
+use graph_api_lib::SupportsElementRemoval;
 use graph_api_lib::{Graph, VertexSearch};
 use std::fmt::Debug;
 use uuid::Uuid;
@@ -51,8 +53,12 @@ where
     (src, dst)
 }
 
-pub fn run_benchmarks<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
-where
+// Individual benchmark functions
+
+pub fn bench_vertex_insertion<G>(
+    group: &mut BenchmarkGroup<WallTime>,
+    setup: impl Fn() -> G + Clone,
+) where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
     // Benchmark vertex insertion without any indexes
@@ -71,28 +77,12 @@ where
             });
         })
     });
+}
 
-    // Benchmark vertex removal without indexes
-    group.bench_function("vertex_removal_no_index", |b| {
-        // Setup: Create a new graph for each iteration
-        b.iter_with_setup(
-            || {
-                let mut graph = setup();
-                let vertex_id = graph.add_vertex(Vertex::Person {
-                    name: "NoIndexRemoveMe".to_string(),
-                    age: 25,
-                    unique_id: Uuid::new_v4(),
-                    username: "noindex_remove_user".to_string(),
-                    biography: "To be removed without index".to_string(),
-                });
-                (graph, vertex_id)
-            },
-            |(mut graph, vertex_id)| {
-                graph.remove_vertex(vertex_id);
-            },
-        )
-    });
-
+pub fn bench_edge_insertion<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
     // Benchmark edge insertion without indexes
     group.bench_function("edge_insertion_no_index", |b| {
         // Setup: Create graph with minimal data for adding edges
@@ -101,23 +91,12 @@ where
 
         b.iter(|| graph.add_edge(src, dst, Edge::Knows { since: 2023 }))
     });
+}
 
-    // Benchmark edge removal without indexes
-    group.bench_function("edge_removal_no_index", |b| {
-        // Setup: Create a new graph with an edge for each iteration
-        b.iter_with_setup(
-            || {
-                let mut graph = setup();
-                let (src, dst) = generate_test_data(&mut graph);
-                let edge_id = graph.add_edge(src, dst, Edge::Knows { since: 2020 });
-                (graph, edge_id)
-            },
-            |(mut graph, edge_id)| {
-                graph.remove_edge(edge_id);
-            },
-        )
-    });
-
+pub fn bench_vertex_scan<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
     // Benchmark vertex scan (the non-indexed operation)
     group.bench_function("vertex_scan_no_index", |b| {
         // Setup: Create graph with random data
@@ -142,4 +121,71 @@ where
                 .collect::<Vec<_>>()
         })
     });
+}
+
+#[cfg(feature = "element-removal")]
+pub fn bench_vertex_removal<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsElementRemoval,
+{
+    // Benchmark vertex removal without indexes
+    group.bench_function("vertex_removal_no_index", |b| {
+        // Setup: Create a new graph for each iteration
+        b.iter_with_setup(
+            || {
+                let mut graph = setup();
+                let vertex_id = graph.add_vertex(Vertex::Person {
+                    name: "NoIndexRemoveMe".to_string(),
+                    age: 25,
+                    unique_id: Uuid::new_v4(),
+                    username: "noindex_remove_user".to_string(),
+                    biography: "To be removed without index".to_string(),
+                });
+                (graph, vertex_id)
+            },
+            |(mut graph, vertex_id)| {
+                graph.remove_vertex(vertex_id);
+            },
+        )
+    });
+}
+
+#[cfg(not(feature = "element-removal"))]
+pub fn bench_vertex_removal<G>(
+    _group: &mut BenchmarkGroup<WallTime>,
+    _setup: impl Fn() -> G + Clone,
+) where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
+
+#[cfg(feature = "element-removal")]
+pub fn bench_edge_removal<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge> + SupportsElementRemoval,
+{
+    // Benchmark edge removal without indexes
+    group.bench_function("edge_removal_no_index", |b| {
+        // Setup: Create a new graph with an edge for each iteration
+        b.iter_with_setup(
+            || {
+                let mut graph = setup();
+                let (src, dst) = generate_test_data(&mut graph);
+                let edge_id = graph.add_edge(src, dst, Edge::Knows { since: 2020 });
+                (graph, edge_id)
+            },
+            |(mut graph, edge_id)| {
+                graph.remove_edge(edge_id);
+            },
+        )
+    });
+}
+
+#[cfg(not(feature = "element-removal"))]
+pub fn bench_edge_removal<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
 }

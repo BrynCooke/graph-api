@@ -1,7 +1,7 @@
 use crate::graph::{EdgeReferenceMut, VertexReference, VertexReferenceMut};
 use crate::search::vertex::VertexSearch;
 use crate::{Direction, EdgeReference, Element, ElementId, Graph, Project, ProjectMut};
-use crate::{EdgeSearch, SupportsClear};
+use crate::{EdgeSearch, SupportsClear, SupportsElementRemoval};
 use petgraph::EdgeType;
 use petgraph::stable_graph::StableGraph;
 use petgraph::stable_graph::{EdgeIndex, Edges, IndexType};
@@ -61,14 +61,6 @@ where
         edge: Self::Edge,
     ) -> Self::EdgeId {
         petgraph::stable_graph::StableGraph::add_edge(self, from, to, edge)
-    }
-
-    fn remove_vertex(&mut self, vertex: Self::VertexId) -> Option<Self::Vertex> {
-        petgraph::stable_graph::StableGraph::remove_node(self, vertex)
-    }
-
-    fn remove_edge(&mut self, edge: Self::EdgeId) -> Option<Self::Edge> {
-        petgraph::stable_graph::StableGraph::remove_edge(self, edge)
     }
 
     fn vertex(&self, id: Self::VertexId) -> Option<Self::VertexReference<'_>> {
@@ -162,6 +154,22 @@ where
 {
     fn clear(&mut self) {
         petgraph::stable_graph::StableGraph::clear(self);
+    }
+}
+
+impl<Vertex, Edge, Ty, Ix> SupportsElementRemoval for StableGraph<Vertex, Edge, Ty, Ix>
+where
+    Ty: EdgeType,
+    Ix: IndexType,
+    Vertex: Element,
+    Edge: Element,
+{
+    fn remove_vertex(&mut self, vertex: Self::VertexId) -> Option<Self::Vertex> {
+        petgraph::stable_graph::StableGraph::remove_node(self, vertex)
+    }
+
+    fn remove_edge(&mut self, edge: Self::EdgeId) -> Option<Self::Edge> {
+        petgraph::stable_graph::StableGraph::remove_edge(self, edge)
     }
 }
 

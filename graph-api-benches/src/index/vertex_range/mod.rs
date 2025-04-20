@@ -1,6 +1,8 @@
 use criterion::{BenchmarkGroup, measurement::WallTime};
 use graph_api_derive::{EdgeExt, VertexExt};
 use graph_api_lib::Graph;
+#[cfg(feature = "element-removal")]
+use graph_api_lib::SupportsElementRemoval;
 use std::fmt::Debug;
 use uuid::Uuid;
 
@@ -12,7 +14,6 @@ pub enum Vertex {
         #[index(range)]
         age: u64,
         unique_id: Uuid,
-        #[index(range)]
         username: String,
         biography: String,
     },
@@ -54,8 +55,9 @@ where
     graph.add_vertex(Vertex::Rust);
 }
 
+// Individual benchmark functions
 #[cfg(feature = "vertex-range-index")]
-pub fn run_benchmarks<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+pub fn bench_lookup<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexRangeIndex,
 {
@@ -77,25 +79,21 @@ where
             results
         })
     });
+}
 
-    // Benchmark range property index lookup by username range
-    group.bench_function("vertex_range_username_lookup", |b| {
-        // Setup: Create graph with test data
-        let mut graph = setup();
-        populate_test_data(&mut graph);
+#[cfg(not(feature = "vertex-range-index"))]
+pub fn bench_lookup<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
 
-        b.iter(|| {
-            // Query by username range
-            let results = graph
-                .walk()
-                .vertices(Vertex::person_by_username_range("user1".."user5"))
-                .collect::<Vec<_>>();
-
-            // This might be empty depending on usernames
-            results
-        })
-    });
-
+#[cfg(feature = "vertex-range-index")]
+pub fn bench_insertion<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge> + graph_api_lib::SupportsVertexRangeIndex,
+{
     // Benchmark insertion with range index
     group.bench_function("vertex_range_insertion", |b| {
         let mut graph = setup();
@@ -113,7 +111,23 @@ where
             })
         })
     });
+}
 
+#[cfg(not(feature = "vertex-range-index"))]
+pub fn bench_insertion<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    // No-op when feature is disabled
+}
+
+#[cfg(all(feature = "vertex-range-index", feature = "element-removal"))]
+pub fn bench_removal<G>(group: &mut BenchmarkGroup<WallTime>, setup: impl Fn() -> G + Clone)
+where
+    G: Graph<Vertex = Vertex, Edge = Edge>
+        + graph_api_lib::SupportsVertexRangeIndex
+        + SupportsElementRemoval,
+{
     // Benchmark removal with range index
     group.bench_function("vertex_range_removal", |b| {
         // Setup: Create a new graph for each iteration
@@ -136,10 +150,10 @@ where
     });
 }
 
-#[cfg(not(feature = "vertex-range-index"))]
-pub fn run_benchmarks<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
+#[cfg(not(all(feature = "vertex-range-index", feature = "element-removal")))]
+pub fn bench_removal<G>(_group: &mut BenchmarkGroup<WallTime>, _setup: impl Fn() -> G + Clone)
 where
     G: Graph<Vertex = Vertex, Edge = Edge>,
 {
-    // No-op when feature is disabled
+    // No-op when features are disabled
 }

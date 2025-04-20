@@ -114,12 +114,6 @@ pub trait Graph: Sized + Debug {
         edge: Self::Edge,
     ) -> Self::EdgeId;
 
-    /// Removes a vertex from the graph and returns the vertex.
-    fn remove_vertex(&mut self, id: Self::VertexId) -> Option<Self::Vertex>;
-
-    /// Removes an edge from the graph and returns the edge.
-    fn remove_edge(&mut self, id: Self::EdgeId) -> Option<Self::Edge>;
-
     /// Gets the vertex with the specified identifier.
     fn vertex(&self, id: Self::VertexId) -> Option<Self::VertexReference<'_>>;
 

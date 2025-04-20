@@ -48,7 +48,7 @@ use graph_api_lib::{
     Graph, Element, EdgeSearch, VertexSearch,
     SupportsVertexLabelIndex, SupportsEdgeLabelIndex, SupportsVertexHashIndex,
     SupportsVertexRangeIndex, SupportsEdgeRangeIndex, SupportsVertexFullTextIndex,
-    SupportsEdgeAdjacentLabelIndex, SupportsClear
+    SupportsEdgeAdjacentLabelIndex, SupportsClear, SupportsElementRemoval
 };
 
 // Main graph structure
@@ -210,13 +210,6 @@ where
         // Implementation details
     }
 
-    fn remove_vertex(&mut self, id: Self::VertexId) -> Option<Self::Vertex> {
-        // Implementation details
-    }
-
-    fn remove_edge(&mut self, id: Self::EdgeId) -> Option<Self::Edge> {
-        // Implementation details
-    }
 
     fn vertex(&self, id: Self::VertexId) -> Option<Self::VertexReference<'_>> {
         // Implementation details
@@ -253,6 +246,23 @@ where
 }
 
 // Then implement support traits for the features you want to provide
+// Implement SupportsElementRemoval if you want to support removing vertices and edges
+impl<Vertex, Edge> SupportsElementRemoval for MyGraph<Vertex, Edge>
+where
+    Vertex: Element,
+    Edge: Element,
+{
+    fn remove_vertex(&mut self, id: Self::VertexId) -> Option<Self::Vertex> {
+        // Implementation details for removing a vertex
+        // Remember to handle connected edges and update indexes
+    }
+
+    fn remove_edge(&mut self, id: Self::EdgeId) -> Option<Self::Edge> {
+        // Implementation details for removing an edge
+        // Remember to update adjacency lists and indexes
+    }
+}
+
 impl<Vertex, Edge> SupportsVertexLabelIndex for MyGraph<Vertex, Edge>
 where
     Vertex: Element,

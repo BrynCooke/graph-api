@@ -1,5 +1,7 @@
-use crate::generators::{GraphSize, generate_random_graph, generate_test_graph};
+use crate::generators::generate_test_graph;
 use criterion::{BenchmarkGroup, Throughput, measurement::WallTime};
+#[cfg(feature = "element-removal")]
+use graph_api_lib::SupportsElementRemoval;
 use graph_api_lib::{Graph, VertexReference, VertexReferenceMut};
 use graph_api_test::{Edge, Person, PersonMut, Vertex};
 use uuid::Uuid;
@@ -11,9 +13,21 @@ pub fn run_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge>>(
 ) {
     bench_vertex_add(group, setup.clone());
     bench_vertex_retrieve(group, setup.clone());
-    bench_vertex_remove(group, setup.clone());
     bench_vertex_property_access(group, setup.clone());
     bench_vertex_property_update(group, setup.clone());
+
+    // Only run removal benchmarks if the feature is enabled and graph supports removal
+    #[cfg(feature = "element-removal")]
+    run_removal_benchmarks(group, setup);
+}
+
+/// Run removal-specific benchmarks
+#[cfg(feature = "element-removal")]
+fn run_removal_benchmarks<G: Graph<Vertex = Vertex, Edge = Edge> + SupportsElementRemoval>(
+    group: &mut BenchmarkGroup<WallTime>,
+    setup: impl Fn() -> G + Clone,
+) {
+    bench_vertex_remove(group, setup.clone());
 }
 
 /// Benchmark adding a vertex
@@ -55,7 +69,8 @@ fn bench_vertex_retrieve<G: Graph<Vertex = Vertex, Edge = Edge>>(
 }
 
 /// Benchmark removing a vertex
-fn bench_vertex_remove<G: Graph<Vertex = Vertex, Edge = Edge>>(
+#[cfg(feature = "element-removal")]
+fn bench_vertex_remove<G: Graph<Vertex = Vertex, Edge = Edge> + SupportsElementRemoval>(
     group: &mut BenchmarkGroup<WallTime>,
     setup: impl Fn() -> G + Clone,
 ) {
