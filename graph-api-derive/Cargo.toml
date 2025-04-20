@@ -20,6 +20,7 @@ quote = "1.0"
 proc-macro2 = "1.0.82"
 serde = { version = "1.0.202", features = ["derive"] }
 case = "1.0.0"
+uuid = { version = "1.16.0", features = ["v4"] }
 
 [dev-dependencies]
 insta = { version = "1.39.0", features = ["yaml"] }

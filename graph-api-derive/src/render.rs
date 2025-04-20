@@ -282,7 +282,7 @@ impl Model {
 
                 fn name(&self) -> &'static str {
                     match self {
-                        #(#label_ident::#labels => "#labels"),*
+                        #(#label_ident::#labels => stringify!(#labels)),*
                     }
                 }
             }
