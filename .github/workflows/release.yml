@@ -62,9 +62,6 @@ jobs:
           PRS: ${{ steps.release-plz.outputs.prs }}
           GITHUB_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}
         run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          
           set -e
           echo "PRs output: $PRS"
           
@@ -98,26 +95,12 @@ jobs:
             # Commit and push changes to the PR branch
             git add graph-api-book/
             git commit -m "chore: Update book for release" || echo "No changes to commit"
-            
+          
             # Use token for push
             git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
             git push origin "$head_branch"
-            
+          
             # Add comment to PR using gh CLI which uses the token from env
             gh pr comment "$pr_number" --body "Updated book documentation for this release."
-          done
-      - name: Trigger status checks
-        env:
-          PRS: ${{ steps.release-plz.outputs.prs }}
-          GITHUB_TOKEN: ${{ secrets.RELEASE_PLZ_TOKEN }}
-        run: |
-          echo "$PRS" | jq -c '.[]' | while read -r pr; do
-            pr_number=$(echo "$pr" | jq -r '.number')
-            echo "Fetching commits for PR #$pr_number"
-            commits=$(gh pr view "$pr_number" --json commits --jq '.commits[].oid')
-            for commit in $commits; do
-              echo "Triggering status checks for commit $commit"
-              gh api repos/${{ github.repository }}/statuses/$commit -f state=pending -f context="ci/build"
-            done
           done
 
