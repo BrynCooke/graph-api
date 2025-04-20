@@ -39,9 +39,9 @@ impl graph_api_lib::Label for EdgeLabel {
     }
     fn name(&self) -> &'static str {
         match self {
-            EdgeLabel::Knows => "#labels",
-            EdgeLabel::Created => "#labels",
-            EdgeLabel::Language => "#labels",
+            EdgeLabel::Knows => stringify!(Knows),
+            EdgeLabel::Created => stringify!(Created),
+            EdgeLabel::Language => stringify!(Language),
         }
     }
 }

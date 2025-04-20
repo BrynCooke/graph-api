@@ -439,6 +439,7 @@ dependencies = [
  "serde",
  "syn 2.0.100",
  "trybuild",
+ "uuid",
 ]
 
 [[package]]

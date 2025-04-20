@@ -45,9 +45,9 @@ impl graph_api_lib::Label for VertexLabel {
     }
     fn name(&self) -> &'static str {
         match self {
-            VertexLabel::Person => "#labels",
-            VertexLabel::Project => "#labels",
-            VertexLabel::Rust => "#labels",
+            VertexLabel::Person => stringify!(Person),
+            VertexLabel::Project => stringify!(Project),
+            VertexLabel::Rust => stringify!(Rust),
         }
     }
 }
