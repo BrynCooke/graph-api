@@ -74,11 +74,11 @@ graph.add_edge(alice, project, Edge::Created);
 - ✅ Vertex label indexes
 - ✅ Edge label indexes
 - ✅ Vertex hash indexes
-- ✅ Edge hash indexes
+- ❌ Edge hash indexes
 - ✅ Vertex range indexes
-- ✅ Edge range indexes
+- ❌ Edge range indexes
 - ✅ Vertex full-text indexes
-- ✅ Edge adjacent label indexes
+- ✅ Edge adjacent label indexes (this isn't fully supported in graph-api-lib yet)
 - ✅ Graph clearing
 
 ## Performance Characteristics
