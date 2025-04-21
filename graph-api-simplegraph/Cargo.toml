@@ -1,6 +1,6 @@
 [package]
 name = "graph-api-simplegraph"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2024"
 description = "A simple, efficient graph implementation for the graph-api ecosystem with support for indexing"
 authors = ["Bryn Cooke"]

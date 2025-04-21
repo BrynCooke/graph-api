@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2025-04-21
+
+### 📚 Documentation
+
+- Update simplegraph readme (#86)
+
+
 ## [0.2.0] - 2025-04-20
 
 ### 🚀 Features
