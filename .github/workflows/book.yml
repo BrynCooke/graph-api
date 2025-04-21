@@ -3,17 +3,11 @@ on:
   push:
     branches:
       - "main"
-    paths:
-      - 'graph-api-book/**'
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
     branches: [ "main" ]
-    paths:
-      - 'graph-api-book/**'
-
 env:
   CARGO_TERM_COLOR: always
-
 jobs:
   build_book:
     name: Build Book
@@ -21,16 +15,24 @@ jobs:
     if: github.event.pull_request.draft == false
     steps:
       - uses: actions/checkout@v4
-
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            book:
+              - 'graph-api-book/**'
       - name: Setup mdBook
+        if: steps.changes.outputs.book == 'true'
         uses: peaceiris/actions-mdbook@v2
         with:
           mdbook-version: 'latest'
 
       - name: Add mdBook plugins
+        if: steps.changes.outputs.book == 'true'
         run: |
           cargo install mdbook-variables
           cargo install mdbook-linkcheck
 
       - name: Build mdBook
+        if: steps.changes.outputs.book == 'true'
         run: mdbook build graph-api-book

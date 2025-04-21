@@ -3,26 +3,26 @@ on:
   push:
     branches:
       - "main"
-    paths-ignore:
-      - 'graph-api-book/**'
-
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
     branches: [ "main" ]
-    paths-ignore:
-      - 'graph-api-book/**'
-
 env:
   CARGO_TERM_COLOR: always
-
 jobs:
   continuous_integration:
     if: github.event.pull_request.draft == false
     name: Build, Test, Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/install-action@cargo-nextest
       - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            non_book:
+              - '!(graph-api-book/**)'
+      - uses: taiki-e/install-action@cargo-nextest
       - uses: extractions/setup-just@v3
       - name: Lint
+        if: steps.changes.outputs.non_book == 'true'
         run: just lint
