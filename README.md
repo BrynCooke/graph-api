@@ -1,10 +1,10 @@
-![CI](https://github.com/BrynCooke/graph-api/actions/workflows/continuous-integration.yml/badge.svg)
-![Crates.io Lib](https://img.shields.io/crates/v/graph-api-lib?label=graph-api-lib)
-![Crates.io Derive Version](https://img.shields.io/crates/v/graph-api-derive?label=graph-api-derive)
-![Crates.io Test Version](https://img.shields.io/crates/v/graph-api-test?label=graph-api-test)
-![Crates.io Benches Version](https://img.shields.io/crates/v/graph-api-benches?label=graph-api-benches)
-![Crates.io SimpoleGraph Version](https://img.shields.io/crates/v/graph-api-simplegraph?label=graph-api-simplegraph)
-![Crates.io Petgraph Version](https://img.shields.io/crates/v/graph-api-petgraph?label=graph-api-petgraph)
+[![CI](https://github.com/BrynCooke/graph-api/actions/workflows/lint.yml/badge.svg)](https://github.com/BrynCooke/graph-api/actions/workflows/lint.yml)
+[![Crates.io Lib](https://img.shields.io/crates/v/graph-api-lib?label=graph-api-lib)](https://crates.io/crates/graph-api-lib)
+[![Crates.io Derive Version](https://img.shields.io/crates/v/graph-api-derive?label=graph-api-derive)](https://crates.io/crates/graph-api-derive)
+[![Crates.io Test Version](https://img.shields.io/crates/v/graph-api-test?label=graph-api-test)](https://crates.io/crates/graph-api-test)
+[![Crates.io Benches Version](https://img.shields.io/crates/v/graph-api-benches?label=graph-api-benches)](https://crates.io/crates/graph-api-benches)
+[![Crates.io SimpleGraph Version](https://img.shields.io/crates/v/graph-api-simplegraph?label=graph-api-simplegraph)](https://crates.io/crates/graph-api-simplegraph)
+[![Crates.io Petgraph Version](https://img.shields.io/crates/v/graph-api-petgraph?label=graph-api-petgraph)](https://crates.io/crates/graph-api-petgraph)
 
 # Graph API
 
@@ -114,6 +114,3 @@ Head over to the [graph-api book](https://bryncooke.github.io/graph-api/).
 
 Contributions are welcome! Please check out our [contribution guidelines](CONTRIBUTING.md) for details on how to get
 started.
-
-
-
