@@ -18,7 +18,7 @@ bench = false
 [dependencies]
 graph-api-lib = { version = "0.2.0", path = "../graph-api-lib" }
 paste = "1.0.15"
-fastbloom = "0.10.0"
+fastbloom = "0.11.0"
 rphonetic = "3.0.1"
 smallbox = "0.8.6"
 uuid = { version = "1.11.0", features = ["v4"] }
