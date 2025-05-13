@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2025-05-13
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update rust crate fastbloom to 0.10.0 (#95)
+
+
 ## [0.2.1] - 2025-04-21
 
 ### 📚 Documentation
