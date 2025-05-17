@@ -26,7 +26,7 @@ uuid = { version = "1.11.0", features = ["v4"] }
 [dev-dependencies]
 graph-api-test = { path = "../graph-api-test", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 graph-api-benches = { path = "../graph-api-benches", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
-criterion = { version = "0.5", features = ["html_reports"] }
+criterion = { version = "0.6", features = ["html_reports"] }
 rand = "0.9"
 
 [[bench]]
