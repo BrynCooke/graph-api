@@ -3,8 +3,6 @@ pub use proptest::*;
 pub mod fuzz;
 pub mod graph;
 pub mod index;
-pub mod long;
-pub mod long_boxed;
 pub mod steps;
 
 use graph_api_derive::{EdgeExt, VertexExt};
@@ -149,6 +147,12 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, graph_test_mutate_edge, $crate::graph::test_mutate_edge}
         $crate::general_test!{$setup, graph_test_remove_edge, $crate::graph::test_remove_edge}
         $crate::general_test!{$setup, graph_test_remove_vertex_with_edges, $crate::graph::test_remove_vertex_with_edges}
+        $crate::general_test!{$setup, boxed_test_simple, $crate::steps::boxed::test_boxed_simple}
+        $crate::general_test!{$setup, boxed_test_complex_traversal, $crate::steps::boxed::test_boxed_complex_traversal}
+        $crate::general_test!{$setup, boxed_test_ultra_long_traversal, $crate::steps::boxed::test_boxed_ultra_long_traversal}
+        $crate::general_test!{$setup, boxed_test_mixed_operations, $crate::steps::boxed::test_boxed_mixed_operations}
+        $crate::general_test!{$setup, boxed_test_edge_walker, $crate::steps::boxed::test_boxed_edge_walker}
+        $crate::general_test!{$setup, boxed_test_performance_equivalence, $crate::steps::boxed::test_boxed_performance_equivalence}
         $crate::general_test!{$setup, filter_test_vertices_filter, $crate::steps::filter::test_vertices_filter}
         $crate::general_test!{$setup, filter_test_edges_filter, $crate::steps::filter::test_edges_filter}
         $crate::general_test!{$setup, vertices_test_vertices_collect, $crate::steps::collect::test_vertices_collect}
@@ -203,7 +207,6 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, index_vertex_range_test_index, $crate::index::vertex_range::test_index}
         $crate::general_test!{$setup, index_vertex_range_test_index_remove, $crate::index::vertex_range::test_index_remove}
         $crate::general_test!{$setup, index_vertex_range_test_index_update, $crate::index::vertex_range::test_index_update}
-       // $crate::general_test!{$setup, long, $crate::long::long_traversal}
 
         $crate::proptest! {
             #[test]
