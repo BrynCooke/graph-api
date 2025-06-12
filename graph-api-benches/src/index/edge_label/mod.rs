@@ -106,14 +106,12 @@ where
 
         b.iter(|| {
             // Query edges with "knows" label
-            let results = graph
+            graph
                 .walk()
                 .vertices(graph_api_lib::VertexSearch::scan())
                 .take(5)
                 .edges(Edge::knows())
-                .collect::<Vec<_>>();
-
-            results
+                .collect::<Vec<_>>()
         })
     });
 }

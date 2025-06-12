@@ -97,13 +97,11 @@ where
 
         b.iter(|| {
             // Query by biography text containing "graph"
-            let results = graph
+            // Should find matches
+            graph
                 .walk()
                 .vertices(Vertex::person_by_biography("graph"))
-                .collect::<Vec<_>>();
-
-            // Should find matches
-            results
+                .collect::<Vec<_>>()
         })
     });
 }
