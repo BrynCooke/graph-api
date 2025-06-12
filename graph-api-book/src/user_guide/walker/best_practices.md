@@ -27,6 +27,52 @@ This page provides guidance on effectively using the Graph API walker system for
 
 ## Optimization Tips
 
+### Manage Type Complexity
+
+For complex walker chains, use the `boxed()` step to reduce monomorphization and improve compile times:
+
+```rust,noplayground
+# use graph_api_test::Vertex;
+# use graph_api_test::Edge;
+# use graph_api_test::VertexExt;
+# use graph_api_test::EdgeExt;
+# use graph_api_test::Person;
+# use graph_api_test::Project;
+# use graph_api_test::populate_graph;
+# use graph_api_lib::EdgeSearch;
+# use graph_api_lib::VertexSearch;
+# use graph_api_simplegraph::SimpleGraph;
+# use graph_api_lib::Graph;
+# use graph_api_lib::VertexReference;
+# use graph_api_lib::EdgeReference;
+# use std::collections::HashSet;
+#
+# // Create a new graph
+# let mut graph = SimpleGraph::new();
+# // Populate the graph with test data
+# let refs = populate_graph(&mut graph);
+// Use boxed() for complex traversals to improve compilation
+let result = graph.walk()
+    .vertices(VertexSearch::scan())
+    .edges(EdgeSearch::scan())
+    .boxed()  // ← Breaks type complexity
+    .head()
+    .edges(EdgeSearch::scan())
+    .boxed()  // ← Further reduces complexity
+    .head()
+    .collect::<Vec<_>>();
+```
+
+**When to use `boxed()`:**
+- After 4+ chained operations
+- When compile times become slow
+- At logical checkpoints in long traversals
+- When storing walkers in collections
+
+**Trade-offs:**
+- ✅ Faster compilation and smaller binaries
+- ❌ 5-15% runtime overhead from indirect calls
+
 ### Early Filtering
 
 Filter vertices and edges as early as possible in the traversal:

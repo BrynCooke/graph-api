@@ -16,6 +16,7 @@ pub use self::vertices::Vertices;
 pub use self::vertices_by_id::VertexIter;
 
 // These are the implementations for the builder methods
+mod boxed;
 mod collect;
 mod context;
 mod control_flow;

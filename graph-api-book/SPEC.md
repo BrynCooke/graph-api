@@ -134,31 +134,20 @@ And then traverse it:
 
 ### Diagrams
 
-Diagrams are rendered using pikchr.
+Diagrams are created manually as SVG files and embedded using the `<object>` tag to enable proper stylesheet integration.
 
-Pickchr diagrams use relative layouts. It's best to define the nodes first and then the edges.
-Each node is anchored based on a previous node. For instance Julia is 1 below Eve.s, where n, e, s, w are anchors on the
-node.
-Arrows are then attached to nodes anchors.
+SVG diagrams should follow consistent styling and layout patterns. Key principles:
+- Use CSS classes defined in the theme stylesheet
+- Place text elements at the top of visual elements to take advantage of the halo effect
+- Maintain consistent spacing and proportions
+- Use clear, descriptive titles and descriptions
+- Include legends when helpful for understanding
 
-The model example is:
-
-```pikchr
-Eve:    box rad 10px "Person" "name: Eve" "username: eve789" "age: 31" fit; move
-Julia:    box rad 10px at 1 below Eve.s "Person" "name: Julia" "username: julia456" "age: 34" "biography: An editor" fit
-Bryn:  box rad 10px at 1.5 left of Julia.w "Person" "name: Bryn" "username: bryn123" "age: 28" "biography: A programmer"  fit       
-GraphApi:  box rad 10px at 1.5 left of Bryn.w "Project" "name: GraphApi" fit         
-Alpaca:  box rad 10px at 1 below Bryn.s "Project" "name: Alpaca" fit
-
-arrow <-> from Bryn.n to Eve.w "Follows" above rjust
-arrow from Eve.s to Julia.n " Follows" ljust
-arrow from Julia.w to Bryn.e "Follows" above      
-arrow from Bryn.w to GraphApi.e "Created" above
-arrow from Bryn.s to Alpaca.n "Liked " rjust "Commented " rjust
-arrow from Julia.s to Alpaca.ne "Created" ljust below
-```
-
-Remember to specify colors you have to use the css names, not hex.
+When creating diagrams for walker steps, focus on clearly showing:
+- Input stream of elements
+- The step operation being performed
+- Output stream or result
+- Any elements that are discarded or filtered out
 
 ### Documentation Organization
 

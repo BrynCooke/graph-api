@@ -3,6 +3,8 @@ pub use proptest::*;
 pub mod fuzz;
 pub mod graph;
 pub mod index;
+pub mod long;
+pub mod long_boxed;
 pub mod steps;
 
 use graph_api_derive::{EdgeExt, VertexExt};
@@ -201,6 +203,7 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, index_vertex_range_test_index, $crate::index::vertex_range::test_index}
         $crate::general_test!{$setup, index_vertex_range_test_index_remove, $crate::index::vertex_range::test_index_remove}
         $crate::general_test!{$setup, index_vertex_range_test_index_update, $crate::index::vertex_range::test_index_update}
+       // $crate::general_test!{$setup, long, $crate::long::long_traversal}
 
         $crate::proptest! {
             #[test]

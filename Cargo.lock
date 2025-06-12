@@ -441,6 +441,7 @@ dependencies = [
  "graph-api-test",
  "include-doc",
  "petgraph",
+ "smallbox",
  "uuid",
 ]
 

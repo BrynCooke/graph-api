@@ -37,6 +37,7 @@
         - [into_iter](./user_guide/walker/steps/into_iter.md)
         - [probe](./user_guide/walker/steps/probe.md)
         - [mutate](./user_guide/walker/steps/mutate.md)
+        - [boxed](./user_guide/walker/steps/boxed.md)
         - [dbg](./user_guide/walker/steps/dbg.md)
     - [Context System](./user_guide/walker/context_system.md)
     - [Best Practices](./user_guide/walker/best_practices.md)
