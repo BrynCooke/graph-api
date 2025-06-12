@@ -1,5 +1,5 @@
 use crate::{Edge, Vertex, assert_elements_eq, populate_graph};
-use graph_api_lib::{EdgeSearch, Graph, VertexSearch};
+use graph_api_lib::{EdgeReference, EdgeSearch, Graph, VertexSearch};
 
 pub fn test_boxed_simple<T>(graph: &mut T)
 where
@@ -188,4 +188,24 @@ where
     // Results must be identical - boxing should not change behavior
     assert_eq!(unboxed.len(), boxed.len());
     assert!(boxed.len() <= 4); // Max 4 vertices in test graph
+}
+
+pub fn test_boxed_with_context<T>(graph: &mut T)
+where
+    T: Graph<Vertex = Vertex, Edge = Edge>,
+{
+    let refs = populate_graph(graph);
+
+    // Test that boxed step works with custom contexts
+    // First establish context, then box afterward
+    let result_with_context = graph
+        .walk()
+        .vertices_by_id(vec![refs.bryn])
+        .edges(EdgeSearch::scan().outgoing())
+        .push_context(|edge, _| format!("edge-{:?}", edge.id()))
+        .boxed() // ← Boxing with custom String context
+        .head()
+        .collect::<Vec<_>>();
+
+    assert_elements_eq!(graph, result_with_context, vec![refs.graph_api, refs.julia]);
 }

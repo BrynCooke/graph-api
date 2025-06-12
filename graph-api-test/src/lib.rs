@@ -153,6 +153,7 @@ macro_rules! test_suite {
         $crate::general_test!{$setup, boxed_test_mixed_operations, $crate::steps::boxed::test_boxed_mixed_operations}
         $crate::general_test!{$setup, boxed_test_edge_walker, $crate::steps::boxed::test_boxed_edge_walker}
         $crate::general_test!{$setup, boxed_test_performance_equivalence, $crate::steps::boxed::test_boxed_performance_equivalence}
+        $crate::general_test!{$setup, boxed_test_with_context, $crate::steps::boxed::test_boxed_with_context}
         $crate::general_test!{$setup, filter_test_vertices_filter, $crate::steps::filter::test_vertices_filter}
         $crate::general_test!{$setup, filter_test_edges_filter, $crate::steps::filter::test_edges_filter}
         $crate::general_test!{$setup, vertices_test_vertices_collect, $crate::steps::collect::test_vertices_collect}

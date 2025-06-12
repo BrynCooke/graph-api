@@ -9,92 +9,119 @@ type BoxSpace = space::S32;
 
 /// A boxed vertex walker that uses SmallBox for type erasure
 /// This helps reduce monomorphization by hiding concrete walker types
-pub struct BoxedVertexWalker<'graph, G: Graph> {
-    // We box the walker as Any and store it with a function to call next
-    inner: SmallBox<Box<dyn FnMut(&'graph G) -> Option<G::VertexId> + 'graph>, BoxSpace>,
-    context: (),
+pub struct BoxedVertexWalker<'graph, G: Graph, Context> {
+    // We box the walker with a closure that includes context access
+    inner: SmallBox<Box<dyn FnMut(&'graph G) -> (Option<G::VertexId>, Context) + 'graph>, BoxSpace>,
+    context: Option<Context>,
 }
 
-impl<'graph, G: Graph> BoxedVertexWalker<'graph, G> {
+impl<'graph, G: Graph, Context: Clone> BoxedVertexWalker<'graph, G, Context> {
     pub(crate) fn new<W>(mut walker: W) -> Self
     where
-        W: VertexWalker<'graph, Graph = G, Context = ()> + 'graph,
+        W: VertexWalker<'graph, Graph = G, Context = Context> + 'graph,
     {
-        let closure =
-            Box::new(move |graph: &'graph G| -> Option<G::VertexId> { walker.next(graph) });
+        let closure = Box::new(move |graph: &'graph G| -> (Option<G::VertexId>, Context) {
+            let result = walker.next(graph);
+            let context = walker.ctx().clone();
+            (result, context)
+        });
 
         Self {
             inner: SmallBox::new(closure),
-            context: (),
+            context: None,
         }
     }
 }
 
-impl<'graph, G: Graph> Walker<'graph> for BoxedVertexWalker<'graph, G> {
+impl<'graph, G: Graph, Context: Clone + 'static> Walker<'graph>
+    for BoxedVertexWalker<'graph, G, Context>
+{
     type Graph = G;
-    type Context = ();
+    type Context = Context;
 
     fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Vertex)
     }
 
     fn ctx(&self) -> &Self::Context {
-        &self.context
+        self.context
+            .as_ref()
+            .expect("Context not initialized - call next() first")
     }
 
     fn ctx_mut(&mut self) -> &mut Self::Context {
-        &mut self.context
+        self.context
+            .as_mut()
+            .expect("Context not initialized - call next() first")
     }
 }
 
-impl<'graph, G: Graph> VertexWalker<'graph> for BoxedVertexWalker<'graph, G> {
+impl<'graph, G: Graph, Context: Clone + 'static> VertexWalker<'graph>
+    for BoxedVertexWalker<'graph, G, Context>
+{
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
-        (self.inner.as_mut())(graph)
+        let (result, context) = (self.inner.as_mut())(graph);
+        self.context = Some(context);
+        result
     }
 }
 
 /// A boxed edge walker that uses SmallBox for type erasure
 /// This helps reduce monomorphization by hiding concrete walker types
-pub struct BoxedEdgeWalker<'graph, G: Graph> {
-    // We box the walker as Any and store it with a function to call next
-    inner: SmallBox<Box<dyn FnMut(&'graph G) -> Option<G::EdgeId> + 'graph>, BoxSpace>,
-    context: (),
+pub struct BoxedEdgeWalker<'graph, G: Graph, Context> {
+    // We box the walker with a closure that includes context access
+    inner: SmallBox<Box<dyn FnMut(&'graph G) -> (Option<G::EdgeId>, Context) + 'graph>, BoxSpace>,
+    context: Option<Context>,
 }
 
-impl<'graph, G: Graph> BoxedEdgeWalker<'graph, G> {
+impl<'graph, G: Graph, Context: Clone> BoxedEdgeWalker<'graph, G, Context> {
     pub(crate) fn new<W>(mut walker: W) -> Self
     where
-        W: EdgeWalker<'graph, Graph = G, Context = ()> + 'graph,
+        W: EdgeWalker<'graph, Graph = G, Context = Context> + 'graph,
     {
-        let closure = Box::new(move |graph: &'graph G| -> Option<G::EdgeId> { walker.next(graph) });
+        let closure = Box::new(move |graph: &'graph G| -> (Option<G::EdgeId>, Context) {
+            let result = walker.next(graph);
+            let context = walker.ctx().clone();
+            (result, context)
+        });
 
         Self {
             inner: SmallBox::new(closure),
-            context: (),
+            context: None,
         }
     }
 }
 
-impl<'graph, G: Graph> Walker<'graph> for BoxedEdgeWalker<'graph, G> {
+impl<'graph, G: Graph, Context: Clone + 'static> Walker<'graph>
+    for BoxedEdgeWalker<'graph, G, Context>
+{
     type Graph = G;
-    type Context = ();
+    type Context = Context;
 
     fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
         self.next(graph).map(ElementId::Edge)
     }
 
     fn ctx(&self) -> &Self::Context {
-        &self.context
+        self.context
+            .as_ref()
+            .expect("Context not initialized - call next() first")
     }
 
     fn ctx_mut(&mut self) -> &mut Self::Context {
-        &mut self.context
+        self.context
+            .as_mut()
+            .expect("Context not initialized - call next() first")
     }
 }
 
-impl<'graph, G: Graph> EdgeWalker<'graph> for BoxedEdgeWalker<'graph, G> {
+impl<'graph, G: Graph, Context: Clone + 'static> EdgeWalker<'graph>
+    for BoxedEdgeWalker<'graph, G, Context>
+{
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId> {
-        (self.inner.as_mut())(graph)
+        let (result, context) = (self.inner.as_mut())(graph);
+        self.context = Some(context);
+        result
     }
 }
 
@@ -102,7 +129,8 @@ impl<'graph, G: Graph> EdgeWalker<'graph> for BoxedEdgeWalker<'graph, G> {
 impl<'graph, Mutability, Graph, Walker> VertexWalkerBuilder<'graph, Mutability, Graph, Walker>
 where
     Graph: crate::graph::Graph,
-    Walker: VertexWalker<'graph, Graph = Graph, Context = ()> + 'graph,
+    Walker: VertexWalker<'graph, Graph = Graph> + 'graph,
+    Walker::Context: Clone + 'static,
 {
     /// # Boxed Step
     ///
@@ -162,11 +190,16 @@ where
     /// cache locality than regular `Box` for small walker states.
     ///
     /// # Note
-    /// This method is only available when the walker's Context is `()`.
-    /// For walkers with custom contexts, manual boxing may be needed.
+    /// This method works with any context type that implements `Clone + 'static`.
+    /// The context is preserved through the boxing operation and updated on each `next()` call.
     pub fn boxed(
         self,
-    ) -> VertexWalkerBuilder<'graph, Mutability, Graph, BoxedVertexWalker<'graph, Graph>> {
+    ) -> VertexWalkerBuilder<
+        'graph,
+        Mutability,
+        Graph,
+        BoxedVertexWalker<'graph, Graph, Walker::Context>,
+    > {
         self.with_vertex_walker(|walker| BoxedVertexWalker::new(walker))
     }
 }
@@ -174,7 +207,8 @@ where
 impl<'graph, Mutability, Graph, Walker> EdgeWalkerBuilder<'graph, Mutability, Graph, Walker>
 where
     Graph: crate::graph::Graph,
-    Walker: EdgeWalker<'graph, Graph = Graph, Context = ()> + 'graph,
+    Walker: EdgeWalker<'graph, Graph = Graph> + 'graph,
+    Walker::Context: Clone + 'static,
 {
     /// # Boxed Step (Edge Walker)
     ///
@@ -221,11 +255,12 @@ where
     /// cache locality than regular `Box` for small walker states.
     ///
     /// # Note
-    /// This method is only available when the walker's Context is `()`.
-    /// For walkers with custom contexts, manual boxing may be needed.
+    /// This method works with any context type that implements `Clone + 'static`.
+    /// The context is preserved through the boxing operation and updated on each `next()` call.
     pub fn boxed(
         self,
-    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, BoxedEdgeWalker<'graph, Graph>> {
+    ) -> EdgeWalkerBuilder<'graph, Mutability, Graph, BoxedEdgeWalker<'graph, Graph, Walker::Context>>
+    {
         self.with_edge_walker(|walker| BoxedEdgeWalker::new(walker))
     }
 }
