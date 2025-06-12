@@ -18,7 +18,7 @@ license = "Apache-2.0"
 repository = "https://github.com/BrynCooke/graph-api"
 documentation = "https://bryncooke.github.io/graph-api/"
 edition = "2024"
-rust-version = "1.80"
+rust-version = "1.87.0"
 
 [workspace.dependencies]
 petgraph = "0.8.0"
