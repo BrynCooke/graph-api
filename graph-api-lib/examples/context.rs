@@ -65,14 +65,12 @@ where
         .edges(EdgeSearch::scan().outgoing())
         .push_context(|edge, _ctx| {
             // Determine edge type based on the edge type
-            let edge_type = match edge.weight() {
+            // Return the edge type as context
+            match edge.weight() {
                 Edge::Created => "Created",
                 Edge::Knows { .. } => "Knows",
                 Edge::Language(_) => "Language",
-            };
-
-            // Return the edge type as context
-            edge_type
+            }
         })
         .map(|_v, c| *c)
         .collect::<Vec<_>>();
