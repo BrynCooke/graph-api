@@ -13,10 +13,10 @@ git-repository-icon = "fa-github"
 [output.linkcheck]
 
 [preprocessor.variables.variables]
-version = "0.2.0"  # Legacy variable - will be removed once all md files are updated
-lib_version = "0.2.0"
+version = "0.2.1"  # Legacy variable - will be removed once all md files are updated
+lib_version = "0.2.1"
 derive_version = "0.1.4"
-simplegraph_version = "0.2.1"
-petgraph_version = "0.1.5"
-test_version = "0.2.0"
-benches_version = "0.2.0"
+simplegraph_version = "0.2.2"
+petgraph_version = "0.1.6"
+test_version = "0.2.1"
+benches_version = "0.2.1"
