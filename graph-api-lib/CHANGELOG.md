@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2025-06-13
+
+### 🚀 Features
+
+- Add boxed step for walker type erasure to improve compilation performance (#113)
+
+### ⚙️ Miscellaneous Tasks
+
+- Clippy (#108)
+
+
 ## [0.2.0] - 2025-04-20
 
 ### 🚀 Features

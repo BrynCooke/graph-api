@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2025-06-13
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update rust crate criterion to 0.6 (#99)
+
+### ⚙️ Miscellaneous Tasks
+
+- Clippy (#108)
+
+
 ## [0.2.0] - 2025-04-20
 
 ### 🚀 Features
