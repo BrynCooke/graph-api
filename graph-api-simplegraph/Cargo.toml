@@ -1,6 +1,6 @@
 [package]
 name = "graph-api-simplegraph"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2024"
 description = "A simple, efficient graph implementation for the graph-api ecosystem with support for indexing"
 authors = ["Bryn Cooke"]
@@ -16,7 +16,7 @@ categories = ["data-structures", "memory-management"]
 bench = false
 
 [dependencies]
-graph-api-lib = { version = "0.2.0", path = "../graph-api-lib" }
+graph-api-lib = { version = "0.2.1", path = "../graph-api-lib" }
 paste = "1.0.15"
 fastbloom = "0.12.0"
 rphonetic = "3.0.1"
