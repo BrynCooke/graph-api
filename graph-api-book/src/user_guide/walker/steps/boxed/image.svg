@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="/theme/custom.css"?>
+<svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg">
+    <title>Boxed Step Diagram</title>
+    <desc>
+        Diagram illustrating the 'boxed' step:
+        - Shows a complex nested walker type like Endpoints&lt;Edges&lt;Vertices&lt;Empty&gt;&gt;&gt;
+        - The 'boxed' step performs type erasure using SmallBox
+        - The output is a simplified BoxedVertexWalker type
+        - Demonstrates the reduction in type complexity for improved compilation
+    </desc>
+    <defs>
+        <!-- Marker Definitions -->
+        <marker id="arrowhead" class="marker-arrowhead marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+        <marker id="arrowhead-pointer" class="marker-arrowhead-pointer marker-base" markerWidth="8" markerHeight="6"
+                refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 Z"/>
+        </marker>
+    </defs>
+
+    <!-- Input Type Complexity -->
+    <text class="step-label" x="140" y="40" text-anchor="middle">Complex Nested Type</text>
+    
+    <!-- Complex Type Representation -->
+    <g transform="translate(50, 70)">
+        <rect x="0" y="0" width="180" height="80" rx="5" ry="5"
+              fill="var(--accent-warning)" fill-opacity="0.15"
+              stroke="var(--accent-warning)" stroke-width="1.5"/>
+        <text x="90" y="20" text-anchor="middle" font-weight="bold" fill="var(--accent-warning)">
+            Complex Walker Type
+        </text>
+        <text x="90" y="40" text-anchor="middle" font-family="monospace" font-size="11px" fill="var(--accent-warning)">
+            Endpoints&lt;Edges&lt;
+        </text>
+        <text x="90" y="55" text-anchor="middle" font-family="monospace" font-size="11px" fill="var(--accent-warning)">
+            Vertices&lt;Empty&gt;&gt;&gt;
+        </text>
+        <text x="90" y="70" text-anchor="middle" font-size="10px" fill="var(--text-color-muted)">
+            Slow to compile
+        </text>
+    </g>
+
+    <!-- Arrow to boxed step -->
+    <line class="edge directed" x1="230" y1="110" x2="280" y2="110" marker-end="url(#arrowhead)"/>
+
+    <!-- Boxed Step Box -->
+    <rect x="280" y="85" width="100" height="50" rx="5" ry="5"
+          fill="var(--accent-primary)" stroke="var(--node-stroke)" stroke-width="var(--stroke-width-normal)"/>
+    <text class="step-label" x="330" y="115" text-anchor="middle" fill="var(--text-color-light)">boxed</text>
+
+    <!-- Arrow to output -->
+    <line class="edge directed" x1="380" y1="110" x2="430" y2="110" marker-end="url(#arrowhead)"/>
+
+    <!-- Output: Simplified Type -->
+    <g transform="translate(430, 70)">
+        <rect x="0" y="0" width="180" height="80" rx="5" ry="5"
+              fill="var(--accent-secondary)" fill-opacity="0.15"
+              stroke="var(--accent-secondary)" stroke-width="1.5"/>
+        <text x="90" y="20" text-anchor="middle" font-weight="bold" fill="var(--accent-secondary)">
+            Simplified Type
+        </text>
+        <text x="90" y="40" text-anchor="middle" font-family="monospace" font-size="11px" fill="var(--accent-secondary)">
+            BoxedVertexWalker&lt;G&gt;
+        </text>
+        <text x="90" y="60" text-anchor="middle" font-size="10px" fill="var(--text-color-muted)">
+            Fast to compile
+        </text>
+        <text x="90" y="75" text-anchor="middle" font-size="10px" fill="var(--text-color-muted)">
+            Same behavior
+        </text>
+    </g>
+
+    <!-- Type Erasure Process Explanation -->
+    <g transform="translate(0, 190)">
+        <text class="step-label" x="350" y="20" text-anchor="middle">Type Erasure Process</text>
+        
+        <!-- Before Box -->
+        <g transform="translate(90, 40)">
+            <text x="60" y="0" text-anchor="middle" font-weight="bold" fill="var(--accent-warning)">Before</text>
+            <rect x="0" y="10" width="120" height="60" rx="3" ry="3"
+                  fill="var(--accent-warning)" fill-opacity="0.1"
+                  stroke="var(--accent-warning)" stroke-width="1"/>
+            <text x="60" y="30" text-anchor="middle" font-size="10px">Deeply nested</text>
+            <text x="60" y="45" text-anchor="middle" font-size="10px">generic types</text>
+            <text x="60" y="60" text-anchor="middle" font-size="10px">Exponential growth</text>
+        </g>
+
+        <!-- Arrow -->
+        <line class="edge directed" x1="210" y1="70" x2="280" y2="70" marker-end="url(#arrowhead)"/>
+        <text x="245" y="65" text-anchor="middle" font-size="10px" fill="var(--text-color-muted)">SmallBox</text>
+
+        <!-- After Box -->
+        <g transform="translate(280, 40)">
+            <text x="60" y="0" text-anchor="middle" font-weight="bold" fill="var(--accent-secondary)">After</text>
+            <rect x="0" y="10" width="120" height="60" rx="3" ry="3"
+                  fill="var(--accent-secondary)" fill-opacity="0.1"
+                  stroke="var(--accent-secondary)" stroke-width="1"/>
+            <text x="60" y="30" text-anchor="middle" font-size="10px">Simple erased</text>
+            <text x="60" y="45" text-anchor="middle" font-size="10px">type wrapper</text>
+            <text x="60" y="60" text-anchor="middle" font-size="10px">Controlled complexity</text>
+        </g>
+
+        <!-- Arrow -->
+        <line class="edge directed" x1="400" y1="70" x2="470" y2="70" marker-end="url(#arrowhead)"/>
+
+        <!-- Benefits Box -->
+        <g transform="translate(470, 40)">
+            <text x="60" y="0" text-anchor="middle" font-weight="bold" fill="var(--accent-success)">Benefits</text>
+            <rect x="0" y="10" width="120" height="60" rx="3" ry="3"
+                  fill="var(--accent-success)" fill-opacity="0.1"
+                  stroke="var(--accent-success)" stroke-width="1"/>
+            <text x="60" y="25" text-anchor="middle" font-size="10px">Faster builds</text>
+            <text x="60" y="40" text-anchor="middle" font-size="10px">Smaller binaries</text>
+            <text x="60" y="55" text-anchor="middle" font-size="10px">Same runtime behavior</text>
+        </g>
+    </g>
+
+    <!-- Legend -->
+    <g transform="translate(0, 320)">
+        <rect class="index-box" x="25" y="0" width="650" height="90"/>
+        <text class="index-title" x="350" y="20">Legend</text>
+
+        <g transform="translate(60, 40)">
+            <rect x="-10" y="-8" width="20" height="16" fill="var(--accent-warning)" fill-opacity="0.15"
+                  stroke="var(--accent-warning)" rx="2"/>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Complex nested walker type (slow compilation)
+            </text>
+        </g>
+
+        <g transform="translate(60, 65)">
+            <rect x="-10" y="-8" width="20" height="16" fill="var(--accent-secondary)" fill-opacity="0.15"
+                  stroke="var(--accent-secondary)" rx="2"/>
+            <text x="20" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Simplified boxed type (fast compilation, same behavior)
+            </text>
+        </g>
+
+        <g transform="translate(420, 52)">
+            <rect x="-15" y="-5" width="30" height="10" fill="var(--accent-primary)" rx="2"/>
+            <text x="25" y="0" dominant-baseline="middle" font-size="var(--font-size-small)">
+                Type erasure step using SmallBox
+            </text>
+        </g>
+    </g>
+</svg>

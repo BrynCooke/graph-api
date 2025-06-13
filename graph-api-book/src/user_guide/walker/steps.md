@@ -59,6 +59,10 @@ traversal, such as:
 - [mutate](steps/mutate.md) - Modify the graph after traversal
 - [probe](steps/probe.md) - Inspect elements during traversal
 
+### Type Management
+
+- [boxed](steps/boxed.md) - Reduce type complexity and improve compile times
+
 ### Debugging
 
 - [dbg](steps/dbg.md) - Print debug information during traversal

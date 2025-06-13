@@ -28,8 +28,8 @@ Each walker step documentation follows a consistent format:
 
 ## Visual Diagrams
 
-All walker step documentation includes pikchr diagrams that illustrate what the step is doing.
-Some example pikchr diagrams are included in the pikchr directory.
+All walker step documentation includes SVG diagrams that illustrate what the step is doing.
+These diagrams are manually created to provide clear, consistent visualizations of each step's behavior.
 
 ## Examples
 
