@@ -2,6 +2,8 @@
 
 The `boxed` step performs type erasure to reduce monomorphization and improve compile times. It wraps the current walker in a `SmallBox`, breaking the chain of nested generic types that can grow exponentially in complex traversals.
 
+The boxed walker preserves all functionality including context access and modification, making it a drop-in replacement for any walker step.
+
 <object type="image/svg+xml" data="boxed/image.svg" title="Boxed Step Diagram">
 Boxed step diagram showing type complexity reduction through type erasure
 </object>
@@ -59,6 +61,14 @@ Use boxing to enable flexible walker construction:
 
 ```rust,noplayground
 {{#include boxed/boxed_example.rs:builder_pattern}}
+```
+
+### Context Preservation
+
+Boxing preserves context functionality - all context operations work normally:
+
+```rust,noplayground
+{{#include boxed/boxed_example.rs:context_preservation}}
 ```
 
 ## Best Practices

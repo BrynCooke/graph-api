@@ -138,6 +138,38 @@ pub fn boxed_examples() {
 
     println!("Hybrid approach found {} vertices", hybrid_result.len());
     // ANCHOR_END: hybrid_approach
+
+    // ANCHOR: context_preservation
+    // Context functionality is fully preserved through boxing
+    #[derive(Clone, Debug)]
+    struct TraversalMetrics {
+        hops: u32,
+        people_visited: u32,
+    }
+
+    let metrics_result: Vec<_> = graph
+        .walk()
+        .push_context(TraversalMetrics { hops: 0, people_visited: 0 })
+        .vertices(Vertex::person())
+        .mutate_context(|_vertex, ctx| {
+            ctx.people_visited += 1; // Track people visited
+        })
+        .edges_out()
+        .boxed() // ← Boxing preserves context functionality
+        .mutate_context(|_edge, ctx| {
+            ctx.hops += 1; // Context operations work normally after boxing
+        })
+        .head()
+        .map(|vertex, context| {
+            // Context is accessible in later steps
+            println!("Vertex {:?} reached after {} hops, visited {} people", 
+                    vertex, context.hops, context.people_visited);
+            vertex
+        })
+        .collect();
+
+    println!("Context-aware traversal found {} vertices", metrics_result.len());
+    // ANCHOR_END: context_preservation
 }
 // ANCHOR_END: all
 

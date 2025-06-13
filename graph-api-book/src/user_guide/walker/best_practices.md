@@ -27,9 +27,13 @@ This page provides guidance on effectively using the Graph API walker system for
 
 ## Optimization Tips
 
-### Manage Type Complexity
+### Managing Compile Times
 
-For complex walker chains, use the `boxed()` step to reduce monomorphization and improve compile times:
+The Graph API's walker system uses deeply nested generic types that can lead to slow compilation in complex applications. Here are strategies to optimize build performance:
+
+#### Use the Boxed Step
+
+For complex walker chains, use the [`boxed()`](steps/boxed.md) step to reduce monomorphization and improve compile times:
 
 ```rust,noplayground
 # use graph_api_test::Vertex;
@@ -71,7 +75,47 @@ let result = graph.walk()
 
 **Trade-offs:**
 - ✅ Faster compilation and smaller binaries
+- ✅ Enables storage in collections and complex builder patterns
+- ✅ Preserves all walker functionality including context operations
 - ❌ 5-15% runtime overhead from indirect calls
+
+#### Compile Time Warning Signs
+
+Watch for these indicators that you may need boxing:
+
+- **Slow incremental compilation** - Adding a new walker step takes noticeably longer to compile
+- **Large binary sizes** - Your application binary grows significantly with each new walker chain
+- **IDE slowness** - Type hints and autocompletion become sluggish in files with complex walkers
+- **Long CI build times** - Continuous integration builds start timing out or taking much longer
+
+#### Strategic Boxing Guidelines
+
+Apply boxing strategically rather than everywhere:
+
+```rust,noplayground
+// ❌ Over-boxing - unnecessary for simple chains
+let result = graph.walk()
+    .vertices(VertexSearch::scan())
+    .boxed()  // ← Not needed for simple 2-step chain
+    .take(10)
+    .collect::<Vec<_>>();
+
+// ✅ Strategic boxing - at logical complexity boundaries
+let result = graph.walk()
+    .vertices(VertexSearch::scan())
+    .edges(EdgeSearch::scan())
+    .filter(|e, _| e.label().contains("important"))
+    .head()
+    .boxed()  // ← Good: after complex traversal logic
+    .edges(EdgeSearch::scan())
+    .head()
+    .edges(EdgeSearch::scan())
+    .boxed()  // ← Good: preventing deep nesting
+    .head()
+    .collect::<Vec<_>>();
+```
+
+For more details on the boxed step, see the [Boxed Step documentation](steps/boxed.md).
 
 ### Early Filtering
 
