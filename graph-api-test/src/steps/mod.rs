@@ -1,3 +1,4 @@
+pub mod boxed;
 pub mod collect;
 pub mod context;
 pub mod control_flow;
