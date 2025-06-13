@@ -29,11 +29,11 @@ where
     fn next(&mut self, graph: &'graph G) -> Option<G::VertexId> {
         VertexWalker::next(self, graph)
     }
-    
+
     fn ctx(&self) -> &Context {
         Walker::ctx(self)
     }
-    
+
     fn ctx_mut(&mut self) -> &mut Context {
         Walker::ctx_mut(self)
     }
@@ -47,11 +47,11 @@ where
     fn next(&mut self, graph: &'graph G) -> Option<G::EdgeId> {
         EdgeWalker::next(self, graph)
     }
-    
+
     fn ctx(&self) -> &Context {
         Walker::ctx(self)
     }
-    
+
     fn ctx_mut(&mut self) -> &mut Context {
         Walker::ctx_mut(self)
     }
@@ -71,7 +71,7 @@ impl<'graph, G: Graph, Context: Clone> BoxedVertexWalker<'graph, G, Context> {
     {
         // Box the walker as a trait object that implements our ops trait
         let boxed: Box<dyn BoxedVertexWalkerOps<'graph, G, Context> + 'graph> = Box::new(walker);
-        
+
         Self {
             inner: SmallBox::new(boxed),
         }
@@ -122,7 +122,7 @@ impl<'graph, G: Graph, Context: Clone> BoxedEdgeWalker<'graph, G, Context> {
     {
         // Box the walker as a trait object that implements our ops trait
         let boxed: Box<dyn BoxedEdgeWalkerOps<'graph, G, Context> + 'graph> = Box::new(walker);
-        
+
         Self {
             inner: SmallBox::new(boxed),
         }
