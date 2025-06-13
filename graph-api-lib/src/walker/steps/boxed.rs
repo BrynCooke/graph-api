@@ -7,28 +7,73 @@ use smallbox::{SmallBox, space};
 // Use a reasonable size for the SmallBox - can be tuned
 type BoxSpace = space::S32;
 
+// Helper trait for boxed vertex walkers that provides both next() and context access
+trait BoxedVertexWalkerOps<'graph, G: Graph, Context> {
+    fn next(&mut self, graph: &'graph G) -> Option<G::VertexId>;
+    fn ctx(&self) -> &Context;
+    fn ctx_mut(&mut self) -> &mut Context;
+}
+
+// Helper trait for boxed edge walkers that provides both next() and context access
+trait BoxedEdgeWalkerOps<'graph, G: Graph, Context> {
+    fn next(&mut self, graph: &'graph G) -> Option<G::EdgeId>;
+    fn ctx(&self) -> &Context;
+    fn ctx_mut(&mut self) -> &mut Context;
+}
+
+// Blanket implementation for any vertex walker
+impl<'graph, G: Graph, W, Context> BoxedVertexWalkerOps<'graph, G, Context> for W
+where
+    W: VertexWalker<'graph, Graph = G, Context = Context>,
+{
+    fn next(&mut self, graph: &'graph G) -> Option<G::VertexId> {
+        VertexWalker::next(self, graph)
+    }
+    
+    fn ctx(&self) -> &Context {
+        Walker::ctx(self)
+    }
+    
+    fn ctx_mut(&mut self) -> &mut Context {
+        Walker::ctx_mut(self)
+    }
+}
+
+// Blanket implementation for any edge walker
+impl<'graph, G: Graph, W, Context> BoxedEdgeWalkerOps<'graph, G, Context> for W
+where
+    W: EdgeWalker<'graph, Graph = G, Context = Context>,
+{
+    fn next(&mut self, graph: &'graph G) -> Option<G::EdgeId> {
+        EdgeWalker::next(self, graph)
+    }
+    
+    fn ctx(&self) -> &Context {
+        Walker::ctx(self)
+    }
+    
+    fn ctx_mut(&mut self) -> &mut Context {
+        Walker::ctx_mut(self)
+    }
+}
+
 /// A boxed vertex walker that uses SmallBox for type erasure
 /// This helps reduce monomorphization by hiding concrete walker types
 pub struct BoxedVertexWalker<'graph, G: Graph, Context> {
-    // We box the walker with a closure that includes context access
-    inner: SmallBox<Box<dyn FnMut(&'graph G) -> (Option<G::VertexId>, Context) + 'graph>, BoxSpace>,
-    context: Option<Context>,
+    // We box the entire walker using a trait object that provides all operations
+    inner: SmallBox<Box<dyn BoxedVertexWalkerOps<'graph, G, Context> + 'graph>, BoxSpace>,
 }
 
 impl<'graph, G: Graph, Context: Clone> BoxedVertexWalker<'graph, G, Context> {
-    pub(crate) fn new<W>(mut walker: W) -> Self
+    pub(crate) fn new<W>(walker: W) -> Self
     where
         W: VertexWalker<'graph, Graph = G, Context = Context> + 'graph,
     {
-        let closure = Box::new(move |graph: &'graph G| -> (Option<G::VertexId>, Context) {
-            let result = walker.next(graph);
-            let context = walker.ctx().clone();
-            (result, context)
-        });
-
+        // Box the walker as a trait object that implements our ops trait
+        let boxed: Box<dyn BoxedVertexWalkerOps<'graph, G, Context> + 'graph> = Box::new(walker);
+        
         Self {
-            inner: SmallBox::new(closure),
-            context: None,
+            inner: SmallBox::new(boxed),
         }
     }
 }
@@ -40,19 +85,17 @@ impl<'graph, G: Graph, Context: Clone + 'static> Walker<'graph>
     type Context = Context;
 
     fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
-        self.next(graph).map(ElementId::Vertex)
+        VertexWalker::next(self, graph).map(ElementId::Vertex)
     }
 
     fn ctx(&self) -> &Self::Context {
-        self.context
-            .as_ref()
-            .expect("Context not initialized - call next() first")
+        // Delegate to the inner walker's context
+        self.inner.as_ref().ctx()
     }
 
     fn ctx_mut(&mut self) -> &mut Self::Context {
-        self.context
-            .as_mut()
-            .expect("Context not initialized - call next() first")
+        // Delegate to the inner walker's context
+        self.inner.as_mut().ctx_mut()
     }
 }
 
@@ -60,34 +103,28 @@ impl<'graph, G: Graph, Context: Clone + 'static> VertexWalker<'graph>
     for BoxedVertexWalker<'graph, G, Context>
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::VertexId> {
-        let (result, context) = (self.inner.as_mut())(graph);
-        self.context = Some(context);
-        result
+        // Delegate to the inner walker's next method
+        self.inner.as_mut().next(graph)
     }
 }
 
 /// A boxed edge walker that uses SmallBox for type erasure
 /// This helps reduce monomorphization by hiding concrete walker types
 pub struct BoxedEdgeWalker<'graph, G: Graph, Context> {
-    // We box the walker with a closure that includes context access
-    inner: SmallBox<Box<dyn FnMut(&'graph G) -> (Option<G::EdgeId>, Context) + 'graph>, BoxSpace>,
-    context: Option<Context>,
+    // We box the entire walker using a trait object that provides all operations
+    inner: SmallBox<Box<dyn BoxedEdgeWalkerOps<'graph, G, Context> + 'graph>, BoxSpace>,
 }
 
 impl<'graph, G: Graph, Context: Clone> BoxedEdgeWalker<'graph, G, Context> {
-    pub(crate) fn new<W>(mut walker: W) -> Self
+    pub(crate) fn new<W>(walker: W) -> Self
     where
         W: EdgeWalker<'graph, Graph = G, Context = Context> + 'graph,
     {
-        let closure = Box::new(move |graph: &'graph G| -> (Option<G::EdgeId>, Context) {
-            let result = walker.next(graph);
-            let context = walker.ctx().clone();
-            (result, context)
-        });
-
+        // Box the walker as a trait object that implements our ops trait
+        let boxed: Box<dyn BoxedEdgeWalkerOps<'graph, G, Context> + 'graph> = Box::new(walker);
+        
         Self {
-            inner: SmallBox::new(closure),
-            context: None,
+            inner: SmallBox::new(boxed),
         }
     }
 }
@@ -99,19 +136,17 @@ impl<'graph, G: Graph, Context: Clone + 'static> Walker<'graph>
     type Context = Context;
 
     fn next_element(&mut self, graph: &'graph Self::Graph) -> Option<ElementId<Self::Graph>> {
-        self.next(graph).map(ElementId::Edge)
+        EdgeWalker::next(self, graph).map(ElementId::Edge)
     }
 
     fn ctx(&self) -> &Self::Context {
-        self.context
-            .as_ref()
-            .expect("Context not initialized - call next() first")
+        // Delegate to the inner walker's context
+        self.inner.as_ref().ctx()
     }
 
     fn ctx_mut(&mut self) -> &mut Self::Context {
-        self.context
-            .as_mut()
-            .expect("Context not initialized - call next() first")
+        // Delegate to the inner walker's context
+        self.inner.as_mut().ctx_mut()
     }
 }
 
@@ -119,9 +154,8 @@ impl<'graph, G: Graph, Context: Clone + 'static> EdgeWalker<'graph>
     for BoxedEdgeWalker<'graph, G, Context>
 {
     fn next(&mut self, graph: &'graph Self::Graph) -> Option<<Self::Graph as Graph>::EdgeId> {
-        let (result, context) = (self.inner.as_mut())(graph);
-        self.context = Some(context);
-        result
+        // Delegate to the inner walker's next method
+        self.inner.as_mut().next(graph)
     }
 }
 
