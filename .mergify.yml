@@ -15,10 +15,10 @@ merge_protections:
       - "#commits-behind <= 10"
 queue_rules:
   - name: main
+    merge_method: squash
 pull_request_rules:
   - name: Automatically merge Renovate PRs
     conditions:
       - author = renovate[bot]
     actions:
       queue:
-      
