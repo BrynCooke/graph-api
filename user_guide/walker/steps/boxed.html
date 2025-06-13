@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>probe - graph-api</title>
+        <title>boxed - graph-api</title>
 
 
         <!-- Custom HTML head -->
@@ -170,121 +170,171 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="probe-step"><a class="header" href="#probe-step">Probe Step</a></h1>
-<p>The <code>probe</code> step allows you to execute a callback function for each element in the traversal, primarily for <strong>side effects</strong> like logging, metrics collection, or debugging, without altering the elements themselves or the flow of the traversal.</p>
-<object type="image/svg+xml" data="probe/image.svg" title="Probe Step Diagram">
-Probe step diagram showing elements flowing through, side effects, and unchanged output stream
+                        <h1 id="boxed-step"><a class="header" href="#boxed-step">Boxed Step</a></h1>
+<p>The <code>boxed</code> step performs type erasure to reduce monomorphization and improve compile times. It wraps the current walker in a <code>SmallBox</code>, breaking the chain of nested generic types that can grow exponentially in complex traversals.</p>
+<p>The boxed walker preserves all functionality including context access and modification, making it a drop-in replacement for any walker step.</p>
+<object type="image/svg+xml" data="boxed/image.svg" title="Boxed Step Diagram">
+Boxed step diagram showing type complexity reduction through type erasure
 </object>
 <p>In this diagram:</p>
 <ul>
-<li><strong>Input Elements</strong>: The walker starts with elements <strong>A, B, C</strong>.</li>
-<li>The <strong><code>.probe(callback)</code></strong> step processes each element.</li>
-<li><strong>Side Effect</strong>: As each element (A, B, C) passes through, the provided callback function is executed. This is shown triggering actions like logging or updating metrics.</li>
-<li><strong>Output Elements (Unchanged)</strong>: The elements <strong>A, B, C</strong> continue to the next step in the traversal, completely unaffected by the <code>probe</code> operation.</li>
+<li>An <strong>Input Stream</strong> contains a walker with complex nested types like <code>Endpoints&lt;Edges&lt;Vertices&lt;Empty&gt;&gt;&gt;</code>.</li>
+<li>The <strong><code>.boxed()</code> step</strong> performs type erasure, wrapping the walker in a <code>SmallBox</code>.</li>
+<li>The <strong>Output Stream</strong> contains a simplified <code>BoxedVertexWalker</code> type that hides the complexity.</li>
+<li><strong>Type Complexity</strong>: Before boxing shows deeply nested generics; after boxing shows a simple erased type.</li>
 </ul>
 <h2 id="syntax"><a class="header" href="#syntax">Syntax</a></h2>
-<pre><code class="language-rust noplayground">walker.probe(|element, context| {
-    // inspection logic
-})</code></pre>
+<pre><code class="language-rust noplayground">walker.boxed()</code></pre>
 <h2 id="parameters"><a class="header" href="#parameters">Parameters</a></h2>
-<ul>
-<li><code>inspector</code>: A function that takes:
-<ul>
-<li>A reference to the current element (vertex or edge)</li>
-<li>The element's context</li>
-<li>Performs some side effect like logging or debugging</li>
-</ul>
-</li>
-</ul>
+<p>This step takes no parameters.</p>
 <h2 id="return-value"><a class="header" href="#return-value">Return Value</a></h2>
-<p>Returns the same traversal unchanged, allowing you to continue chaining steps.</p>
+<p>Returns a new walker with erased types that behaves identically to the original but with simplified type signatures.</p>
 <h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
-<h3 id="inspecting-vertices"><a class="header" href="#inspecting-vertices">Inspecting Vertices</a></h3>
-<p>This example shows how to use the <code>probe</code> step to inspect and count vertices during traversal:</p>
-<pre><code class="language-rust noplayground">    // Use probe to inspect vertices during traversal without affecting the flow
-    println!("Examining each person vertex:");
-
-    let mut person_count = 0;
-
-    graph
+<h3 id="basic-type-complexity-reduction"><a class="header" href="#basic-type-complexity-reduction">Basic Type Complexity Reduction</a></h3>
+<p>Reduce type complexity in multi-step traversals:</p>
+<pre><code class="language-rust noplayground">    // Without boxing - creates complex nested types like:
+    // Endpoints&lt;Edges&lt;Endpoints&lt;Edges&lt;Vertices&lt;Empty&gt;&gt;&gt;&gt;&gt;
+    let _complex_type = graph
         .walk()
-        .vertices(Vertex::person()) // Type-safe vertex lookup by label
-        .probe(|vertex, _| {
-            // Inspect vertex properties using type-safe projection
-            if let Some(person) = vertex.project::&lt;Person&lt;_&gt;&gt;() {
-                person_count += 1;
-                println!("  Found person: {} (age {})", person.name(), person.age());
-            }
-        })
-        .count();
+        .vertices(Vertex::person()) // Start with Person vertices
+        .edges_out() // Get outgoing edges
+        .head() // Move to target vertices
+        .edges_out() // Get their outgoing edges
+        .head(); // Move to final target vertices
+    // This creates deeply nested generic types that slow compilation
 
-    println!("  Total people found: {}", person_count);</code></pre>
-<h3 id="inspecting-edges"><a class="header" href="#inspecting-edges">Inspecting Edges</a></h3>
-<p>This example demonstrates using the <code>probe</code> step to examine relationships between vertices:</p>
-<pre><code class="language-rust noplayground">    // Use probe to inspect relationships between vertices
-    println!("\nExamining Bryn's outgoing relationships:");
-
-    graph
+    // With strategic boxing - simplified types
+    let people_connections: Vec&lt;_&gt; = graph
         .walk()
-        .vertices(Vertex::person_by_username("bryn123"))
-        .edges(EdgeSearch::scan().outgoing())
-        .probe(|edge, _| {
-            // Get the target vertex to display relationship context
-            let target = graph.vertex(edge.head()).unwrap();
+        .vertices(Vertex::person()) // Start with Person vertices
+        .edges_out() // Get outgoing edges
+        .boxed() // ← Breaks type complexity chain
+        .head() // Move to target vertices
+        .edges_out() // Get their outgoing edges
+        .boxed() // ← Further reduces complexity
+        .head() // Move to final target vertices
+        .collect();
 
-            // Display relationship information
-            match edge.weight() {
-                crate::standard_model::Edge::Created =&gt; {
-                    if let Some(project) = target.project::&lt;Project&lt;_&gt;&gt;() {
-                        println!("  Bryn created project: {}", project.name());
-                    }
-                }
-                crate::standard_model::Edge::Follows =&gt; {
-                    if let Some(person) = target.project::&lt;Person&lt;_&gt;&gt;() {
-                        println!("  Bryn follows: {}", person.name());
-                    }
-                }
-                crate::standard_model::Edge::Liked { timestamp } =&gt; {
-                    if let Some(project) = target.project::&lt;Project&lt;_&gt;&gt;() {
-                        println!("  Bryn liked project {} on {}", project.name(), timestamp);
-                    }
-                }
-                crate::standard_model::Edge::Commented { timestamp } =&gt; {
-                    if let Some(project) = target.project::&lt;Project&lt;_&gt;&gt;() {
-                        println!(
-                            "  Bryn commented on project {} on {}",
-                            project.name(),
-                            timestamp
-                        );
-                    }
-                }
-            }
+    println!("Found {} connected vertices through people", people_connections.len());</code></pre>
+<h3 id="strategic-boxing-in-complex-traversals"><a class="header" href="#strategic-boxing-in-complex-traversals">Strategic Boxing in Complex Traversals</a></h3>
+<p>Use boxing at logical checkpoints in long traversals:</p>
+<pre><code class="language-rust noplayground">    // Complex multi-hop traversal with strategic boxing
+    let projects_via_people: Vec&lt;_&gt; = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with Person vertices
+        .filter_by_person(|person, _| person.age() &gt; 25) // Filter by age
+        .take(5) // Limit to first 5 people
+        .boxed() // ← Box after initial filtering
+        .edges_out() // Get their outgoing relationships
+        .head() // Move to connected vertices
+        .filter_project() // Keep only Project vertices
+        .boxed() // ← Box after project filtering
+        .collect();
+
+    println!("Found {} projects created by people over 25", projects_via_people.len());</code></pre>
+<h3 id="storage-in-collections"><a class="header" href="#storage-in-collections">Storage in Collections</a></h3>
+<p>Enable storage of walkers in data structures:</p>
+<pre><code class="language-rust noplayground">    // Store different walker types in a collection using boxing
+    let vertex_walkers: Vec&lt;Box&lt;dyn Iterator&lt;Item = _&gt;&gt;&gt; = vec![
+        // First walker: all people
+        Box::new(
+            graph
+                .walk()
+                .vertices(Vertex::person()) // Type-safe Person lookup
+                .boxed() // ← Boxing makes storage possible
+                .into_iter()
+        ),
+        // Second walker: young people only
+        Box::new(
+            graph
+                .walk()
+                .vertices(Vertex::person())
+                .filter_by_person(|person, _| person.age() &lt; 30)
+                .boxed() // ← Boxing makes storage possible
+                .into_iter()
+        ),
+    ];
+
+    println!("Created {} different walker configurations", vertex_walkers.len());</code></pre>
+<h3 id="builder-pattern-integration"><a class="header" href="#builder-pattern-integration">Builder Pattern Integration</a></h3>
+<p>Use boxing to enable flexible walker construction:</p>
+<pre><code class="language-rust noplayground">    // Builder pattern enabled by boxing
+    struct PersonTraversalBuilder&lt;'graph, G: Graph&gt; {
+        walker: Option&lt;Box&lt;dyn Iterator&lt;Item = G::VertexId&gt; + 'graph&gt;&gt;,
+    }
+
+    impl&lt;'graph, G: Graph&gt; PersonTraversalBuilder&lt;'graph, G&gt; {
+        fn add_young_people(&amp;mut self, graph: &amp;'graph G) {
+            let walker = graph
+                .walk()
+                .vertices(Vertex::person()) // Type-safe Person lookup
+                .filter_by_person(|person, _| person.age() &lt; 30) // Filter young people
+                .boxed() // ← Boxing enables storage in the builder
+                .into_iter();
+            self.walker = Some(Box::new(walker));
+        }
+    }
+
+    let mut builder = PersonTraversalBuilder { walker: None };
+    builder.add_young_people(&amp;graph);</code></pre>
+<h3 id="context-preservation"><a class="header" href="#context-preservation">Context Preservation</a></h3>
+<p>Boxing preserves context functionality - all context operations work normally:</p>
+<pre><code class="language-rust noplayground">    // Context functionality is fully preserved through boxing
+    #[derive(Clone, Debug)]
+    struct TraversalMetrics {
+        hops: u32,
+        people_visited: u32,
+    }
+
+    let metrics_result: Vec&lt;_&gt; = graph
+        .walk()
+        .push_context(TraversalMetrics { hops: 0, people_visited: 0 })
+        .vertices(Vertex::person())
+        .mutate_context(|_vertex, ctx| {
+            ctx.people_visited += 1; // Track people visited
         })
-        .count();</code></pre>
+        .edges_out()
+        .boxed() // ← Boxing preserves context functionality
+        .mutate_context(|_edge, ctx| {
+            ctx.hops += 1; // Context operations work normally after boxing
+        })
+        .head()
+        .map(|vertex, context| {
+            // Context is accessible in later steps
+            println!("Vertex {:?} reached after {} hops, visited {} people", 
+                    vertex, context.hops, context.people_visited);
+            vertex
+        })
+        .collect();
+
+    println!("Context-aware traversal found {} vertices", metrics_result.len());</code></pre>
 <h2 id="best-practices"><a class="header" href="#best-practices">Best Practices</a></h2>
 <ul>
-<li>Insert probe steps at key points in complex traversals to verify correct behavior</li>
-<li>Use descriptive logging within probes to make debugging output meaningful</li>
-<li>Add counters or statistics collection to understand traversal performance</li>
-<li>Keep probe functions simple and side-effect only; don't try to affect the traversal flow</li>
+<li>Use <code>boxed()</code> after 4+ chained operations to prevent type explosion</li>
+<li>Place boxing at logical boundaries in complex traversals (after filtering, major operations)</li>
+<li>Apply when compile times become slow due to deep walker nesting</li>
+<li>Consider boxing when storing walkers in collections or data structures</li>
+<li>Avoid boxing simple 2-3 step chains where type complexity is manageable</li>
+<li>Measure the 5-15% runtime overhead against compilation benefits for your use case</li>
 </ul>
 <h2 id="common-use-cases"><a class="header" href="#common-use-cases">Common Use Cases</a></h2>
 <ul>
-<li><strong>Debugging</strong>: Inserting temporary probe steps to understand traversal behavior</li>
-<li><strong>Logging</strong>: Recording traversal information during development or in production</li>
-<li><strong>Metrics collection</strong>: Gathering statistics about traversal performance and results</li>
-<li><strong>Inspection</strong>: Examining element properties at specific points in the traversal</li>
+<li><strong>Compile-time optimization</strong>: Reducing build times for applications with many complex walker chains</li>
+<li><strong>Type simplification</strong>: Making complex walker types manageable in library interfaces</li>
+<li><strong>Collection storage</strong>: Enabling storage of different walker types in Vec or other collections</li>
+<li><strong>Builder patterns</strong>: Simplifying type signatures in reusable walker construction utilities</li>
+<li><strong>Library development</strong>: Providing clean APIs without exposing deeply nested generic types</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../../user_guide/walker/steps/into_iter.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../../user_guide/walker/steps/mutate.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../../user_guide/walker/steps/mutate.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../../../user_guide/walker/steps/dbg.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -294,11 +344,11 @@ Probe step diagram showing elements flowing through, side effects, and unchanged
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../../user_guide/walker/steps/into_iter.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../../user_guide/walker/steps/mutate.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../../user_guide/walker/steps/mutate.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../../../user_guide/walker/steps/dbg.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

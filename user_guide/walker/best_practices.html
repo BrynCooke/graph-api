@@ -42,6 +42,17 @@
         <script src="../../toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -119,7 +130,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -201,6 +212,84 @@
 </li>
 </ol>
 <h2 id="optimization-tips"><a class="header" href="#optimization-tips">Optimization Tips</a></h2>
+<h3 id="managing-compile-times"><a class="header" href="#managing-compile-times">Managing Compile Times</a></h3>
+<p>The Graph API's walker system uses deeply nested generic types that can lead to slow compilation in complex applications. Here are strategies to optimize build performance:</p>
+<h4 id="use-the-boxed-step"><a class="header" href="#use-the-boxed-step">Use the Boxed Step</a></h4>
+<p>For complex walker chains, use the <a href="steps/boxed.html"><code>boxed()</code></a> step to reduce monomorphization and improve compile times:</p>
+<pre><code class="language-rust noplayground"><span class="boring">use graph_api_test::Vertex;
+</span><span class="boring">use graph_api_test::Edge;
+</span><span class="boring">use graph_api_test::VertexExt;
+</span><span class="boring">use graph_api_test::EdgeExt;
+</span><span class="boring">use graph_api_test::Person;
+</span><span class="boring">use graph_api_test::Project;
+</span><span class="boring">use graph_api_test::populate_graph;
+</span><span class="boring">use graph_api_lib::EdgeSearch;
+</span><span class="boring">use graph_api_lib::VertexSearch;
+</span><span class="boring">use graph_api_simplegraph::SimpleGraph;
+</span><span class="boring">use graph_api_lib::Graph;
+</span><span class="boring">use graph_api_lib::VertexReference;
+</span><span class="boring">use graph_api_lib::EdgeReference;
+</span><span class="boring">use std::collections::HashSet;
+</span><span class="boring">
+</span><span class="boring">// Create a new graph
+</span><span class="boring">let mut graph = SimpleGraph::new();
+</span><span class="boring">// Populate the graph with test data
+</span><span class="boring">let refs = populate_graph(&amp;mut graph);
+</span>// Use boxed() for complex traversals to improve compilation
+let result = graph.walk()
+    .vertices(VertexSearch::scan())
+    .edges(EdgeSearch::scan())
+    .boxed()  // ← Breaks type complexity
+    .head()
+    .edges(EdgeSearch::scan())
+    .boxed()  // ← Further reduces complexity
+    .head()
+    .collect::&lt;Vec&lt;_&gt;&gt;();</code></pre>
+<p><strong>When to use <code>boxed()</code>:</strong></p>
+<ul>
+<li>After 4+ chained operations</li>
+<li>When compile times become slow</li>
+<li>At logical checkpoints in long traversals</li>
+<li>When storing walkers in collections</li>
+</ul>
+<p><strong>Trade-offs:</strong></p>
+<ul>
+<li>✅ Faster compilation and smaller binaries</li>
+<li>✅ Enables storage in collections and complex builder patterns</li>
+<li>✅ Preserves all walker functionality including context operations</li>
+<li>❌ 5-15% runtime overhead from indirect calls</li>
+</ul>
+<h4 id="compile-time-warning-signs"><a class="header" href="#compile-time-warning-signs">Compile Time Warning Signs</a></h4>
+<p>Watch for these indicators that you may need boxing:</p>
+<ul>
+<li><strong>Slow incremental compilation</strong> - Adding a new walker step takes noticeably longer to compile</li>
+<li><strong>Large binary sizes</strong> - Your application binary grows significantly with each new walker chain</li>
+<li><strong>IDE slowness</strong> - Type hints and autocompletion become sluggish in files with complex walkers</li>
+<li><strong>Long CI build times</strong> - Continuous integration builds start timing out or taking much longer</li>
+</ul>
+<h4 id="strategic-boxing-guidelines"><a class="header" href="#strategic-boxing-guidelines">Strategic Boxing Guidelines</a></h4>
+<p>Apply boxing strategically rather than everywhere:</p>
+<pre><code class="language-rust noplayground">// ❌ Over-boxing - unnecessary for simple chains
+let result = graph.walk()
+    .vertices(VertexSearch::scan())
+    .boxed()  // ← Not needed for simple 2-step chain
+    .take(10)
+    .collect::&lt;Vec&lt;_&gt;&gt;();
+
+// ✅ Strategic boxing - at logical complexity boundaries
+let result = graph.walk()
+    .vertices(VertexSearch::scan())
+    .edges(EdgeSearch::scan())
+    .filter(|e, _| e.label().contains("important"))
+    .head()
+    .boxed()  // ← Good: after complex traversal logic
+    .edges(EdgeSearch::scan())
+    .head()
+    .edges(EdgeSearch::scan())
+    .boxed()  // ← Good: preventing deep nesting
+    .head()
+    .collect::&lt;Vec&lt;_&gt;&gt;();</code></pre>
+<p>For more details on the boxed step, see the <a href="steps/boxed.html">Boxed Step documentation</a>.</p>
 <h3 id="early-filtering"><a class="header" href="#early-filtering">Early Filtering</a></h3>
 <p>Filter vertices and edges as early as possible in the traversal:</p>
 <pre><code class="language-rust noplayground"><span class="boring">use graph_api_test::Vertex;

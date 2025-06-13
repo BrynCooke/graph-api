@@ -43,6 +43,17 @@
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -120,7 +131,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -270,12 +281,12 @@ implementation.</p>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <p>Add the Graph API to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-lib = "0.2.0"
+graph-api-lib = "0.2.1"
 graph-api-derive = "0.1.4"  # For derive macros
 </code></pre>
 <p>For a simple graph implementation:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-simplegraph = "0.2.1"
+graph-api-simplegraph = "0.2.2"
 </code></pre>
 <h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
 <h3 id="your-first-graph"><a class="header" href="#your-first-graph">Your First Graph</a></h3>
@@ -1767,6 +1778,10 @@ traversal, such as:</p>
 <li><a href="user_guide/walker/steps/mutate.html">mutate</a> - Modify the graph after traversal</li>
 <li><a href="user_guide/walker/steps/probe.html">probe</a> - Inspect elements during traversal</li>
 </ul>
+<h3 id="type-management"><a class="header" href="#type-management">Type Management</a></h3>
+<ul>
+<li><a href="user_guide/walker/steps/boxed.html">boxed</a> - Reduce type complexity and improve compile times</li>
+</ul>
 <h3 id="debugging"><a class="header" href="#debugging">Debugging</a></h3>
 <ul>
 <li><a href="user_guide/walker/steps/dbg.html">dbg</a> - Print debug information during traversal</li>
@@ -2810,15 +2825,13 @@ walker
         .edges(EdgeSearch::scan().outgoing())
         .push_context(|edge, _ctx| {
             // Determine edge type based on the edge type
-            let edge_type = match edge.weight() {
+            // Return the edge type as context
+            match edge.weight() {
                 Edge::Created =&gt; "Created",
                 Edge::Follows =&gt; "Follows",
                 Edge::Liked { .. } =&gt; "Liked",
                 Edge::Commented { .. } =&gt; "Commented",
-            };
-
-            // Return the edge type as context
-            edge_type
+            }
         })
         .map(|_v, c| *c)
         .collect::&lt;Vec&lt;_&gt;&gt;();
@@ -3585,6 +3598,161 @@ Mutate step diagram showing elements being modified in-place and the step return
 <li><strong>State transitions</strong>: Updating element states based on workflow logic during traversal.</li>
 <li><strong>Bulk updates</strong>: Applying a change to a set of elements identified by prior traversal steps.</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="boxed-step"><a class="header" href="#boxed-step">Boxed Step</a></h1>
+<p>The <code>boxed</code> step performs type erasure to reduce monomorphization and improve compile times. It wraps the current walker in a <code>SmallBox</code>, breaking the chain of nested generic types that can grow exponentially in complex traversals.</p>
+<p>The boxed walker preserves all functionality including context access and modification, making it a drop-in replacement for any walker step.</p>
+<object type="image/svg+xml" data="boxed/image.svg" title="Boxed Step Diagram">
+Boxed step diagram showing type complexity reduction through type erasure
+</object>
+<p>In this diagram:</p>
+<ul>
+<li>An <strong>Input Stream</strong> contains a walker with complex nested types like <code>Endpoints&lt;Edges&lt;Vertices&lt;Empty&gt;&gt;&gt;</code>.</li>
+<li>The <strong><code>.boxed()</code> step</strong> performs type erasure, wrapping the walker in a <code>SmallBox</code>.</li>
+<li>The <strong>Output Stream</strong> contains a simplified <code>BoxedVertexWalker</code> type that hides the complexity.</li>
+<li><strong>Type Complexity</strong>: Before boxing shows deeply nested generics; after boxing shows a simple erased type.</li>
+</ul>
+<h2 id="syntax-20"><a class="header" href="#syntax-20">Syntax</a></h2>
+<pre><code class="language-rust noplayground">walker.boxed()</code></pre>
+<h2 id="parameters-21"><a class="header" href="#parameters-21">Parameters</a></h2>
+<p>This step takes no parameters.</p>
+<h2 id="return-value-21"><a class="header" href="#return-value-21">Return Value</a></h2>
+<p>Returns a new walker with erased types that behaves identically to the original but with simplified type signatures.</p>
+<h2 id="examples-17"><a class="header" href="#examples-17">Examples</a></h2>
+<h3 id="basic-type-complexity-reduction"><a class="header" href="#basic-type-complexity-reduction">Basic Type Complexity Reduction</a></h3>
+<p>Reduce type complexity in multi-step traversals:</p>
+<pre><code class="language-rust noplayground">    // Without boxing - creates complex nested types like:
+    // Endpoints&lt;Edges&lt;Endpoints&lt;Edges&lt;Vertices&lt;Empty&gt;&gt;&gt;&gt;&gt;
+    let _complex_type = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with Person vertices
+        .edges_out() // Get outgoing edges
+        .head() // Move to target vertices
+        .edges_out() // Get their outgoing edges
+        .head(); // Move to final target vertices
+    // This creates deeply nested generic types that slow compilation
+
+    // With strategic boxing - simplified types
+    let people_connections: Vec&lt;_&gt; = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with Person vertices
+        .edges_out() // Get outgoing edges
+        .boxed() // ← Breaks type complexity chain
+        .head() // Move to target vertices
+        .edges_out() // Get their outgoing edges
+        .boxed() // ← Further reduces complexity
+        .head() // Move to final target vertices
+        .collect();
+
+    println!("Found {} connected vertices through people", people_connections.len());</code></pre>
+<h3 id="strategic-boxing-in-complex-traversals"><a class="header" href="#strategic-boxing-in-complex-traversals">Strategic Boxing in Complex Traversals</a></h3>
+<p>Use boxing at logical checkpoints in long traversals:</p>
+<pre><code class="language-rust noplayground">    // Complex multi-hop traversal with strategic boxing
+    let projects_via_people: Vec&lt;_&gt; = graph
+        .walk()
+        .vertices(Vertex::person()) // Start with Person vertices
+        .filter_by_person(|person, _| person.age() &gt; 25) // Filter by age
+        .take(5) // Limit to first 5 people
+        .boxed() // ← Box after initial filtering
+        .edges_out() // Get their outgoing relationships
+        .head() // Move to connected vertices
+        .filter_project() // Keep only Project vertices
+        .boxed() // ← Box after project filtering
+        .collect();
+
+    println!("Found {} projects created by people over 25", projects_via_people.len());</code></pre>
+<h3 id="storage-in-collections"><a class="header" href="#storage-in-collections">Storage in Collections</a></h3>
+<p>Enable storage of walkers in data structures:</p>
+<pre><code class="language-rust noplayground">    // Store different walker types in a collection using boxing
+    let vertex_walkers: Vec&lt;Box&lt;dyn Iterator&lt;Item = _&gt;&gt;&gt; = vec![
+        // First walker: all people
+        Box::new(
+            graph
+                .walk()
+                .vertices(Vertex::person()) // Type-safe Person lookup
+                .boxed() // ← Boxing makes storage possible
+                .into_iter()
+        ),
+        // Second walker: young people only
+        Box::new(
+            graph
+                .walk()
+                .vertices(Vertex::person())
+                .filter_by_person(|person, _| person.age() &lt; 30)
+                .boxed() // ← Boxing makes storage possible
+                .into_iter()
+        ),
+    ];
+
+    println!("Created {} different walker configurations", vertex_walkers.len());</code></pre>
+<h3 id="builder-pattern-integration"><a class="header" href="#builder-pattern-integration">Builder Pattern Integration</a></h3>
+<p>Use boxing to enable flexible walker construction:</p>
+<pre><code class="language-rust noplayground">    // Builder pattern enabled by boxing
+    struct PersonTraversalBuilder&lt;'graph, G: Graph&gt; {
+        walker: Option&lt;Box&lt;dyn Iterator&lt;Item = G::VertexId&gt; + 'graph&gt;&gt;,
+    }
+
+    impl&lt;'graph, G: Graph&gt; PersonTraversalBuilder&lt;'graph, G&gt; {
+        fn add_young_people(&amp;mut self, graph: &amp;'graph G) {
+            let walker = graph
+                .walk()
+                .vertices(Vertex::person()) // Type-safe Person lookup
+                .filter_by_person(|person, _| person.age() &lt; 30) // Filter young people
+                .boxed() // ← Boxing enables storage in the builder
+                .into_iter();
+            self.walker = Some(Box::new(walker));
+        }
+    }
+
+    let mut builder = PersonTraversalBuilder { walker: None };
+    builder.add_young_people(&amp;graph);</code></pre>
+<h3 id="context-preservation"><a class="header" href="#context-preservation">Context Preservation</a></h3>
+<p>Boxing preserves context functionality - all context operations work normally:</p>
+<pre><code class="language-rust noplayground">    // Context functionality is fully preserved through boxing
+    #[derive(Clone, Debug)]
+    struct TraversalMetrics {
+        hops: u32,
+        people_visited: u32,
+    }
+
+    let metrics_result: Vec&lt;_&gt; = graph
+        .walk()
+        .push_context(TraversalMetrics { hops: 0, people_visited: 0 })
+        .vertices(Vertex::person())
+        .mutate_context(|_vertex, ctx| {
+            ctx.people_visited += 1; // Track people visited
+        })
+        .edges_out()
+        .boxed() // ← Boxing preserves context functionality
+        .mutate_context(|_edge, ctx| {
+            ctx.hops += 1; // Context operations work normally after boxing
+        })
+        .head()
+        .map(|vertex, context| {
+            // Context is accessible in later steps
+            println!("Vertex {:?} reached after {} hops, visited {} people", 
+                    vertex, context.hops, context.people_visited);
+            vertex
+        })
+        .collect();
+
+    println!("Context-aware traversal found {} vertices", metrics_result.len());</code></pre>
+<h2 id="best-practices-24"><a class="header" href="#best-practices-24">Best Practices</a></h2>
+<ul>
+<li>Use <code>boxed()</code> after 4+ chained operations to prevent type explosion</li>
+<li>Place boxing at logical boundaries in complex traversals (after filtering, major operations)</li>
+<li>Apply when compile times become slow due to deep walker nesting</li>
+<li>Consider boxing when storing walkers in collections or data structures</li>
+<li>Avoid boxing simple 2-3 step chains where type complexity is manageable</li>
+<li>Measure the 5-15% runtime overhead against compilation benefits for your use case</li>
+</ul>
+<h2 id="common-use-cases-19"><a class="header" href="#common-use-cases-19">Common Use Cases</a></h2>
+<ul>
+<li><strong>Compile-time optimization</strong>: Reducing build times for applications with many complex walker chains</li>
+<li><strong>Type simplification</strong>: Making complex walker types manageable in library interfaces</li>
+<li><strong>Collection storage</strong>: Enabling storage of different walker types in Vec or other collections</li>
+<li><strong>Builder patterns</strong>: Simplifying type signatures in reusable walker construction utilities</li>
+<li><strong>Library development</strong>: Providing clean APIs without exposing deeply nested generic types</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="debug-step"><a class="header" href="#debug-step">Debug Step</a></h1>
 <p>The <code>dbg</code> step provides a simple way to inspect the elements flowing through a traversal without altering them. It
 prints detailed information about each element to the console as it passes through the step.</p>
@@ -3600,13 +3768,13 @@ prefixed with the provided label. This is shown as a side effect.</li>
 <li><strong>Output Elements (Unchanged)</strong>: The elements <strong>A, B, C</strong> continue to the next step in the traversal, completely
 unaffected by the <code>dbg</code> operation.</li>
 </ul>
-<h2 id="syntax-20"><a class="header" href="#syntax-20">Syntax</a></h2>
+<h2 id="syntax-21"><a class="header" href="#syntax-21">Syntax</a></h2>
 <pre><code class="language-rust noplayground">walker.dbg("Custom label")</code></pre>
-<h2 id="parameters-21"><a class="header" href="#parameters-21">Parameters</a></h2>
+<h2 id="parameters-22"><a class="header" href="#parameters-22">Parameters</a></h2>
 <ul>
 <li><code>label</code>: An optional string label to identify the debug output.</li>
 </ul>
-<h2 id="return-value-21"><a class="header" href="#return-value-21">Return Value</a></h2>
+<h2 id="return-value-22"><a class="header" href="#return-value-22">Return Value</a></h2>
 <p>Returns the same traversal unchanged, allowing you to continue chaining steps.</p>
 <h2 id="example-6"><a class="header" href="#example-6">Example</a></h2>
 <pre><code class="language-rust noplayground">    // Create a pipeline with multiple dbg steps to see how data transforms
@@ -3622,14 +3790,14 @@ unaffected by the <code>dbg</code> operation.</li>
         .count();
 
     println!("Found {} people over 30", result);</code></pre>
-<h2 id="best-practices-24"><a class="header" href="#best-practices-24">Best Practices</a></h2>
+<h2 id="best-practices-25"><a class="header" href="#best-practices-25">Best Practices</a></h2>
 <ul>
 <li>Use meaningful labels to identify each debug checkpoint in complex traversals</li>
 <li>Remove or comment out debug steps before deploying to production</li>
 <li>Add debug steps before and after steps that might be causing issues</li>
 <li>For production logging, replace with <code>probe</code> steps that have custom formatting</li>
 </ul>
-<h2 id="common-use-cases-19"><a class="header" href="#common-use-cases-19">Common Use Cases</a></h2>
+<h2 id="common-use-cases-20"><a class="header" href="#common-use-cases-20">Common Use Cases</a></h2>
 <ul>
 <li><strong>Traversal troubleshooting</strong>: Understanding why a traversal isn't returning expected results</li>
 <li><strong>Learning</strong>: Exploring how traversals work by seeing each element's detailed state</li>
@@ -3785,7 +3953,7 @@ walker.push_default_context()</code></pre>
 <li><strong>Nesting</strong>: Detours create nested contexts with access to parent contexts</li>
 <li><strong>Immutability</strong>: Context is immutable; transformations create new contexts</li>
 </ol>
-<h2 id="best-practices-25"><a class="header" href="#best-practices-25">Best Practices</a></h2>
+<h2 id="best-practices-26"><a class="header" href="#best-practices-26">Best Practices</a></h2>
 <ul>
 <li><strong>Keep context small</strong>: Large contexts can impact performance</li>
 <li><strong>Use immutable data structures</strong>: Create new contexts rather than modifying existing ones</li>
@@ -3795,7 +3963,7 @@ walker.push_default_context()</code></pre>
 <li><strong>Chain context operations</strong>: Build complex data structures through multiple context steps</li>
 <li><strong>Document context types</strong>: When using complex context chains, document the context type at each step</li>
 </ul>
-<h2 id="common-use-cases-20"><a class="header" href="#common-use-cases-20">Common Use Cases</a></h2>
+<h2 id="common-use-cases-21"><a class="header" href="#common-use-cases-21">Common Use Cases</a></h2>
 <ul>
 <li><strong>Path tracking</strong>: Record the path taken through the graph</li>
 <li><strong>Property collection</strong>: Gather properties from different vertices/edges</li>
@@ -3845,6 +4013,84 @@ walker.push_default_context()</code></pre>
 </li>
 </ol>
 <h2 id="optimization-tips"><a class="header" href="#optimization-tips">Optimization Tips</a></h2>
+<h3 id="managing-compile-times"><a class="header" href="#managing-compile-times">Managing Compile Times</a></h3>
+<p>The Graph API's walker system uses deeply nested generic types that can lead to slow compilation in complex applications. Here are strategies to optimize build performance:</p>
+<h4 id="use-the-boxed-step"><a class="header" href="#use-the-boxed-step">Use the Boxed Step</a></h4>
+<p>For complex walker chains, use the <a href="user_guide/walker/steps/boxed.html"><code>boxed()</code></a> step to reduce monomorphization and improve compile times:</p>
+<pre><code class="language-rust noplayground"><span class="boring">use graph_api_test::Vertex;
+</span><span class="boring">use graph_api_test::Edge;
+</span><span class="boring">use graph_api_test::VertexExt;
+</span><span class="boring">use graph_api_test::EdgeExt;
+</span><span class="boring">use graph_api_test::Person;
+</span><span class="boring">use graph_api_test::Project;
+</span><span class="boring">use graph_api_test::populate_graph;
+</span><span class="boring">use graph_api_lib::EdgeSearch;
+</span><span class="boring">use graph_api_lib::VertexSearch;
+</span><span class="boring">use graph_api_simplegraph::SimpleGraph;
+</span><span class="boring">use graph_api_lib::Graph;
+</span><span class="boring">use graph_api_lib::VertexReference;
+</span><span class="boring">use graph_api_lib::EdgeReference;
+</span><span class="boring">use std::collections::HashSet;
+</span><span class="boring">
+</span><span class="boring">// Create a new graph
+</span><span class="boring">let mut graph = SimpleGraph::new();
+</span><span class="boring">// Populate the graph with test data
+</span><span class="boring">let refs = populate_graph(&amp;mut graph);
+</span>// Use boxed() for complex traversals to improve compilation
+let result = graph.walk()
+    .vertices(VertexSearch::scan())
+    .edges(EdgeSearch::scan())
+    .boxed()  // ← Breaks type complexity
+    .head()
+    .edges(EdgeSearch::scan())
+    .boxed()  // ← Further reduces complexity
+    .head()
+    .collect::&lt;Vec&lt;_&gt;&gt;();</code></pre>
+<p><strong>When to use <code>boxed()</code>:</strong></p>
+<ul>
+<li>After 4+ chained operations</li>
+<li>When compile times become slow</li>
+<li>At logical checkpoints in long traversals</li>
+<li>When storing walkers in collections</li>
+</ul>
+<p><strong>Trade-offs:</strong></p>
+<ul>
+<li>✅ Faster compilation and smaller binaries</li>
+<li>✅ Enables storage in collections and complex builder patterns</li>
+<li>✅ Preserves all walker functionality including context operations</li>
+<li>❌ 5-15% runtime overhead from indirect calls</li>
+</ul>
+<h4 id="compile-time-warning-signs"><a class="header" href="#compile-time-warning-signs">Compile Time Warning Signs</a></h4>
+<p>Watch for these indicators that you may need boxing:</p>
+<ul>
+<li><strong>Slow incremental compilation</strong> - Adding a new walker step takes noticeably longer to compile</li>
+<li><strong>Large binary sizes</strong> - Your application binary grows significantly with each new walker chain</li>
+<li><strong>IDE slowness</strong> - Type hints and autocompletion become sluggish in files with complex walkers</li>
+<li><strong>Long CI build times</strong> - Continuous integration builds start timing out or taking much longer</li>
+</ul>
+<h4 id="strategic-boxing-guidelines"><a class="header" href="#strategic-boxing-guidelines">Strategic Boxing Guidelines</a></h4>
+<p>Apply boxing strategically rather than everywhere:</p>
+<pre><code class="language-rust noplayground">// ❌ Over-boxing - unnecessary for simple chains
+let result = graph.walk()
+    .vertices(VertexSearch::scan())
+    .boxed()  // ← Not needed for simple 2-step chain
+    .take(10)
+    .collect::&lt;Vec&lt;_&gt;&gt;();
+
+// ✅ Strategic boxing - at logical complexity boundaries
+let result = graph.walk()
+    .vertices(VertexSearch::scan())
+    .edges(EdgeSearch::scan())
+    .filter(|e, _| e.label().contains("important"))
+    .head()
+    .boxed()  // ← Good: after complex traversal logic
+    .edges(EdgeSearch::scan())
+    .head()
+    .edges(EdgeSearch::scan())
+    .boxed()  // ← Good: preventing deep nesting
+    .head()
+    .collect::&lt;Vec&lt;_&gt;&gt;();</code></pre>
+<p>For more details on the boxed step, see the <a href="user_guide/walker/steps/boxed.html">Boxed Step documentation</a>.</p>
 <h3 id="early-filtering"><a class="header" href="#early-filtering">Early Filtering</a></h3>
 <p>Filter vertices and edges as early as possible in the traversal:</p>
 <pre><code class="language-rust noplayground"><span class="boring">use graph_api_test::Vertex;
@@ -4420,7 +4666,7 @@ mod test {
     test_suite!(MyGraph::new());
 }
 <span class="boring">}</span></code></pre></pre>
-<h2 id="best-practices-26"><a class="header" href="#best-practices-26">Best Practices</a></h2>
+<h2 id="best-practices-27"><a class="header" href="#best-practices-27">Best Practices</a></h2>
 <ol>
 <li><strong>Optimized ID Types</strong>: Use small, efficient ID types (consider using newtype patterns)</li>
 <li><strong>Memory Efficiency</strong>: Consider spatial locality and data structure layout</li>
@@ -4679,7 +4925,7 @@ covers:</p>
 <li>Add <code>graph-api-test</code> as a dev-dependency in your <code>Cargo.toml</code>:</li>
 </ol>
 <pre><code class="language-toml">[dev-dependencies]
-graph-api-test = { version = "0.2.0", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-test = { version = "0.2.1", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 </code></pre>
 <ol start="2">
@@ -5435,7 +5681,7 @@ how to set up and run benchmarks, interpret results, and use benchmarking to gui
 <p>First, add the necessary dependencies to your <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[dev-dependencies]
 criterion = "0.5"
-graph-api-benches = { version = "0.2.0", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
+graph-api-benches = { version = "0.2.1", features = ["vertex-hash-index", "vertex-label-index", "vertex-full-text-index", "vertex-range-index", "edge-label-index"] }
 
 [[bench]]
 name = "my_graph_benchmarks"
@@ -5507,7 +5753,7 @@ cargo bench
 cargo bench -- vertex_insertion
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api-reference"><a class="header" href="#api-reference">API Reference</a></h1>
-<p>Check out the <a href="https://docs.rs/graph-api-lib/0.2.0/graph_api_lib/">docs on docs.rs</a>,</p>
+<p>Check out the <a href="https://docs.rs/graph-api-lib/0.2.1/graph_api_lib/">docs on docs.rs</a>,</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="support-traits"><a class="header" href="#support-traits">Support Traits</a></h1>
 <p>The Graph API uses a trait-based approach to indicate which optional features a graph implementation supports. This
 allows for a more flexible and extensible API, where new capabilities can be added over time without breaking existing
@@ -5985,7 +6231,7 @@ where
 <li><code>#[index(range)]</code> - Enables range queries</li>
 <li><code>#[index(full_text)]</code> - Enables text search (String fields only)</li>
 </ul>
-<h2 id="best-practices-27"><a class="header" href="#best-practices-27">Best Practices</a></h2>
+<h2 id="best-practices-28"><a class="header" href="#best-practices-28">Best Practices</a></h2>
 <ol>
 <li>
 <p>Use the appropriate index type for your query pattern:</p>
@@ -6087,9 +6333,9 @@ optimized for high performance.</p>
 <h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
 <p>Add SimpleGraph to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-lib = "0.2.0"
+graph-api-lib = "0.2.1"
 graph-api-derive = "0.1.4"  # For derive macros
-graph-api-simplegraph = "0.2.1"
+graph-api-simplegraph = "0.2.2"
 </code></pre>
 <h2 id="overview-8"><a class="header" href="#overview-8">Overview</a></h2>
 <p><code>SimpleGraph</code> is a custom in-memory graph implementation built specifically to demonstrate and validate all Graph API
@@ -6361,9 +6607,9 @@ algorithm suite, and maturity.</p>
 <h2 id="installation-2"><a class="header" href="#installation-2">Installation</a></h2>
 <p>Add PetGraph support to your project dependencies:</p>
 <pre><code class="language-toml">[dependencies]
-graph-api-lib = "0.2.0"
+graph-api-lib = "0.2.1"
 graph-api-derive = "0.1.4"  # For derive macros
-graph-api-petgraph = "0.1.5"  # Graph API adapter for petgraph
+graph-api-petgraph = "0.1.6"  # Graph API adapter for petgraph
 petgraph = "0.6"  # The underlying graph library
 </code></pre>
 <h2 id="overview-9"><a class="header" href="#overview-9">Overview</a></h2>
