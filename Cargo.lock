@@ -1155,9 +1155,9 @@ checksum = "56199f7ddabf13fe5074ce809e7d3f42b42ae711800501b5b16ea82ad029c39d"
 
 [[package]]
 name = "smallbox"
-version = "0.8.6"
+version = "0.8.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43d92e0947c1c04c508c9fd39608a1557226141410fd33b5b314d73fa76508d3"
+checksum = "0b894711f8305931fb9aebde0fab3ba71e5819ab2bf0f4874385b39395c0e0f3"
 
 [[package]]
 name = "smallvec"
