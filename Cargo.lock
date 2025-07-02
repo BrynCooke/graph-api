@@ -332,9 +332,9 @@ dependencies = [
 
 [[package]]
 name = "fastbloom"
-version = "0.12.0"
+version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33f26ab05af2bdfeeb680ec3002f1bfb8065f3d486b9b3db354103c80bd71866"
+checksum = "29ec576c163744bef8707859f6aeb322bcf56b8da61215d99f77d6e33160ff01"
 dependencies = [
  "getrandom",
  "rand",
