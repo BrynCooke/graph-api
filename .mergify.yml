@@ -4,9 +4,8 @@ merge_protections:
     if:
       - base = main
     success_conditions:
-      - "title ~=
-        ^(fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)(?:\\(.+\
-        \\))?[!]?:"
+      - "title ~= ^(fix|feat|docs|style|refactor|perf|test|build|ci|chore|revert)(?:\\(.+\\\
+        ))?[!]?:"
   - name: Do not merge outdated PRs
     description: Make sure PRs are almost up to date before merging
     if:
@@ -22,3 +21,5 @@ pull_request_rules:
       - author = renovate[bot]
     actions:
       queue:
+merge_protections_settings:
+  reporting_method: check-runs
