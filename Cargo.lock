@@ -1029,9 +1029,9 @@ dependencies = [
 
 [[package]]
 name = "rphonetic"
-version = "3.0.3"
+version = "3.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51016596e51b46757c38a94e15a56b293ad110fe37a6fadfea0083910c52b482"
+checksum = "a5908062cb5f4bef7e5b4492ec0704f04d65914a876a854096f64fe4fb2bc270"
 dependencies = [
  "document-features",
  "either",
@@ -1040,6 +1040,7 @@ dependencies = [
  "nom",
  "regex",
  "serde",
+ "thiserror",
 ]
 
 [[package]]
